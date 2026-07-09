@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post-Test Interactive Assignment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            color: #334155;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2, h3, .font-display { font-family: 'Outfit', sans-serif; }
+        
+        .slide { display: none; animation: fadeIn 0.4s ease-out forwards; }
+        .slide.active { display: flex; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .btn-option { transition: all 0.2s; border: 2px solid #e2e8f0; }
+        .btn-option:hover:not(:disabled) { border-color: #818cf8; background-color: #e0e7ff; }
+        .btn-option.selected { border-color: #4f46e5; background-color: #c7d2fe; font-weight: bold; }
+        .btn-option.correct { border-color: #22c55e !important; background-color: #dcfce7 !important; color: #166534; pointer-events: none; }
+        .btn-option.wrong { border-color: #ef4444 !important; background-color: #fee2e2 !important; color: #991b1b; pointer-events: none; }
+
+        .q-card { transition: all 0.2s; }
+        .q-card.answered-correct { background-color: #10b981; color: white; border-color: #059669; }
+        .q-card.answered-wrong { background-color: #ef4444; color: white; border-color: #b91c1c; }
+        .q-card.active-q { box-shadow: 0 0 0 4px #818cf8; transform: scale(1.1); z-index: 10; }
+    </style>
+</head>
+<body>
+
+    <div class="w-full max-w-6xl h-[90vh] min-h-[600px] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden relative">
+        
+        <!-- Header -->
+        <div class="bg-indigo-600 px-6 py-4 flex justify-between items-center shrink-0 shadow-md text-white z-20">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-laptop-code text-2xl"></i>
+                <h1 class="font-display text-xl font-bold tracking-wide">Final Math Assignment</h1>
+            </div>
+            <div id="student-badge" class="hidden items-center gap-2 bg-indigo-800 px-4 py-1.5 rounded-full text-sm font-bold shadow-inner">
+                <i class="fa-solid fa-user-graduate text-indigo-300"></i> <span id="student-name-display"></span>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="flex-grow overflow-hidden relative bg-slate-50">
+            
+            <!-- SLIDE 1: COVER -->
+            <div id="slide-1" class="slide active flex-col justify-center items-center h-full p-8 text-center">
+                <div class="w-24 h-24 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-5xl mb-6 shadow-inner">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h1 class="font-display text-5xl md:text-6xl font-extrabold text-slate-800 mb-4">Post-Test <span class="text-indigo-600">Evaluation</span></h1>
+                <p class="text-slate-500 text-lg mb-10 max-w-lg">Selesaikan 40 tantangan matematika yang menguji pemahaman logikamu.</p>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-200 w-full max-w-sm">
+                    <label class="block text-left text-sm font-bold text-slate-600 mb-2 uppercase tracking-wide">Masukkan Nama Lengkap</label>
+                    <input type="text" id="input-name" placeholder="Ketik nama di sini..." class="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-indigo-500 transition mb-6 text-center font-bold text-lg">
+                    <button onclick="startTest()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-md transition">Masuk ke Materi <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                </div>
+            </div>
+
+            <!-- SLIDE 2: DAFTAR MATERI -->
+            <div id="slide-2" class="slide flex-col justify-center items-center h-full p-8 text-center bg-indigo-50/50">
+                <h2 class="font-display text-4xl font-bold text-indigo-900 mb-8"><i class="fa-solid fa-list-check"></i> Daftar Materi Ujian</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl w-full mb-10 text-left">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-500"><span class="text-xs font-bold text-slate-400 block">Topik 1</span><span class="font-bold text-slate-700">Bilangan Cacah</span></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-indigo-500"><span class="text-xs font-bold text-slate-400 block">Topik 2</span><span class="font-bold text-slate-700">Operasi Bil. Cacah</span></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-purple-500"><span class="text-xs font-bold text-slate-400 block">Topik 3</span><span class="font-bold text-slate-700">Operasi Pecahan</span></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-pink-500"><span class="text-xs font-bold text-slate-400 block">Topik 4</span><span class="font-bold text-slate-700">Desimal</span></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-rose-500"><span class="text-xs font-bold text-slate-400 block">Topik 5</span><span class="font-bold text-slate-700">Polygon</span></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-orange-500"><span class="text-xs font-bold text-slate-400 block">Topik 6</span><span class="font-bold text-slate-700">3D Shape</span></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-amber-500"><span class="text-xs font-bold text-slate-400 block">Topik 7</span><span class="font-bold text-slate-700">GCF and LCM</span></div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-emerald-500"><span class="text-xs font-bold text-slate-400 block">Topik 8</span><span class="font-bold text-slate-700">Perbandingan</span></div>
+                </div>
+                <button onclick="navSlide(3)" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-10 rounded-xl shadow-md transition text-lg">Mulai Post-Test! <i class="fa-solid fa-play ml-2"></i></button>
+            </div>
+
+            <!-- SLIDE 3: POST TEST ARENA -->
+            <div id="slide-3" class="slide flex-col h-full overflow-hidden">
+                <div class="flex flex-col lg:flex-row h-full">
+                    
+                    <!-- Left Panel: Papan Nomor Soal -->
+                    <div class="w-full lg:w-1/3 bg-white border-r border-slate-200 p-6 flex flex-col shrink-0">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-display font-bold text-lg text-slate-800">Navigasi Soal</h3>
+                            <button onclick="finishTest()" class="text-xs bg-rose-100 text-rose-700 font-bold px-3 py-1.5 rounded-lg hover:bg-rose-200 transition">Selesai Ujian</button>
+                        </div>
+                        <div class="grid grid-cols-5 md:grid-cols-8 lg:grid-cols-5 gap-2 overflow-y-auto custom-scroll pb-4" id="q-grid">
+                            <!-- JS Generated Cards -->
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Area Soal & Timer -->
+                    <div class="w-full lg:w-2/3 p-6 flex flex-col bg-slate-50 overflow-y-auto custom-scroll">
+                        
+                        <!-- Top Bar: Info & Timer -->
+                        <div class="flex flex-wrap justify-between items-center mb-6 gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                            <div>
+                                <span id="q-topic" class="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Topik</span>
+                                <span id="q-diff" class="ml-2 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Diff</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-3">
+                                <div class="font-mono text-xl font-bold text-slate-700 bg-slate-100 px-4 py-1.5 rounded-lg border border-slate-200 flex items-center gap-2">
+                                    <i class="fa-regular fa-clock text-rose-500"></i> <span id="timer-text">03:00</span>
+                                </div>
+                                <button onclick="startTimer()" id="btn-timer-start" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-2 rounded-lg transition">Start</button>
+                                <button onclick="addTime()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-2 rounded-lg transition">+15s</button>
+                            </div>
+                        </div>
+
+                        <!-- Question Area -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex-grow flex flex-col">
+                            <h3 class="font-display text-2xl font-bold text-slate-800 mb-6" id="q-title">Soal No. 1</h3>
+                            <p class="text-lg text-slate-700 mb-8 leading-relaxed font-medium" id="q-text">Pilih soal di papan sebelah kiri untuk memulai.</p>
+                            
+                            <!-- Options -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-auto mb-8" id="q-options">
+                                <!-- JS Generated Options -->
+                            </div>
+
+                            <!-- Controls -->
+                            <div class="border-t border-slate-100 pt-6 flex flex-wrap justify-between items-center gap-4">
+                                <div class="flex gap-2 w-full sm:w-auto">
+                                    <button onclick="checkAnswer()" id="btn-check" class="flex-1 sm:flex-none bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl transition disabled:opacity-50">Cek Jawaban</button>
+                                    <button onclick="toggleDisc()" id="btn-disc" class="hidden flex-1 sm:flex-none bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold py-2.5 px-6 rounded-xl transition">Pembahasan</button>
+                                </div>
+                                <div id="q-feedback" class="font-bold text-lg"></div>
+                            </div>
+                            
+                            <!-- Discussion Panel -->
+                            <div id="q-disc-panel" class="hidden mt-6 bg-slate-800 text-white p-5 rounded-xl text-sm leading-relaxed border-l-4 border-amber-400"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4: HASIL (STATISTIK) -->
+            <div id="slide-4" class="slide flex-col h-full p-8 overflow-hidden bg-slate-50">
+                <h2 class="font-display text-4xl font-bold text-indigo-900 mb-6 border-b-2 border-indigo-100 pb-2"><i class="fa-solid fa-chart-pie text-indigo-600 mr-2"></i> Evaluation Results</h2>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 shrink-0">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-center">
+                        <span class="text-xs font-bold text-slate-400 uppercase">Total Skor</span>
+                        <div class="text-4xl font-black text-indigo-600 mt-1" id="res-score">0</div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-center">
+                        <span class="text-xs font-bold text-slate-400 uppercase">Rata-rata Waktu</span>
+                        <div class="text-4xl font-black text-amber-500 mt-1" id="res-avg-time">0s</div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-center flex flex-col justify-center">
+                        <span class="text-xs font-bold text-slate-400 uppercase">Materi Tercepat</span>
+                        <div class="text-sm font-bold text-emerald-600 mt-2 bg-emerald-50 py-1 rounded" id="res-fastest">-</div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-center flex flex-col justify-center">
+                        <span class="text-xs font-bold text-slate-400 uppercase">Materi Terlama</span>
+                        <div class="text-sm font-bold text-rose-600 mt-2 bg-rose-50 py-1 rounded" id="res-slowest">-</div>
+                    </div>
+                </div>
+
+                <div class="flex-grow bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+                    <div class="overflow-y-auto custom-scroll flex-grow">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-100 sticky top-0 text-slate-600">
+                                <tr>
+                                    <th class="p-4 font-bold border-b">No</th>
+                                    <th class="p-4 font-bold border-b">Topik</th>
+                                    <th class="p-4 font-bold border-b text-center">Skor (2.5)</th>
+                                    <th class="p-4 font-bold border-b text-center">Waktu</th>
+                                </tr>
+                            </thead>
+                            <tbody id="res-tbody" class="divide-y divide-slate-100">
+                                <!-- Rendered via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="mt-4 text-right shrink-0">
+                    <button onclick="navSlide(5)" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-indigo-700 transition">Lihat Kesimpulan <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                </div>
+            </div>
+
+            <!-- SLIDE 5: PENUTUP -->
+            <div id="slide-5" class="slide flex-col justify-center items-center h-full p-8 text-center bg-gradient-to-br from-indigo-900 to-purple-900 text-white rounded-3xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4yKSIvPjwvc3ZnPg==')] opacity-30"></div>
+                
+                <div class="z-10 bg-white/10 backdrop-blur-md p-10 rounded-3xl border border-white/20 max-w-3xl w-full shadow-2xl">
+                    <i class="fa-solid fa-award text-6xl text-yellow-400 mb-6 drop-shadow-lg"></i>
+                    <h1 class="font-display text-4xl md:text-5xl font-bold mb-4">Kerja Bagus, <span id="final-name" class="text-yellow-300"></span>!</h1>
+                    
+                    <div class="bg-black/20 p-6 rounded-2xl mb-8 text-left space-y-3 text-indigo-100">
+                        <h3 class="font-bold text-white text-xl border-b border-white/20 pb-2 mb-3">Refleksi Belajar:</h3>
+                        <p><i class="fa-solid fa-check-circle text-emerald-400 mr-2"></i> Evaluasi ini membuktikan sejauh mana kamu memahami 8 topik dasar matematika.</p>
+                        <p><i class="fa-solid fa-check-circle text-emerald-400 mr-2"></i> Perhatikan materi yang memakan waktu terlama, itu adalah area yang perlu kamu latih lebih banyak.</p>
+                    </div>
+
+                    <p class="text-xl font-medium italic text-indigo-200 mb-8 border-l-4 border-yellow-400 pl-4 text-left">
+                        "Tidak ada lift menuju kesuksesan, kamu harus menaiki tangganya satu per satu. Tetap semangat berlatih matematika!"
+                    </p>
+
+                    <h2 class="font-display text-4xl font-extrabold text-white tracking-widest mt-4">THANK YOU FOR TODAY!</h2>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- 1. DATA SOAL (40 SOAL MIX EN/ID) ---
+        const topics = [
+            "Bilangan Cacah", "Operasi Bil. Cacah", "Operasi Pecahan", "Desimal",
+            "Polygon", "3D Shape", "GCF and LCM", "Perbandingan"
+        ];
+
+        const db = [
+            // Topik 1: Bil. Cacah (0-4)
+            { id:1, t:0, d:'Mudah', q:'Nama bilangan dari 4.052 adalah...', opt:['Empat ribu lima puluh dua', 'Empat ribu lima dua', 'Empat ribu ratus lima dua', 'Empat ribu lima ratus dua'], ans:0, exp:'Angka 4 menempati ribuan, 0 ratusan (tidak dibaca), 5 puluhan, 2 satuan. Dibaca: Empat ribu lima puluh dua.' },
+            { id:2, t:0, d:'Mudah', q:'The numeral for "Seven thousand twelve" is...', opt:['7,120', '7,012', '7,102', '70,012'], ans:1, exp:'Seven thousand (7000) + twelve (12) = 7,012.' },
+            { id:3, t:0, d:'Sedang', q:'Hasil dekomposisi dari bilangan 8.305 adalah...', opt:['8000 + 300 + 50', '8000 + 30 + 5', '8000 + 300 + 5', '800 + 300 + 5'], ans:2, exp:'8 ribuan + 3 ratusan + 0 puluhan + 5 satuan = 8000 + 300 + 5.' },
+            { id:4, t:0, d:'Sedang', q:'Compare the numbers: 5,432 ... 5,423.', opt:['<', '>', '=', '≤'], ans:1, exp:'Compare from left: thousands (5=5), hundreds (4=4), tens (3 > 2). So 5,432 is greater (>).' },
+            { id:5, t:0, d:'HOTS', q:'Urutkan dari yang terkecil: 2314, 2134, 2413, 2143.', opt:['2134, 2143, 2314, 2413', '2143, 2134, 2314, 2413', '2134, 2314, 2143, 2413', '2413, 2314, 2143, 2134'], ans:0, exp:'Lihat ratusannya: 2134 & 2143 lebih kecil dari 2314 & 2413. Lalu bandingkan puluhannya: 2134 < 2143. Urutan: 2134, 2143, 2314, 2413.' },
+            
+            // Topik 2: Operasi Bil. Cacah (5-9)
+            { id:6, t:1, d:'Mudah', q:'Solve: 1,250 + 340 = ...', opt:['1,590', '1,500', '1,690', '1,580'], ans:0, exp:'1250 + 340 = 1590.' },
+            { id:7, t:1, d:'Mudah', q:'Hasil dari 5.000 - 1.245 adalah...', opt:['3.855', '3.755', '4.755', '3.655'], ans:1, exp:'Gunakan pengurangan bersusun meminjam: 5000 - 1245 = 3755.' },
+            { id:8, t:1, d:'Sedang', q:'Calculate: 24 × 15 = ...', opt:['340', '360', '380', '350'], ans:1, exp:'24 x 10 = 240. 24 x 5 = 120. Total: 240 + 120 = 360.' },
+            { id:9, t:1, d:'Sedang', q:'Hasil dari 1.250 ÷ 5 adalah...', opt:['225', '240', '250', '260'], ans:2, exp:'12 ÷ 5 = 2 sisa 2. 25 ÷ 5 = 5. Tambah nol = 250.' },
+            { id:10, t:1, d:'HOTS', q:'A farmer has 1,200 apples. He throws away 50 rotten ones, and packs the rest into boxes of 25. How many boxes are needed?', opt:['45', '46', '48', '50'], ans:1, exp:'Good apples = 1200 - 50 = 1150. Boxes = 1150 ÷ 25 = 46 boxes.' },
+
+            // Topik 3: Pecahan (10-14)
+            { id:11, t:2, d:'Mudah', q:'Pecahan yang senilai dengan 2/3 adalah...', opt:['3/4', '4/6', '4/9', '6/8'], ans:1, exp:'Kalikan pembilang dan penyebut dengan angka yang sama (misal 2). 2x2=4, 3x2=6. Maka 2/3 = 4/6. Note: 6/8 = 3/4.' },
+            { id:12, t:2, d:'Mudah', q:'Add the fractions: 1/4 + 2/4 = ...', opt:['3/8', '2/4', '3/4', '4/4'], ans:2, exp:'Since denominators are the same, just add the numerators: 1+2 = 3. Result: 3/4.' },
+            { id:13, t:2, d:'Sedang', q:'Hasil dari 3/4 - 1/3 adalah...', opt:['2/1', '5/12', '2/12', '1/12'], ans:1, exp:'Samakan penyebut jadi 12. (9/12) - (4/12) = 5/12.' },
+            { id:14, t:2, d:'Sedang', q:'Multiply: 2/5 × 3/4 = ...', opt:['5/9', '6/20', '8/15', '6/9'], ans:1, exp:'Multiply numerators: 2x3=6. Multiply denominators: 5x4=20. Result: 6/20 (can be simplified to 3/10).' },
+            { id:15, t:2, d:'HOTS', q:'Ibu memiliki kue 1 1/2 bagian. Diberikan kepada adik 3/4 bagian. Sisa kue ibu adalah...', opt:['1/4', '1/2', '3/4', '1'], ans:2, exp:'1 1/2 = 3/2 = 6/4. Diberikan 3/4, sisa = 6/4 - 3/4 = 3/4.' },
+
+            // Topik 4: Desimal (15-19)
+            { id:16, t:3, d:'Mudah', q:'What is the place value of the digit 5 in 12.35?', opt:['Tenths', 'Hundredths', 'Tens', 'Units'], ans:1, exp:'The first digit after decimal is tenths (3). The second digit is hundredths (5).' },
+            { id:17, t:3, d:'Mudah', q:'Bentuk desimal dari pecahan 3/5 adalah...', opt:['0,3', '0,5', '0,6', '0,35'], ans:2, exp:'Jadikan penyebut 10. 3/5 x 2/2 = 6/10 = 0,6.' },
+            { id:18, t:3, d:'Sedang', q:'Change 0.45 into a simplest fraction.', opt:['45/100', '9/20', '4/5', '9/10'], ans:1, exp:'0.45 = 45/100. Divide both by 5 = 9/20.' },
+            { id:19, t:3, d:'Sedang', q:'Hasil dari 2,34 + 1,5 adalah...', opt:['2,49', '3,84', '3,39', '2,84'], ans:1, exp:'Sejajarkan tanda koma secara vertikal: 2,34 + 1,50 = 3,84.' },
+            { id:20, t:3, d:'HOTS', q:'Round 14.567 to the nearest hundredth.', opt:['14.50', '14.56', '14.57', '14.60'], ans:2, exp:'The thousandths digit is 7 (≥ 5), so round up the hundredths digit: 6 becomes 7. Result: 14.57.' },
+
+            // Topik 5: Polygon (20-24)
+            { id:21, t:4, d:'Mudah', q:'Bangun datar yang dibentuk oleh tepat 3 sisi lurus disebut...', opt:['Persegi', 'Segitiga', 'Trapesium', 'Lingkaran'], ans:1, exp:'Bangun yang memiliki 3 sisi dan 3 titik sudut adalah Segitiga.' },
+            { id:22, t:4, d:'Mudah', q:'Name the polygon that has exactly 5 sides.', opt:['Hexagon', 'Octagon', 'Pentagon', 'Heptagon'], ans:2, exp:'A polygon with 5 sides is called a Pentagon.' },
+            { id:23, t:4, d:'Sedang', q:'Berapa banyak simetri putar yang dimiliki persegi panjang?', opt:['1', '2', '3', '4'], ans:1, exp:'Persegi panjang dapat diputar 180° dan 360° untuk kembali ke bingkainya. Jadi ada 2 simetri putar.' },
+            { id:24, t:4, d:'Sedang', q:'Calculate the perimeter of a rectangle with length = 8 cm and width = 3 cm.', opt:['22 cm', '24 cm', '11 cm', '32 cm'], ans:0, exp:'Perimeter = 2 × (Length + Width) = 2 × (8 + 3) = 2 × 11 = 22 cm.' },
+            { id:25, t:4, d:'HOTS', q:'Keliling sebuah belah ketupat adalah 40 cm. Berapakah panjang satu sisinya?', opt:['5 cm', '10 cm', '15 cm', '20 cm'], ans:1, exp:'Semua sisi belah ketupat sama panjang. Sisi = Keliling ÷ 4 = 40 ÷ 4 = 10 cm.' },
+
+            // Topik 6: 3D Shape (25-29)
+            { id:26, t:5, d:'Mudah', q:'Name the 3D shape that looks perfectly like a basketball.', opt:['Cylinder', 'Cone', 'Sphere', 'Cube'], ans:2, exp:'A basketball is a perfectly round 3D shape called a Sphere (Bola).' },
+            { id:27, t:5, d:'Mudah', q:'Berapa jumlah rusuk pada sebuah kubus?', opt:['6', '8', '12', '16'], ans:2, exp:'Kubus memiliki 6 sisi, 8 titik sudut, dan 12 rusuk.' },
+            { id:28, t:5, d:'Sedang', q:'How many flat faces does a rectangular prism (balok) have?', opt:['4', '6', '8', '12'], ans:1, exp:'A rectangular prism has 6 flat rectangular faces (top, bottom, front, back, left, right).' },
+            { id:29, t:5, d:'Sedang', q:'Bangun ruang yang memiliki alas berbentuk lingkaran dan mengerucut pada satu titik puncak adalah...', opt:['Tabung', 'Bola', 'Prisma', 'Kerucut'], ans:3, exp:'Alas lingkaran dan memiliki 1 titik puncak adalah ciri khas Kerucut (Cone).' },
+            { id:30, t:5, d:'HOTS', q:'I am a 3D shape. I have 6 square faces, 12 edges, and 8 vertices. What am I?', opt:['Cylinder', 'Pyramid', 'Cube', 'Cuboid'], ans:2, exp:'Only a Cube has 6 strictly "square" faces. A cuboid has rectangular faces.' },
+
+            // Topik 7: GCF & LCM (30-34)
+            { id:31, t:6, d:'Mudah', q:'Faktor dari bilangan 12 adalah...', opt:['1,2,3,4,6,12', '2,4,6,8,10,12', '1,3,6,9,12', '1,2,4,8,12'], ans:0, exp:'Faktor adalah bilangan yang dapat membagi habis 12. Yaitu: 1, 2, 3, 4, 6, 12.' },
+            { id:32, t:6, d:'Mudah', q:'Find the first three multiples of 4.', opt:['1,2,4', '4,8,12', '4,6,8', '8,12,16'], ans:1, exp:'Multiples of 4 means 4x1, 4x2, 4x3. Result: 4, 8, 12.' },
+            { id:33, t:6, d:'Sedang', q:'Faktorisasi prima dari 24 adalah...', opt:['2² × 3', '2 × 3²', '2³ × 3', '3 × 8'], ans:2, exp:'Bagi 24 dengan bilangan prima: 24 = 2 x 12 = 2 x 2 x 6 = 2 x 2 x 2 x 3 = 2³ × 3.' },
+            { id:34, t:6, d:'Sedang', q:'What is the Greatest Common Factor (GCF/FPB) of 12 and 18?', opt:['2', '3', '6', '36'], ans:2, exp:'Factors of 12: 1,2,3,4,6,12. Factors of 18: 1,2,3,6,9,18. Common greatest is 6.' },
+            { id:35, t:6, d:'HOTS', q:'Lampu A menyala setiap 4 detik. Lampu B menyala setiap 6 detik. Pada detik ke berapa mereka menyala bersamaan untuk pertama kalinya?', opt:['10 detik', '12 detik', '24 detik', '2 detik'], ans:1, exp:'Cari Kelipatan Persekutuan Terkecil (KPK/LCM) dari 4 dan 6. Kelipatan 4: 4,8,12... Kelipatan 6: 6,12... KPK = 12.' },
+
+            // Topik 8: Perbandingan (35-39)
+            { id:36, t:7, d:'Mudah', q:'If a job takes LESS time when MORE workers are added, what kind of proportion is this?', opt:['Direct', 'Inverse', 'Equal', 'Linear'], ans:1, exp:'When one variable increases (workers) and the other decreases (time), it is an Inverse Proportion (Berbalik Nilai).' },
+            { id:37, t:7, d:'Mudah', q:'Sebuah peta memiliki skala 1 : 100. Jika jarak di peta 2 cm, berapa jarak aslinya?', opt:['20 cm', '200 cm', '2.000 cm', '20.000 cm'], ans:1, exp:'Jarak Asli = Jarak Peta x Skala = 2 cm x 100 = 200 cm (atau 2 meter).' },
+            { id:38, t:7, d:'Sedang', q:'The ratio of boys to girls in a class is 2:3. If there are 30 students in total, how many boys are there?', opt:['10', '12', '15', '18'], ans:1, exp:'Total ratio parts = 2 + 3 = 5. One part = 30 ÷ 5 = 6. Boys = 2 parts = 2 × 6 = 12.' },
+            { id:39, t:7, d:'Sedang', q:'Harga 5 buah buku adalah Rp 10.000. Berapakah harga 8 buah buku yang sama?', opt:['Rp 12.000', 'Rp 14.000', 'Rp 15.000', 'Rp 16.000'], ans:3, exp:'Harga 1 buku = 10.000 ÷ 5 = 2.000. Harga 8 buku = 8 × 2.000 = 16.000. (Perbandingan Senilai).' },
+            { id:40, t:7, d:'HOTS', q:'A car travels 120 km in 2 hours. At the same constant speed, how far will it travel in 3.5 hours?', opt:['180 km', '200 km', '210 km', '240 km'], ans:2, exp:'Speed = 120 ÷ 2 = 60 km/h. Distance in 3.5 hrs = 60 × 3.5 = 210 km.' }
+        ];
+
+        // --- 2. GLOBAL STATE ---
+        let studentName = "";
+        let currentSlide = 1;
+        let activeQ = null; // index 0-39
+        
+        let timerInterval = null;
+        let timeLeft = 180;
+        let isTimerRunning = false;
+
+        // results state
+        // { answered: bool, isCorrect: bool, time: num }
+        let results = Array(40).fill(null).map(() => ({
+            answered: false,
+            isCorrect: false,
+            time: 0
+        }));
+
+        // --- 3. SYSTEM LOGIC ---
+        function startTest() {
+            const inp = document.getElementById('input-name').value.trim();
+            if(!inp) { alert("Silakan isi nama kamu terlebih dahulu!"); return; }
+            studentName = inp;
+            document.getElementById('student-name-display').innerText = studentName;
+            document.getElementById('student-badge').classList.remove('hidden');
+            document.getElementById('student-badge').classList.add('flex');
+            
+            navSlide(2);
+        }
+
+        function navSlide(n) {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById('slide-' + n).classList.add('active');
+            
+            if(n === 3) { initGrid(); }
+            if(n === 4) { calculateResults(); }
+            if(n === 5) { document.getElementById('final-name').innerText = studentName; }
+        }
+
+        // --- 4. TEST ARENA LOGIC ---
+        function initGrid() {
+            const grid = document.getElementById('q-grid');
+            grid.innerHTML = '';
+            for(let i=0; i<40; i++) {
+                const btn = document.createElement('button');
+                btn.innerText = i + 1;
+                btn.id = 'grid-btn-' + i;
+                
+                // Styling based on state
+                let style = "bg-white border-2 border-slate-200 text-slate-600 font-bold p-2 md:p-3 rounded-xl hover:border-indigo-400 transition";
+                if(results[i].answered) {
+                    style = results[i].isCorrect ? "q-card answered-correct p-2 md:p-3 rounded-xl font-bold border-2" : "q-card answered-wrong p-2 md:p-3 rounded-xl font-bold border-2";
+                }
+                
+                btn.className = style;
+                btn.onclick = () => openQuestion(i);
+                grid.appendChild(btn);
+            }
+        }
+
+        function getDiffBadge(d) {
+            if(d === 'Mudah') return 'bg-emerald-100 text-emerald-700';
+            if(d === 'Sedang') return 'bg-amber-100 text-amber-700';
+            return 'bg-rose-100 text-rose-700';
+        }
+
+        function openQuestion(idx) {
+            // Remove active class from old button
+            if(activeQ !== null && document.getElementById('grid-btn-'+activeQ)) {
+                document.getElementById('grid-btn-'+activeQ).classList.remove('active-q');
+            }
+            
+            activeQ = idx;
+            document.getElementById('grid-btn-'+idx).classList.add('active-q');
+
+            const q = db[idx];
+            document.getElementById('q-title').innerText = `Soal No. ${idx + 1}`;
+            document.getElementById('q-topic').innerText = topics[q.t];
+            
+            const diffBadge = document.getElementById('q-diff');
+            diffBadge.innerText = q.d;
+            diffBadge.className = `ml-2 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider ${getDiffBadge(q.d)}`;
+
+            document.getElementById('q-text').innerText = q.q;
+
+            // Render Options
+            const optContainer = document.getElementById('q-options');
+            optContainer.innerHTML = '';
+            q.opt.forEach((o, i) => {
+                const btn = document.createElement('button');
+                btn.className = "btn-option w-full text-left px-5 py-4 bg-white rounded-xl font-medium text-slate-700 focus:outline-none";
+                btn.innerText = String.fromCharCode(65 + i) + ". " + o;
+                btn.onclick = () => selectOption(btn, i);
+                
+                // Restore state if answered
+                if(results[idx].answered) {
+                    btn.disabled = true;
+                    if(i === q.ans) btn.classList.add('correct');
+                    else if(results[idx].selectedOpt === i) btn.classList.add('wrong');
+                }
+                optContainer.appendChild(btn);
+            });
+
+            // Reset UI
+            document.getElementById('q-feedback').innerHTML = '';
+            document.getElementById('q-disc-panel').classList.add('hidden');
+            document.getElementById('q-disc-panel').innerText = q.exp;
+            
+            const btnCheck = document.getElementById('btn-check');
+            const btnDisc = document.getElementById('btn-disc');
+
+            if(results[idx].answered) {
+                btnCheck.disabled = true;
+                btnCheck.classList.add('opacity-50');
+                btnDisc.classList.remove('hidden');
+                
+                // Show timer as it was stopped
+                document.getElementById('timer-text').innerText = "SELESAI";
+                stopTimer();
+            } else {
+                btnCheck.disabled = false;
+                btnCheck.classList.remove('opacity-50');
+                btnDisc.classList.add('hidden');
+                
+                // Reset timer for new question
+                stopTimer();
+                timeLeft = 180;
+                updateTimerDisplay();
+                document.getElementById('btn-timer-start').innerText = "Start";
+            }
+        }
+
+        let currentSelection = null;
+        function selectOption(btn, optIdx) {
+            document.querySelectorAll('.btn-option').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            currentSelection = optIdx;
+        }
+
+        // --- 5. TIMER LOGIC ---
+        function startTimer() {
+            if(activeQ === null || results[activeQ].answered) return;
+            if(isTimerRunning) return;
+
+            isTimerRunning = true;
+            document.getElementById('btn-timer-start').innerText = "Running...";
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if(timeLeft <= 0) {
+                    stopTimer();
+                    forceSubmitWrong();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            document.getElementById('btn-timer-start').innerText = "Start";
+        }
+
+        function addTime() {
+            if(!isTimerRunning || results[activeQ].answered) return;
+            timeLeft += 15;
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            let m = Math.floor(timeLeft / 60);
+            let s = timeLeft % 60;
+            document.getElementById('timer-text').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }
+
+        // --- 6. CHECKING LOGIC ---
+        function checkAnswer() {
+            if(activeQ === null || results[activeQ].answered) return;
+            if(currentSelection === null) { alert("Pilih jawaban dulu!"); return; }
+            if(!isTimerRunning) { alert("Klik Start pada timer terlebih dahulu!"); return; }
+
+            const q = db[activeQ];
+            const isCorrect = (currentSelection === q.ans);
+            
+            recordResult(isCorrect, currentSelection);
+        }
+
+        function forceSubmitWrong() {
+            alert("Waktu Habis!");
+            recordResult(false, null);
+        }
+
+        function recordResult(isCorrect, selIdx) {
+            stopTimer();
+            
+            results[activeQ].answered = true;
+            results[activeQ].isCorrect = isCorrect;
+            results[activeQ].time = 180 - timeLeft;
+            results[activeQ].selectedOpt = selIdx;
+
+            // Update UI grid
+            initGrid();
+            // Re-open to apply disabled styling
+            openQuestion(activeQ);
+
+            const fb = document.getElementById('q-feedback');
+            if(isCorrect) {
+                fb.innerHTML = '<span class="text-emerald-600"><i class="fa-solid fa-check"></i> Tepat! (+2.5)</span>';
+            } else {
+                fb.innerHTML = '<span class="text-rose-600"><i class="fa-solid fa-xmark"></i> Salah! (0)</span>';
+            }
+        }
+
+        function toggleDisc() {
+            document.getElementById('q-disc-panel').classList.toggle('hidden');
+        }
+
+        function finishTest() {
+            let unanswered = results.filter(r => !r.answered).length;
+            if(unanswered > 0) {
+                if(!confirm(`Ada ${unanswered} soal yang belum dijawab. Yakin ingin mengakhiri ujian?`)) return;
+            }
+            navSlide(4);
+        }
+
+        // --- 7. STATISTICS CALCULATION ---
+        function calculateResults() {
+            let totalScore = 0;
+            let totalTime = 0;
+            let answeredCount = 0;
+            
+            // Topic trackers: {count:0, totalTime:0}
+            let topicStats = Array(8).fill(null).map(()=>({ count:0, time:0 }));
+
+            const tbody = document.getElementById('res-tbody');
+            tbody.innerHTML = '';
+
+            for(let i=0; i<40; i++) {
+                const r = results[i];
+                const q = db[i];
+
+                if(r.answered) {
+                    answeredCount++;
+                    totalTime += r.time;
+                    if(r.isCorrect) totalScore += 2.5;
+
+                    topicStats[q.t].count++;
+                    topicStats[q.t].time += r.time;
+                }
+
+                // Append Table Row
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition border-b border-slate-100";
+                
+                let statBadge = `<span class="bg-slate-100 text-slate-500 px-2 py-1 rounded text-xs font-bold">Unanswered</span>`;
+                if(r.answered) {
+                    statBadge = r.isCorrect ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-xs font-bold">Correct</span>` : `<span class="bg-rose-100 text-rose-700 px-2 py-1 rounded text-xs font-bold">Wrong</span>`;
+                }
+
+                let scoreVal = r.answered ? (r.isCorrect ? "2.5" : "0") : "-";
+                let timeVal = r.answered ? `${r.time}s` : "-";
+
+                tr.innerHTML = `
+                    <td class="p-4 font-semibold text-slate-700">${i+1}</td>
+                    <td class="p-4"><div class="flex flex-col"><span class="font-bold text-slate-800">${topics[q.t]}</span>${statBadge}</div></td>
+                    <td class="p-4 font-mono font-bold text-center text-indigo-600">${scoreVal}</td>
+                    <td class="p-4 font-mono text-slate-500 text-center">${timeVal}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+
+            document.getElementById('res-score').innerText = totalScore;
+            
+            let avgTime = answeredCount > 0 ? Math.round(totalTime / answeredCount) : 0;
+            document.getElementById('res-avg-time').innerText = `${avgTime}s`;
+
+            // Find fastest and slowest topics
+            let avgTopics = [];
+            for(let t=0; t<8; t++) {
+                if(topicStats[t].count > 0) {
+                    avgTopics.push({
+                        name: topics[t],
+                        avg: topicStats[t].time / topicStats[t].count
+                    });
+                }
+            }
+
+            if(avgTopics.length > 0) {
+                avgTopics.sort((a,b) => a.avg - b.avg); // asc
+                document.getElementById('res-fastest').innerText = `${avgTopics[0].name} (${Math.round(avgTopics[0].avg)}s/q)`;
+                document.getElementById('res-slowest').innerText = `${avgTopics[avgTopics.length-1].name} (${Math.round(avgTopics[avgTopics.length-1].avg)}s/q)`;
+            } else {
+                document.getElementById('res-fastest').innerText = "-";
+                document.getElementById('res-slowest').innerText = "-";
+            }
+        }
+
+    </script>
+</body>
+</html>
