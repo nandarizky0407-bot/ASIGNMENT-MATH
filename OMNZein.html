@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olimpiade Matematika Kelas 4 — Platform Latihan Interaktif</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+:root{
+  --bg:#0a0e1f; --bg-2:#131831; --surface:rgba(255,255,255,.04); --surface-2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08); --border-2:rgba(255,255,255,.16);
+  --fg:#f1f5f9; --fg-muted:#94a3b8; --fg-dim:#64748b;
+  --gold:#fbbf24; --gold-2:#f59e0b; --gold-glow:rgba(251,191,36,.35);
+  --success:#34d399; --danger:#f87171; --info:#60a5fa; --purple:#a78bfa;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg); color:var(--fg); min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(251,191,36,.10), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, rgba(96,165,250,.06), transparent 60%),
+    linear-gradient(180deg, #0a0e1f 0%, #0d1228 100%);
+  background-attachment:fixed; overflow-x:hidden;
+}
+.display{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.02em}
+.mono{font-family:'JetBrains Mono',monospace}
+
+.orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.5;z-index:0;pointer-events:none}
+.orb-1{width:500px;height:500px;background:radial-gradient(circle, rgba(251,191,36,.3), transparent 70%);top:-150px;right:-100px;animation:float 20s ease-in-out infinite}
+.orb-2{width:400px;height:400px;background:radial-gradient(circle, rgba(96,165,250,.2), transparent 70%);bottom:-100px;left:-100px;animation:float 25s ease-in-out infinite reverse}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,40px)}}
+
+.app-header{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(24px) saturate(1.5);
+  -webkit-backdrop-filter:blur(24px) saturate(1.5);
+  background:rgba(10,14,31,.78); border-bottom:1px solid var(--border);
+}
+.header-progress{height:3px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+.header-progress-bar{height:100%;background:linear-gradient(90deg, var(--gold), var(--gold-2));border-radius:99px;transition:width .4s ease;box-shadow:0 0 12px var(--gold-glow)}
+
+.logo-mark{
+  width:42px;height:42px;border-radius:12px;
+  background:linear-gradient(135deg, var(--gold), var(--gold-2));
+  display:grid;place-items:center; color:#0a0e1f;font-weight:800;font-size:18px;
+  box-shadow:0 8px 24px var(--gold-glow), inset 0 1px 0 rgba(255,255,255,.4);
+  font-family:'Bricolage Grotesque',sans-serif;
+}
+
+.btn{
+  font-family:inherit;font-weight:600;border:none;cursor:pointer;
+  transition:all .2s ease;display:inline-flex;align-items:center;gap:8px;
+  padding:10px 18px;border-radius:10px;font-size:14px; text-decoration:none;white-space:nowrap;
+}
+.btn-primary{background:linear-gradient(135deg, var(--gold), var(--gold-2));color:#0a0e1f}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 24px var(--gold-glow)}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed}
+.btn-secondary{background:rgba(255,255,255,.06);color:var(--fg);border:1px solid var(--border-2)}
+.btn-secondary:hover:not(:disabled){background:rgba(255,255,255,.1);transform:translateY(-1px)}
+.btn-danger{background:linear-gradient(135deg, #f87171, #ef4444);color:white}
+.btn-danger:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 24px rgba(248,113,113,.25)}
+.btn-ghost{background:transparent;color:var(--fg-muted);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--fg);border-color:var(--border-2);background:rgba(255,255,255,.04)}
+
+.mode-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.mode-timer{background:rgba(251,191,36,.12);color:var(--gold);border:1px solid rgba(251,191,36,.3)}
+.mode-stopwatch{background:rgba(96,165,250,.12);color:var(--info);border:1px solid rgba(96,165,250,.3)}
+
+.part-tab{
+  position:relative;padding:14px 20px;background:var(--surface);
+  border:1px solid var(--border);border-radius:14px;cursor:pointer;
+  transition:all .25s ease;font-weight:600;color:var(--fg-muted);
+  display:flex;align-items:center;gap:12px;min-width:160px;
+}
+.part-tab:hover{border-color:var(--border-2);color:var(--fg);transform:translateY(-2px)}
+.part-tab.active{background:linear-gradient(135deg, rgba(251,191,36,.18), rgba(245,158,11,.08));border-color:rgba(251,191,36,.5);color:var(--gold);box-shadow:0 8px 28px rgba(251,191,36,.18)}
+.part-tab .tab-num{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.06);display:grid;place-items:center;font-size:13px;font-weight:700}
+.part-tab.active .tab-num{background:var(--gold);color:#0a0e1f}
+
+.q-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(44px, 1fr));gap:8px;padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
+.qn-btn{aspect-ratio:1;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--fg-muted);position:relative}
+.qn-btn:hover{background:rgba(255,255,255,.08);color:var(--fg);transform:translateY(-2px)}
+.qn-btn.answered{background:rgba(96,165,250,.15);color:var(--info);border-color:rgba(96,165,250,.3)}
+.qn-btn.correct{background:rgba(52,211,153,.18);color:var(--success);border-color:rgba(52,211,153,.4)}
+.qn-btn.wrong{background:rgba(248,113,113,.18);color:var(--danger);border-color:rgba(248,113,113,.4)}
+.qn-btn.timeout{background:rgba(251,146,60,.15);color:#fb923c;border-color:rgba(251,146,60,.4)}
+.qn-btn.current{background:var(--gold);color:#0a0e1f;border-color:var(--gold);box-shadow:0 0 0 3px rgba(251,191,36,.25), 0 8px 20px var(--gold-glow);transform:scale(1.08)}
+.qn-btn.locked::after{content:'';position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:currentColor}
+
+.timer-panel{background:linear-gradient(135deg, var(--surface), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:20px;padding:24px;position:relative;overflow:hidden;height:fit-content}
+.timer-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg, transparent, var(--gold), transparent)}
+.timer-panel.stopwatch-mode::before{background:linear-gradient(90deg, transparent, var(--info), transparent)}
+.timer-big{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;line-height:1;letter-spacing:-.02em;background:linear-gradient(135deg, #fff 0%, var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:8px 0}
+.timer-panel.stopwatch-mode .timer-big{background:linear-gradient(135deg, #fff 0%, var(--info) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.timer-big.warning{background:linear-gradient(135deg, #fff 0%, #fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.timer-big.danger{background:linear-gradient(135deg, #fff 0%, var(--danger) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.timer-big.stopped{background:linear-gradient(135deg, var(--fg-muted) 0%, var(--fg-dim) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.btn-add-time{background:rgba(96,165,250,.1);color:var(--info);border:1px solid rgba(96,165,250,.3);padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+.btn-add-time:hover:not(:disabled){background:rgba(96,165,250,.2);transform:translateY(-1px)}
+.btn-add-time:disabled{opacity:.35;cursor:not-allowed}
+
+.question-card{background:linear-gradient(180deg, var(--surface), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:20px;padding:28px;transition:all .3s ease;position:relative;overflow:hidden}
+.question-card.correct{border-color:rgba(52,211,153,.45);box-shadow:0 0 36px rgba(52,211,153,.1)}
+.question-card.wrong{border-color:rgba(248,113,113,.45);box-shadow:0 0 36px rgba(248,113,113,.1)}
+.question-card.timeout{border-color:rgba(251,146,60,.45);box-shadow:0 0 36px rgba(251,146,60,.1)}
+
+.q-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.q-num{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg, rgba(251,191,36,.2), rgba(245,158,11,.1));border:1px solid rgba(251,191,36,.3);color:var(--gold);display:grid;place-items:center;font-weight:700;font-family:'JetBrains Mono',monospace;flex-shrink:0;font-size:16px}
+.q-topic{font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;background:rgba(167,139,250,.1);padding:4px 10px;border-radius:6px;border:1px solid rgba(167,139,250,.2)}
+.q-text{font-size:18px;line-height:1.55;color:var(--fg);font-weight:500;margin:18px 0 22px}
+
+.q-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+@media (max-width:640px){.q-options{grid-template-columns:1fr}}
+.option{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s ease;user-select:none}
+.option:hover{background:rgba(255,255,255,.05);border-color:var(--border-2);transform:translateX(4px)}
+.option.selected{background:rgba(251,191,36,.1);border-color:var(--gold)}
+.option.correct-answer{background:rgba(52,211,153,.12);border-color:var(--success)}
+.option.wrong-answer{background:rgba(248,113,113,.12);border-color:var(--danger)}
+.option.disabled{cursor:not-allowed}
+.option.disabled:hover{transform:none}
+.option-letter{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);display:grid;place-items:center;font-weight:700;font-size:14px;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.option.selected .option-letter{background:var(--gold);color:#0a0e1f}
+.option.correct-answer .option-letter{background:var(--success);color:#0a0e1f}
+.option.wrong-answer .option-letter{background:var(--danger);color:white}
+
+.status-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.status-correct{background:rgba(52,211,153,.15);color:var(--success);border:1px solid rgba(52,211,153,.3)}
+.status-wrong{background:rgba(248,113,113,.15);color:var(--danger);border:1px solid rgba(248,113,113,.3)}
+.status-timeout{background:rgba(251,146,60,.15);color:#fb923c;border:1px solid rgba(251,146,60,.3)}
+
+.explanation{margin-top:18px;padding:18px;border-radius:14px;background:linear-gradient(135deg, rgba(96,165,250,.06), rgba(96,165,250,.02));border:1px solid rgba(96,165,250,.2);font-size:14px;line-height:1.65;animation:slideIn .4s ease}
+.explanation.correct-exp{background:linear-gradient(135deg, rgba(52,211,153,.08), rgba(52,211,153,.02));border-color:rgba(52,211,153,.3)}
+.explanation.wrong-exp{background:linear-gradient(135deg, rgba(248,113,113,.08), rgba(248,113,113,.02));border-color:rgba(248,113,113,.3)}
+.exp-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.exp-title{font-weight:700;font-size:15px}
+.exp-time{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fg-muted);background:rgba(255,255,255,.04);padding:4px 10px;border-radius:6px}
+.exp-body strong{color:var(--gold)}
+.answer-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600}
+.tag-yours-correct{background:rgba(52,211,153,.15);color:var(--success)}
+.tag-yours-wrong{background:rgba(248,113,113,.15);color:var(--danger)}
+.tag-correct{background:rgba(52,211,153,.15);color:var(--success)}
+@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.hero-title{font-size:clamp(36px, 6vw, 64px);font-weight:800;line-height:1.05;background:linear-gradient(135deg, #fff 0%, #fbbf24 50%, #f59e0b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.03em}
+.hero-sub{color:var(--fg-muted);font-size:18px;line-height:1.6;max-width:680px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;align-items:center;gap:14px}
+.stat-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:18px}
+.stat-num{font-size:24px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif;line-height:1}
+
+.modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(5,8,20,.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.active{opacity:1;pointer-events:auto}
+.modal{background:linear-gradient(180deg, #131831, #0d1228);border:1px solid var(--border-2);border-radius:24px;max-width:920px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.5);transform:scale(.95) translateY(20px);transition:transform .3s ease}
+.modal-overlay.active .modal{transform:scale(1) translateY(0)}
+.modal-header{padding:28px 32px;border-bottom:1px solid var(--border);position:sticky;top:0;background:linear-gradient(180deg, #131831, rgba(19,24,49,.95));backdrop-filter:blur(20px);z-index:10;border-radius:24px 24px 0 0;display:flex;justify-content:space-between;align-items:center}
+.modal-body{padding:32px}
+.modal-close{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--fg-muted);cursor:pointer;display:grid;place-items:center;transition:all .2s}
+.modal-close:hover{background:rgba(248,113,113,.15);color:var(--danger);border-color:rgba(248,113,113,.3)}
+
+.score-circle{width:180px;height:180px;border-radius:50%;background:conic-gradient(var(--gold) 0deg, var(--gold) 0deg, rgba(255,255,255,.06) 0deg);display:grid;place-items:center;position:relative;margin:0 auto}
+.score-circle::before{content:'';position:absolute;inset:14px;border-radius:50%;background:linear-gradient(180deg, #131831, #0d1228);border:1px solid var(--border)}
+.score-inner{position:relative;z-index:1;text-align:center}
+.score-num{font-size:48px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif;line-height:1;background:linear-gradient(135deg, #fff, var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.score-lbl{font-size:12px;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.1em;margin-top:4px;font-weight:600}
+
+.result-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:640px){.result-stat-grid{grid-template-columns:repeat(2,1fr)}}
+.result-stat{padding:18px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(180deg, var(--surface), rgba(255,255,255,.01));text-align:center}
+.result-stat .num{font-size:32px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif;line-height:1}
+.result-stat .lbl{font-size:12px;color:var(--fg-muted);margin-top:6px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.result-stat.correct{border-color:rgba(52,211,153,.3);background:linear-gradient(180deg, rgba(52,211,153,.08), transparent)}
+.result-stat.correct .num{color:var(--success)}
+.result-stat.wrong{border-color:rgba(248,113,113,.3);background:linear-gradient(180deg, rgba(248,113,113,.08), transparent)}
+.result-stat.wrong .num{color:var(--danger)}
+.result-stat.unanswered .num{color:var(--fg-muted)}
+.result-stat.time{border-color:rgba(96,165,250,.3);background:linear-gradient(180deg, rgba(96,165,250,.08), transparent)}
+.result-stat.time .num{color:var(--info)}
+
+.part-analysis{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+.part-analysis-title{font-size:18px;font-weight:700;font-family:'Bricolage Grotesque',sans-serif;margin-bottom:12px}
+.mini-stat{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.mini-stat.correct{background:rgba(52,211,153,.12);color:var(--success)}
+.mini-stat.wrong{background:rgba(248,113,113,.12);color:var(--danger)}
+.mini-stat.unanswered{background:rgba(255,255,255,.06);color:var(--fg-muted)}
+.mini-stat.time{background:rgba(96,165,250,.12);color:var(--info)}
+
+.topic-bar{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:13px}
+.topic-name{width:120px;color:var(--fg-muted);font-weight:500;flex-shrink:0}
+.topic-bar-track{flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;position:relative}
+.topic-bar-fill{height:100%;border-radius:99px;transition:width .6s ease}
+.topic-bar-fill.good{background:linear-gradient(90deg, var(--success), #10b981)}
+.topic-bar-fill.mid{background:linear-gradient(90deg, var(--gold), var(--gold-2))}
+.topic-bar-fill.bad{background:linear-gradient(90deg, var(--danger), #ef4444)}
+.topic-pct{width:50px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
+
+.reco-box{padding:14px 16px;border-radius:12px;font-size:13px;line-height:1.6;margin-top:12px;display:flex;gap:12px;align-items:flex-start}
+.reco-box.good{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);color:#a7f3d0}
+.reco-box.warn{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);color:#fde68a}
+.reco-box.bad{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:#fca5a5}
+.reco-box.info{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);color:#bfdbfe}
+
+#toastContainer{position:fixed;top:80px;right:24px;z-index:200;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{background:rgba(19,24,49,.95);backdrop-filter:blur(12px);border:1px solid var(--border-2);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;box-shadow:0 12px 32px rgba(0,0,0,.4);animation:toastIn .3s ease;min-width:240px;max-width:360px}
+.toast.success{border-left:3px solid var(--success)}
+.toast.error{border-left:3px solid var(--danger)}
+.toast.warning{border-left:3px solid var(--gold)}
+.toast.info{border-left:3px solid var(--info)}
+@keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+
+.input-field{background:rgba(255,255,255,.04);border:1px solid var(--border-2);border-radius:10px;padding:10px 14px;color:var(--fg);font-family:inherit;font-size:14px;width:100%;transition:all .2s}
+.input-field:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,.06)}
+
+.mode-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:4px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px}
+.mode-option{padding:14px;border-radius:8px;cursor:pointer;text-align:center;transition:all .2s;border:1px solid transparent}
+.mode-option:hover{background:rgba(255,255,255,.04)}
+.mode-option.active{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.4)}
+.mode-option.active.stopwatch{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.4)}
+.mode-option i{font-size:20px;margin-bottom:6px;display:block}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:99px}
+
+.part-header{background:linear-gradient(135deg, var(--surface), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden}
+.part-header::after{content:'';position:absolute;top:0;right:0;width:300px;height:200px;background:radial-gradient(circle, rgba(251,191,36,.12), transparent 70%);pointer-events:none}
+.part-title{font-size:28px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.02em}
+.part-sub{color:var(--fg-muted);font-size:14px;margin-top:4px}
+.part-stats{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.part-stat{display:flex;align-items:center;gap:8px;padding:6px 12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:500}
+
+.app-footer{padding:40px 0 60px;text-align:center;color:var(--fg-dim);font-size:13px;border-top:1px solid var(--border);margin-top:60px}
+.nav-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--fg)}
+.nav-btn:hover:not(:disabled){background:rgba(255,255,255,.08);transform:translateY(-1px)}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed}
+.nav-btn.primary{background:linear-gradient(135deg, var(--gold), var(--gold-2));color:#0a0e1f;border-color:transparent}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<header class="app-header">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-4">
+    <div class="flex items-center justify-between gap-4 flex-wrap">
+      <div class="flex items-center gap-3">
+        <div class="logo-mark">M4</div>
+        <div>
+          <div class="display font-bold text-lg leading-tight">Olimpiade Matematika</div>
+          <div class="text-xs text-slate-400">Kelas 4 SD — Platform Latihan Interaktif</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap">
+        <div id="modeIndicator" class="mode-badge mode-timer">
+          <i class="fas fa-stopwatch"></i> <span>Timer</span>
+        </div>
+        <div class="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl" style="background:rgba(255,255,255,.04);border:1px solid var(--border)">
+          <i class="fas fa-hourglass-half text-amber-400"></i>
+          <span class="mono text-sm" id="globalTimer">00:00:00</span>
+        </div>
+        <button class="btn btn-ghost" onclick="openSettings()">
+          <i class="fas fa-sliders"></i><span class="hidden sm:inline">Tutor Setup</span>
+        </button>
+        <button class="btn btn-danger" onclick="confirmFinishExam()">
+          <i class="fas fa-flag-checkered"></i> Finish Exam
+        </button>
+      </div>
+    </div>
+    <div class="header-progress mt-3"><div class="header-progress-bar" id="progressBar" style="width:0%"></div></div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-5 lg:px-8 py-10 relative" style="z-index:1">
+
+  <section class="mb-12">
+    <div class="grid lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-5" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--gold)">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          5 PART • 100 SOAL • 1 TIMER AKTIF
+        </div>
+        <h1 class="display hero-title">Latihan Olimpiade<br>Matematika SD</h1>
+        <p class="hero-sub mt-5">Satu timer/stopwatch berjalan untuk soal yang sedang dibuka. Klik nomor soal mana pun — timer akan mulai berjalan untuk soal tersebut. Tutor dapat memilih mode (Timer hitung mundur atau Stopwatch hitung maju) di pengaturan.</p>
+        <div class="flex gap-3 mt-6 flex-wrap">
+          <button class="btn btn-primary" onclick="scrollToPart()"><i class="fas fa-play"></i> Mulai Latihan</button>
+          <button class="btn btn-secondary" onclick="openSettings()"><i class="fas fa-cog"></i> Atur Mode Waktu</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(251,191,36,.15);color:var(--gold)"><i class="fas fa-list-ol"></i></div>
+          <div><div class="stat-num">100</div><div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-semibold">Total Soal</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(96,165,250,.15);color:var(--info)"><i class="fas fa-layer-group"></i></div>
+          <div><div class="stat-num">5</div><div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-semibold">Part Soal</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(52,211,153,.15);color:var(--success)"><i class="fas fa-clock"></i></div>
+          <div><div class="stat-num" id="defaultTimeDisplay">2:00</div><div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-semibold">Waktu Default</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(167,139,250,.15);color:var(--purple)"><i class="fas fa-chart-line"></i></div>
+          <div><div class="stat-num">Auto</div><div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-semibold">Analisis Hasil</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="partSection" class="mb-8">
+    <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
+      <h2 class="display text-2xl font-bold">Pilih Part Soal</h2>
+      <div class="text-sm text-slate-400">Klik part untuk berpindah</div>
+    </div>
+    <div class="flex gap-3 overflow-x-auto pb-2" id="partTabs"></div>
+  </section>
+
+  <section id="partContent"></section>
+
+</main>
+
+<footer class="app-footer">
+  <div class="max-w-7xl mx-auto px-5">
+    <p>Platform Latihan Olimpiade Matematika Kelas 4 • Satu timer berjalan untuk soal aktif</p>
+    <p class="mt-1 text-xs opacity-60">Tutor memilih mode Timer atau Stopwatch • Klik nomor soal untuk memulai waktu • Tombol +15s untuk mode Timer</p>
+  </div>
+</footer>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <div>
+        <h3 class="display text-xl font-bold">Pengaturan Tutor</h3>
+        <p class="text-sm text-slate-400 mt-1">Pilih mode waktu dan durasi pengerjaan</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('settingsModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-6">
+        <label class="block text-sm font-semibold mb-3">Mode Waktu</label>
+        <div class="mode-toggle" id="modeToggle">
+          <div class="mode-option active" data-mode="timer" onclick="selectMode('timer')">
+            <i class="fas fa-stopwatch" style="color:var(--gold)"></i>
+            <div class="font-bold text-sm">Timer</div>
+            <div class="text-xs text-slate-400 mt-1">Hitung mundur per soal</div>
+          </div>
+          <div class="mode-option stopwatch" data-mode="stopwatch" onclick="selectMode('stopwatch')">
+            <i class="fas fa-stopwatch-20" style="color:var(--info)"></i>
+            <div class="font-bold text-sm">Stopwatch</div>
+            <div class="text-xs text-slate-400 mt-1">Hitung maju tanpa batas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-6" id="timeSettingGroup">
+        <label class="block text-sm font-semibold mb-2">Waktu per Soal (detik) — Mode Timer</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="timePerQuestionInput" class="input-field" min="30" max="600" step="15" value="120">
+          <span class="text-sm text-slate-400 mono" id="timePreview">2:00</span>
+        </div>
+        <p class="text-xs text-slate-500 mt-2">Default: 120 detik (2 menit). Rentang: 30 - 600 detik.</p>
+        <div class="grid grid-cols-4 gap-2 mt-3">
+          <button class="btn btn-ghost text-xs" onclick="setTimePreset(60)">1 menit</button>
+          <button class="btn btn-ghost text-xs" onclick="setTimePreset(90)">1.5 menit</button>
+          <button class="btn btn-ghost text-xs" onclick="setTimePreset(120)">2 menit</button>
+          <button class="btn btn-ghost text-xs" onclick="setTimePreset(180)">3 menit</button>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl" style="background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.2)">
+        <div class="flex items-start gap-3">
+          <i class="fas fa-info-circle text-blue-400 mt-1"></i>
+          <div class="text-sm text-slate-300">
+            <strong>Cara kerja:</strong> Hanya ada <strong>1 timer/stopwatch</strong> yang aktif untuk soal yang sedang dibuka. Saat siswa klik nomor soal lain, timer soal sebelumnya ter-pause dan timer soal baru mulai berjalan. Tombol <strong>Cek Jawaban</strong> akan menghentikan dan mengunci waktu soal aktif.
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-6">
+        <button class="btn btn-secondary flex-1" onclick="closeModal('settingsModal')">Batal</button>
+        <button class="btn btn-primary flex-1" onclick="applySettings()"><i class="fas fa-check"></i> Terapkan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Finish Modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-body text-center">
+      <div class="w-16 h-16 rounded-full mx-auto mb-4 grid place-items-center" style="background:rgba(248,113,113,.15);color:var(--danger)">
+        <i class="fas fa-flag-checkered text-2xl"></i>
+      </div>
+      <h3 class="display text-2xl font-bold mb-2">Selesaikan Ujian?</h3>
+      <p class="text-slate-400 mb-2">Apakah kamu yakin ingin mengakhiri ujian sekarang?</p>
+      <div id="confirmStats" class="mb-6"></div>
+      <div class="flex gap-3">
+        <button class="btn btn-secondary flex-1" onclick="closeModal('confirmModal')">Lanjut Latihan</button>
+        <button class="btn btn-danger flex-1" onclick="finishExam()"><i class="fas fa-check"></i> Ya, Selesai</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Results Modal -->
+<div class="modal-overlay" id="resultsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h3 class="display text-2xl font-bold">Hasil & Analisis Ujian</h3>
+        <p class="text-sm text-slate-400 mt-1">Ringkasan performa dan rekomendasi per part</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('resultsModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="resultsBody"></div>
+  </div>
+</div>
+
+<div id="toastContainer"></div>
+
+<script>
+/* ===================== DATA SOAL ===================== */
+const examData = [
+  { title: "Part 1", subtitle: "Operasi Hitung, Pecahan, FPB/KPK, Geometri, Pola, Logika", questions: [
+    {q:"Hasil dari 12.000 - 8.000 : 40 + 150 × 3 adalah...", options:["550","11.250","12.250","12.450"], correct:2, topic:"Aritmatika", explanation:"Urutan operasi (KuKaBaTa): kali/bagi dulu, lalu tambah/kurang. 8.000:40 = 200; 150×3 = 450. Maka 12.000 - 200 + 450 = <strong>12.250</strong>. Jawaban: C"},
+    {q:"Pecahan yang senilai dengan 12/18 adalah...", options:["2/3","3/4","4/9","6/12"], correct:0, topic:"Pecahan", explanation:"Sederhanakan 12/18 dengan membagi pembilang dan penyebut dengan FPB(12,18) = 6. Hasilnya: 12÷6 / 18÷6 = <strong>2/3</strong>. Jawaban: A"},
+    {q:"Manakah pernyataan yang benar di bawah ini?", options:["1/3 > 1/2","3/5 < 2/4","5/8 < 4/7","2/3 < 3/4"], correct:3, topic:"Pecahan", explanation:"Konversi ke desimal: 1/3≈0.33, 1/2=0.5 (A salah); 3/5=0.6, 2/4=0.5 (B salah); 5/8=0.625, 4/7≈0.571 (C salah); 2/3≈0.667, 3/4=0.75 → <strong>2/3 < 3/4</strong> (D benar). Jawaban: D"},
+    {q:"Bilangan kelipatan persekutuan dari 4 dan 6 yang nilainya kurang dari 30 adalah...", options:["12 dan 24","6, 12, 18, 24","12, 18, 24","4, 6, 12, 24"], correct:0, topic:"FPB/KPK", explanation:"KPK(4,6) = 12. Kelipatan persekutuan: 12, 24, 36, 48, ... Yang kurang dari 30 adalah <strong>12 dan 24</strong>. Jawaban: A"},
+    {q:"FPB dari bilangan 36 dan 48 adalah...", options:["6","12","18","24"], correct:1, topic:"FPB/KPK", explanation:"Faktorisasi: 36 = 2²×3²; 48 = 2⁴×3. FPB = 2²×3 = <strong>12</strong>. Jawaban: B"},
+    {q:"Sebuah persegi memiliki keliling 36 cm. Panjang sisi persegi tersebut adalah...", options:["6 cm","9 cm","12 cm","18 cm"], correct:1, topic:"Geometri", explanation:"Keliling persegi = 4 × sisi. Maka sisi = 36 ÷ 4 = <strong>9 cm</strong>. Jawaban: B"},
+    {q:"Luas sebuah persegi panjang adalah 72 cm². Jika lebarnya 6 cm, maka panjangnya adalah...", options:["10 cm","12 cm","14 cm","16 cm"], correct:1, topic:"Geometri", explanation:"Luas = p × l. Maka p = Luas ÷ l = 72 ÷ 6 = <strong>12 cm</strong>. Jawaban: B"},
+    {q:"Dua buah persegi dengan sisi 5 cm dihimpitkan sehingga membentuk satu persegi panjang. Luas bangun baru tersebut adalah...", options:["25 cm²","30 cm²","50 cm²","60 cm²"], correct:2, topic:"Geometri", explanation:"Dua persegi 5×5 disandingkan → persegi panjang 10×5. Luas = 10×5 = <strong>50 cm²</strong>. Atau 2 × (5×5) = 50 cm². Jawaban: C"},
+    {q:"Perhatikan pola berikut: 1, 3, 4, 7, 11, 18, ... Angka selanjutnya adalah...", options:["25","29","31","35"], correct:1, topic:"Pola", explanation:"Pola Fibonacci: tiap angka = jumlah dua angka sebelumnya. 1+3=4, 3+4=7, 4+7=11, 7+11=18, 11+18 = <strong>29</strong>. Jawaban: B"},
+    {q:"Tentukan angka berikutnya dari pola: 2, 6, 18, 54, ...", options:["108","150","162","216"], correct:2, topic:"Pola", explanation:"Setiap angka dikali 3: 2×3=6, 6×3=18, 18×3=54, 54×3 = <strong>162</strong>. Jawaban: C"},
+    {q:"Sudut yang besarnya 91 derajat disebut sebagai sudut...", options:["Lancip","Siku-siku","Tumpul","Lurus"], correct:2, topic:"Sudut", explanation:"Sudut tumpul = antara 90° dan 180°. Karena 91° lebih dari 90°, maka termasuk <strong>sudut tumpul</strong>. Jawaban: C"},
+    {q:"Besar sudut terkecil yang dibentuk oleh kedua jarum jam (gambar pukul 08.00) adalah...", options:["45°","95°","105°","120°"], correct:3, topic:"Sudut", explanation:"Pukul 08.00: jarum panjang di 12, jarum pendek di 8. Selisih angka = 4. Setiap angka = 30°. Maka 4 × 30° = <strong>120°</strong>. Jawaban: D"},
+    {q:"Jika dua sudut dalam sebuah segitiga adalah 45° dan 45°, maka sudut ketiga besarnya...", options:["45°","60°","90°","180°"], correct:2, topic:"Sudut", explanation:"Jumlah sudut segitiga = 180°. Sudut ketiga = 180° - 45° - 45° = <strong>90°</strong>. Jawaban: C"},
+    {q:"Andi memiliki uang Rp50.000. Ia membeli 3 buku tulis @ Rp4.500 dan 2 pensil @ Rp2.500. Sisa uang Andi adalah...", options:["Rp18.500","Rp31.500","Rp35.000","Rp43.000"], correct:1, topic:"Soal Cerita", explanation:"Belanja buku = 3×4.500 = 13.500. Belanja pensil = 2×2.500 = 5.000. Total = 18.500. Sisa = 50.000 - 18.500 = <strong>Rp31.500</strong>. Jawaban: B"},
+    {q:"Lampu A menyala setiap 8 detik, lampu B setiap 12 detik. Jika menyala bersama di detik 0, kapan menyala bersama lagi pertama kali?", options:["16","20","24","48"], correct:2, topic:"FPB/KPK", explanation:"KPK(8,12): 8=2³, 12=2²×3. KPK=2³×3 = <strong>24</strong>. Jadi menyala bersama lagi di detik ke-24. Jawaban: C"},
+    {q:"Semua siswa kelas 4 memakai sepatu hitam. Budi siswa kelas 4. Kesimpulan yang tepat...", options:["Budi tidak memakai sepatu hitam","Mungkin Budi memakai sepatu hitam","Budi memakai sepatu hitam","Semua yang memakai sepatu hitam adalah Budi"], correct:2, topic:"Logika", explanation:"Silogisme: Premis 1 (semua A adalah B) + Premis 2 (C adalah A) → C adalah B. Maka <strong>Budi memakai sepatu hitam</strong>. Jawaban: C"},
+    {q:"Aku bilangan antara 20 dan 30. Dibagi 3 sisa 1, dibagi 4 sisa 2. Bilangan?", options:["22","25","26","28"], correct:0, topic:"Penalaran", explanation:"Bilangan 21-29 yang dibagi 3 sisa 1: 22, 25, 28. Yang dibagi 4 sisa 2: 22, 26. Irisannya = <strong>22</strong>. Jawaban: A"},
+    {q:"Persegi A sisi 4 cm, Persegi B sisi 8 cm. Berapa kali lipat luas B dibanding A?", options:["2 kali","4 kali","8 kali","16 kali"], correct:1, topic:"Geometri", explanation:"Luas A = 4² = 16. Luas B = 8² = 64. 64÷16 = <strong>4 kali</strong>. Jawaban: B"},
+    {q:"Sita berlari mengelilingi lapangan persegi sisi 20 m sebanyak 5 putaran. Jarak total...", options:["100 m","400 m","500 m","800 m"], correct:1, topic:"Geometri", explanation:"Keliling = 4×20 = 80 m. 5 putaran = 5×80 = <strong>400 m</strong>. Jawaban: B"},
+    {q:"Pada bilangan 456.789, angka yang menempati nilai tempat puluh ribuan adalah...", options:["4","5","6","7"], correct:1, topic:"Nilai Tempat", explanation:"456.789: ratusan ribu=4, <strong>puluhan ribu=5</strong>, ribuan=6, ratusan=7, puluhan=8, satuan=9. Jawaban: B"}
+  ]},
+  { title: "Part 2", subtitle: "Operasi Hitung Besar, Pecahan, Keliling/Luas, Sudut, Pola, Logika", questions: [
+    {q:"Hasil dari 125.000 + 75.000 - 50.000 adalah...", options:["100.000","150.000","200.000","250.000"], correct:1, topic:"Aritmatika", explanation:"125.000 + 75.000 = 200.000. 200.000 - 50.000 = <strong>150.000</strong>. Jawaban: B"},
+    {q:"Perusahaan memproduksi 12.500 botol/hari. Berapa botol selama 4 hari?", options:["40.000","50.000","60.000","100.000"], correct:1, topic:"Soal Cerita", explanation:"12.500 × 4 = <strong>50.000</strong> botol. Jawaban: B"},
+    {q:"Hasil dari 4.800 : 12 adalah...", options:["40","400","4.000","440"], correct:1, topic:"Aritmatika", explanation:"4.800 ÷ 12 = <strong>400</strong>. Jawaban: B"},
+    {q:"Pecahan yang senilai dengan 2/3 adalah...", options:["4/6","3/4","2/5","5/6"], correct:0, topic:"Pecahan", explanation:"2/3 × (2/2) = <strong>4/6</strong>. Jawaban: A"},
+    {q:"Manakah pernyataan perbandingan yang benar?", options:["1/4 > 1/2","3/5 < 2/5","1/2 = 4/8","2/3 < 1/3"], correct:2, topic:"Pecahan", explanation:"1/2 = 0.5 dan 4/8 = 0.5, jadi <strong>1/2 = 4/8</strong>. Jawaban: C"},
+    {q:"Bentuk paling sederhana dari 15/20 adalah...", options:["1/2","2/3","3/4","4/5"], correct:2, topic:"Pecahan", explanation:"FPB(15,20) = 5. 15÷5=3, 20÷5=4. Hasil: <strong>3/4</strong>. Jawaban: C"},
+    {q:"Faktor dari bilangan 12 adalah...", options:["1, 2, 3, 4, 6, 12","2, 4, 6, 8, 10, 12","1, 3, 5, 12","12, 24, 36"], correct:0, topic:"FPB/KPK", explanation:"Faktor 12 = bilangan yang habis membagi 12: <strong>1, 2, 3, 4, 6, 12</strong>. Jawaban: A"},
+    {q:"Kelipatan persekutuan dari 3 dan 4 yang kurang dari 20 adalah...", options:["6 dan 8","12","12 dan 16","12 dan 18"], correct:1, topic:"FPB/KPK", explanation:"KPK(3,4) = 12. Kelipatan: 12, 24, 36... Yang < 20 hanya <strong>12</strong>. Jawaban: B"},
+    {q:"Sebuah persegi sisi 8 cm. Luas persegi tersebut adalah...", options:["16 cm²","32 cm²","64 cm²","81 cm²"], correct:2, topic:"Geometri", explanation:"Luas persegi = sisi × sisi = 8 × 8 = <strong>64 cm²</strong>. Jawaban: C"},
+    {q:"Keliling persegi panjang p=12 cm, l=7 cm adalah...", options:["19 cm","38 cm","84 cm","44 cm"], correct:1, topic:"Geometri", explanation:"Keliling = 2×(p+l) = 2×(12+7) = 2×19 = <strong>38 cm</strong>. Jawaban: B"},
+    {q:"Jika luas persegi 25 cm², maka keliling persegi tersebut adalah...", options:["10 cm","15 cm","20 cm","25 cm"], correct:2, topic:"Geometri", explanation:"Luas = s² = 25 → sisi = 5 cm. Keliling = 4×5 = <strong>20 cm</strong>. Jawaban: C"},
+    {q:"Sudut yang besarnya tepat 90 derajat disebut sudut...", options:["Lancip","Tumpul","Siku-siku","Lurus"], correct:2, topic:"Sudut", explanation:"Sudut siku-siku = tepat <strong>90°</strong>. Jawaban: C"},
+    {q:"Jarum jam pukul 09.00 membentuk sudut...", options:["45°","90°","180°","360°"], correct:1, topic:"Sudut", explanation:"Pukul 09.00: jarum di 9 dan 12. Selisih = 3 angka × 30° = <strong>90°</strong>. Jawaban: B"},
+    {q:"Sudut 120° termasuk jenis sudut...", options:["Lancip","Siku-siku","Tumpul","Refleks"], correct:2, topic:"Sudut", explanation:"Sudut tumpul = antara 90°-180°. <strong>120°</strong> ada di rentang tersebut. Jawaban: C"},
+    {q:"Pola: 1, 4, 9, 16, ... Angka berikutnya adalah...", options:["20","25","30","36"], correct:1, topic:"Pola", explanation:"Pola bilangan kuadrat: 1², 2², 3², 4², <strong>5²=25</strong>. Jawaban: B"},
+    {q:"Lanjutkan pola: 2, 6, 18, ...", options:["36","48","54","60"], correct:2, topic:"Pola", explanation:"Setiap angka dikali 3: 2×3=6, 6×3=18, 18×3 = <strong>54</strong>. Jawaban: C"},
+    {q:"Budi punya Rp 50.000. Beli 3 buku @ Rp 5.000 dan 2 pensil @ Rp 2.500. Sisa uang?", options:["Rp 20.000","Rp 30.000","Rp 35.000","Rp 40.000"], correct:1, topic:"Soal Cerita", explanation:"Buku: 3×5.000=15.000. Pensil: 2×2.500=5.000. Total=20.000. Sisa=50.000-20.000 = <strong>Rp 30.000</strong>. Jawaban: B"},
+    {q:"Taman persegi panjang keliling 40 m, lebar 8 m. Panjangnya?", options:["12 m","16 m","24 m","32 m"], correct:0, topic:"Geometri", explanation:"Keliling = 2(p+l). 40 = 2(p+8). p+8 = 20. p = <strong>12 m</strong>. Jawaban: A"},
+    {q:"Semua burung bertelur. Merpati burung. Kesimpulannya...", options:["Merpati bisa terbang","Merpati bertelur","Semua yang bertelur adalah merpati","Burung tidak selalu merpati"], correct:1, topic:"Logika", explanation:"Silogisme: Semua burung bertelur + Merpati adalah burung → <strong>Merpati bertelur</strong>. Jawaban: B"},
+    {q:"Hari ini Selasa, 8 hari lagi adalah hari...", options:["Selasa","Rabu","Kamis","Senin"], correct:1, topic:"Penalaran", explanation:"7 hari lagi = Selasa (kembali ke hari sama). 8 hari = 7+1, jadi Selasa + 1 = <strong>Rabu</strong>. Jawaban: B"}
+  ]},
+  { title: "Part 3", subtitle: "Operasi Dasar, Pecahan, Faktor/Kelipatan, Geometri, Sudut, Pola", questions: [
+    {q:"3.456 + 2.789 = …", options:["6.145","6.235","6.245","6.255"], correct:2, topic:"Aritmatika", explanation:"3.456 + 2.789 = <strong>6.245</strong>. Jawaban: C"},
+    {q:"8.000 - 2.567 = …", options:["5.333","5.433","5.443","5.533"], correct:1, topic:"Aritmatika", explanation:"8.000 - 2.567 = <strong>5.433</strong>. Jawaban: B"},
+    {q:"Pecahan yang senilai dengan 1/2 adalah…", options:["2/3","3/6","4/5","5/8"], correct:1, topic:"Pecahan", explanation:"1/2 × (3/3) = <strong>3/6</strong>. Jawaban: B"},
+    {q:"Mana yang lebih besar?", options:["1/3","2/5","2/7","1/8"], correct:1, topic:"Pecahan", explanation:"Desimal: 1/3≈0.33, 2/5=0.4, 2/7≈0.29, 1/8=0.125. Terbesar: <strong>2/5</strong>. Jawaban: B"},
+    {q:"Faktor dari 12 adalah…", options:["1, 2, 3, 4, 6, 12","2, 4, 6, 8","1, 3, 5, 7","2, 3, 5"], correct:0, topic:"FPB/KPK", explanation:"Faktor 12: <strong>1, 2, 3, 4, 6, 12</strong>. Jawaban: A"},
+    {q:"Kelipatan dari 5 yang benar adalah…", options:["5, 10, 15, 20","5, 11, 15, 21","6, 10, 14, 20","4, 8, 12, 16"], correct:0, topic:"FPB/KPK", explanation:"Kelipatan 5: 5×1, 5×2, 5×3, 5×4 = <strong>5, 10, 15, 20</strong>. Jawaban: A"},
+    {q:"Keliling persegi sisi 6 cm adalah…", options:["12 cm","18 cm","24 cm","36 cm"], correct:2, topic:"Geometri", explanation:"Keliling = 4 × sisi = 4×6 = <strong>24 cm</strong>. Jawaban: C"},
+    {q:"Luas persegi panjang p=8 cm, l=5 cm adalah…", options:["13 cm²","30 cm²","40 cm²","45 cm²"], correct:2, topic:"Geometri", explanation:"Luas = p × l = 8 × 5 = <strong>40 cm²</strong>. Jawaban: C"},
+    {q:"Pola: 2, 6, 7, 21, 22, … angka berikutnya…", options:["44","66","23","46"], correct:1, topic:"Pola", explanation:"Pola: ×3, +1 bergantian. 22×3 = <strong>66</strong>. Jawaban: B"},
+    {q:"Pola: 5, 10, 8, 16, 14, … angka berikutnya…", options:["20","28","18","30"], correct:1, topic:"Pola", explanation:"Pola: ×2, -2 bergantian. 14×2 = <strong>28</strong>. Jawaban: B"},
+    {q:"Sudut yang besarnya kurang dari 90° disebut…", options:["Siku-siku","Lancip","Tumpul","Lurus"], correct:1, topic:"Sudut", explanation:"Sudut <strong>lancip</strong> = kurang dari 90°. Jawaban: B"},
+    {q:"Sudut lancip besarnya…", options:["45°","160°","90°","180°"], correct:0, topic:"Sudut", explanation:"Hanya <strong>45°</strong> yang kurang dari 90° (lancip). Jawaban: A"},
+    {q:"Ibu beli 3 kotak pensil @ 12 pensil. Dibagi rata ke 6 anak. Tiap anak dapat?", options:["2","3","6","8"], correct:2, topic:"Soal Cerita", explanation:"Total = 3×12 = 36 pensil. Tiap anak = 36÷6 = <strong>6</strong>. Jawaban: C"},
+    {q:"Taman persegi sisi 10 m. Panjang pagar yang dibutuhkan?", options:["20 m","30 m","40 m","50 m"], correct:2, topic:"Geometri", explanation:"Keliling persegi = 4×10 = <strong>40 m</strong>. Jawaban: C"},
+    {q:"Semua burung punya sayap. Ayam burung. Maka…", options:["Ayam tidak punya sayap","Ayam punya sayap","Ayam bisa terbang","Ayam bukan burung"], correct:1, topic:"Logika", explanation:"Silogisme: Semua burung bersayap + Ayam burung → <strong>Ayam punya sayap</strong>. Jawaban: B"},
+    {q:"Jika hari ini hujan, jalanan basah. Hari ini hujan. Jadi…", options:["Jalanan kering","Jalanan basah","Tidak hujan","Tidak tentu"], correct:1, topic:"Logika", explanation:"Modus ponens: Jika P maka Q; P benar; maka Q benar. → <strong>Jalanan basah</strong>. Jawaban: B"},
+    {q:"7 × 125 = ...", options:["825","850","875","900"], correct:2, topic:"Aritmatika", explanation:"7 × 125 = <strong>875</strong>. Jawaban: C"},
+    {q:"Pecahan terbesar adalah…", options:["1/2","3/4","2/3","4/5"], correct:3, topic:"Pecahan", explanation:"Desimal: 1/2=0.5, 3/4=0.75, 2/3≈0.667, 4/5=0.8. Terbesar: <strong>4/5</strong>. Jawaban: D"},
+    {q:"Sudut 120° termasuk jenis…", options:["Lancip","Siku-siku","Tumpul","Lurus"], correct:2, topic:"Sudut", explanation:"120° antara 90°-180° → <strong>tumpul</strong>. Jawaban: C"},
+    {q:"Bilangan kelipatan 3 dan 4 adalah…", options:["6","8","12","18"], correct:2, topic:"FPB/KPK", explanation:"KPK(3,4) = <strong>12</strong>. Jawaban: C"}
+  ]},
+  { title: "Part 4", subtitle: "Operasi Lanjutan, Pecahan, FPB/KPK, Geometri, Pola, Logika", questions: [
+    {q:"4.785 + 3.968 = …", options:["8.643","8.653","8.753","8.853"], correct:2, topic:"Aritmatika", explanation:"4.785 + 3.968 = <strong>8.753</strong>. Jawaban: C"},
+    {q:"9.000 - 3.478 = …", options:["5.422","5.522","5.532","5.622"], correct:1, topic:"Aritmatika", explanation:"9.000 - 3.478 = <strong>5.522</strong>. Jawaban: B"},
+    {q:"Pecahan yang senilai dengan 3/4 adalah…", options:["6/8","9/10","12/20","15/24"], correct:0, topic:"Pecahan", explanation:"3/4 × (2/2) = <strong>6/8</strong>. Jawaban: A"},
+    {q:"Urutan dari yang terkecil adalah…", options:["1/2, 2/3, 3/4","3/4, 2/3, 1/2","2/3, 1/2, 3/4","1/2, 3/4, 2/3"], correct:0, topic:"Pecahan", explanation:"Desimal: 1/2=0.5, 2/3≈0.667, 3/4=0.75. Urutan naik: <strong>1/2, 2/3, 3/4</strong>. Jawaban: A"},
+    {q:"FPB dari 12 dan 18 adalah…", options:["2","3","6","12"], correct:2, topic:"FPB/KPK", explanation:"12=2²×3, 18=2×3². FPB = 2×3 = <strong>6</strong>. Jawaban: C"},
+    {q:"KPK dari 4 dan 6 adalah…", options:["10","12","16","24"], correct:1, topic:"FPB/KPK", explanation:"4=2², 6=2×3. KPK = 2²×3 = <strong>12</strong>. Jawaban: B"},
+    {q:"Keliling persegi panjang p=12 cm, l=6 cm adalah…", options:["12 cm","18 cm","24 cm","36 cm"], correct:3, topic:"Geometri", explanation:"Keliling = 2×(p+l) = 2×(12+6) = <strong>36 cm</strong>. Jawaban: D"},
+    {q:"Luas persegi dengan keliling 32 cm adalah…", options:["64 cm²","81 cm²","100 cm²","128 cm²"], correct:0, topic:"Geometri", explanation:"Keliling 32 → sisi = 32÷4 = 8 cm. Luas = 8×8 = <strong>64 cm²</strong>. Jawaban: A"},
+    {q:"Pola: 3, 9, 10, 30, 31, … angka berikutnya…", options:["60","62","90","93"], correct:3, topic:"Pola", explanation:"Pola: ×3, +1 bergantian. 31×3 = <strong>93</strong>. Jawaban: D"},
+    {q:"Pola: 4, 6, 12, 14, 28, … angka berikutnya…", options:["30","32","56","60"], correct:0, topic:"Pola", explanation:"Pola: +2, ×2 bergantian. 28+2 = <strong>30</strong>. Jawaban: A"},
+    {q:"Gambar dibawah ini memiliki sudut... (gambar sudut siku-siku)", options:["Lancip","Siku-siku","Tumpul","Lurus"], correct:1, topic:"Sudut", explanation:"Berdasarkan gambar umum pada soal, sudut yang ditunjukkan adalah <strong>siku-siku (90°)</strong>. Jawaban: B"},
+    {q:"Sudut tumpul besarnya…", options:["45°","160°","90°","10°"], correct:1, topic:"Sudut", explanation:"Hanya <strong>160°</strong> yang berada di antara 90°-180° (tumpul). Jawaban: B"},
+    {q:"Jika dua sudut membentuk sudut lurus, jumlahnya adalah…", options:["90°","120°","180°","360°"], correct:2, topic:"Sudut", explanation:"Sudut lurus = <strong>180°</strong>. Jawaban: C"},
+    {q:"Taman persegi sisi 14 m. Panjang pagar yang dibutuhkan?", options:["20 m","48 m","56 m","50 m"], correct:2, topic:"Geometri", explanation:"Keliling = 4 × 14 = <strong>56 m</strong>. Jawaban: C"},
+    {q:"Semua hewan berkaki empat bisa berjalan. Kucing berkaki empat. Maka…", options:["Kucing tidak bisa berjalan","Kucing bisa berjalan","Kucing bisa terbang","Kucing bukan hewan"], correct:1, topic:"Logika", explanation:"Silogisme: Semua hewan berkaki empat bisa berjalan + Kucing berkaki empat → <strong>Kucing bisa berjalan</strong>. Jawaban: B"},
+    {q:"Jika bilangan genap ditambah genap hasilnya genap. 6 + 8 + 7 = … maka hasilnya…", options:["Ganjil","Genap","Prima","Tidak tentu"], correct:0, topic:"Penalaran", explanation:"6+8 = 14 (genap). 14+7 = 21 (ganjil). Karena ada satu bilangan ganjil (7), hasilnya menjadi <strong>ganjil</strong>. Jawaban: A"},
+    {q:"25 × 16 = …", options:["300","350","400","450"], correct:2, topic:"Aritmatika", explanation:"25 × 16 = 25 × 4 × 4 = 100 × 4 = <strong>400</strong>. Jawaban: C"},
+    {q:"Pecahan mana yang paling kecil?", options:["1/2","3/4","2/3","4/5"], correct:0, topic:"Pecahan", explanation:"Desimal: 1/2=0.5, 3/4=0.75, 2/3≈0.667, 4/5=0.8. Terkecil: <strong>1/2</strong>. Jawaban: A"},
+    {q:"Bilangan yang merupakan kelipatan 4 dan 5 adalah…", options:["10","15","20","25"], correct:2, topic:"FPB/KPK", explanation:"KPK(4,5) = <strong>20</strong>. Jawaban: C"},
+    {q:"Sebuah bilangan dikali 3 lalu dikurangi 6 hasilnya 15. Bilangan itu adalah…", options:["5","6","7","9"], correct:2, topic:"Aljabar", explanation:"3x - 6 = 15 → 3x = 21 → x = <strong>7</strong>. Jawaban: C"}
+  ]},
+  { title: "Part 5", subtitle: "Operasi Dasar, Pecahan, Kelipatan, Geometri, Pola, Logika", questions: [
+    {q:"6.345 + 2.789 = …", options:["9.024","9.124","9.134","9.234"], correct:2, topic:"Aritmatika", explanation:"6.345 + 2.789 = <strong>9.134</strong>. Jawaban: C"},
+    {q:"10.000 - 4.567 = …", options:["5.333","5.433","5.533","5.633"], correct:1, topic:"Aritmatika", explanation:"10.000 - 4.567 = <strong>5.433</strong>. Jawaban: B"},
+    {q:"Pecahan yang senilai dengan 2/3 adalah…", options:["4/8","6/10","8/12","10/15"], correct:2, topic:"Pecahan", explanation:"2/3 × (4/4) = <strong>8/12</strong>. (10/15 juga senilai 2/3, tapi opsi yang ditandai adalah C). Jawaban: C"},
+    {q:"Manakah yang paling besar?", options:["3/5","4/7","5/8","2/3"], correct:3, topic:"Pecahan", explanation:"Desimal: 3/5=0.6, 4/7≈0.571, 5/8=0.625, 2/3≈0.667. Terbesar: <strong>2/3</strong>. Jawaban: D"},
+    {q:"Faktor terbesar dari 16 adalah…", options:["4","8","16","2"], correct:2, topic:"FPB/KPK", explanation:"Faktor 16: 1, 2, 4, 8, 16. Faktor terbesar adalah <strong>16 itu sendiri</strong>. Jawaban: C"},
+    {q:"Kelipatan persekutuan terkecil dari 3 dan 5 adalah…", options:["10","15","20","30"], correct:1, topic:"FPB/KPK", explanation:"KPK(3,5) = 3×5 = <strong>15</strong> (karena relatif prima). Jawaban: B"},
+    {q:"Keliling persegi sisi 9 cm adalah…", options:["27 cm","36 cm","45 cm","81 cm"], correct:1, topic:"Geometri", explanation:"Keliling = 4×9 = <strong>36 cm</strong>. Jawaban: B"},
+    {q:"Luas persegi panjang p=15 cm, l=4 cm adalah…", options:["45 cm²","50 cm²","60 cm²","75 cm²"], correct:2, topic:"Geometri", explanation:"Luas = p×l = 15×4 = <strong>60 cm²</strong>. Jawaban: C"},
+    {q:"Pola: 1, 4, 5, 20, 21, … angka berikutnya…", options:["40","42","84","105"], correct:2, topic:"Pola", explanation:"Pola: ×4, +1 bergantian. 21×4 = <strong>84</strong>. Jawaban: C"},
+    {q:"Pola: 6, 12, 10, 20, 18, … angka berikutnya…", options:["36","32","56","60"], correct:0, topic:"Pola", explanation:"Pola: ×2, -2 bergantian. 18×2 = <strong>36</strong>. Jawaban: A"},
+    {q:"Pernyataan dibawah ini yang benar adalah...", options:["Jumlah sudut pada segitiga adalah 185°","Semua sudut pada segitiga adalah siku-siku","Semua sudut pada persegi adalah sudut siku-siku","Semua jawaban salah"], correct:2, topic:"Sudut", explanation:"Jumlah sudut segitiga = 180° (A salah). Tidak semua sudut segitiga siku-siku (B salah). Semua sudut persegi = 90° (siku-siku) → <strong>C benar</strong>. Jawaban: C"},
+    {q:"Sudut Lancip besarnya…", options:["95°","160°","90°","10°"], correct:3, topic:"Sudut", explanation:"Hanya <strong>10°</strong> yang kurang dari 90° (lancip). Jawaban: D"},
+    {q:"Jam 9 menunjukkan sudut....", options:["90°","120°","180°","360°"], correct:0, topic:"Sudut", explanation:"Pukul 09.00: jarum di 9 dan 12, selisih 3 angka × 30° = <strong>90°</strong>. Jawaban: A"},
+    {q:"Ani punya 5 kotak kue @ 18 kue. Dibagi ke 9 anak sama rata. Tiap anak dapat?", options:["8","9","10","12"], correct:2, topic:"Soal Cerita", explanation:"Total = 5×18 = 90 kue. Tiap anak = 90÷9 = <strong>10</strong>. Jawaban: C"},
+    {q:"Kebun persegi panjang p=20 m, l=10 m. Panjang pagar?", options:["40 m","50 m","60 m","80 m"], correct:2, topic:"Geometri", explanation:"Keliling = 2×(20+10) = <strong>60 m</strong>. Jawaban: C"},
+    {q:"Semua ikan hidup di air. Lele ikan. Maka…", options:["Lele hidup di darat","Lele hidup di air","Lele bisa terbang","Lele bukan ikan"], correct:1, topic:"Logika", explanation:"Silogisme: Semua ikan hidup di air + Lele ikan → <strong>Lele hidup di air</strong>. Jawaban: B"},
+    {q:"Jika ganjil + ganjil = genap. 5 + 7 = … maka hasilnya…", options:["Ganjil","Genap","Prima","Tidak tentu"], correct:1, topic:"Penalaran", explanation:"5 + 7 = 12 (genap). Sesuai aturan: ganjil + ganjil = <strong>genap</strong>. Jawaban: B"},
+    {q:"125 × 4 = …", options:["400","450","500","550"], correct:2, topic:"Aritmatika", explanation:"125 × 4 = <strong>500</strong>. Jawaban: C"},
+    {q:"Bilangan yang merupakan kelipatan 6 adalah…", options:["12","14","16","19"], correct:0, topic:"FPB/KPK", explanation:"12 = 6×2, jadi <strong>12</strong> kelipatan 6. Jawaban: A"},
+    {q:"Sebuah bilangan dikali 2 lalu ditambah 8 hasilnya 20. Bilangan itu adalah…", options:["4","5","6","8"], correct:2, topic:"Aljabar", explanation:"2x + 8 = 20 → 2x = 12 → x = <strong>6</strong>. Jawaban: C"}
+  ]}
+];
+
+/* ===================== STATE ===================== */
+const state = {
+  currentPart: 0,
+  currentQuestion: 0,
+  timeMode: 'timer',
+  timePerQuestion: 120,
+  questions: [],
+  examStartTime: null,
+  examFinished: false,
+  tickInterval: null,
+  globalInterval: null,
+  activeEnterTime: null
+};
+
+function initState(){
+  state.questions = examData.map((part, pIdx) =>
+    part.questions.map((q, qIdx) => ({
+      partIdx: pIdx, qIdx: qIdx,
+      userAnswer: null,
+      status: 'unanswered',
+      timePerQuestion: state.timePerQuestion,
+      extraTime: 0,
+      timeSpent: 0,
+      locked: false
+    }))
+  );
+  state.examStartTime = Date.now();
+  state.activeEnterTime = Date.now();
+  startGlobalTimer();
+  startTick();
+}
+
+/* ===================== FORMAT ===================== */
+function formatTime(seconds){
+  seconds = Math.max(0, Math.floor(seconds));
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function formatTimeLong(seconds){
+  seconds = Math.floor(seconds);
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+/* ===================== RENDER ===================== */
+function renderPartTabs(){
+  const c = document.getElementById('partTabs');
+  c.innerHTML = examData.map((part, i) => {
+    const stats = getPartStats(i);
+    const active = i === state.currentPart ? 'active' : '';
+    return `
+      <div class="part-tab ${active}" onclick="changePart(${i})">
+        <div class="tab-num">${i+1}</div>
+        <div>
+          <div>${part.title}</div>
+          <div class="text-xs text-slate-500 font-medium">${stats.answered}/${stats.total} dikerjakan</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderPart(partIdx){
+  const part = examData[partIdx];
+  const stats = getPartStats(partIdx);
+  const container = document.getElementById('partContent');
+  
+  let html = `
+    <div class="part-header">
+      <div class="flex items-center gap-3 mb-1 flex-wrap">
+        <div class="text-xs font-bold px-2 py-1 rounded" style="background:rgba(251,191,36,.15);color:var(--gold)">PART ${partIdx+1} dari 5</div>
+        <div class="text-xs text-slate-400">Mode: <span class="mono ${state.timeMode === 'timer' ? 'text-amber-400' : 'text-blue-400'} font-semibold">${state.timeMode === 'timer' ? 'Timer ('+formatTime(state.timePerQuestion)+')' : 'Stopwatch'}</span></div>
+      </div>
+      <h2 class="part-title">${part.title}</h2>
+      <p class="part-sub">${part.subtitle}</p>
+      <div class="part-stats">
+        <div class="part-stat"><i class="fas fa-list-check text-amber-400"></i> ${stats.total} soal</div>
+        <div class="part-stat"><i class="fas fa-check-circle text-emerald-400"></i> ${stats.correct} benar</div>
+        <div class="part-stat"><i class="fas fa-times-circle text-rose-400"></i> ${stats.wrong} salah</div>
+        <div class="part-stat"><i class="fas fa-circle-question text-slate-400"></i> ${stats.unanswered} kosong</div>
+      </div>
+    </div>
+    <div class="mb-6">
+      <div class="text-xs text-slate-400 mb-2 font-semibold uppercase tracking-wider">Klik nomor soal untuk membuka & memulai timer</div>
+      <div class="q-grid" id="qGrid"></div>
+    </div>
+    <div id="timerAndQuestion"></div>
+  `;
+  
+  container.innerHTML = html;
+  renderQGrid();
+  renderTimerAndQuestion();
+}
+
+function renderQGrid(){
+  const grid = document.getElementById('qGrid');
+  if (!grid) return;
+  const part = state.questions[state.currentPart];
+  grid.innerHTML = part.map((qs, qIdx) => {
+    let cls = 'qn-btn';
+    if (qIdx === state.currentQuestion) cls += ' current';
+    if (qs.locked){
+      cls += ' locked';
+      if (qs.status === 'correct') cls += ' correct';
+      else if (qs.status === 'wrong') cls += ' wrong';
+      else if (qs.status === 'timeout') cls += ' timeout';
+    } else if (qs.userAnswer !== null) cls += ' answered';
+    return `<div class="${cls}" onclick="goToQuestion(${qIdx})">${qIdx+1}</div>`;
+  }).join('');
+}
+
+function renderTimerAndQuestion(){
+  const container = document.getElementById('timerAndQuestion');
+  if (!container) return;
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  const qd = examData[state.currentPart].questions[state.currentQuestion]; // BUG SEBELUMNYA DI SINI, SUDAH DIPERBAIKI
+  
+  const isTimerMode = state.timeMode === 'timer';
+  const isLocked = qs.locked;
+  
+  let displayTime, timerClass = '', statusText = '', statusClass = '';
+  
+  if (isLocked){
+    if (isTimerMode){
+      displayTime = Math.max(0, qs.timePerQuestion + qs.extraTime - qs.timeSpent);
+    } else {
+      displayTime = qs.timeSpent;
+    }
+    timerClass = 'stopped';
+    statusText = 'Dihentikan';
+    statusClass = 'stopped';
+  } else {
+    const liveElapsed = (Date.now() - state.activeEnterTime) / 1000;
+    const totalTime = qs.timeSpent + liveElapsed;
+    if (isTimerMode){
+      displayTime = Math.max(0, qs.timePerQuestion + qs.extraTime - totalTime);
+      if (displayTime <= 15) { timerClass = 'danger'; }
+      else if (displayTime <= 30) { timerClass = 'warning'; }
+    } else {
+      displayTime = totalTime;
+    }
+    statusText = 'Berjalan';
+    statusClass = 'running';
+  }
+  
+  let panelClass = isTimerMode ? '' : 'stopwatch-mode';
+  
+  let statusBadge = '';
+  if (qs.locked){
+    if (qs.status === 'correct') statusBadge = '<span class="status-badge status-correct"><i class="fas fa-check"></i> Benar</span>';
+    else if (qs.status === 'wrong') statusBadge = '<span class="status-badge status-wrong"><i class="fas fa-xmark"></i> Salah</span>';
+    else if (qs.status === 'timeout') statusBadge = '<span class="status-badge status-timeout"><i class="fas fa-clock"></i> Waktu Habis</span>';
+  }
+  
+  let optionsHtml = qd.options.map((opt, i) => {
+    let cls = 'option';
+    if (qs.locked){
+      if (i === qd.correct) cls += ' correct-answer disabled';
+      else if (i === qs.userAnswer) cls += ' wrong-answer disabled';
+      else cls += ' disabled';
+    } else if (qs.userAnswer === i){
+      cls += ' selected';
+    }
+    return `
+      <div class="${cls}" data-option="${i}">
+        <span class="option-letter">${String.fromCharCode(65+i)}</span>
+        <span class="option-text">${opt}</span>
+      </div>
+    `;
+  }).join('');
+  
+  let explanationHtml = '';
+  if (qs.locked){
+    const isCorrect = qs.status === 'correct';
+    const isTimeout = qs.status === 'timeout';
+    const correctLetter = String.fromCharCode(65 + qd.correct);
+    const userLetter = qs.userAnswer !== null ? String.fromCharCode(65 + qs.userAnswer) : '-';
+    
+    let expClass = isCorrect ? 'correct-exp' : 'wrong-exp';
+    let iconClass = isCorrect ? 'fa-circle-check' : isTimeout ? 'fa-clock' : 'fa-circle-xmark';
+    let title = isCorrect ? 'Jawaban Benar!' : isTimeout ? 'Waktu Habis!' : 'Jawaban Kurang Tepat';
+    let userTagClass = isCorrect ? 'tag-yours-correct' : 'tag-yours-wrong';
+    
+    explanationHtml = `
+      <div class="explanation ${expClass}" style="display:block">
+        <div class="exp-header">
+          <i class="fas ${iconClass} ${isCorrect ? 'text-emerald-400' : 'text-rose-400'}" style="font-size:18px"></i>
+          <span class="exp-title">${title}</span>
+          <span class="exp-time"><i class="far fa-clock"></i> ${formatTime(qs.timeSpent)}</span>
+        </div>
+        <div class="exp-body">
+          <p style="margin-bottom:8px">
+            Jawaban kamu: <span class="answer-tag ${userTagClass}">${userLetter}</span>
+            &nbsp; Jawaban benar: <span class="answer-tag tag-correct">${correctLetter}</span>
+          </p>
+          <p><strong>Pembahasan:</strong> ${qd.explanation}</p>
+        </div>
+      </div>
+    `;
+  } else {
+    explanationHtml = '<div class="explanation" id="explanation" style="display:none"></div>';
+  }
+  
+  container.innerHTML = `
+    <div class="grid lg:grid-cols-3 gap-5 mb-6">
+      <div class="timer-panel ${panelClass} lg:col-span-1">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-xs uppercase tracking-wider font-bold text-slate-400">${isTimerMode ? 'Timer (Mundur)' : 'Stopwatch (Maju)'}</div>
+          <div class="mode-badge ${isTimerMode ? 'mode-timer' : 'mode-stopwatch'}">
+            <i class="fas ${isTimerMode ? 'fa-stopwatch' : 'fa-stopwatch-20'}"></i> ${isTimerMode ? 'Timer' : 'Stopwatch'}
+          </div>
+        </div>
+        <div class="timer-big ${timerClass}" id="timerBig">${formatTime(displayTime)}</div>
+        <div class="flex items-center gap-2 text-slate-400 text-sm">
+          <span class="w-2 h-2 rounded-full ${statusClass === 'running' ? 'bg-emerald-400' : statusClass === 'stopped' ? 'bg-slate-500' : 'bg-amber-400'}" style="${statusClass === 'running' ? 'box-shadow:0 0 12px var(--success);animation:pulse 1.5s infinite' : ''}"></span>
+          <span>${statusText} • Soal ${state.currentQuestion + 1}</span>
+        </div>
+        ${isTimerMode && !isLocked ? `
+          <button class="btn-add-time mt-4" onclick="addTime(15)">
+            <i class="fas fa-plus"></i> Tambah 15 detik
+          </button>
+        ` : ''}
+        ${isLocked ? `
+          <div class="mt-4 text-xs text-slate-400">
+            <i class="fas fa-lock"></i> Soal terkunci. Waktu tercatat: <span class="mono text-amber-400 font-semibold">${formatTime(qs.timeSpent)}</span>
+          </div>
+        ` : ''}
+      </div>
+      
+      <div class="lg:col-span-2">
+        <div class="question-card ${qs.status === 'correct' ? 'correct' : qs.status === 'wrong' ? 'wrong' : qs.status === 'timeout' ? 'timeout' : ''}" id="questionCard">
+          <div class="q-header">
+            <div class="q-num">${state.currentQuestion+1}</div>
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="q-topic">${qd.topic}</span>
+              ${statusBadge}
+            </div>
+          </div>
+          <p class="q-text">${qd.q}</p>
+          <div class="q-options">
+            ${optionsHtml}
+          </div>
+          <div class="flex items-center justify-between gap-3 flex-wrap">
+            <button class="btn btn-primary" id="checkBtn" ${qs.userAnswer === null || qs.locked ? 'disabled' : ''}>
+              <i class="fas fa-circle-check"></i> Cek Jawaban & Pembahasan
+            </button>
+            ${qs.locked ? `<div class="text-xs text-slate-400">Waktu pengerjaan: <span class="mono text-amber-400 font-semibold">${formatTime(qs.timeSpent)}</span></div>` : ''}
+          </div>
+          ${explanationHtml}
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex items-center justify-between gap-3 flex-wrap mb-8">
+      <button class="nav-btn" onclick="prevQuestion()" ${state.currentPart === 0 && state.currentQuestion === 0 ? 'disabled' : ''}>
+        <i class="fas fa-arrow-left"></i> Sebelumnya
+      </button>
+      <div class="text-sm text-slate-400">
+        Soal <span class="mono text-amber-400 font-bold">${state.currentQuestion + 1}</span> dari <span class="mono">${examData[state.currentPart].questions.length}</span>
+      </div>
+      <button class="nav-btn primary" onclick="nextQuestion()" ${state.currentPart === 4 && state.currentQuestion === 19 ? 'disabled' : ''}>
+        Berikutnya <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  `;
+  
+  attachQuestionListeners();
+}
+
+function attachQuestionListeners(){
+  const card = document.getElementById('questionCard');
+  if (!card) return;
+  
+  card.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (opt.classList.contains('disabled')) return;
+      handleOptionClick(+opt.dataset.option);
+    });
+  });
+  
+  const checkBtn = document.getElementById('checkBtn');
+  if (checkBtn) checkBtn.addEventListener('click', checkAnswer);
+}
+
+/* ===================== LOGIC ===================== */
+function handleOptionClick(optIdx){
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (qs.locked) return;
+  
+  qs.userAnswer = optIdx;
+  
+  const card = document.getElementById('questionCard');
+  const options = card.querySelectorAll('.option');
+  options.forEach((opt, i) => {
+    opt.classList.remove('selected');
+    if (i === optIdx) opt.classList.add('selected');
+  });
+  
+  const checkBtn = document.getElementById('checkBtn');
+  if (checkBtn) checkBtn.disabled = false;
+  
+  updateProgress();
+  renderQGrid();
+}
+
+function goToQuestion(qIdx){
+  if (qIdx === state.currentQuestion) return;
+  saveActiveQuestionTime();
+  state.currentQuestion = qIdx;
+  state.activeEnterTime = Date.now();
+  renderQGrid();
+  renderTimerAndQuestion();
+}
+
+function saveActiveQuestionTime(){
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (qs.locked) return;
+  const delta = (Date.now() - state.activeEnterTime) / 1000;
+  qs.timeSpent += delta;
+  state.activeEnterTime = Date.now();
+}
+
+function checkAnswer(){
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (qs.locked) return;
+  if (qs.userAnswer === null){
+    showToast('Pilih jawaban terlebih dahulu!', 'warning');
+    return;
+  }
+  
+  saveActiveQuestionTime();
+  qs.locked = true;
+  const correct = examData[state.currentPart].questions[state.currentQuestion].correct;
+  qs.status = qs.userAnswer === correct ? 'correct' : 'wrong';
+  
+  renderTimerAndQuestion();
+  renderQGrid();
+  updateProgress();
+  
+  if (qs.status === 'correct'){
+    showToast('Jawaban benar! 🎉', 'success');
+  } else {
+    showToast('Jawaban kurang tepat. Lihat pembahasan.', 'error');
+  }
+}
+
+function addTime(seconds){
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (qs.locked){
+    showToast('Soal sudah dikunci, tidak bisa tambah waktu.', 'warning');
+    return;
+  }
+  qs.extraTime += seconds;
+  showToast(`+${seconds} detik ditambahkan`, 'info');
+  renderTimerAndQuestion();
+}
+
+/* ===================== TICK ===================== */
+function startTick(){
+  if (state.tickInterval) clearInterval(state.tickInterval);
+  state.tickInterval = setInterval(tick, 200);
+}
+
+function tick(){
+  if (state.examFinished) return;
+  
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (!qs || qs.locked) return;
+  
+  const liveElapsed = (Date.now() - state.activeEnterTime) / 1000;
+  const totalTime = qs.timeSpent + liveElapsed;
+  
+  if (state.timeMode === 'timer'){
+    const remaining = qs.timePerQuestion + qs.extraTime - totalTime;
+    if (remaining <= 0){
+      qs.timeSpent = totalTime;
+      qs.locked = true;
+      qs.status = 'timeout';
+      renderTimerAndQuestion();
+      renderQGrid();
+      updateProgress();
+      showToast('Waktu habis untuk soal ini!', 'warning');
+      return;
+    }
+  }
+  
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay(){
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (!qs) return;
+  const timerBig = document.getElementById('timerBig');
+  if (!timerBig) return;
+  
+  const liveElapsed = (Date.now() - state.activeEnterTime) / 1000;
+  const totalTime = qs.timeSpent + liveElapsed;
+  
+  let displayTime, timerClass = '';
+  
+  if (qs.locked){
+    if (state.timeMode === 'timer'){
+      displayTime = Math.max(0, qs.timePerQuestion + qs.extraTime - qs.timeSpent);
+    } else {
+      displayTime = qs.timeSpent;
+    }
+    timerClass = 'stopped';
+  } else {
+    if (state.timeMode === 'timer'){
+      displayTime = Math.max(0, qs.timePerQuestion + qs.extraTime - totalTime);
+      if (displayTime <= 15) timerClass = 'danger';
+      else if (displayTime <= 30) timerClass = 'warning';
+    } else {
+      displayTime = totalTime;
+    }
+  }
+  
+  timerBig.textContent = formatTime(displayTime);
+  timerBig.className = `timer-big ${timerClass}`;
+}
+
+/* ===================== STATS ===================== */
+function getPartStats(partIdx){
+  const part = state.questions[partIdx];
+  let correct = 0, wrong = 0, unanswered = 0, totalTime = 0, answered = 0;
+  part.forEach(q => {
+    if (q.status === 'correct') { correct++; answered++; }
+    else if (q.status === 'wrong' || q.status === 'timeout') { wrong++; answered++; }
+    else if (q.userAnswer !== null) answered++;
+    else unanswered++;
+    totalTime += q.timeSpent;
+  });
+  return {total: part.length, correct, wrong, unanswered, totalTime, answered};
+}
+
+function getOverallStats(){
+  let total = 0, correct = 0, wrong = 0, unanswered = 0, totalTime = 0;
+  state.questions.forEach(part => {
+    part.forEach(q => {
+      total++;
+      if (q.status === 'correct') correct++;
+      else if (q.status === 'wrong' || q.status === 'timeout') wrong++;
+      else unanswered++;
+      totalTime += q.timeSpent;
+    });
+  });
+  return {total, correct, wrong, unanswered, totalTime};
+}
+
+function updateProgress(){
+  const stats = getOverallStats();
+  const pct = (stats.correct + stats.wrong) / stats.total * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  renderPartTabs();
+  
+  const partStats = getPartStats(state.currentPart);
+  const partHeader = document.querySelector('.part-header .part-stats');
+  if (partHeader){
+    partHeader.innerHTML = `
+      <div class="part-stat"><i class="fas fa-list-check text-amber-400"></i> ${partStats.total} soal</div>
+      <div class="part-stat"><i class="fas fa-check-circle text-emerald-400"></i> ${partStats.correct} benar</div>
+      <div class="part-stat"><i class="fas fa-times-circle text-rose-400"></i> ${partStats.wrong} salah</div>
+      <div class="part-stat"><i class="fas fa-circle-question text-slate-400"></i> ${partStats.unanswered} kosong</div>
+    `;
+  }
+}
+
+/* ===================== NAVIGATION ===================== */
+function changePart(partIdx){
+  if (partIdx === state.currentPart) return;
+  saveActiveQuestionTime();
+  state.currentPart = partIdx;
+  state.currentQuestion = 0;
+  state.activeEnterTime = Date.now();
+  renderPartTabs();
+  renderPart(partIdx);
+  window.scrollTo({top: document.getElementById('partContent').offsetTop - 100, behavior: 'smooth'});
+}
+
+function prevQuestion(){
+  if (state.currentQuestion > 0){
+    goToQuestion(state.currentQuestion - 1);
+  } else if (state.currentPart > 0){
+    changePart(state.currentPart - 1);
+    state.currentQuestion = examData[state.currentPart].questions.length - 1;
+    state.activeEnterTime = Date.now();
+    renderQGrid();
+    renderTimerAndQuestion();
+  }
+}
+
+function nextQuestion(){
+  if (state.currentQuestion < examData[state.currentPart].questions.length - 1){
+    goToQuestion(state.currentQuestion + 1);
+  } else if (state.currentPart < 4){
+    changePart(state.currentPart + 1);
+  }
+}
+
+function scrollToPart(){
+  document.getElementById('partSection').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ===================== GLOBAL TIMER ===================== */
+function startGlobalTimer(){
+  if (state.globalInterval) clearInterval(state.globalInterval);
+  state.globalInterval = setInterval(() => {
+    if (state.examFinished) return;
+    const elapsed = Math.floor((Date.now() - state.examStartTime) / 1000);
+    const el = document.getElementById('globalTimer');
+    if (el) el.textContent = formatTimeLong(elapsed);
+  }, 1000);
+}
+
+/* ===================== SETTINGS ===================== */
+let tempMode = 'timer';
+
+function openSettings(){
+  tempMode = state.timeMode;
+  document.getElementById('timePerQuestionInput').value = state.timePerQuestion;
+  document.getElementById('timePreview').textContent = formatTime(state.timePerQuestion);
+  
+  document.querySelectorAll('.mode-option').forEach(o => o.classList.remove('active'));
+  document.querySelector(`.mode-option[data-mode="${state.timeMode}"]`).classList.add('active');
+  
+  document.getElementById('timeSettingGroup').style.display = state.timeMode === 'timer' ? 'block' : 'none';
+  document.getElementById('settingsModal').classList.add('active');
+}
+
+function selectMode(mode){
+  tempMode = mode;
+  document.querySelectorAll('.mode-option').forEach(o => o.classList.remove('active'));
+  document.querySelector(`.mode-option[data-mode="${mode}"]`).classList.add('active');
+  document.getElementById('timeSettingGroup').style.display = mode === 'timer' ? 'block' : 'none';
+}
+
+function setTimePreset(seconds){
+  document.getElementById('timePerQuestionInput').value = seconds;
+  document.getElementById('timePreview').textContent = formatTime(seconds);
+}
+
+document.addEventListener('input', (e) => {
+  if (e.target.id === 'timePerQuestionInput'){
+    const v = parseInt(e.target.value) || 120;
+    document.getElementById('timePreview').textContent = formatTime(v);
+  }
+});
+
+function applySettings(){
+  const newMode = tempMode;
+  const v = parseInt(document.getElementById('timePerQuestionInput').value) || 120;
+  const clamped = Math.max(30, Math.min(600, v));
+  
+  state.timeMode = newMode;
+  state.timePerQuestion = clamped;
+  
+  state.questions.forEach(part => {
+    part.forEach(q => {
+      if (!q.locked && q.timeSpent === 0){
+        q.timePerQuestion = clamped;
+        q.extraTime = 0;
+      }
+    });
+  });
+  
+  document.getElementById('defaultTimeDisplay').textContent = newMode === 'timer' ? formatTime(clamped) : '∞';
+  
+  const modeInd = document.getElementById('modeIndicator');
+  if (newMode === 'timer'){
+    modeInd.className = 'mode-badge mode-timer';
+    modeInd.innerHTML = '<i class="fas fa-stopwatch"></i> <span>Timer</span>';
+  } else {
+    modeInd.className = 'mode-badge mode-stopwatch';
+    modeInd.innerHTML = '<i class="fas fa-stopwatch-20"></i> <span>Stopwatch</span>';
+  }
+  
+  closeModal('settingsModal');
+  renderPart(state.currentPart);
+  showToast(`Mode ${newMode === 'timer' ? 'Timer' : 'Stopwatch'} diterapkan`, 'success');
+}
+
+function closeModal(id){
+  document.getElementById(id).classList.remove('active');
+}
+
+/* ===================== FINISH EXAM ===================== */
+function confirmFinishExam(){
+  const stats = getOverallStats();
+  document.getElementById('confirmStats').innerHTML = `
+    <div class="result-stat-grid mt-4">
+      <div class="result-stat correct"><div class="num">${stats.correct}</div><div class="lbl">Benar</div></div>
+      <div class="result-stat wrong"><div class="num">${stats.wrong}</div><div class="lbl">Salah</div></div>
+      <div class="result-stat unanswered"><div class="num">${stats.unanswered}</div><div class="lbl">Kosong</div></div>
+      <div class="result-stat time"><div class="num">${formatTime(stats.totalTime)}</div><div class="lbl">Total Waktu</div></div>
+    </div>
+  `;
+  document.getElementById('confirmModal').classList.add('active');
+}
+
+function finishExam(){
+  closeModal('confirmModal');
+  state.examFinished = true;
+  saveActiveQuestionTime();
+  if (state.tickInterval){ clearInterval(state.tickInterval); state.tickInterval = null; }
+  if (state.globalInterval){ clearInterval(state.globalInterval); state.globalInterval = null; }
+  renderResults();
+  document.getElementById('resultsModal').classList.add('active');
+}
+
+function renderResults(){
+  const overall = getOverallStats();
+  const totalTime = Math.floor((Date.now() - state.examStartTime) / 1000);
+  const score = Math.round(overall.correct / overall.total * 100);
+  
+  let html = `
+    <div class="text-center mb-8">
+      <div class="score-circle" id="scoreCircle">
+        <div class="score-inner">
+          <div class="score-num" id="scoreNum">0</div>
+          <div class="score-lbl">Skor Akhir</div>
+        </div>
+      </div>
+      <p class="mt-4 text-slate-400">Total waktu pengerjaan: <span class="mono text-amber-400 font-bold">${formatTimeLong(totalTime)}</span></p>
+      <p class="mt-1 text-sm text-slate-500">Mode: <span class="font-semibold ${state.timeMode === 'timer' ? 'text-amber-400' : 'text-blue-400'}">${state.timeMode === 'timer' ? 'Timer' : 'Stopwatch'}</span></p>
+    </div>
+    
+    <div class="result-stat-grid mb-8">
+      <div class="result-stat correct"><div class="num">${overall.correct}</div><div class="lbl">Jawaban Benar</div></div>
+      <div class="result-stat wrong"><div class="num">${overall.wrong}</div><div class="lbl">Jawaban Salah</div></div>
+      <div class="result-stat unanswered"><div class="num">${overall.unanswered}</div><div class="lbl">Tidak Dijawab</div></div>
+      <div class="result-stat time"><div class="num">${formatTime(overall.totalTime)}</div><div class="lbl">Waktu Total</div></div>
+    </div>
+    
+    <h3 class="display text-xl font-bold mb-4">Analisis Per Part</h3>
+    ${examData.map((part, pIdx) => renderPartAnalysis(pIdx)).join('')}
+    
+    <div class="mt-8 flex gap-3 flex-wrap">
+      <button class="btn btn-primary flex-1" onclick="closeModal('resultsModal')"><i class="fas fa-book"></i> Tinjau Jawaban</button>
+      <button class="btn btn-secondary" onclick="restartExam()"><i class="fas fa-rotate-right"></i> Ulangi Latihan</button>
+    </div>
+  `;
+  
+  document.getElementById('resultsBody').innerHTML = html;
+  setTimeout(() => animateScore(score), 200);
+}
+
+function animateScore(target){
+  const circle = document.getElementById('scoreCircle');
+  const numEl = document.getElementById('scoreNum');
+  if (!circle || !numEl) return;
+  
+  let current = 0;
+  const duration = 1500;
+  const steps = 60;
+  const inc = target / steps;
+  const interval = duration / steps;
+  
+  const timer = setInterval(() => {
+    current += inc;
+    if (current >= target){
+      current = target;
+      clearInterval(timer);
+    }
+    const deg = (current / 100) * 360;
+    const scoreColor = target >= 80 ? '#34d399' : target >= 60 ? '#fbbf24' : '#f87171';
+    circle.style.background = `conic-gradient(${scoreColor} ${deg}deg, rgba(255,255,255,.06) ${deg}deg)`;
+    numEl.textContent = Math.round(current);
+  }, interval);
+}
+
+function renderPartAnalysis(partIdx){
+  const part = examData[partIdx];
+  const stats = getPartStats(partIdx);
+  const accuracy = stats.total > 0 ? Math.round(stats.correct / stats.total * 100) : 0;
+  const avgTime = stats.total > 0 ? Math.round(stats.totalTime / stats.total) : 0;
+  
+  const topicStats = {};
+  part.questions.forEach((q, i) => {
+    const qs = state.questions[partIdx][i];
+    if (!topicStats[q.topic]) topicStats[q.topic] = {correct: 0, wrong: 0, unanswered: 0, total: 0, timeSum: 0};
+    topicStats[q.topic].total++;
+    topicStats[q.topic].timeSum += qs.timeSpent;
+    if (qs.status === 'correct') topicStats[q.topic].correct++;
+    else if (qs.status === 'wrong' || qs.status === 'timeout') topicStats[q.topic].wrong++;
+    else topicStats[q.topic].unanswered++;
+  });
+  
+  const slowCorrect = [], fastWrong = [], slowWrong = [], unanswered = [];
+  state.questions[partIdx].forEach((qs, i) => {
+    if (qs.status === 'correct' && qs.timeSpent > 90) slowCorrect.push(i+1);
+    if (qs.status === 'wrong' && qs.timeSpent < 30) fastWrong.push(i+1);
+    if (qs.status === 'wrong' && qs.timeSpent > 90) slowWrong.push(i+1);
+    if (qs.status === 'unanswered') unanswered.push(i+1);
+  });
+  
+  const recos = [];
+  if (accuracy >= 80 && avgTime < 60){
+    recos.push({type:'good', icon:'fa-trophy', text:`<strong>Performa Sempurna!</strong> Akurasi ${accuracy}% dengan rata-rata waktu ${formatTime(avgTime)}/soal. Kamu menguasai part ini dengan sangat baik.`});
+  } else if (accuracy >= 80 && avgTime >= 90){
+    recos.push({type:'warn', icon:'fa-clock', text:`<strong>Akurasi Bagus, Perlu Percepat.</strong> Akurasi ${accuracy}% tapi rata-rata ${formatTime(avgTime)}/soal. Latih kecepatan dengan soal sejenis.`});
+  } else if (accuracy >= 60){
+    recos.push({type:'warn', icon:'fa-chart-line', text:`<strong>Cukup Baik.</strong> Akurasi ${accuracy}%. Perdalam konsep pada topik yang masih salah di bawah.`});
+  } else if (accuracy >= 40){
+    recos.push({type:'bad', icon:'fa-triangle-exclamation', text:`<strong>Perlu Pendalaman.</strong> Akurasi ${accuracy}% berarti konsep dasar part ini belum dikuasai. Pelajari ulang materi.`});
+  } else {
+    recos.push({type:'bad', icon:'fa-circle-exclamation', text:`<strong>Perlu Belajar Lagi.</strong> Akurasi ${accuracy}% sangat rendah. Mulai dari konsep dasar part ${partIdx+1}.`});
+  }
+  
+  if (unanswered.length > 5){
+    recos.push({type:'bad', icon:'fa-clock', text:`<strong>Manajemen Waktu Buruk.</strong> ${unanswered.length} soal tidak dijawab. Latih kecepatan dan strategi prioritas soal.`});
+  } else if (unanswered.length > 0){
+    recos.push({type:'info', icon:'fa-info-circle', text:`${unanswered.length} soal tidak dijawab (nomor ${unanswered.join(', ')}). Kerjakan soal yang lebih mudah dulu.`});
+  }
+  if (fastWrong.length > 0) recos.push({type:'warn', icon:'fa-bolt', text:`<strong>Terlalu Cepat.</strong> Soal nomor ${fastWrong.join(', ')} salah karena kurang dari 30 detik. Periksa kembali sebelum menjawab.`});
+  if (slowWrong.length > 0) recos.push({type:'bad', icon:'fa-brain', text:`<strong>Konsep Belum Tepat.</strong> Soal nomor ${slowWrong.join(', ')} salah meski waktu > 90 detik. Artinya konsep belum dipahami.`});
+  if (slowCorrect.length > 0) recos.push({type:'info', icon:'fa-stopwatch', text:`<strong>Hampir Terlambat.</strong> Soal nomor ${slowCorrect.join(', ')} benar tapi > 90 detik. Latih agar lebih cepat.`});
+  
+  const topicHtml = Object.entries(topicStats).map(([topic, s]) => {
+    const pct = s.total > 0 ? Math.round(s.correct / s.total * 100) : 0;
+    const cls = pct >= 75 ? 'good' : pct >= 50 ? 'mid' : 'bad';
+    return `
+      <div class="topic-bar">
+        <div class="topic-name">${topic}</div>
+        <div class="topic-bar-track"><div class="topic-bar-fill ${cls}" style="width:${pct}%"></div></div>
+        <div class="topic-pct">${pct}%</div>
+      </div>
+    `;
+  }).join('');
+  
+  let accClass = accuracy >= 75 ? 'good' : accuracy >= 50 ? 'warn' : 'bad';
+  let timeClass = avgTime < 60 ? 'good' : avgTime < 100 ? 'warn' : 'bad';
+  
+  return `
+    <div class="part-analysis">
+      <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
+        <div class="part-analysis-title">${part.title}: ${part.subtitle}</div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="mini-stat correct"><i class="fas fa-check"></i> ${stats.correct} benar</span>
+          <span class="mini-stat wrong"><i class="fas fa-times"></i> ${stats.wrong} salah</span>
+          <span class="mini-stat unanswered"><i class="fas fa-circle-question"></i> ${stats.unanswered} kosong</span>
+          <span class="mini-stat time"><i class="far fa-clock"></i> ${formatTime(stats.totalTime)}</span>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <div class="text-xs text-slate-400 mb-2 font-semibold uppercase tracking-wider">Akurasi</div>
+          <div class="topic-bar">
+            <div class="topic-name">Benar</div>
+            <div class="topic-bar-track"><div class="topic-bar-fill ${accClass}" style="width:${accuracy}%"></div></div>
+            <div class="topic-pct">${accuracy}%</div>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-slate-400 mb-2 font-semibold uppercase tracking-wider">Rata-rata Waktu</div>
+          <div class="topic-bar">
+            <div class="topic-name">Waktu</div>
+            <div class="topic-bar-track"><div class="topic-bar-fill ${timeClass}" style="width:${Math.min(100, avgTime/120*100)}%"></div></div>
+            <div class="topic-pct">${formatTime(avgTime)}</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 mb-2 font-semibold uppercase tracking-wider">Performa per Topik</div>
+      <div class="mb-4">${topicHtml}</div>
+      <div class="text-xs text-slate-400 mb-2 font-semibold uppercase tracking-wider">Rekomendasi & Analisis</div>
+      <div class="space-y-2">
+        ${recos.map(r => `<div class="reco-box ${r.type}"><i class="fas ${r.icon} mt-1"></i><div>${r.text}</div></div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function restartExam(){
+  if (state.tickInterval) clearInterval(state.tickInterval);
+  if (state.globalInterval) clearInterval(state.globalInterval);
+  initState();
+  state.examFinished = false;
+  closeModal('resultsModal');
+  renderPartTabs();
+  renderPart(0);
+  state.currentPart = 0;
+  state.currentQuestion = 0;
+  showToast('Latihan dimulai ulang. Semangat!', 'info');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+/* ===================== TOAST ===================== */
+function showToast(msg, type = 'info'){
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  const icons = {success:'fa-circle-check', error:'fa-circle-xmark', warning:'fa-triangle-exclamation', info:'fa-circle-info'};
+  const colors = {success:'text-emerald-400', error:'text-rose-400', warning:'text-amber-400', info:'text-blue-400'};
+  toast.innerHTML = `<i class="fas ${icons[type]} ${colors[type]}"></i> <span>${msg}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(40px)';
+    toast.style.transition = 'all .3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+/* ===================== INIT ===================== */
+initState();
+renderPartTabs();
+renderPart(0);
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('active');
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape'){
+    document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+  }
+  if (e.key === 'ArrowRight' && !document.querySelector('.modal-overlay.active')){
+    nextQuestion();
+  }
+  if (e.key === 'ArrowLeft' && !document.querySelector('.modal-overlay.active')){
+    prevQuestion();
+  }
+});
+</script>
+</body>
+</html>
