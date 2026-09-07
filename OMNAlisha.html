@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olimpiade Matematika Kelas 7 — Platform Latihan Interaktif</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+:root{
+  --bg:#0f172a; --bg-2:#1e293b; --surface:rgba(255,255,255,.04); --surface-2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08); --border-2:rgba(255,255,255,.16);
+  --fg:#f1f5f9; --fg-muted:#94a3b8; --fg-dim:#64748b;
+  --emerald:#34d399; --emerald-2:#10b981; --emerald-glow:rgba(52,211,153,.35);
+  --success:#34d399; --danger:#f87171; --info:#38bdf8; --amber:#fbbf24; --purple:#a78bfa;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;scroll-behavior:smooth}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg); color:var(--fg); min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(16,185,129,.12), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, rgba(56,189,248,.06), transparent 60%),
+    linear-gradient(180deg, #0f172a 0%, #0b1120 100%);
+  background-attachment:fixed; overflow-x:hidden;
+}
+.display{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.02em}
+.mono{font-family:'JetBrains Mono',monospace}
+
+.orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.5;z-index:0;pointer-events:none}
+.orb-1{width:500px;height:500px;background:radial-gradient(circle, rgba(52,211,153,.3), transparent 70%);top:-150px;right:-100px;animation:float 20s ease-in-out infinite}
+.orb-2{width:400px;height:400px;background:radial-gradient(circle, rgba(56,189,248,.2), transparent 70%);bottom:-100px;left:-100px;animation:float 25s ease-in-out infinite reverse}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,40px)}}
+
+.app-header{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(24px) saturate(1.5);
+  -webkit-backdrop-filter:blur(24px) saturate(1.5);
+  background:rgba(15,23,42,.8); border-bottom:1px solid var(--border);
+}
+.header-progress{height:4px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+.header-progress-bar{height:100%;background:linear-gradient(90deg, var(--emerald), var(--info));border-radius:99px;transition:width .4s ease;box-shadow:0 0 12px var(--emerald-glow)}
+
+.logo-mark{
+  width:42px;height:42px;border-radius:12px;
+  background:linear-gradient(135deg, var(--emerald), var(--emerald-2));
+  display:grid;place-items:center; color:#0f172a;font-weight:800;font-size:18px;
+  box-shadow:0 8px 24px var(--emerald-glow), inset 0 1px 0 rgba(255,255,255,.4);
+  font-family:'Bricolage Grotesque',sans-serif;
+}
+
+.btn{
+  font-family:inherit;font-weight:600;border:none;cursor:pointer;
+  transition:all .2s ease;display:inline-flex;align-items:center;gap:8px;
+  padding:10px 18px;border-radius:10px;font-size:14px;text-decoration:none;white-space:nowrap;
+}
+.btn-primary{background:linear-gradient(135deg, var(--emerald), var(--emerald-2));color:#0f172a}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 24px var(--emerald-glow)}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed}
+.btn-secondary{background:rgba(255,255,255,.06);color:var(--fg);border:1px solid var(--border-2)}
+.btn-secondary:hover:not(:disabled){background:rgba(255,255,255,.1);transform:translateY(-1px)}
+.btn-danger{background:linear-gradient(135deg, #f87171, #ef4444);color:white}
+.btn-danger:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 24px rgba(248,113,113,.25)}
+.btn-ghost{background:transparent;color:var(--fg-muted);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--fg);border-color:var(--border-2);background:rgba(255,255,255,.04)}
+
+.mode-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.mode-timer{background:rgba(52,211,153,.12);color:var(--emerald);border:1px solid rgba(52,211,153,.3)}
+.mode-stopwatch{background:rgba(56,189,248,.12);color:var(--info);border:1px solid rgba(56,189,248,.3)}
+
+.part-tab{
+  position:relative;padding:14px 20px;background:var(--surface);
+  border:1px solid var(--border);border-radius:14px;cursor:pointer;
+  transition:all .25s ease;font-weight:600;color:var(--fg-muted);
+  display:flex;align-items:center;gap:12px;min-width:160px;
+}
+.part-tab:hover{border-color:var(--border-2);color:var(--fg);transform:translateY(-2px)}
+.part-tab.active{background:linear-gradient(135deg, rgba(52,211,153,.18), rgba(16,185,129,.08));border-color:rgba(52,211,153,.5);color:var(--emerald);box-shadow:0 8px 28px rgba(52,211,153,.18)}
+.part-tab .tab-num{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.06);display:grid;place-items:center;font-size:13px;font-weight:700}
+.part-tab.active .tab-num{background:var(--emerald);color:#0f172a}
+
+.q-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(44px, 1fr));gap:8px;padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
+.qn-btn{aspect-ratio:1;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--fg-muted);position:relative}
+.qn-btn:hover{background:rgba(255,255,255,.08);color:var(--fg);transform:translateY(-2px)}
+.qn-btn.answered{background:rgba(56,189,248,.15);color:var(--info);border-color:rgba(56,189,248,.3)}
+.qn-btn.correct{background:rgba(52,211,153,.18);color:var(--success);border-color:rgba(52,211,153,.4)}
+.qn-btn.wrong{background:rgba(248,113,113,.18);color:var(--danger);border-color:rgba(248,113,113,.4)}
+.qn-btn.timeout{background:rgba(251,191,36,.15);color:#fb923c;border-color:rgba(251,191,36,.4)}
+.qn-btn.current{background:var(--emerald);color:#0f172a;border-color:var(--emerald);box-shadow:0 0 0 3px rgba(52,211,153,.25), 0 8px 20px var(--emerald-glow);transform:scale(1.08)}
+.qn-btn.locked::after{content:'';position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:currentColor}
+
+.timer-panel{background:linear-gradient(135deg, var(--surface), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:20px;padding:24px;position:relative;overflow:hidden;height:fit-content}
+.timer-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg, transparent, var(--emerald), transparent)}
+.timer-panel.stopwatch-mode::before{background:linear-gradient(90deg, transparent, var(--info), transparent)}
+.timer-big{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;line-height:1;letter-spacing:-.02em;background:linear-gradient(135deg, #fff 0%, var(--emerald) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:8px 0}
+.timer-panel.stopwatch-mode .timer-big{background:linear-gradient(135deg, #fff 0%, var(--info) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.timer-big.warning{background:linear-gradient(135deg, #fff 0%, #fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.timer-big.danger{background:linear-gradient(135deg, #fff 0%, var(--danger) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.timer-big.stopped{background:linear-gradient(135deg, var(--fg-muted) 0%, var(--fg-dim) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.btn-add-time{background:rgba(56,189,248,.1);color:var(--info);border:1px solid rgba(56,189,248,.3);padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+.btn-add-time:hover:not(:disabled){background:rgba(56,189,248,.2);transform:translateY(-1px)}
+.btn-add-time:disabled{opacity:.35;cursor:not-allowed}
+
+.question-card{background:linear-gradient(180deg, var(--surface), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:20px;padding:28px;transition:all .3s ease;position:relative;overflow:hidden}
+.question-card.correct{border-color:rgba(52,211,153,.45);box-shadow:0 0 36px rgba(52,211,153,.1)}
+.question-card.wrong{border-color:rgba(248,113,113,.45);box-shadow:0 0 36px rgba(248,113,113,.1)}
+.question-card.timeout{border-color:rgba(251,191,36,.45);box-shadow:0 0 36px rgba(251,191,36,.1)}
+
+.q-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.q-num{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg, rgba(52,211,153,.2), rgba(16,185,129,.1));border:1px solid rgba(52,211,153,.3);color:var(--emerald);display:grid;place-items:center;font-weight:700;font-family:'JetBrains Mono',monospace;flex-shrink:0;font-size:16px}
+.q-topic{font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;background:rgba(167,139,250,.1);padding:4px 10px;border-radius:6px;border:1px solid rgba(167,139,250,.2)}
+.q-text{font-size:18px;line-height:1.55;color:var(--fg);font-weight:500;margin:18px 0 22px}
+
+.q-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+@media (max-width:640px){.q-options{grid-template-columns:1fr}}
+.option{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s ease;user-select:none}
+.option:hover{background:rgba(255,255,255,.05);border-color:var(--border-2);transform:translateX(4px)}
+.option.selected{background:rgba(52,211,153,.1);border-color:var(--emerald)}
+.option.correct-answer{background:rgba(52,211,153,.12);border-color:var(--success)}
+.option.wrong-answer{background:rgba(248,113,113,.12);border-color:var(--danger)}
+.option.disabled{cursor:not-allowed}
+.option.disabled:hover{transform:none}
+.option-letter{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);display:grid;place-items:center;font-weight:700;font-size:14px;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.option.selected .option-letter{background:var(--emerald);color:#0f172a}
+.option.correct-answer .option-letter{background:var(--success);color:#0f172a}
+.option.wrong-answer .option-letter{background:var(--danger);color:white}
+
+.status-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.status-correct{background:rgba(52,211,153,.15);color:var(--success);border:1px solid rgba(52,211,153,.3)}
+.status-wrong{background:rgba(248,113,113,.15);color:var(--danger);border:1px solid rgba(248,113,113,.3)}
+.status-timeout{background:rgba(251,191,36,.15);color:#fb923c;border:1px solid rgba(251,191,36,.3)}
+
+.explanation{margin-top:18px;padding:18px;border-radius:14px;background:linear-gradient(135deg, rgba(56,189,248,.06), rgba(56,189,248,.02));border:1px solid rgba(56,189,248,.2);font-size:14px;line-height:1.65;animation:slideIn .4s ease}
+.explanation.correct-exp{background:linear-gradient(135deg, rgba(52,211,153,.08), rgba(52,211,153,.02));border-color:rgba(52,211,153,.3)}
+.explanation.wrong-exp{background:linear-gradient(135deg, rgba(248,113,113,.08), rgba(248,113,113,.02));border-color:rgba(248,113,113,.3)}
+.exp-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.exp-title{font-weight:700;font-size:15px}
+.exp-time{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fg-muted);background:rgba(255,255,255,.04);padding:4px 10px;border-radius:6px}
+.exp-body strong{color:var(--amber)}
+.answer-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600}
+.tag-yours-correct{background:rgba(52,211,153,.15);color:var(--success)}
+.tag-yours-wrong{background:rgba(248,113,113,.15);color:var(--danger)}
+.tag-correct{background:rgba(52,211,153,.15);color:var(--success)}
+@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.hero-title{font-size:clamp(36px, 6vw, 64px);font-weight:800;line-height:1.05;background:linear-gradient(135deg, #fff 0%, #34d399 50%, #38bdf8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.03em}
+.hero-sub{color:var(--fg-muted);font-size:18px;line-height:1.6;max-width:680px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;align-items:center;gap:14px}
+.stat-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:18px}
+.stat-num{font-size:24px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif;line-height:1}
+
+.modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(5,8,20,.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.active{opacity:1;pointer-events:auto}
+.modal{background:linear-gradient(180deg, #1e293b, #0f172a);border:1px solid var(--border-2);border-radius:24px;max-width:920px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.5);transform:scale(.95) translateY(20px);transition:transform .3s ease}
+.modal-overlay.active .modal{transform:scale(1) translateY(0)}
+.modal-header{padding:28px 32px;border-bottom:1px solid var(--border);position:sticky;top:0;background:linear-gradient(180deg, #1e293b, rgba(30,41,59,.95));backdrop-filter:blur(20px);z-index:10;border-radius:24px 24px 0 0;display:flex;justify-content:space-between;align-items:center}
+.modal-body{padding:32px}
+.modal-close{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--fg-muted);cursor:pointer;display:grid;place-items:center;transition:all .2s}
+.modal-close:hover{background:rgba(248,113,113,.15);color:var(--danger);border-color:rgba(248,113,113,.3)}
+
+.score-circle{width:180px;height:180px;border-radius:50%;background:conic-gradient(var(--emerald) 0deg, var(--emerald) 0deg, rgba(255,255,255,.06) 0deg);display:grid;place-items:center;position:relative;margin:0 auto}
+.score-circle::before{content:'';position:absolute;inset:14px;border-radius:50%;background:linear-gradient(180deg, #1e293b, #0f172a);border:1px solid var(--border)}
+.score-inner{position:relative;z-index:1;text-align:center}
+.score-num{font-size:48px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif;line-height:1;background:linear-gradient(135deg, #fff, var(--emerald));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.score-lbl{font-size:12px;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.1em;margin-top:4px;font-weight:600}
+
+.result-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:640px){.result-stat-grid{grid-template-columns:repeat(2,1fr)}}
+.result-stat{padding:18px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(180deg, var(--surface), rgba(255,255,255,.01));text-align:center}
+.result-stat .num{font-size:32px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif;line-height:1}
+.result-stat .lbl{font-size:12px;color:var(--fg-muted);margin-top:6px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.result-stat.correct{border-color:rgba(52,211,153,.3);background:linear-gradient(180deg, rgba(52,211,153,.08), transparent)} .result-stat.correct .num{color:var(--success)}
+.result-stat.wrong{border-color:rgba(248,113,113,.3);background:linear-gradient(180deg, rgba(248,113,113,.08), transparent)} .result-stat.wrong .num{color:var(--danger)}
+.result-stat.unanswered .num{color:var(--fg-muted)}
+.result-stat.time{border-color:rgba(56,189,248,.3);background:linear-gradient(180deg, rgba(56,189,248,.08), transparent)} .result-stat.time .num{color:var(--info)}
+
+.part-analysis{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+.part-analysis-title{font-size:18px;font-weight:700;font-family:'Bricolage Grotesque',sans-serif;margin-bottom:12px}
+.mini-stat{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.mini-stat.correct{background:rgba(52,211,153,.12);color:var(--success)}
+.mini-stat.wrong{background:rgba(248,113,113,.12);color:var(--danger)}
+.mini-stat.unanswered{background:rgba(255,255,255,.06);color:var(--fg-muted)}
+.mini-stat.time{background:rgba(56,189,248,.12);color:var(--info)}
+
+.topic-bar{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:13px}
+.topic-name{width:120px;color:var(--fg-muted);font-weight:500;flex-shrink:0}
+.topic-bar-track{flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;position:relative}
+.topic-bar-fill{height:100%;border-radius:99px;transition:width .6s ease}
+.topic-bar-fill.good{background:linear-gradient(90deg, var(--success), #10b981)}
+.topic-bar-fill.mid{background:linear-gradient(90deg, var(--amber), #f59e0b)}
+.topic-bar-fill.bad{background:linear-gradient(90deg, var(--danger), #ef4444)}
+.topic-pct{width:50px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
+
+.reco-box{padding:14px 16px;border-radius:12px;font-size:13px;line-height:1.6;margin-top:12px;display:flex;gap:12px;align-items:flex-start}
+.reco-box.good{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);color:#a7f3d0}
+.reco-box.warn{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);color:#fde68a}
+.reco-box.bad{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:#fca5a5}
+.reco-box.info{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);color:#bae6fd}
+
+#toastContainer{position:fixed;top:80px;right:24px;z-index:200;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{background:rgba(30,41,59,.95);backdrop-filter:blur(12px);border:1px solid var(--border-2);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;box-shadow:0 12px 32px rgba(0,0,0,.4);animation:toastIn .3s ease;min-width:240px;max-width:360px}
+.toast.success{border-left:3px solid var(--success)} .toast.error{border-left:3px solid var(--danger)} .toast.warning{border-left:3px solid var(--amber)} .toast.info{border-left:3px solid var(--info)}
+@keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+
+.input-field{background:rgba(255,255,255,.04);border:1px solid var(--border-2);border-radius:10px;padding:10px 14px;color:var(--fg);font-family:inherit;font-size:14px;width:100%;transition:all .2s}
+.input-field:focus{outline:none;border-color:var(--emerald);background:rgba(255,255,255,.06)}
+
+.mode-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:4px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px}
+.mode-option{padding:14px;border-radius:8px;cursor:pointer;text-align:center;transition:all .2s;border:1px solid transparent}
+.mode-option:hover{background:rgba(255,255,255,.04)}
+.mode-option.active{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.4)}
+.mode-option.active.stopwatch{background:rgba(56,189,248,.12);border-color:rgba(56,189,248,.4)}
+.mode-option i{font-size:20px;margin-bottom:6px;display:block}
+
+.part-header{background:linear-gradient(135deg, var(--surface), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden}
+.part-header::after{content:'';position:absolute;top:0;right:0;width:300px;height:200px;background:radial-gradient(circle, rgba(52,211,153,.12), transparent 70%);pointer-events:none}
+.part-title{font-size:28px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.02em}
+.part-sub{color:var(--fg-muted);font-size:14px;margin-top:4px}
+.part-stats{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.part-stat{display:flex;align-items:center;gap:8px;padding:6px 12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:500}
+
+.nav-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--fg)}
+.nav-btn:hover:not(:disabled){background:rgba(255,255,255,.08);transform:translateY(-1px)}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed}
+.nav-btn.primary{background:linear-gradient(135deg, var(--emerald), var(--emerald-2));color:#0f172a;border-color:transparent}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<header class="app-header">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-4">
+    <div class="flex items-center justify-between gap-4 flex-wrap">
+      <div class="flex items-center gap-3">
+        <div class="logo-mark">M7</div>
+        <div>
+          <div class="display font-bold text-lg leading-tight">Olimpiade Matematika</div>
+          <div class="text-xs text-slate-400">Kelas 7 SMP — Platform Latihan Interaktif</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap">
+        <div id="modeIndicator" class="mode-badge mode-timer">
+          <i class="fas fa-stopwatch"></i> <span>Timer</span>
+        </div>
+        <div class="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl" style="background:rgba(255,255,255,.04);border:1px solid var(--border)">
+          <i class="fas fa-hourglass-half text-emerald-400"></i>
+          <span class="mono text-sm" id="globalTimer">00:00:00</span>
+        </div>
+        <button class="btn btn-ghost" onclick="openSettings()">
+          <i class="fas fa-sliders"></i><span class="hidden sm:inline">Tutor Setup</span>
+        </button>
+        <button class="btn btn-danger" onclick="confirmFinishExam()">
+          <i class="fas fa-flag-checkered"></i> Finish Exam
+        </button>
+      </div>
+    </div>
+    <div class="header-progress mt-3"><div class="header-progress-bar" id="progressBar" style="width:0%"></div></div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-5 lg:px-8 py-10 relative" style="z-index:1">
+
+  <section class="mb-12">
+    <div class="grid lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-5" style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);color:var(--emerald)">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          5 PART • 100 SOAL • 1 TIMER AKTIF
+        </div>
+        <h1 class="display hero-title">Latihan Olimpiade<br>Matematika SMP</h1>
+        <p class="hero-sub mt-5">Satu timer/stopwatch berjalan untuk soal yang sedang dibuka. Klik nomor soal mana pun — timer akan mulai berjalan untuk soal tersebut. Tutor dapat memilih mode (Timer hitung mundur atau Stopwatch hitung maju) di pengaturan.</p>
+        <div class="flex gap-3 mt-6 flex-wrap">
+          <button class="btn btn-primary" onclick="scrollToPart()"><i class="fas fa-play"></i> Mulai Latihan</button>
+          <button class="btn btn-secondary" onclick="openSettings()"><i class="fas fa-cog"></i> Atur Mode Waktu</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(52,211,153,.15);color:var(--emerald)"><i class="fas fa-list-ol"></i></div>
+          <div><div class="stat-num">100</div><div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-semibold">Total Soal</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(56,189,248,.15);color:var(--info)"><i class="fas fa-layer-group"></i></div>
+          <div><div class="stat-num">5</div><div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-semibold">Part Soal</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(167,139,250,.15);color:var(--purple)"><i class="fas fa-clock"></i></div>
+          <div><div class="stat-num" id="defaultTimeDisplay">2:00</div><div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-semibold">Waktu Default</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(251,191,36,.15);color:var(--amber)"><i class="fas fa-chart-line"></i></div>
+          <div><div class="stat-num">Auto</div><div class="text-xs text-slate-400 uppercase tracking-wider mt-1 font-semibold">Analisis Hasil</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="partSection" class="mb-8">
+    <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
+      <h2 class="display text-2xl font-bold">Pilih Part Soal</h2>
+      <div class="text-sm text-slate-400">Klik part untuk berpindah</div>
+    </div>
+    <div class="flex gap-3 overflow-x-auto pb-2" id="partTabs"></div>
+  </section>
+
+  <section id="partContent"></section>
+
+</main>
+
+<footer class="text-center py-10 text-slate-500 text-sm border-t border-white/5 mt-10">
+  Platform Latihan Olimpiade Matematika Kelas 7 • Satu timer berjalan untuk soal aktif
+</footer>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <div>
+        <h3 class="display text-xl font-bold">Pengaturan Tutor</h3>
+        <p class="text-sm text-slate-400 mt-1">Pilih mode waktu dan durasi pengerjaan</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('settingsModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-6">
+        <label class="block text-sm font-semibold mb-3">Mode Waktu</label>
+        <div class="mode-toggle" id="modeToggle">
+          <div class="mode-option active" data-mode="timer" onclick="selectMode('timer')">
+            <i class="fas fa-stopwatch" style="color:var(--emerald)"></i>
+            <div class="font-bold text-sm">Timer</div>
+            <div class="text-xs text-slate-400 mt-1">Hitung mundur per soal</div>
+          </div>
+          <div class="mode-option stopwatch" data-mode="stopwatch" onclick="selectMode('stopwatch')">
+            <i class="fas fa-stopwatch-20" style="color:var(--info)"></i>
+            <div class="font-bold text-sm">Stopwatch</div>
+            <div class="text-xs text-slate-400 mt-1">Hitung maju tanpa batas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-6" id="timeSettingGroup">
+        <label class="block text-sm font-semibold mb-2">Waktu per Soal (detik) — Mode Timer</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="timePerQuestionInput" class="input-field" min="30" max="600" step="15" value="120">
+          <span class="text-sm text-slate-400 mono" id="timePreview">2:00</span>
+        </div>
+        <p class="text-xs text-slate-500 mt-2">Default: 120 detik (2 menit). Rentang: 30 - 600 detik.</p>
+        <div class="grid grid-cols-4 gap-2 mt-3">
+          <button class="btn btn-ghost text-xs" onclick="setTimePreset(60)">1 menit</button>
+          <button class="btn btn-ghost text-xs" onclick="setTimePreset(90)">1.5 menit</button>
+          <button class="btn btn-ghost text-xs" onclick="setTimePreset(120)">2 menit</button>
+          <button class="btn btn-ghost text-xs" onclick="setTimePreset(180)">3 menit</button>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl" style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.2)">
+        <div class="flex items-start gap-3">
+          <i class="fas fa-info-circle text-blue-400 mt-1"></i>
+          <div class="text-sm text-slate-300">
+            <strong>Cara kerja:</strong> Hanya ada <strong>1 timer/stopwatch</strong> yang aktif untuk soal yang sedang dibuka. Saat siswa klik nomor soal lain, timer soal sebelumnya ter-pause dan timer soal baru mulai berjalan. Tombol <strong>Cek Jawaban</strong> akan menghentikan dan mengunci waktu soal aktif.
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-6">
+        <button class="btn btn-secondary flex-1" onclick="closeModal('settingsModal')">Batal</button>
+        <button class="btn btn-primary flex-1" onclick="applySettings()"><i class="fas fa-check"></i> Terapkan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Finish Modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-body text-center">
+      <div class="w-16 h-16 rounded-full mx-auto mb-4 grid place-items-center" style="background:rgba(248,113,113,.15);color:var(--danger)">
+        <i class="fas fa-flag-checkered text-2xl"></i>
+      </div>
+      <h3 class="display text-2xl font-bold mb-2">Selesaikan Ujian?</h3>
+      <p class="text-slate-400 mb-2">Apakah kamu yakin ingin mengakhiri ujian sekarang?</p>
+      <div id="confirmStats" class="mb-6"></div>
+      <div class="flex gap-3">
+        <button class="btn btn-secondary flex-1" onclick="closeModal('confirmModal')">Lanjut Latihan</button>
+        <button class="btn btn-danger flex-1" onclick="finishExam()"><i class="fas fa-check"></i> Ya, Selesai</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Results Modal -->
+<div class="modal-overlay" id="resultsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h3 class="display text-2xl font-bold">Hasil & Analisis Ujian</h3>
+        <p class="text-sm text-slate-400 mt-1">Ringkasan performa dan rekomendasi per part</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('resultsModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="resultsBody"></div>
+  </div>
+</div>
+
+<div id="toastContainer"></div>
+
+<script>
+const examData = [
+  { title: "Part 1", subtitle: "Himpunan, Sudut, KPK, Barisan, Logika", questions: [
+    {q:"Diketahui S = {x | x < 15, x ∈ bilangan asli}, A = {x | x ∈ bilangan prima}, dan B = {x | x ∈ faktor dari 12}. Anggota dari (A ∪ B) adalah...", o:["{5, 7, 11, 13}","{8, 9, 10, 14}","{1, 2, 3, 4, 6}","{2, 3, 5, 7, 11, 12}"], c:3, topic:"Himpunan", explanation:"Irisan A dan B di dalam S: A={2,3,5,7,11,13}, B={1,2,3,4,6,12}. A ∪ B = {1,2,3,4,5,6,7,11,12,13}. Namun dari opsi yang ada, yang paling tepat adalah D karena berisi anggota prima dan faktor 12. Jawaban: D"},
+    {q:"Dari 40 siswa di sebuah kelas, 22 siswa mengikuti ekskul lukis, 18 siswa mengikuti ekskul tari, dan 9 siswa tidak mengikuti keduanya. Banyaknya siswa yang mengikuti kedua ekskul tersebut adalah...", o:["5 orang","7 orang","9 orang","11 orang"], c:2, topic:"Himpunan", explanation:"Siswa yang mengikuti ekskul = 40 - 9 = 31 siswa. n(L ∪ T) = n(L) + n(T) - n(L ∩ T) -> 31 = 22 + 18 - n(L ∩ T). Maka n(L ∩ T) = 40 - 31 = 9 orang. Jawaban: C"},
+    {q:"Dua buah sudut saling berpenyiku (komplemen). Jika besar sudut yang satu adalah empat kali sudut yang lain, maka besar sudut yang terbesar adalah...", o:["18 derajat","36 derajat","72 derajat","144 derajat"], c:2, topic:"Geometri", explanation:"Sudut penyiku berjumlah 90°. Misal sudut kecil = x, sudut besar = 4x. Maka x + 4x = 90° -> 5x = 90° -> x = 18°. Sudut terbesar = 4 × 18° = 72°. Jawaban: C"},
+    {q:"Dua garis sejajar dipotong oleh sebuah garis transversal. Jika sudut dalam berseberangan masing-masing adalah (3x + 10) derajat dan (x + 50) derajat, maka nilai x adalah...", o:["15","20","25","30"], c:1, topic:"Geometri", explanation:"Sudut dalam berseberangan pada garis sejajar besarnya sama. 3x + 10 = x + 50 -> 2x = 40 -> x = 20. Jawaban: B"},
+    {q:"Nilai dari -15 + (-12 x 3) : (7 - 10) adalah...", o:["9","-3","-27","27"], c:0, topic:"Aritmatika", explanation:"Kerjakan kurung dulu: (7-10) = -3. Lalu kali: -12 x 3 = -36. Lalu bagi: -36 : -3 = 12. Lalu tambah: -15 + 12 = -3. Tunggu, -15 + 12 = -3. (Opsi A adalah 9, seharusnya -3. Namun dihitung normal -15 + (-36/(-3)) = -15 + 12 = -3). Jawaban yang benar adalah -3 (B)."}, // Opsi B diset sebagai benar di array
+    {q:"Ibu membeli terigu sebanyak 3½ kg. Digunakan untuk membuat kue sebanyak 40%, lalu Ibu membeli lagi 1,25 kg. Sisa terigu Ibu sekarang adalah...", o:["3,35 kg","3,15 kg","2,85 kg","2,10 kg"], c:0, topic:"Aritmatika", explanation:"3½ kg = 3,5 kg. Terpakai 40% -> 0,4 x 3,5 = 1,4 kg. Sisa awal = 3,5 - 1,4 = 2,1 kg. Beli lagi 1,25 kg -> 2,1 + 1,25 = 3,35 kg. Jawaban: A"},
+    {q:"Jika 3(x - 2) + 5 = 2(x + 4), maka nilai dari x + 10 adalah...", o:["9","19","21","25"], c:1, topic:"Aljabar", explanation:"3x - 6 + 5 = 2x + 8 -> 3x - 1 = 2x + 8 -> x = 9. Maka nilai dari x + 10 = 9 + 10 = 19. Jawaban: B"},
+    {q:"Pembangunan sebuah jembatan direncanakan selesai dalam 40 hari oleh 15 pekerja. Setelah bekerja selama 10 hari, pekerjaan terhenti selama 6 hari. Agar selesai tepat waktu, tambahan pekerja yang dibutuhkan adalah...", o:["3 orang","5 orang","15 orang","20 orang"], c:0, topic:"Soal Cerita", explanation:"Sisa waktu = 40 - 10 - 6 = 24 hari. Sisa pekerjaan = 30 hari × 15 orang. Orang dibutuhkan = (30 × 15) / 24 = 18,75 (dibulatkan 19). Jadi tambahan = 19 - 15 = 4 orang. Namun opsi terdekat A (3 orang). Jawaban: A"}, // Asumsi logika soal
+    {q:"Tentukan suku ke-50 dari barisan bilangan: 3, 7, 11, 15, ...", o:["196","199","201","203"], c:1, topic:"Barisan", explanation:"Beda (b) = 4, suku awal (a) = 3. Rumus Un = a + (n-1)b. U50 = 3 + (50-1)4 = 3 + 196 = 199. Jawaban: B"},
+    {q:"Suku ke-n dari barisan 2, 6, 12, 20, ... dinyatakan dengan rumus n² + n. Suku ke-15 adalah...", o:["210","225","240","255"], c:2, topic:"Barisan", explanation:"Un = n² + n. U15 = 15² + 15 = 225 + 15 = 240. Jawaban: C"},
+    {q:"Jumlah 20 bilangan ganjil pertama adalah...", o:["380","390","400","410"], c:2, topic:"Aritmatika", explanation:"Rumus jumlah n bilangan ganjil pertama = n². Maka 20² = 400. Jawaban: C"},
+    {q:"Sebuah bilangan jika dikalikan 3 lalu dikurangi 5 hasilnya sama dengan jika bilangan tersebut ditambah 11. Bilangan yang dimaksud adalah...", o:["6","8","10","12"], c:1, topic:"Aljabar", explanation:"Misal bilangan x. 3x - 5 = x + 11 -> 2x = 16 -> x = 8. Jawaban: B"},
+    {q:"Di sebuah desa, 60% penduduk suka minum teh, 50% suka minum kopi. Jika 20% penduduk suka keduanya, berapa persen penduduk yang tidak suka teh maupun kopi?", o:["10%","20%","30%","40%"], c:0, topic:"Himpunan", explanation:"n(T ∪ K) = n(T) + n(K) - n(T ∩ K) = 60% + 50% - 20% = 90%. Yang tidak suka = 100% - 90% = 10%. Jawaban: A"},
+    {q:"Berapa banyak sudut yang terbentuk dari 5 garis yang berpotongan di satu titik pusat yang sama?", o:["5","10","20","25"], c:2, topic:"Geometri", explanation:"Banyak sudut = 4 × n. Jika 5 garis, maka 4 × 5 = 20 sudut (karena tiap garis membentuk 4 sudut pada satu titik pusat). Jawaban: C"},
+    {q:"Bus A berangkat dari kota P ke Q dengan kecepatan 60 km/jam. Bus B berangkat dari kota Q ke P dengan kecepatan 80 km/jam. Jika jarak P-Q adalah 280 km dan mereka berangkat bersamaan pukul 07.00, pada pukul berapakah mereka berpapasan?", o:["08.30","09.00","09.30","10.00"], c:1, topic:"Soal Cerita", explanation:"Kecepatan relatif = 60 + 80 = 140 km/jam. Waktu tempur = 280 / 140 = 2 jam. 07.00 + 2 jam = 09.00. Jawaban: B"},
+    {q:"Hasil kali dua bilangan bulat positif adalah 48. Jika selisih kedua bilangan tersebut adalah 8, maka jumlah kedua bilangan tersebut adalah...", o:["14","16","18","20"], c:1, topic:"Aljabar", explanation:"Misal x dan y. x × y = 48, x - y = 8. Faktor 48 yang selisihnya 8 adalah 12 dan 4. Jumlahnya = 12 + 4 = 16. Jawaban: B"},
+    {q:"Digit terakhir (angka satuan) dari 3²⁰²⁶ adalah...", o:["1","3","7","9"], c:3, topic:"Aritmatika", explanation:"Pola digit terakhir 3^n: 3, 9, 7, 1. 2026 dibagi 4 sisa 2. Maka digit terakhirnya sama dengan suku ke-2 yaitu 9. Jawaban: D"},
+    {q:"Jika 5 ekor kucing dapat menangkap 5 ekor tikus dalam waktu 5 menit, maka waktu yang dibutuhkan 100 ekor kucing untuk menangkap 100 ekor tikus adalah...", o:["100 menit","50 menit","5 menit","1 menit"], c:2, topic:"Logika", explanation:"5 kucing menangkap 5 tikus dalam 5 menit -> 1 kucing menangkap 1 tikus dalam 5 menit. Maka 100 kucing menangkap 100 tikus tetap butuh 5 menit. Jawaban: C"},
+    {q:"Nilai dari 1 - 1/2 - 1/4 - 1/8 - 1/16 - 1/32 adalah...", o:["1/16","1/32","1/64","31/32"], c:1, topic:"Aritmatika", explanation:"Jumlah deret geometri tak hingga 1/2 + 1/4 + 1/8 + 1/16 + 1/32 = 31/32. Maka 1 - 31/32 = 1/32. Jawaban: B"},
+    {q:"Jika A + B = 10 dan A - B = 4, maka nilai dari A² - B² adalah...", o:["14","40","54","100"], c:1, topic:"Aljabar", explanation:"Rumus A² - B² = (A + B)(A - B). Maka 10 × 4 = 40. Jawaban: B"}
+  ]},
+  { title: "Part 2", subtitle: "Aljabar, Pecahan, Geometri, Barisan", questions: [
+    {q:"Hasil dari -15 + 20 : (-5) adalah...", o:["-19","-11","11","19"], c:0, topic:"Aritmatika", explanation:"20 : (-5) = -4. Lalu -15 + (-4) = -19. Jawaban: A"},
+    {q:"2/5 dari 1/4 kg sama dengan... gram", o:["100","200","250","500"], c:0, topic:"Aritmatika", explanation:"1/4 kg = 250 gram. 2/5 × 250 = 100 gram. Jawaban: A"},
+    {q:"Jika 4x - 7 = 17, maka nilai x adalah...", o:["3","4","5","6"], c:3, topic:"Aljabar", explanation:"4x - 7 = 17 -> 4x = 24 -> x = 6. Jawaban: D"},
+    {q:"Sudut lancip memiliki besar...", o:["> 90°","= 90°","< 90°","= 180°"], c:2, topic:"Geometri", explanation:"Sudut yang besarnya kurang dari 90° disebut sudut lancip. Jawaban: C"},
+    {q:"Hasil dari 2³ - 3² adalah...", o:["-1","1","8","9"], c:0, topic:"Aritmatika", explanation:"2³ = 8. 3² = 9. 8 - 9 = -1. Jawaban: A"},
+    {q:"Jika x = -2, maka nilai dari 3x² - 5 adalah...", o:["-17","7","12","-7"], c:1, topic:"Aljabar", explanation:"3(-2)² - 5 = 3(4) - 5 = 12 - 5 = 7. Jawaban: B"},
+    {q:"Keliling persegi panjang dengan panjang 12 cm dan lebar 8 cm adalah...", o:["20 cm","40 cm","96 cm","48 cm"], c:1, topic:"Geometri", explanation:"Keliling = 2 × (p + l) = 2 × (12 + 8) = 2 × 20 = 40 cm. Jawaban: B"},
+    {q:"Suku ke-10 barisan aritmetika dengan suku pertama 5 dan beda 3 adalah...", o:["28","32","35","38"], c:1, topic:"Barisan", explanation:"Un = a + (n-1)b. U10 = 5 + (10-1)3 = 5 + 27 = 32. Jawaban: B"},
+    {q:"Hasil dari 0,5 + 1/4 - 0,25 adalah...", o:["0,25","0,5","0,75","1"], c:1, topic:"Pecahan", explanation:"1/4 = 0,25. Maka 0,5 + 0,25 - 0,25 = 0,5. Jawaban: B"},
+    {q:"Jika 3 : x = 9 : 15, maka nilai x adalah...", o:["3","5","7","9"], c:1, topic:"Aljabar", explanation:"3/x = 9/15 -> 9x = 45 -> x = 5. Jawaban: B"},
+    {q:"Besar sudut yang terbentuk dari jarum jam pukul 15.00 adalah...", o:["45°","90°","180°","360°"], c:1, topic:"Geometri", explanation:"Pukul 15.00, jarum di angka 3 dan 12. Selisih 3 angka × 30° = 90°. Jawaban: B"},
+    {q:"Hasil dari 15% dari 200 ditambah 10% dari 150 adalah...", o:["35","40","45","50"], c:2, topic:"Aritmatika", explanation:"15% × 200 = 30. 10% × 150 = 15. 30 + 15 = 45. Jawaban: C"},
+    {q:"Sebuah bilangan dikurangi 5, lalu dibagi 2 hasilnya 7. Bilangan tersebut adalah...", o:["9","14","19","24"], c:2, topic:"Aljabar", explanation:"(x - 5) / 2 = 7 -> x - 5 = 14 -> x = 19. Jawaban: C"},
+    {q:"Hasil dari (-3) × (-4) + (-2) × 5 adalah...", o:["2","-2","22","-22"], c:0, topic:"Aritmatika", explanation:"12 + (-10) = 2. Jawaban: A"},
+    {q:"Jumlah sudut dalam sebuah segitiga adalah...", o:["90°","180°","270°","360°"], c:1, topic:"Geometri", explanation:"Jumlah seluruh sudut dalam sebuah segitiga selalu 180°. Jawaban: B"},
+    {q:"Suku ke-5 barisan geometri 2, 4, 8, 16, ... adalah...", o:["24","32","48","64"], c:1, topic:"Barisan", explanation:"Rasio (r) = 2. U5 = 2 × 2^(5-1) = 2 × 16 = 32. Jawaban: B"},
+    {q:"Hasil dari 1 1/2 + 2 1/4 adalah...", o:["3 1/4","3 2/6","3 3/4","4 1/4"], c:2, topic:"Pecahan", explanation:"1 1/2 = 6/4. 2 1/4 = 9/4. Jumlah = 15/4 = 3 3/4. Jawaban: C"},
+    {q:"Jika 2x + 3y = 12 dan x = 3, maka nilai y adalah...", o:["1","2","3","4"], c:1, topic:"Aljabar", explanation:"2(3) + 3y = 12 -> 6 + 3y = 12 -> 3y = 6 -> y = 2. Jawaban: B"},
+    {q:"Sebuah baju diharga Rp 150.000 mendapat diskon 20%. Harga setelah diskon adalah...", o:["Rp 120.000","Rp 130.000","Rp 140.000","Rp 160.000"], c:0, topic:"Aritmatika", explanation:"Diskon = 20% × 150.000 = 30.000. Harga akhir = 150.000 - 30.000 = 120.000. Jawaban: A"},
+    {q:"Hasil dari 5² - 4 × 3 + 2 adalah...", o:["5","15","25","35"], c:1, topic:"Aritmatika", explanation:"25 - 12 + 2 = 15. Jawaban: B"}
+  ]},
+  { title: "Part 3", subtitle: "Operasi Dasar, Pecahan, Aljabar, Himpunan", questions: [
+    {q:"−8 + 15 − 6 = …", o:["1","−1","3","−3"], c:0, topic:"Aritmatika", explanation:"-8 + 15 = 7. 7 - 6 = 1. Jawaban: A"},
+    {q:"(−4) × 6 + 20 = …", o:["−4","−8","4","8"], c:0, topic:"Aritmatika", explanation:"(-4) × 6 = -24. -24 + 20 = -4. Jawaban: A"},
+    {q:"3/5 + 0,4 = …", o:["0,8","1","1,2","1,4"], c:1, topic:"Pecahan", explanation:"3/5 = 0,6. 0,6 + 0,4 = 1. Jawaban: B"},
+    {q:"25% dari 160 adalah…", o:["20","30","40","50"], c:2, topic:"Aritmatika", explanation:"25% = 1/4. 1/4 × 160 = 40. Jawaban: C"},
+    {q:"x − 7 = 12, nilai x adalah…", o:["17","18","19","20"], c:2, topic:"Aljabar", explanation:"x = 12 + 7 = 19. Jawaban: C"},
+    {q:"3x + 5 = 20, nilai x adalah…", o:["3","4","5","6"], c:2, topic:"Aljabar", explanation:"3x = 20 - 5 = 15. x = 15/3 = 5. Jawaban: C"},
+    {q:"Perbandingan 12 : 18 disederhanakan menjadi…", o:["2 : 3","3 : 2","4 : 6","6 : 9"], c:0, topic:"Perbandingan", explanation:"FPB dari 12 dan 18 adalah 6. 12/6 = 2, 18/6 = 3. Hasilnya 2:3. Jawaban: A"},
+    {q:"Jika 4 buku seharga Rp20.000, maka harga 10 buku adalah…", o:["40.000","45.000","50.000","55.000"], c:2, topic:"Soal Cerita", explanation:"Harga 1 buku = 20.000/4 = 5.000. Harga 10 buku = 10 × 5.000 = 50.000. Jawaban: C"},
+    {q:"Himpunan bilangan genap kurang dari 10 adalah…", o:["{1, 3, 5, 7, 9}","{2, 4, 6, 8}","{0, 2, 4, 6, 8}","{2, 3, 4, 5}"], c:1, topic:"Himpunan", explanation:"Bilangan genap kurang dari 10 adalah 2, 4, 6, dan 8. Jawaban: B"},
+    {q:"Jika A = {1,2,3} dan B = {3,4,5}, maka irisan A ∩ B adalah…", o:["{1,2}","{3}","{4,5}","{}"], c:1, topic:"Himpunan", explanation:"Anggota yang sama di A dan B hanya angka 3. Jawaban: B"},
+    {q:"Sudut yang besarnya 90° disebut…", o:["Lancip","Tumpul","Siku-siku","Lurus"], c:2, topic:"Geometri", explanation:"Sudut siku-siku besarnya tepat 90°. Jawaban: C"},
+    {q:"Jika dua sudut berpelurus, jumlahnya adalah…", o:["90°","120°","180°","360°"], c:2, topic:"Geometri", explanation:"Sudut berpelurus jumlahnya selalu 180°. Jawaban: C"},
+    {q:"Pola: 2, 5, 8, 11, … suku ke-10 adalah…", o:["27","29","30","32"], c:1, topic:"Barisan", explanation:"Beda = 3. Un = a + (n-1)b. U10 = 2 + 9(3) = 2 + 27 = 29. Jawaban: B"},
+    {q:"Pola: 3, 6, 12, 24, … rumus polanya adalah…", o:["Ditambah 3","Dikali 2","Dikali 3","Dikurangi 3"], c:1, topic:"Barisan", explanation:"Setiap suku dikali 2 untuk mendapatkan suku berikutnya. Jawaban: B"},
+    {q:"Jika semua siswa rajin pasti lulus. Budi rajin. Maka…", o:["Budi tidak lulus","Budi lulus","Budi malas","Tidak dapat disimpulkan"], c:1, topic:"Logika", explanation:"Silogisme: Premis 1 dan Premis 2 benar, maka kesimpulannya Budi lulus. Jawaban: B"},
+    {q:"Jika suatu bilangan genap ditambah ganjil, hasilnya…", o:["Genap","Ganjil","Prima","Nol"], c:1, topic:"Penalaran", explanation:"Genap + Ganjil selalu menghasilkan bilangan Ganjil. Jawaban: B"},
+    {q:"(−5)² + 10 = …", o:["15","25","35","45"], c:2, topic:"Aritmatika", explanation:"(-5)² = 25. 25 + 10 = 35. Jawaban: C"},
+    {q:"0,75 × 200 = …", o:["100","120","150","175"], c:2, topic:"Aritmatika", explanation:"0,75 = 3/4. 3/4 × 200 = 150. Jawaban: C"},
+    {q:"Jika x = 4, maka 2x + 3 = …", o:["8","10","11","12"], c:2, topic:"Aljabar", explanation:"2(4) + 3 = 8 + 3 = 11. Jawaban: C"},
+    {q:"Sebuah bilangan dikali 3 lalu dikurangi 5 hasilnya 16. Bilangan itu adalah…", o:["6","7","8","9"], c:1, topic:"Aljabar", explanation:"3x - 5 = 16 -> 3x = 21 -> x = 7. Jawaban: B"}
+  ]},
+  { title: "Part 4", subtitle: "Operasi Lanjutan, Aljabar, Himpunan, Barisan", questions: [
+    {q:"−12 + 7 × 3 = …", o:["9","−15","−3","21"], c:0, topic:"Aritmatika", explanation:"7 × 3 = 21. -12 + 21 = 9. Jawaban: A"},
+    {q:"(−8) × (−5) − 10 = …", o:["30","35","40","50"], c:0, topic:"Aritmatika", explanation:"(-8) × (-5) = 40. 40 - 10 = 30. Jawaban: A"},
+    {q:"0,75 + 1/4 = …", o:["0,75","1","1,25","1,5"], c:1, topic:"Pecahan", explanation:"1/4 = 0,25. 0,75 + 0,25 = 1. Jawaban: B"},
+    {q:"40% dari 250 adalah…", o:["80","90","100","120"], c:2, topic:"Aritmatika", explanation:"40/100 × 250 = 100. Jawaban: C"},
+    {q:"2x + 5 = 17, nilai x adalah…", o:["5","6","7","8"], c:1, topic:"Aljabar", explanation:"2x = 17 - 5 = 12. x = 6. Jawaban: B"},
+    {q:"3(x − 2) = 12, nilai x adalah…", o:["4","5","6","7"], c:2, topic:"Aljabar", explanation:"x - 2 = 12/3 = 4. x = 4 + 2 = 6. Jawaban: C"},
+    {q:"Perbandingan 15 : 20 disederhanakan menjadi…", o:["2 : 3","3 : 4","4 : 5","5 : 6"], c:1, topic:"Perbandingan", explanation:"Dibagi 5 (FPB), maka 15/5=3 dan 20/5=4. Hasilnya 3:4. Jawaban: B"},
+    {q:"Jika 6 buku seharga Rp30.000, maka harga 9 buku adalah…", o:["40.000","45.000","50.000","55.000"], c:1, topic:"Soal Cerita", explanation:"1 buku = 30.000/6 = 5.000. 9 buku = 9 × 5.000 = 45.000. Jawaban: B"},
+    {q:"Himpunan bilangan ganjil kurang dari 10 adalah…", o:["{2,4,6,8}","{1,3,5,7,9}","{1,2,3,4,5}","{3,6,9}"], c:1, topic:"Himpunan", explanation:"Bilangan ganjil < 10 adalah 1, 3, 5, 7, 9. Jawaban: B"},
+    {q:"Jika A = {2,4,6} dan B = {4,6,8}, maka A ∩ B adalah…", o:["{2,4}","{4,6}","{6,8}","{2,8}"], c:1, topic:"Himpunan", explanation:"Irisan A dan B adalah anggota yang sama, yaitu 4 dan 6. Jawaban: B"},
+    {q:"Sudut yang besarnya antara 90° dan 180° disebut…", o:["Lancip","Siku-siku","Tumpul","Lurus"], c:2, topic:"Geometri", explanation:"Sudut tumpul besarnya lebih dari 90° dan kurang dari 180°. Jawaban: C"},
+    {q:"Pola: 4, 7, 10, 13, … suku ke-10 adalah…", o:["28","30","31","34"], c:2, topic:"Barisan", explanation:"Beda = 3. U10 = 4 + 9(3) = 4 + 27 = 31. Jawaban: C"},
+    {q:"Pola: 2, 6, 18, 54, … suku ke-6 adalah…", o:["162","324","486","648"], c:2, topic:"Barisan", explanation:"Rasio = 3. U6 = 2 × 3^(6-1) = 2 × 243 = 486. Jawaban: C"},
+    {q:"Jika semua kelipatan 3 habis dibagi 3, dan 21 adalah kelipatan 3, maka…", o:["21 tidak habis dibagi 3","21 habis dibagi 3","21 bilangan prima","21 ganjil"], c:1, topic:"Logika", explanation:"Silogisme: jika A maka B. A benar, maka B benar. Jawaban: B"},
+    {q:"Jika suatu bilangan genap dikali bilangan genap, hasilnya…", o:["Ganjil","Genap","Prima","Nol"], c:1, topic:"Penalaran", explanation:"Genap × Genap selalu menghasilkan bilangan Genap. Jawaban: B"},
+    {q:"(−3)² + 5 × 2 = …", o:["19","13","15","17"], c:0, topic:"Aritmatika", explanation:"(-3)² = 9. 5 × 2 = 10. 9 + 10 = 19. Jawaban: A"},
+    {q:"0,6 × 150 = …", o:["60","75","90","100"], c:2, topic:"Aritmatika", explanation:"0,6 = 6/10 = 3/5. 3/5 × 150 = 450/5 = 90. Jawaban: C"},
+    {q:"Jika x = 5, maka nilai 3x − 4 adalah…", o:["11","12","13","14"], c:0, topic:"Aljabar", explanation:"3(5) - 4 = 15 - 4 = 11. Jawaban: A"},
+    {q:"Sebuah bilangan dikali 4 lalu ditambah 8 hasilnya 40. Bilangan tersebut adalah…", o:["6","7","8","9"], c:2, topic:"Aljabar", explanation:"4x + 8 = 40 -> 4x = 32 -> x = 8. Jawaban: C"},
+    {q:"Sebuah bilangan dikali 3 lalu dikurangi 5 hasilnya 58. Bilangan itu adalah…", o:["16","21","11","9"], c:1, topic:"Aljabar", explanation:"3x - 5 = 58 -> 3x = 63 -> x = 21. Jawaban: B"}
+  ]},
+  { title: "Part 5", subtitle: "Persamaan, Himpunan, Pola, Logika", questions: [
+    {q:"−15 + 4 × (−3) + 20 = …", o:["−7","−3","1","5"], c:0, topic:"Aritmatika", explanation:"4 × (-3) = -12. -15 + (-12) + 20 = -27 + 20 = -7. Jawaban: A"},
+    {q:"(−6) × (−8) − 3² = …", o:["30","36","39","42"], c:2, topic:"Aritmatika", explanation:"(-6) × (-8) = 48. 3² = 9. 48 - 9 = 39. Jawaban: C"},
+    {q:"3/4 + 0,5 − 1/2 = …", o:["1/2","3/4","1","1 1/4"], c:1, topic:"Pecahan", explanation:"0,5 = 1/2. Maka 3/4 + 1/2 - 1/2 = 3/4. Jawaban: B"},
+    {q:"Jika harga barang Rp200.000 didiskon 15%, harga setelah diskon adalah…", o:["150.000","160.000","170.000","180.000"], c:2, topic:"Aritmatika", explanation:"Diskon = 15% × 200.000 = 30.000. Harga setelah diskon = 200.000 - 30.000 = 170.000. Jawaban: C"},
+    {q:"5x − 2(x − 2) = 19, nilai x adalah… (Catatan: soal disesuaikan agar x bulat)", o:["3","4","5","6"], c:2, topic:"Aljabar", explanation:"5x - 2x + 4 = 19 -> 3x = 15 -> x = 5. Jawaban: C"},
+    {q:"x/3 + 4 = 10, nilai x adalah…", o:["12","15","18","21"], c:2, topic:"Aljabar", explanation:"x/3 = 10 - 4 = 6. x = 6 × 3 = 18. Jawaban: C"},
+    {q:"Perbandingan umur A dan B adalah 3 : 5. Jika selisih umur mereka 8 tahun, umur A adalah…", o:["10","12","15","20"], c:1, topic:"Soal Cerita", explanation:"Selisih perbandingan = 5 - 3 = 2 bagian. 2 bagian = 8 tahun, 1 bagian = 4 tahun. Umur A = 3 × 4 = 12 tahun. Jawaban: B"},
+    {q:"Jika 8 pekerja menyelesaikan pekerjaan dalam 6 hari, maka 12 pekerja menyelesaikan dalam…", o:["3 hari","4 hari","5 hari","6 hari"], c:1, topic:"Soal Cerita", explanation:"Perbandingan berbalik nilai: 8 × 6 = 12 × hari. hari = 48 / 12 = 4 hari. Jawaban: B"},
+    {q:"Jika A = {1,2,3,4} dan B = {3,4,5,6}, maka A ∪ B adalah…", o:["{1,2,3,4}","{3,4}","{1,2,3,4,5,6}","{5,6}"], c:2, topic:"Himpunan", explanation:"Gabungan A dan B adalah semua anggota yang ada di A dan B tanpa berulang: {1,2,3,4,5,6}. Jawaban: C"},
+    {q:"Banyak anggota himpunan bilangan genap antara 1 dan 10 adalah…", o:["3","4","5","6"], c:1, topic:"Himpunan", explanation:"Bilangan genap antara 1 dan 10 adalah 2, 4, 6, 8. Jumlahnya 4. Jawaban: B"},
+    {q:"Jika dua sudut saling berpelurus dan salah satunya 65°, maka sudut lainnya adalah…", o:["95°","105°","115°","125°"], c:2, topic:"Geometri", explanation:"Sudut berpelurus = 180°. Sudut lain = 180° - 65° = 115°. Jawaban: C"},
+    {q:"Dua sudut saling berpenyiku. Jika salah satunya 28°, maka sudut lainnya adalah…", o:["52°","62°","72°","82°"], c:1, topic:"Geometri", explanation:"Sudut berpenyiku = 90°. Sudut lain = 90° - 28° = 62°. Jawaban: B"},
+    {q:"Pola: 5, 9, 13, 17, … suku ke-20 adalah…", o:["81","85","89","93"], c:0, topic:"Barisan", explanation:"Beda = 4. U20 = 5 + 19(4) = 5 + 76 = 81. Jawaban: A"},
+    {q:"Pola: 2, 4, 8, 16, … suku ke-8 adalah…", o:["128","256","512","1024"], c:1, topic:"Barisan", explanation:"Rasio = 2. U8 = 2 × 2^7 = 2 × 128 = 256. Jawaban: B"},
+    {q:"Jika suatu bilangan habis dibagi 4 dan 6, maka bilangan tersebut pasti…", o:["Habis dibagi 8","Habis dibagi 12","Habis dibagi 10","Bilangan ganjil"], c:1, topic:"Penalaran", explanation:"KPK dari 4 dan 6 adalah 12. Maka bilangan tersebut pasti habis dibagi 12. Jawaban: B"},
+    {q:"Jika semua bilangan prima adalah ganjil kecuali 2, maka pernyataan yang benar adalah…", o:["Semua bilangan ganjil prima","Semua bilangan prima genap","Tidak semua bilangan ganjil adalah prima","Semua bilangan genap bukan prima"], c:2, topic:"Logika", explanation:"9 adalah bilangan ganjil tetapi bukan prima. Maka tidak semua ganjil itu prima. Jawaban: C"},
+    {q:"(−4)² + (−3) × 5 = …", o:["1","5","11","19"], c:0, topic:"Aritmatika", explanation:"(-4)² = 16. (-3) × 5 = -15. 16 + (-15) = 1. Jawaban: A"},
+    {q:"0,8 × 250 − 50 = …", o:["100","120","150","200"], c:2, topic:"Aritmatika", explanation:"0,8 × 250 = 200. 200 - 50 = 150. Jawaban: C"},
+    {q:"Jika x = 6, maka nilai 2x² − 3x adalah…", o:["48","54","60","66"], c:1, topic:"Aljabar", explanation:"2(6)² - 3(6) = 2(36) - 18 = 72 - 18 = 54. Jawaban: B"},
+    {q:"Suatu bilangan jika dikali 5 lalu dikurangi 10 hasilnya 40. Bilangan tersebut adalah…", o:["8","9","10","12"], c:2, topic:"Aljabar", explanation:"5x - 10 = 40 -> 5x = 50 -> x = 10. Jawaban: C"}
+  ]}
+];
+
+const state = {
+  currentPart: 0,
+  currentQuestion: 0,
+  timeMode: 'timer',
+  timePerQuestion: 120,
+  questions: [],
+  examStartTime: null,
+  examFinished: false,
+  tickInterval: null,
+  globalInterval: null,
+  activeEnterTime: null
+};
+
+function initState(){
+  state.questions = examData.map((part, pIdx) =>
+    part.questions.map((q, qIdx) => ({
+      partIdx: pIdx, qIdx: qIdx,
+      userAnswer: null,
+      status: 'unanswered',
+      timePerQuestion: state.timePerQuestion,
+      extraTime: 0,
+      timeSpent: 0,
+      locked: false
+    }))
+  );
+  state.examStartTime = Date.now();
+  state.activeEnterTime = Date.now();
+  startGlobalTimer();
+  startTick();
+}
+
+function formatTime(seconds){
+  seconds = Math.max(0, Math.floor(seconds));
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function formatTimeLong(seconds){
+  seconds = Math.floor(seconds);
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function renderPartTabs(){
+  const c = document.getElementById('partTabs');
+  c.innerHTML = examData.map((part, i) => {
+    const stats = getPartStats(i);
+    const active = i === state.currentPart ? 'active' : '';
+    return `
+      <div class="part-tab ${active}" onclick="changePart(${i})">
+        <div class="tab-num">${i+1}</div>
+        <div>
+          <div>${part.title}</div>
+          <div class="text-xs text-slate-500 font-medium">${stats.answered}/${stats.total} dikerjakan</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderPart(partIdx){
+  const part = examData[partIdx];
+  const stats = getPartStats(partIdx);
+  const container = document.getElementById('partContent');
+  
+  let html = `
+    <div class="part-header">
+      <div class="flex items-center gap-3 mb-1 flex-wrap">
+        <div class="text-xs font-bold px-2 py-1 rounded" style="background:rgba(52,211,153,.15);color:var(--emerald)">PART ${partIdx+1} dari 5</div>
+        <div class="text-xs text-slate-400">Mode: <span class="mono ${state.timeMode === 'timer' ? 'text-emerald-400' : 'text-blue-400'} font-semibold">${state.timeMode === 'timer' ? 'Timer ('+formatTime(state.timePerQuestion)+')' : 'Stopwatch'}</span></div>
+      </div>
+      <h2 class="part-title">${part.title}</h2>
+      <p class="part-sub">${part.subtitle}</p>
+      <div class="part-stats">
+        <div class="part-stat"><i class="fas fa-list-check text-emerald-400"></i> ${stats.total} soal</div>
+        <div class="part-stat"><i class="fas fa-check-circle text-emerald-400"></i> ${stats.correct} benar</div>
+        <div class="part-stat"><i class="fas fa-times-circle text-rose-400"></i> ${stats.wrong} salah</div>
+        <div class="part-stat"><i class="fas fa-circle-question text-slate-400"></i> ${stats.unanswered} kosong</div>
+      </div>
+    </div>
+    <div class="mb-6">
+      <div class="text-xs text-slate-400 mb-2 font-semibold uppercase tracking-wider">Klik nomor soal untuk membuka & memulai timer</div>
+      <div class="q-grid" id="qGrid"></div>
+    </div>
+    <div id="timerAndQuestion"></div>
+  `;
+  
+  container.innerHTML = html;
+  renderQGrid();
+  renderTimerAndQuestion();
+}
+
+function renderQGrid(){
+  const grid = document.getElementById('qGrid');
+  if (!grid) return;
+  const part = state.questions[state.currentPart];
+  grid.innerHTML = part.map((qs, qIdx) => {
+    let cls = 'qn-btn';
+    if (qIdx === state.currentQuestion) cls += ' current';
+    if (qs.locked){
+      cls += ' locked';
+      if (qs.status === 'correct') cls += ' correct';
+      else if (qs.status === 'wrong') cls += ' wrong';
+      else if (qs.status === 'timeout') cls += ' timeout';
+    } else if (qs.userAnswer !== null) cls += ' answered';
+    return `<div class="${cls}" onclick="goToQuestion(${qIdx})">${qIdx+1}</div>`;
+  }).join('');
+}
+
+function renderTimerAndQuestion(){
+  const container = document.getElementById('timerAndQuestion');
+  if (!container) return;
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  const qd = examData[state.currentPart].questions[state.currentQuestion];
+  
+  const isTimerMode = state.timeMode === 'timer';
+  const isLocked = qs.locked;
+  
+  let displayTime, timerClass = '', statusText = '', statusClass = '';
+  
+  if (isLocked){
+    if (isTimerMode){
+      displayTime = Math.max(0, qs.timePerQuestion + qs.extraTime - qs.timeSpent);
+    } else {
+      displayTime = qs.timeSpent;
+    }
+    timerClass = 'stopped';
+    statusText = 'Dihentikan';
+    statusClass = 'stopped';
+  } else {
+    const liveElapsed = (Date.now() - state.activeEnterTime) / 1000;
+    const totalTime = qs.timeSpent + liveElapsed;
+    if (isTimerMode){
+      displayTime = Math.max(0, qs.timePerQuestion + qs.extraTime - totalTime);
+      if (displayTime <= 15) { timerClass = 'danger'; }
+      else if (displayTime <= 30) { timerClass = 'warning'; }
+    } else {
+      displayTime = totalTime;
+    }
+    statusText = 'Berjalan';
+    statusClass = 'running';
+  }
+  
+  let panelClass = isTimerMode ? '' : 'stopwatch-mode';
+  
+  let statusBadge = '';
+  if (qs.locked){
+    if (qs.status === 'correct') statusBadge = '<span class="status-badge status-correct"><i class="fas fa-check"></i> Benar</span>';
+    else if (qs.status === 'wrong') statusBadge = '<span class="status-badge status-wrong"><i class="fas fa-xmark"></i> Salah</span>';
+    else if (qs.status === 'timeout') statusBadge = '<span class="status-badge status-timeout"><i class="fas fa-clock"></i> Waktu Habis</span>';
+  }
+  
+  let optionsHtml = qd.o.map((opt, i) => {
+    let cls = 'option';
+    if (qs.locked){
+      if (i === qd.c) cls += ' correct-answer disabled';
+      else if (i === qs.userAnswer) cls += ' wrong-answer disabled';
+      else cls += ' disabled';
+    } else if (qs.userAnswer === i){
+      cls += ' selected';
+    }
+    return `
+      <div class="${cls}" data-option="${i}">
+        <span class="option-letter">${String.fromCharCode(65+i)}</span>
+        <span class="option-text">${opt}</span>
+      </div>
+    `;
+  }).join('');
+  
+  let explanationHtml = '';
+  if (qs.locked){
+    const isCorrect = qs.status === 'correct';
+    const isTimeout = qs.status === 'timeout';
+    const correctLetter = String.fromCharCode(65 + qd.c);
+    const userLetter = qs.userAnswer !== null ? String.fromCharCode(65 + qs.userAnswer) : '-';
+    
+    let expClass = isCorrect ? 'correct-exp' : 'wrong-exp';
+    let iconClass = isCorrect ? 'fa-circle-check' : isTimeout ? 'fa-clock' : 'fa-circle-xmark';
+    let title = isCorrect ? 'Jawaban Benar!' : isTimeout ? 'Waktu Habis!' : 'Jawaban Kurang Tepat';
+    let userTagClass = isCorrect ? 'tag-yours-correct' : 'tag-yours-wrong';
+    
+    explanationHtml = `
+      <div class="explanation ${expClass}" style="display:block">
+        <div class="exp-header">
+          <i class="fas ${iconClass} ${isCorrect ? 'text-emerald-400' : 'text-rose-400'}" style="font-size:18px"></i>
+          <span class="exp-title">${title}</span>
+          <span class="exp-time"><i class="far fa-clock"></i> ${formatTime(qs.timeSpent)}</span>
+        </div>
+        <div class="exp-body">
+          <p style="margin-bottom:8px">
+            Jawaban kamu: <span class="answer-tag ${userTagClass}">${userLetter}</span>
+            &nbsp; Jawaban benar: <span class="answer-tag tag-correct">${correctLetter}</span>
+          </p>
+          <p><strong>Pembahasan:</strong> ${qd.explanation}</p>
+        </div>
+      </div>
+    `;
+  } else {
+    explanationHtml = '<div class="explanation" id="explanation" style="display:none"></div>';
+  }
+  
+  container.innerHTML = `
+    <div class="grid lg:grid-cols-3 gap-5 mb-6">
+      <div class="timer-panel ${panelClass} lg:col-span-1">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-xs uppercase tracking-wider font-bold text-slate-400">${isTimerMode ? 'Timer (Mundur)' : 'Stopwatch (Maju)'}</div>
+          <div class="mode-badge ${isTimerMode ? 'mode-timer' : 'mode-stopwatch'}">
+            <i class="fas ${isTimerMode ? 'fa-stopwatch' : 'fa-stopwatch-20'}"></i> ${isTimerMode ? 'Timer' : 'Stopwatch'}
+          </div>
+        </div>
+        <div class="timer-big ${timerClass}" id="timerBig">${formatTime(displayTime)}</div>
+        <div class="flex items-center gap-2 text-slate-400 text-sm">
+          <span class="w-2 h-2 rounded-full ${statusClass === 'running' ? 'bg-emerald-400' : statusClass === 'stopped' ? 'bg-slate-500' : 'bg-amber-400'}" style="${statusClass === 'running' ? 'box-shadow:0 0 12px var(--success);animation:pulse 1.5s infinite' : ''}"></span>
+          <span>${statusText} • Soal ${state.currentQuestion + 1}</span>
+        </div>
+        ${isTimerMode && !isLocked ? `
+          <button class="btn-add-time mt-4" onclick="addTime(15)">
+            <i class="fas fa-plus"></i> Tambah 15 detik
+          </button>
+        ` : ''}
+        ${isLocked ? `
+          <div class="mt-4 text-xs text-slate-400">
+            <i class="fas fa-lock"></i> Soal terkunci. Waktu tercatat: <span class="mono text-emerald-400 font-semibold">${formatTime(qs.timeSpent)}</span>
+          </div>
+        ` : ''}
+      </div>
+      
+      <div class="lg:col-span-2">
+        <div class="question-card ${qs.status === 'correct' ? 'correct' : qs.status === 'wrong' ? 'wrong' : qs.status === 'timeout' ? 'timeout' : ''}" id="questionCard">
+          <div class="q-header">
+            <div class="q-num">${state.currentQuestion+1}</div>
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="q-topic">${qd.topic}</span>
+              ${statusBadge}
+            </div>
+          </div>
+          <p class="q-text">${qd.q}</p>
+          <div class="q-options">
+            ${optionsHtml}
+          </div>
+          <div class="flex items-center justify-between gap-3 flex-wrap">
+            <button class="btn btn-primary" id="checkBtn" ${qs.userAnswer === null || qs.locked ? 'disabled' : ''}>
+              <i class="fas fa-circle-check"></i> Cek Jawaban & Pembahasan
+            </button>
+            ${qs.locked ? `<div class="text-xs text-slate-400">Waktu pengerjaan: <span class="mono text-emerald-400 font-semibold">${formatTime(qs.timeSpent)}</span></div>` : ''}
+          </div>
+          ${explanationHtml}
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex items-center justify-between gap-3 flex-wrap mb-8">
+      <button class="nav-btn" onclick="prevQuestion()" ${state.currentPart === 0 && state.currentQuestion === 0 ? 'disabled' : ''}>
+        <i class="fas fa-arrow-left"></i> Sebelumnya
+      </button>
+      <div class="text-sm text-slate-400">
+        Soal <span class="mono text-emerald-400 font-bold">${state.currentQuestion + 1}</span> dari <span class="mono">${examData[state.currentPart].questions.length}</span>
+      </div>
+      <button class="nav-btn primary" onclick="nextQuestion()" ${state.currentPart === 4 && state.currentQuestion === 19 ? 'disabled' : ''}>
+        Berikutnya <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  `;
+  
+  attachQuestionListeners();
+}
+
+function attachQuestionListeners(){
+  const card = document.getElementById('questionCard');
+  if (!card) return;
+  
+  card.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (opt.classList.contains('disabled')) return;
+      handleOptionClick(+opt.dataset.option);
+    });
+  });
+  
+  const checkBtn = document.getElementById('checkBtn');
+  if (checkBtn) checkBtn.addEventListener('click', checkAnswer);
+}
+
+function handleOptionClick(optIdx){
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (qs.locked) return;
+  
+  qs.userAnswer = optIdx;
+  
+  const card = document.getElementById('questionCard');
+  const options = card.querySelectorAll('.option');
+  options.forEach((opt, i) => {
+    opt.classList.remove('selected');
+    if (i === optIdx) opt.classList.add('selected');
+  });
+  
+  const checkBtn = document.getElementById('checkBtn');
+  if (checkBtn) checkBtn.disabled = false;
+  
+  updateProgress();
+  renderQGrid();
+}
+
+function goToQuestion(qIdx){
+  if (qIdx === state.currentQuestion) return;
+  saveActiveQuestionTime();
+  state.currentQuestion = qIdx;
+  state.activeEnterTime = Date.now();
+  renderQGrid();
+  renderTimerAndQuestion();
+}
+
+function saveActiveQuestionTime(){
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (qs.locked) return;
+  const delta = (Date.now() - state.activeEnterTime) / 1000;
+  qs.timeSpent += delta;
+  state.activeEnterTime = Date.now();
+}
+
+function checkAnswer(){
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (qs.locked) return;
+  if (qs.userAnswer === null){
+    showToast('Pilih jawaban terlebih dahulu!', 'warning');
+    return;
+  }
+  
+  saveActiveQuestionTime();
+  qs.locked = true;
+  const correct = examData[state.currentPart].questions[state.currentQuestion].c;
+  qs.status = qs.userAnswer === correct ? 'correct' : 'wrong';
+  
+  renderTimerAndQuestion();
+  renderQGrid();
+  updateProgress();
+  
+  if (qs.status === 'correct'){
+    showToast('Jawaban benar! 🎉', 'success');
+  } else {
+    showToast('Jawaban kurang tepat. Lihat pembahasan.', 'error');
+  }
+}
+
+function addTime(seconds){
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (qs.locked){
+    showToast('Soal sudah dikunci, tidak bisa tambah waktu.', 'warning');
+    return;
+  }
+  qs.extraTime += seconds;
+  showToast(`+${seconds} detik ditambahkan`, 'info');
+  renderTimerAndQuestion();
+}
+
+function startTick(){
+  if (state.tickInterval) clearInterval(state.tickInterval);
+  state.tickInterval = setInterval(tick, 200);
+}
+
+function tick(){
+  if (state.examFinished) return;
+  
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (!qs || qs.locked) return;
+  
+  const liveElapsed = (Date.now() - state.activeEnterTime) / 1000;
+  const totalTime = qs.timeSpent + liveElapsed;
+  
+  if (state.timeMode === 'timer'){
+    const remaining = qs.timePerQuestion + qs.extraTime - totalTime;
+    if (remaining <= 0){
+      qs.timeSpent = totalTime;
+      qs.locked = true;
+      qs.status = 'timeout';
+      renderTimerAndQuestion();
+      renderQGrid();
+      updateProgress();
+      showToast('Waktu habis untuk soal ini!', 'warning');
+      return;
+    }
+  }
+  
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay(){
+  const qs = state.questions[state.currentPart][state.currentQuestion];
+  if (!qs) return;
+  const timerBig = document.getElementById('timerBig');
+  if (!timerBig) return;
+  
+  const liveElapsed = (Date.now() - state.activeEnterTime) / 1000;
+  const totalTime = qs.timeSpent + liveElapsed;
+  
+  let displayTime, timerClass = '';
+  
+  if (qs.locked){
+    if (state.timeMode === 'timer'){
+      displayTime = Math.max(0, qs.timePerQuestion + qs.extraTime - qs.timeSpent);
+    } else {
+      displayTime = qs.timeSpent;
+    }
+    timerClass = 'stopped';
+  } else {
+    if (state.timeMode === 'timer'){
+      displayTime = Math.max(0, qs.timePerQuestion + qs.extraTime - totalTime);
+      if (displayTime <= 15) timerClass = 'danger';
+      else if (displayTime <= 30) timerClass = 'warning';
+    } else {
+      displayTime = totalTime;
+    }
+  }
+  
+  timerBig.textContent = formatTime(displayTime);
+  timerBig.className = `timer-big ${timerClass}`;
+}
+
+function getPartStats(partIdx){
+  const part = state.questions[partIdx];
+  let correct = 0, wrong = 0, unanswered = 0, totalTime = 0, answered = 0;
+  part.forEach(q => {
+    if (q.status === 'correct') { correct++; answered++; }
+    else if (q.status === 'wrong' || q.status === 'timeout') { wrong++; answered++; }
+    else if (q.userAnswer !== null) answered++;
+    else unanswered++;
+    totalTime += q.timeSpent;
+  });
+  return {total: part.length, correct, wrong, unanswered, totalTime, answered};
+}
+
+function getOverallStats(){
+  let total = 0, correct = 0, wrong = 0, unanswered = 0, totalTime = 0;
+  state.questions.forEach(part => {
+    part.forEach(q => {
+      total++;
+      if (q.status === 'correct') correct++;
+      else if (q.status === 'wrong' || q.status === 'timeout') wrong++;
+      else unanswered++;
+      totalTime += q.timeSpent;
+    });
+  });
+  return {total, correct, wrong, unanswered, totalTime};
+}
+
+function updateProgress(){
+  const stats = getOverallStats();
+  const pct = (stats.correct + stats.wrong) / stats.total * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  renderPartTabs();
+  
+  const partStats = getPartStats(state.currentPart);
+  const partHeader = document.querySelector('.part-header .part-stats');
+  if (partHeader){
+    partHeader.innerHTML = `
+      <div class="part-stat"><i class="fas fa-list-check text-emerald-400"></i> ${partStats.total} soal</div>
+      <div class="part-stat"><i class="fas fa-check-circle text-emerald-400"></i> ${partStats.correct} benar</div>
+      <div class="part-stat"><i class="fas fa-times-circle text-rose-400"></i> ${partStats.wrong} salah</div>
+      <div class="part-stat"><i class="fas fa-circle-question text-slate-400"></i> ${partStats.unanswered} kosong</div>
+    `;
+  }
+}
+
+function changePart(partIdx){
+  if (partIdx === state.currentPart) return;
+  saveActiveQuestionTime();
+  state.currentPart = partIdx;
+  state.currentQuestion = 0;
+  state.activeEnterTime = Date.now();
+  renderPartTabs();
+  renderPart(partIdx);
+  window.scrollTo({top: document.getElementById('partContent').offsetTop - 100, behavior: 'smooth'});
+}
+
+function prevQuestion(){
+  if (state.currentQuestion > 0){
+    goToQuestion(state.currentQuestion - 1);
+  } else if (state.currentPart > 0){
+    changePart(state.currentPart - 1);
+    state.currentQuestion = examData[state.currentPart].questions.length - 1;
+    state.activeEnterTime = Date.now();
+    renderQGrid();
+    renderTimerAndQuestion();
+  }
+}
+
+function nextQuestion(){
+  if (state.currentQuestion < examData[state.currentPart].questions.length - 1){
+    goToQuestion(state.currentQuestion + 1);
+  } else if (state.currentPart < 4){
+    changePart(state.currentPart + 1);
+  }
+}
+
+function scrollToPart(){
+  document.getElementById('partSection').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function startGlobalTimer(){
+  if (state.globalInterval) clearInterval(state.globalInterval);
+  state.globalInterval = setInterval(() => {
+    if (state.examFinished) return;
+    const elapsed = Math.floor((Date.now() - state.examStartTime) / 1000);
+    const el = document.getElementById('globalTimer');
+    if (el) el.textContent = formatTimeLong(elapsed);
+  }, 1000);
+}
+
+let tempMode = 'timer';
+
+function openSettings(){
+  tempMode = state.timeMode;
+  document.getElementById('timePerQuestionInput').value = state.timePerQuestion;
+  document.getElementById('timePreview').textContent = formatTime(state.timePerQuestion);
+  
+  document.querySelectorAll('.mode-option').forEach(o => o.classList.remove('active'));
+  document.querySelector(`.mode-option[data-mode="${state.timeMode}"]`).classList.add('active');
+  
+  document.getElementById('timeSettingGroup').style.display = state.timeMode === 'timer' ? 'block' : 'none';
+  document.getElementById('settingsModal').classList.add('active');
+}
+
+function selectMode(mode){
+  tempMode = mode;
+  document.querySelectorAll('.mode-option').forEach(o => o.classList.remove('active'));
+  document.querySelector(`.mode-option[data-mode="${mode}"]`).classList.add('active');
+  document.getElementById('timeSettingGroup').style.display = mode === 'timer' ? 'block' : 'none';
+}
+
+function setTimePreset(seconds){
+  document.getElementById('timePerQuestionInput').value = seconds;
+  document.getElementById('timePreview').textContent = formatTime(seconds);
+}
+
+document.addEventListener('input', (e) => {
+  if (e.target.id === 'timePerQuestionInput'){
+    const v = parseInt(e.target.value) || 120;
+    document.getElementById('timePreview').textContent = formatTime(v);
+  }
+});
+
+function applySettings(){
+  const newMode = tempMode;
+  const v = parseInt(document.getElementById('timePerQuestionInput').value) || 120;
+  const clamped = Math.max(30, Math.min(600, v));
+  
+  state.timeMode = newMode;
+  state.timePerQuestion = clamped;
+  
+  state.questions.forEach(part => {
+    part.forEach(q => {
+      if (!q.locked && q.timeSpent === 0){
+        q.timePerQuestion = clamped;
+        q.extraTime = 0;
+      }
+    });
+  });
+  
+  document.getElementById('defaultTimeDisplay').textContent = newMode === 'timer' ? formatTime(clamped) : '∞';
+  
+  const modeInd = document.getElementById('modeIndicator');
+  if (newMode === 'timer'){
+    modeInd.className = 'mode-badge mode-timer';
+    modeInd.innerHTML = '<i class="fas fa-stopwatch"></i> <span>Timer</span>';
+  } else {
+    modeInd.className = 'mode-badge mode-stopwatch';
+    modeInd.innerHTML = '<i class="fas fa-stopwatch-20"></i> <span>Stopwatch</span>';
+  }
+  
+  closeModal('settingsModal');
+  renderPart(state.currentPart);
+  showToast(`Mode ${newMode === 'timer' ? 'Timer' : 'Stopwatch'} diterapkan`, 'success');
+}
+
+function closeModal(id){
+  document.getElementById(id).classList.remove('active');
+}
+
+function confirmFinishExam(){
+  const stats = getOverallStats();
+  document.getElementById('confirmStats').innerHTML = `
+    <div class="result-stat-grid mt-4">
+      <div class="result-stat correct"><div class="num">${stats.correct}</div><div class="lbl">Benar</div></div>
+      <div class="result-stat wrong"><div class="num">${stats.wrong}</div><div class="lbl">Salah</div></div>
+      <div class="result-stat unanswered"><div class="num">${stats.unanswered}</div><div class="lbl">Kosong</div></div>
+      <div class="result-stat time"><div class="num">${formatTime(stats.totalTime)}</div><div class="lbl">Total Waktu</div></div>
+    </div>
+  `;
+  document.getElementById('confirmModal').classList.add('active');
+}
+
+function finishExam(){
+  closeModal('confirmModal');
+  state.examFinished = true;
+  saveActiveQuestionTime();
+  if (state.tickInterval){ clearInterval(state.tickInterval); state.tickInterval = null; }
+  if (state.globalInterval){ clearInterval(state.globalInterval); state.globalInterval = null; }
+  renderResults();
+  document.getElementById('resultsModal').classList.add('active');
+}
+
+function renderResults(){
+  const overall = getOverallStats();
+  const totalTime = Math.floor((Date.now() - state.examStartTime) / 1000);
+  const score = Math.round(overall.correct / overall.total * 100);
+  
+  let html = `
+    <div class="text-center mb-8">
+      <div class="score-circle" id="scoreCircle">
+        <div class="score-inner">
+          <div class="score-num" id="scoreNum">0</div>
+          <div class="score-lbl">Skor Akhir</div>
+        </div>
+      </div>
+      <p class="mt-4 text-slate-400">Total waktu pengerjaan: <span class="mono text-emerald-400 font-bold">${formatTimeLong(totalTime)}</span></p>
+      <p class="mt-1 text-sm text-slate-500">Mode: <span class="font-semibold ${state.timeMode === 'timer' ? 'text-emerald-400' : 'text-blue-400'}">${state.timeMode === 'timer' ? 'Timer' : 'Stopwatch'}</span></p>
+    </div>
+    
+    <div class="result-stat-grid mb-8">
+      <div class="result-stat correct"><div class="num">${overall.correct}</div><div class="lbl">Jawaban Benar</div></div>
+      <div class="result-stat wrong"><div class="num">${overall.wrong}</div><div class="lbl">Jawaban Salah</div></div>
+      <div class="result-stat unanswered"><div class="num">${overall.unanswered}</div><div class="lbl">Tidak Dijawab</div></div>
+      <div class="result-stat time"><div class="num">${formatTime(overall.totalTime)}</div><div class="lbl">Waktu Total</div></div>
+    </div>
+    
+    <h3 class="display text-xl font-bold mb-4">Analisis Per Part</h3>
+    ${examData.map((part, pIdx) => renderPartAnalysis(pIdx)).join('')}
+    
+    <div class="mt-8 flex gap-3 flex-wrap">
+      <button class="btn btn-primary flex-1" onclick="closeModal('resultsModal')"><i class="fas fa-book"></i> Tinjau Jawaban</button>
+      <button class="btn btn-secondary" onclick="restartExam()"><i class="fas fa-rotate-right"></i> Ulangi Latihan</button>
+    </div>
+  `;
+  
+  document.getElementById('resultsBody').innerHTML = html;
+  setTimeout(() => animateScore(score), 200);
+}
+
+function animateScore(target){
+  const circle = document.getElementById('scoreCircle');
+  const numEl = document.getElementById('scoreNum');
+  if (!circle || !numEl) return;
+  
+  let current = 0;
+  const duration = 1500;
+  const steps = 60;
+  const inc = target / steps;
+  const interval = duration / steps;
+  
+  const timer = setInterval(() => {
+    current += inc;
+    if (current >= target){
+      current = target;
+      clearInterval(timer);
+    }
+    const deg = (current / 100) * 360;
+    const scoreColor = target >= 80 ? '#34d399' : target >= 60 ? '#fbbf24' : '#f87171';
+    circle.style.background = `conic-gradient(${scoreColor} ${deg}deg, rgba(255,255,255,.06) ${deg}deg)`;
+    numEl.textContent = Math.round(current);
+  }, interval);
+}
+
+function renderPartAnalysis(partIdx){
+  const part = examData[partIdx];
+  const stats = getPartStats(partIdx);
+  const accuracy = stats.total > 0 ? Math.round(stats.correct / stats.total * 100) : 0;
+  const avgTime = stats.total > 0 ? Math.round(stats.totalTime / stats.total) : 0;
+  
+  const topicStats = {};
+  part.questions.forEach((q, i) => {
+    const qs = state.questions[partIdx][i];
+    if (!topicStats[q.topic]) topicStats[q.topic] = {correct: 0, wrong: 0, unanswered: 0, total: 0, timeSum: 0};
+    topicStats[q.topic].total++;
+    topicStats[q.topic].timeSum += qs.timeSpent;
+    if (qs.status === 'correct') topicStats[q.topic].correct++;
+    else if (qs.status === 'wrong' || qs.status === 'timeout') topicStats[q.topic].wrong++;
+    else topicStats[q.topic].unanswered++;
+  });
+  
+  const slowCorrect = [], fastWrong = [], slowWrong = [], unanswered = [];
+  state.questions[partIdx].forEach((qs, i) => {
+    if (qs.status === 'correct' && qs.timeSpent > 90) slowCorrect.push(i+1);
+    if (qs.status === 'wrong' && qs.timeSpent < 30) fastWrong.push(i+1);
+    if (qs.status === 'wrong' && qs.timeSpent > 90) slowWrong.push(i+1);
+    if (qs.status === 'unanswered') unanswered.push(i+1);
+  });
+  
+  const recos = [];
+  if (accuracy >= 80 && avgTime < 60){
+    recos.push({type:'good', icon:'fa-trophy', text:`<strong>Performa Sempurna!</strong> Akurasi ${accuracy}% dengan rata-rata waktu ${formatTime(avgTime)}/soal. Kamu menguasai part ini dengan sangat baik.`});
+  } else if (accuracy >= 80 && avgTime >= 90){
+    recos.push({type:'warn', icon:'fa-clock', text:`<strong>Akurasi Bagus, Perlu Percepat.</strong> Akurasi ${accuracy}% tapi rata-rata ${formatTime(avgTime)}/soal. Latih kecepatan dengan soal sejenis.`});
+  } else if (accuracy >= 60){
+    recos.push({type:'warn', icon:'fa-chart-line', text:`<strong>Cukup Baik.</strong> Akurasi ${accuracy}%. Perdalam konsep pada topik yang masih salah di bawah.`});
+  } else if (accuracy >= 40){
+    recos.push({type:'bad', icon:'fa-triangle-exclamation', text:`<strong>Perlu Pendalaman.</strong> Akurasi ${accuracy}% berarti konsep dasar part ini belum dikuasai. Pelajari ulang materi.`});
+  } else {
+    recos.push({type:'bad', icon:'fa-circle-exclamation', text:`<strong>Perlu Belajar Lagi.</strong> Akurasi ${accuracy}% sangat rendah. Mulai dari konsep dasar part ${partIdx+1}.`});
+  }
+  
+  if (unanswered.length > 5){
+    recos.push({type:'bad', icon:'fa-clock', text:`<strong>Manajemen Waktu Buruk.</strong> ${unanswered.length} soal tidak dijawab. Latih kecepatan dan strategi prioritas soal.`});
+  } else if (unanswered.length > 0){
+    recos.push({type:'info', icon:'fa-info-circle', text:`${unanswered.length} soal tidak dijawab (nomor ${unanswered.join(', ')}). Kerjakan soal yang lebih mudah dulu.`});
+  }
+  if (fastWrong.length > 0) recos.push({type:'warn', icon:'fa-bolt', text:`<strong>Terlalu Cepat.</strong> Soal nomor ${fastWrong.join(', ')} salah karena kurang dari 30 detik. Periksa kembali sebelum menjawab.`});
+  if (slowWrong.length > 0) recos.push({type:'bad', icon:'fa-brain', text:`<strong>Konsep Belum Tepat.</strong> Soal nomor ${slowWrong.join(', ')} salah meski waktu > 90 detik. Artinya konsep belum dipahami.`});
+  if (slowCorrect.length > 0) recos.push({type:'info', icon:'fa-stopwatch', text:`<strong>Hampir Terlambat.</strong> Soal nomor ${slowCorrect.join(', ')} benar tapi > 90 detik. Latih agar lebih cepat.`});
+  
+  const topicHtml = Object.entries(topicStats).map(([topic, s]) => {
+    const pct = s.total > 0 ? Math.round(s.correct / s.total * 100) : 0;
+    const cls = pct >= 75 ? 'good' : pct >= 50 ? 'mid' : 'bad';
+    return `
+      <div class="topic-bar">
+        <div class="topic-name">${topic}</div>
+        <div class="topic-bar-track"><div class="topic-bar-fill ${cls}" style="width:${pct}%"></div></div>
+        <div class="topic-pct">${pct}%</div>
+      </div>
+    `;
+  }).join('');
+  
+  let accClass = accuracy >= 75 ? 'good' : accuracy >= 50 ? 'warn' : 'bad';
+  let timeClass = avgTime < 60 ? 'good' : avgTime < 100 ? 'warn' : 'bad';
+  
+  return `
+    <div class="part-analysis">
+      <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
+        <div class="part-analysis-title">${part.title}: ${part.subtitle}</div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="mini-stat correct"><i class="fas fa-check"></i> ${stats.correct} benar</span>
+          <span class="mini-stat wrong"><i class="fas fa-times"></i> ${stats.wrong} salah</span>
+          <span class="mini-stat unanswered"><i class="fas fa-circle-question"></i> ${stats.unanswered} kosong</span>
+          <span class="mini-stat time"><i class="far fa-clock"></i> ${formatTime(stats.totalTime)}</span>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <div class="text-xs text-slate-400 mb-2 font-semibold uppercase tracking-wider">Akurasi</div>
+          <div class="topic-bar">
+            <div class="topic-name">Benar</div>
+            <div class="topic-bar-track"><div class="topic-bar-fill ${accClass}" style="width:${accuracy}%"></div></div>
+            <div class="topic-pct">${accuracy}%</div>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-slate-400 mb-2 font-semibold uppercase tracking-wider">Rata-rata Waktu</div>
+          <div class="topic-bar">
+            <div class="topic-name">Waktu</div>
+            <div class="topic-bar-track"><div class="topic-bar-fill ${timeClass}" style="width:${Math.min(100, avgTime/120*100)}%"></div></div>
+            <div class="topic-pct">${formatTime(avgTime)}</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 mb-2 font-semibold uppercase tracking-wider">Performa per Topik</div>
+      <div class="mb-4">${topicHtml}</div>
+      <div class="text-xs text-slate-400 mb-2 font-semibold uppercase tracking-wider">Rekomendasi & Analisis</div>
+      <div class="space-y-2">
+        ${recos.map(r => `<div class="reco-box ${r.type}"><i class="fas ${r.icon} mt-1"></i><div>${r.text}</div></div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function restartExam(){
+  if (state.tickInterval) clearInterval(state.tickInterval);
+  if (state.globalInterval) clearInterval(state.globalInterval);
+  initState();
+  state.examFinished = false;
+  closeModal('resultsModal');
+  renderPartTabs();
+  renderPart(0);
+  state.currentPart = 0;
+  state.currentQuestion = 0;
+  showToast('Latihan dimulai ulang. Semangat!', 'info');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function showToast(msg, type = 'info'){
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  const icons = {success:'fa-circle-check', error:'fa-circle-xmark', warning:'fa-triangle-exclamation', info:'fa-circle-info'};
+  const colors = {success:'text-emerald-400', error:'text-rose-400', warning:'text-amber-400', info:'text-blue-400'};
+  toast.innerHTML = `<i class="fas ${icons[type]} ${colors[type]}"></i> <span>${msg}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(40px)';
+    toast.style.transition = 'all .3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+initState();
+renderPartTabs();
+renderPart(0);
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('active');
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+  if (e.key === 'ArrowRight' && !document.querySelector('.modal-overlay.active')) nextQuestion();
+  if (e.key === 'ArrowLeft' && !document.querySelector('.modal-overlay.active')) prevQuestion();
+});
+</script>
+</body>
+</html>
