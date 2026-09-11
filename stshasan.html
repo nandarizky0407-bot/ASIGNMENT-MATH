@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan UTS Matematika Kelas 4 SD — Bilangan Cacah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --bg: #15110d;
+  --bg-2: #1f1812;
+  --card: #2a2017;
+  --card-2: #352a1e;
+  --border: rgba(255, 200, 130, 0.12);
+  --border-strong: rgba(255, 200, 130, 0.28);
+  --fg: #fbf3e3;
+  --muted: #b6a695;
+  --dim: #7a6d5e;
+  --accent: #ff8a3d;
+  --accent-2: #ffc04a;
+  --teal: #2dd4bf;
+  --green: #4ade80;
+  --red: #f87171;
+  --shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(900px circle at 8% 0%, rgba(255, 138, 61, 0.18), transparent 50%),
+    radial-gradient(700px circle at 95% 100%, rgba(45, 212, 191, 0.12), transparent 50%),
+    radial-gradient(500px circle at 60% 50%, rgba(255, 192, 74, 0.06), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,200,130,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,200,130,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent 90%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+/* ========== TOPBAR ========== */
+header.topbar {
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, rgba(42,32,23,0.85), rgba(53,42,30,0.85));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  position: sticky; top: 12px; z-index: 50;
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand-icon {
+  width: 52px; height: 52px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-radius: 14px;
+  display: grid; place-items: center;
+  font-size: 22px; color: #2a1a0a;
+  box-shadow: 0 10px 25px rgba(255,138,61,0.35);
+  animation: floaty 4s ease-in-out infinite;
+}
+@keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+.brand-text h1 {
+  font-family: 'Fraunces', serif; font-weight: 800; font-size: 20px;
+  letter-spacing: -0.02em; line-height: 1.1;
+}
+.brand-text p {
+  font-size: 11px; color: var(--muted); margin-top: 4px;
+  letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+}
+
+.spacer { flex: 1; }
+.controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+.mode-toggle {
+  display: flex;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+}
+.mode-toggle button {
+  background: transparent; border: none; color: var(--muted);
+  padding: 8px 14px; border-radius: 8px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; font-family: inherit;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.mode-toggle button.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #2a1a0a;
+}
+.mode-toggle button:disabled { cursor: not-allowed; opacity: 0.5; }
+
+.timer-display {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  padding: 8px 16px 8px 10px;
+  border-radius: 14px;
+  min-width: 170px;
+}
+.timer-icon {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: grid; place-items: center; color: #2a1a0a;
+  position: relative; flex-shrink: 0;
+}
+.timer-icon::before {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: 50%; border: 2px solid var(--accent);
+  opacity: 0;
+}
+.timer-display.running .timer-icon::before {
+  opacity: 0.6;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 0; }
+}
+.timer-info { display: flex; flex-direction: column; line-height: 1.1; }
+.timer-label {
+  font-size: 10px; color: var(--dim);
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+}
+.timer-value {
+  font-family: 'Fraunces', serif;
+  font-size: 26px; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.timer-display.warning .timer-value { color: var(--accent-2); }
+.timer-display.danger .timer-value { color: var(--red); animation: shake 0.4s; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+
+.btn {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: inherit;
+}
+.btn:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #2a1a0a; border: none;
+}
+.btn-primary:hover { box-shadow: 0 10px 25px rgba(255,138,61,0.4); }
+
+.btn-ghost { background: transparent; }
+
+/* ========== WELCOME ========== */
+.welcome {
+  background: linear-gradient(135deg, rgba(42,32,23,0.85), rgba(53,42,30,0.85));
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 48px 40px;
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.welcome::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255,138,61,0.18), transparent 60%);
+  pointer-events: none;
+}
+.welcome::after {
+  content: ''; position: absolute;
+  width: 320px; height: 320px;
+  right: -100px; bottom: -100px;
+  background: radial-gradient(circle, rgba(45,212,191,0.18), transparent 70%);
+  pointer-events: none;
+  animation: floaty 8s ease-in-out infinite;
+}
+.welcome-content { position: relative; z-index: 1; }
+.welcome h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 40px; font-weight: 900;
+  letter-spacing: -0.025em;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--fg), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.welcome p {
+  color: var(--muted);
+  max-width: 60ch;
+  margin: 0 auto 28px;
+  line-height: 1.7;
+  font-size: 15px;
+}
+.settings-card {
+  display: inline-flex; flex-direction: column; gap: 14px;
+  padding: 22px 28px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  text-align: left;
+  min-width: 320px;
+}
+.settings-row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  justify-content: space-between;
+}
+.settings-row label {
+  font-size: 13px; color: var(--muted); font-weight: 600;
+}
+.settings-row input[type="number"] {
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--fg); padding: 8px 12px;
+  border-radius: 10px; font-family: inherit;
+  width: 90px; font-size: 14px;
+}
+.settings-row input:focus { outline: none; border-color: var(--accent); }
+.hint { font-size: 11px; color: var(--dim); }
+
+.welcome-stats {
+  display: flex; gap: 28px; justify-content: center;
+  margin: 28px 0; flex-wrap: wrap;
+}
+.welcome-stat { text-align: center; }
+.welcome-stat .num {
+  font-family: 'Fraunces', serif;
+  font-size: 32px; font-weight: 900;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.welcome-stat .lbl {
+  font-size: 11px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;
+}
+
+/* ========== LAYOUT ========== */
+.layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
+@media (max-width: 1024px) { .layout { grid-template-columns: 1fr; } }
+
+.sidebar {
+  background: linear-gradient(180deg, rgba(42,32,23,0.7), rgba(31,24,18,0.7));
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 22px;
+  position: sticky; top: 100px;
+  align-self: start;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.part-title {
+  font-family: 'Fraunces', serif;
+  font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent-2);
+  margin-bottom: 12px; margin-top: 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.part-title:first-child { margin-top: 0; }
+.part-title::before {
+  content: ''; width: 4px; height: 14px;
+  background: var(--accent); border-radius: 2px;
+}
+.part-title.alt::before { background: var(--teal); }
+.part-title.alt { color: var(--teal); }
+
+.qnav-grid {
+  display: grid; grid-template-columns: repeat(8, 1fr);
+  gap: 6px; margin-bottom: 18px;
+}
+@media (max-width: 1280px) {
+  .qnav-grid { grid-template-columns: repeat(7, 1fr); }
+}
+.qnav-btn {
+  aspect-ratio: 1;
+  background: var(--bg-2);
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+  border-radius: 8px;
+  font-weight: 700; cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  font-size: 13px;
+  position: relative;
+  min-height: 36px;
+}
+.qnav-btn:hover { color: var(--fg); border-color: var(--border-strong); transform: translateY(-2px); }
+.qnav-btn.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #2a1a0a; border-color: transparent;
+  box-shadow: 0 6px 18px rgba(255,138,61,0.4);
+}
+.qnav-btn.answered.correct {
+  background: rgba(74,222,128,0.12);
+  border-color: var(--green); color: var(--green);
+}
+.qnav-btn.answered.wrong {
+  background: rgba(248,113,113,0.12);
+  border-color: var(--red); color: var(--red);
+}
+.qnav-btn.answered.timeout {
+  background: rgba(255,192,74,0.12);
+  border-color: var(--accent-2); color: var(--accent-2);
+}
+.qnav-btn.active.answered.correct {
+  background: linear-gradient(135deg, var(--green), #22c55e); color: #052;
+}
+.qnav-btn.active.answered.wrong {
+  background: linear-gradient(135deg, var(--red), #ef4444); color: #fff;
+}
+
+.legend {
+  display: flex; flex-direction: column; gap: 8px;
+  margin-top: 12px; padding-top: 16px;
+  border-top: 1px dashed var(--border);
+}
+.legend-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; color: var(--muted);
+}
+.legend-dot {
+  width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0;
+  border: 1.5px solid;
+}
+
+.progress-summary {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 14px; margin-top: 16px;
+}
+.progress-summary h4 {
+  font-size: 11px; color: var(--dim);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 10px; font-weight: 700;
+}
+.progress-bar {
+  height: 8px; background: var(--bg);
+  border-radius: 4px; overflow: hidden;
+  margin-bottom: 8px;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  width: 0%; transition: width 0.5s cubic-bezier(0.16,1,0.3,1);
+  border-radius: 4px;
+}
+.progress-text { font-size: 12px; color: var(--muted); }
+.progress-text strong { color: var(--fg); font-weight: 700; }
+
+/* ========== MAIN ========== */
+.main { display: flex; flex-direction: column; gap: 24px; }
+
+.section-header {
+  background: linear-gradient(135deg, rgba(42,32,23,0.7), rgba(53,42,30,0.4));
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 28px 32px;
+  position: relative; overflow: hidden;
+}
+.section-header::before {
+  content: ''; position: absolute;
+  right: -50px; top: -50px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(255,138,61,0.18), transparent 70%);
+  pointer-events: none;
+}
+.section-header.alt::before {
+  background: radial-gradient(circle, rgba(45,212,191,0.18), transparent 70%);
+}
+.part-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,138,61,0.15); color: var(--accent-2);
+  padding: 6px 14px; border-radius: 999px;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border: 1px solid rgba(255,138,61,0.25);
+  margin-bottom: 14px;
+}
+.part-tag.alt {
+  background: rgba(45,212,191,0.15); color: var(--teal);
+  border-color: rgba(45,212,191,0.3);
+}
+.section-header h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 30px; font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.section-header p {
+  color: var(--muted); max-width: 60ch;
+  line-height: 1.6; font-size: 15px;
+}
+
+.question-card {
+  background: linear-gradient(180deg, rgba(42,32,23,0.85), rgba(31,24,18,0.85));
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 32px;
+  box-shadow: var(--shadow);
+  position: relative;
+  transition: box-shadow 0.4s, transform 0.4s;
+}
+.question-card.highlight {
+  box-shadow: 0 0 0 2px var(--accent), 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.q-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 16px;
+  margin-bottom: 22px; flex-wrap: wrap;
+}
+.q-meta { display: flex; align-items: center; gap: 14px; }
+.q-number {
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #2a1a0a;
+  display: grid; place-items: center;
+  font-family: 'Fraunces', serif;
+  font-weight: 900; font-size: 20px;
+  flex-shrink: 0;
+}
+.q-info { display: flex; flex-direction: column; }
+.q-info .q-label {
+  font-size: 11px; color: var(--dim);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  font-weight: 700;
+}
+.q-info .q-part { font-size: 14px; color: var(--muted); font-weight: 600; }
+
+.q-timer-mini {
+  background: var(--bg-2); padding: 8px 14px;
+  border-radius: 10px; border: 1px solid var(--border);
+  font-family: 'Fraunces', serif; font-weight: 700;
+  font-size: 15px;
+  display: flex; align-items: center; gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.q-timer-mini i { color: var(--accent-2); font-size: 13px; }
+.q-timer-mini.done { opacity: 0.6; }
+.q-timer-mini.done i { color: var(--green); }
+
+.q-text {
+  font-size: 18px; line-height: 1.65;
+  margin-bottom: 24px; font-weight: 500;
+  white-space: pre-line;
+}
+.q-text strong { color: var(--accent-2); }
+
+.options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.option {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--bg-2);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 18px; cursor: pointer;
+  transition: all 0.25s; position: relative;
+}
+.option:hover { border-color: var(--border-strong); background: var(--card-2); transform: translateX(3px); }
+.option input { display: none; }
+.option-letter {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--bg); border: 1.5px solid var(--border);
+  display: grid; place-items: center;
+  font-weight: 700; font-size: 14px;
+  flex-shrink: 0; transition: all 0.2s;
+}
+.option-text { font-size: 15px; white-space: pre-line; }
+.option.selected { border-color: var(--accent); background: rgba(255,138,61,0.08); }
+.option.selected .option-letter {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #2a1a0a; border-color: transparent;
+}
+.option.correct {
+  border-color: var(--green); background: rgba(74,222,128,0.1);
+}
+.option.correct .option-letter { background: var(--green); color: #052; border-color: transparent; }
+.option.correct::after {
+  content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+  margin-left: auto; color: var(--green);
+}
+.option.wrong { border-color: var(--red); background: rgba(248,113,113,0.1); }
+.option.wrong .option-letter { background: var(--red); color: #fff; border-color: transparent; }
+.option.wrong::after {
+  content: '\f00d'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+  margin-left: auto; color: var(--red);
+}
+.option.disabled { cursor: not-allowed; pointer-events: none; }
+.option.disabled:hover { transform: none; }
+
+.action-bar {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  align-items: center;
+  padding-top: 18px;
+  border-top: 1px dashed var(--border);
+}
+
+.feedback {
+  margin-top: 18px; padding: 16px 20px;
+  border-radius: 14px;
+  display: none;
+  animation: slideIn 0.35s ease;
+}
+.feedback.show { display: block; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.feedback.correct {
+  background: rgba(74,222,128,0.1);
+  border: 1px solid rgba(74,222,128,0.3);
+}
+.feedback.wrong {
+  background: rgba(248,113,113,0.1);
+  border: 1px solid rgba(248,113,113,0.3);
+}
+.feedback.timeout {
+  background: rgba(255,192,74,0.1);
+  border: 1px solid rgba(255,192,74,0.3);
+}
+.feedback-head {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; margin-bottom: 6px;
+}
+.feedback.correct .feedback-head { color: var(--green); }
+.feedback.wrong .feedback-head { color: var(--red); }
+.feedback.timeout .feedback-head { color: var(--accent-2); }
+.feedback-head i { font-size: 18px; }
+.feedback-body { font-size: 14px; line-height: 1.6; color: var(--fg); }
+
+.discussion {
+  margin-top: 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: none;
+}
+.discussion.show { display: block; animation: slideIn 0.35s ease; }
+.discussion-head {
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 700; color: var(--accent-2);
+  margin-bottom: 10px;
+  font-size: 13px; text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.discussion-body {
+  font-size: 15px; line-height: 1.75;
+  color: var(--fg);
+}
+.discussion-body strong { color: var(--accent-2); }
+
+.q-nav {
+  display: flex; justify-content: space-between;
+  margin-top: 20px; padding-top: 18px;
+  border-top: 1px dashed var(--border);
+  gap: 12px; flex-wrap: wrap;
+}
+
+/* ========== FOOTER ========== */
+.footer-actions {
+  display: flex; justify-content: space-between;
+  align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 22px 28px;
+  background: linear-gradient(135deg, rgba(42,32,23,0.85), rgba(53,42,30,0.85));
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  margin-top: 12px;
+  box-shadow: var(--shadow);
+}
+.footer-actions .info { display: flex; gap: 24px; flex-wrap: wrap; }
+.footer-actions .info-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted);
+}
+.footer-actions .info-item strong {
+  color: var(--fg); font-family: 'Fraunces', serif;
+  font-size: 20px; font-weight: 800;
+}
+
+/* ========== MODAL ========== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,12,8,0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center;
+  z-index: 100; padding: 24px; overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+}
+.modal-overlay.show { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal {
+  background: linear-gradient(180deg, var(--card), var(--bg-2));
+  border: 1px solid var(--border-strong);
+  border-radius: 24px;
+  max-width: 860px; width: 100%;
+  padding: 36px;
+  position: relative;
+  max-height: 92vh; overflow-y: auto;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  animation: modalIn 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.modal::-webkit-scrollbar { width: 8px; }
+.modal::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+
+.modal-close {
+  position: absolute; top: 20px; right: 20px;
+  background: var(--bg-2); border: 1px solid var(--border);
+  width: 36px; height: 36px; border-radius: 10px;
+  color: var(--muted); cursor: pointer;
+  display: grid; place-items: center;
+  transition: all 0.2s;
+}
+.modal-close:hover { color: var(--fg); border-color: var(--border-strong); }
+
+.modal h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 32px; font-weight: 800;
+  letter-spacing: -0.02em; margin-bottom: 8px;
+}
+.modal .subtitle { color: var(--muted); margin-bottom: 24px; font-size: 14px; }
+
+.score-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin-bottom: 16px;
+}
+@media (max-width: 600px) { .score-grid { grid-template-columns: 1fr; } }
+
+.score-card {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: 16px; padding: 18px;
+  position: relative; overflow: hidden;
+  transition: transform 0.3s;
+}
+.score-card:hover { transform: translateY(-2px); }
+.score-card .label {
+  font-size: 11px; color: var(--dim);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.score-card .value {
+  font-family: 'Fraunces', serif;
+  font-size: 40px; font-weight: 900;
+  letter-spacing: -0.02em; line-height: 1;
+}
+.score-card.correct {
+  background: linear-gradient(135deg, rgba(74,222,128,0.18), rgba(74,222,128,0.05));
+  border-color: rgba(74,222,128,0.3);
+}
+.score-card.correct .value { color: var(--green); }
+.score-card.wrong {
+  background: linear-gradient(135deg, rgba(248,113,113,0.18), rgba(248,113,113,0.05));
+  border-color: rgba(248,113,113,0.3);
+}
+.score-card.wrong .value { color: var(--red); }
+.score-card.unanswered .value { color: var(--accent-2); }
+
+.score-final {
+  background: linear-gradient(135deg, rgba(255,138,61,0.18), rgba(255,192,74,0.05));
+  border: 1px solid rgba(255,138,61,0.3);
+  margin-bottom: 24px;
+}
+.score-final .value { color: var(--accent); font-size: 48px; }
+.score-final .grade { font-size: 14px; color: var(--muted); margin-top: 4px; font-weight: 600; }
+
+.analysis-section { margin-top: 28px; }
+.analysis-section h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 22px; font-weight: 800;
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.analysis-section h3 i { color: var(--accent); }
+
+.part-analysis {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 14px;
+}
+.part-analysis h4 {
+  font-size: 16px; font-weight: 700;
+  color: var(--accent-2); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Fraunces', serif;
+}
+.part-analysis.alt h4 { color: var(--teal); }
+.part-analysis-stats {
+  display: flex; gap: 18px; margin-bottom: 14px;
+  flex-wrap: wrap; font-size: 13px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.part-analysis-stats span {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--muted);
+}
+.part-analysis-stats strong { color: var(--fg); font-weight: 700; }
+
+.analysis-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.analysis-item .ai-icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  flex-shrink: 0; font-size: 14px;
+}
+.analysis-item.priority-high .ai-icon { background: rgba(248,113,113,0.2); color: var(--red); }
+.analysis-item.priority-med .ai-icon { background: rgba(255,192,74,0.2); color: var(--accent-2); }
+.analysis-item.priority-low .ai-icon { background: rgba(74,222,128,0.2); color: var(--green); }
+.analysis-item .ai-text { flex: 1; font-size: 14px; line-height: 1.55; }
+.analysis-item .ai-text strong { color: var(--fg); display: block; margin-bottom: 2px; }
+.analysis-item .ai-text .ai-meta { display: block; color: var(--muted); font-size: 13px; }
+.analysis-item .ai-text .ai-meta strong { color: var(--accent-2); display: inline; }
+
+/* ========== TOAST ========== */
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px;
+  display: flex; flex-direction: column; gap: 10px;
+  z-index: 200;
+}
+.toast {
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  padding: 12px 18px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 600;
+  box-shadow: var(--shadow);
+  animation: toastIn 0.3s ease;
+  max-width: 320px;
+}
+@keyframes toastIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+.toast.success { border-color: rgba(74,222,128,0.4); }
+.toast.success i { color: var(--green); }
+.toast.error { border-color: rgba(248,113,113,0.4); }
+.toast.error i { color: var(--red); }
+.toast.info i { color: var(--accent-2); }
+
+.hidden { display: none !important; }
+
+@media (max-width: 768px) {
+  .app { padding: 14px; }
+  header.topbar { padding: 14px; position: static; }
+  .timer-display { min-width: auto; flex: 1; }
+  .controls { width: 100%; justify-content: space-between; }
+  .question-card { padding: 22px; }
+  .modal { padding: 24px; }
+  .welcome { padding: 32px 20px; }
+  .welcome h2 { font-size: 28px; }
+  .section-header { padding: 22px; }
+  .section-header h2 { font-size: 24px; }
+  .q-text { font-size: 16px; }
+  .qnav-grid { grid-template-columns: repeat(6, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ========== TOPBAR ========== -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon"><i class="fa-solid fa-calculator"></i></div>
+      <div class="brand-text">
+        <h1>Latihan UTS Matematika Kelas 4 SD</h1>
+        <p>Bilangan Cacah · Mode Interaktif</p>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="controls">
+      <div class="mode-toggle" id="modeToggle">
+        <button class="active" data-mode="countdown"><i class="fa-solid fa-hourglass-half"></i> Hitung Mundur</button>
+        <button data-mode="stopwatch"><i class="fa-solid fa-stopwatch"></i> Stopwatch</button>
+      </div>
+      <div class="timer-display" id="timerDisplay">
+        <div class="timer-icon"><i class="fa-solid fa-clock"></i></div>
+        <div class="timer-info">
+          <span class="timer-label" id="timerLabel">Sisa Waktu</span>
+          <span class="timer-value" id="timerValue">02:00</span>
+        </div>
+      </div>
+      <button class="btn" id="addTimeBtn" title="Tambah 15 detik untuk soal ini"><i class="fa-solid fa-plus"></i> 15 dtk</button>
+      <button class="btn btn-primary" id="finishBtn"><i class="fa-solid fa-flag-checkered"></i> Finish Exam</button>
+    </div>
+  </header>
+
+  <!-- ========== WELCOME ========== -->
+  <section class="welcome" id="welcome">
+    <div class="welcome-content">
+      <h2>Latihan UTS Matematika</h2>
+      <p>Latihan summative tengah semester mata pelajaran <strong>Matematika Kelas 4 SD</strong> dengan materi <strong>Bilangan Cacah</strong>. Total <strong>40 soal pilihan ganda</strong> dalam 1 part. Atur mode pemantauan waktu sesuai kebutuhan, lalu mulai. Timer akan berjalan otomatis saat kamu membuka soal.</p>
+
+      <div class="welcome-stats">
+        <div class="welcome-stat"><div class="num">40</div><div class="lbl">Total Soal</div></div>
+        <div class="welcome-stat"><div class="num">1</div><div class="lbl">Part Soal</div></div>
+        <div class="welcome-stat"><div class="num">2:00</div><div class="lbl">Waktu / Soal</div></div>
+        <div class="welcome-stat"><div class="num">+15s</div><div class="lbl">Tambahan</div></div>
+      </div>
+
+      <div class="settings-card">
+        <div class="settings-row">
+          <label>Mode Waktu:</label>
+          <div class="mode-toggle" id="modeToggleWelcome">
+            <button class="active" data-mode="countdown">Hitung Mundur</button>
+            <button data-mode="stopwatch">Stopwatch</button>
+          </div>
+        </div>
+        <div class="settings-row" id="defaultTimeRow">
+          <label>Waktu per soal:</label>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <input type="number" id="defaultTimeInput" value="2" min="0.5" max="30" step="0.5">
+            <span style="font-size:13px;color:var(--muted);">menit</span>
+          </div>
+        </div>
+        <div class="hint">Default 2 menit per soal. Tutor dapat mengubah sebelum memulai.</div>
+        <button class="btn btn-primary" id="startBtn" style="justify-content:center; padding:14px;">
+          <i class="fa-solid fa-play"></i> Mulai Latihan
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EXAM LAYOUT ========== -->
+  <div class="layout hidden" id="examLayout">
+    <aside class="sidebar">
+      <div class="part-title">Part 1 · Soal 1-40</div>
+      <div class="qnav-grid" id="navPart1"></div>
+      <div id="navPart2Wrap" class="hidden">
+        <div class="part-title alt">Part 2</div>
+        <div class="qnav-grid" id="navPart2"></div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: transparent;"></div> Soal aktif</div>
+        <div class="legend-item"><div class="legend-dot" style="background: rgba(74,222,128,0.15); border-color: var(--green);"></div> Benar</div>
+        <div class="legend-item"><div class="legend-dot" style="background: rgba(248,113,113,0.15); border-color: var(--red);"></div> Salah</div>
+        <div class="legend-item"><div class="legend-dot" style="background: rgba(255,192,74,0.15); border-color: var(--accent-2);"></div> Waktu habis</div>
+        <div class="legend-item"><div class="legend-dot" style="background: var(--bg-2); border-color: var(--border);"></div> Belum dijawab</div>
+      </div>
+
+      <div class="progress-summary">
+        <h4>Progress Pengerjaan</h4>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-text"><strong id="answeredCount">0</strong> / <span id="totalCount">40</span> soal diperiksa</div>
+      </div>
+    </aside>
+
+    <main class="main" id="mainContent">
+      <!-- Part 1 -->
+      <div class="section-header">
+        <div class="part-tag"><i class="fa-solid fa-hashtag"></i> Part 1 · Soal 1-40</div>
+        <h2>Bilangan Cacah — Komprehensif</h2>
+        <p>Materi lengkap bilangan cacah: membaca &amp; menulis bilangan, nilai tempat, perbandingan &amp; pengurutan, dekomposisi, penjumlahan, pengurangan, perkalian, pembagian, faktor &amp; kelipatan, FPB &amp; KPK. Pilih jawaban paling tepat. Klik <strong>Cek Jawaban</strong> untuk menghentikan timer dan melihat pembahasan.</p>
+      </div>
+      <div id="part1Container"></div>
+
+      <!-- Part 2 (placeholder — section akan terlihat jika ada soal) -->
+      <div id="part2Section" class="hidden">
+        <div class="section-header alt">
+          <div class="part-tag alt"><i class="fa-solid fa-layer-group"></i> Part 2</div>
+          <h2>Part 2 — Soal Tambahan</h2>
+          <p>Soal Part 2 akan muncul di sini setelah ditambahkan pada array <code>questionsData.part2</code>.</p>
+        </div>
+        <div id="part2Container"></div>
+      </div>
+
+      <div class="footer-actions">
+        <div class="info">
+          <div class="info-item"><i class="fa-solid fa-circle-check" style="color: var(--green);"></i> Benar: <strong id="correctCount">0</strong></div>
+          <div class="info-item"><i class="fa-solid fa-circle-xmark" style="color: var(--red);"></i> Salah: <strong id="wrongCount">0</strong></div>
+          <div class="info-item"><i class="fa-solid fa-circle-minus" style="color: var(--accent-2);"></i> Kosong: <strong id="unansweredCount">40</strong></div>
+        </div>
+        <button class="btn btn-primary" id="finishBtn2"><i class="fa-solid fa-flag-checkered"></i> Finish Exam</button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ========== RESULTS MODAL ========== -->
+<div class="modal-overlay" id="resultsModal">
+  <div class="modal">
+    <button class="modal-close" id="closeResults" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button>
+    <h2 id="resultTitle">Hasil Pengerjaan</h2>
+    <p class="subtitle">Rekap nilai, waktu pengerjaan, dan analisis per part.</p>
+
+    <div class="score-grid">
+      <div class="score-card correct">
+        <div class="label"><i class="fa-solid fa-check"></i> Jawaban Benar</div>
+        <div class="value" id="rCorrect">0</div>
+      </div>
+      <div class="score-card wrong">
+        <div class="label"><i class="fa-solid fa-xmark"></i> Jawaban Salah</div>
+        <div class="value" id="rWrong">0</div>
+      </div>
+      <div class="score-card unanswered">
+        <div class="label"><i class="fa-solid fa-minus"></i> Tidak Dijawab</div>
+        <div class="value" id="rUnanswered">0</div>
+      </div>
+    </div>
+
+    <div class="score-card score-final">
+      <div class="label"><i class="fa-solid fa-bullseye"></i> Skor Akhir</div>
+      <div class="value" id="rScore">0 / 100</div>
+      <div class="grade" id="rGrade">Predikat: -</div>
+    </div>
+
+    <div class="analysis-section">
+      <h3><i class="fa-solid fa-magnifying-glass-chart"></i> Analisis Per Part</h3>
+      <div id="analysisContent"></div>
+    </div>
+
+    <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+      <button class="btn btn-primary" id="reviewBtn"><i class="fa-solid fa-eye"></i> Tinjau Jawaban &amp; Pembahasan</button>
+      <button class="btn" id="resetBtn"><i class="fa-solid fa-rotate-right"></i> Ulangi Latihan</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// =========================================================================
+// DATA SOAL — UTS MATEMATIKA KELAS 4 SD (BILANGAN CACAH)
+// 40 SOAL DALAM 1 PART (Part 1)
+// 👉 Untuk menambah Part 2, isi array questionsData.part2 di bawah
+// =========================================================================
+const questionsData = {
+  // ─────────────────────────────────────────────────────────────────────
+  // PART 1 — 40 SOAL (seluruh soal dari file lampiran)
+  // ─────────────────────────────────────────────────────────────────────
+  part1: [
+    // ── Soal 1-4: Membaca & Menulis Bilangan ──
+    {
+      id: 'p1q1',
+      question: 'Bilangan 7.408 dibaca ...',
+      options: ['Tujuh ribu empat ratus delapan', 'Tujuh ribu empat puluh delapan', 'Tujuh ribu empat nol delapan', 'Tujuh empat nol delapan'],
+      correct: 0,
+      discussion: 'Bilangan 7.408 tersusun atas 7 ribuan + 4 ratusan + 0 puluhan + 8 satuan. Dibaca "tujuh ribu empat ratus delapan" (0 di puluhan tidak perlu disebut).'
+    },
+    {
+      id: 'p1q2',
+      question: 'Bilangan "sembilan ribu lima ratus dua puluh enam" jika ditulis dalam bentuk angka adalah ...',
+      options: ['9.256', '9.506', '9.526', '9.562'],
+      correct: 2,
+      discussion: 'Sembilan ribu = 9.000, lima ratus = 500, dua puluh enam = 26. Jumlahnya: 9.000 + 500 + 26 = <strong>9.526</strong>.'
+    },
+    {
+      id: 'p1q3',
+      question: 'Sebuah lomba balap mobil diikuti oleh "tiga ribu delapan ratus lima puluh" peserta. Bentuk angkanya adalah ...',
+      options: ['3.850', '3.805', '3.085', '3.580'],
+      correct: 0,
+      discussion: 'Tiga ribu = 3.000, delapan ratus = 800, lima puluh = 50. Total: 3.000 + 800 + 50 = <strong>3.850</strong>.'
+    },
+    {
+      id: 'p1q4',
+      question: 'Perpustakaan sekolah memiliki 6.700 buku. Bilangan 6.700 dibaca ...',
+      options: ['Enam ribu tujuh puluh', 'Enam ribu tujuh ratus', 'Enam ribu tujuh ribu', 'Enam ribu tujuh'],
+      correct: 1,
+      discussion: 'Bilangan 6.700 tersusun atas 6 ribuan + 7 ratusan + 0 puluhan + 0 satuan. Dibaca "enam ribu tujuh ratus".'
+    },
+    // ── Soal 5-8: Nilai Tempat ──
+    {
+      id: 'p1q5',
+      question: 'Nilai tempat angka 3 pada bilangan 8.375 adalah ...',
+      options: ['Ribuan', 'Ratusan', 'Puluhan', 'Satuan'],
+      correct: 1,
+      discussion: 'Pada 8.375: 8 di ribuan, <strong>3 di ratusan</strong>, 7 di puluhan, 5 di satuan. Jadi angka 3 menempati nilai tempat ratusan.'
+    },
+    {
+      id: 'p1q6',
+      question: 'Nilai dari angka 9 pada bilangan 4.912 adalah ...',
+      options: ['9', '90', '900', '9.000'],
+      correct: 2,
+      discussion: 'Angka 9 pada 4.912 berada di nilai tempat ratusan, sehingga nilainya = 9 × 100 = <strong>900</strong>.'
+    },
+    {
+      id: 'p1q7',
+      question: 'Nilai tempat angka 7 pada bilangan 7.642 adalah ...',
+      options: ['Satuan', 'Puluhan', 'Ratusan', 'Ribuan'],
+      correct: 3,
+      discussion: 'Angka 7 pada 7.642 berada paling kiri (ribuan). Nilai tempatnya adalah <strong>ribuan</strong> (nilainya 7 × 1.000 = 7.000).'
+    },
+    {
+      id: 'p1q8',
+      question: 'Nilai dari angka 5 pada bilangan 4.527 adalah ...',
+      options: ['5', '50', '500', '5.000'],
+      correct: 2,
+      discussion: 'Angka 5 pada 4.527 berada di nilai tempat ratusan, sehingga nilainya = 5 × 100 = <strong>500</strong>.'
+    },
+    // ── Soal 9-12: Perbandingan & Pengurutan ──
+    {
+      id: 'p1q9',
+      question: 'Tanda yang tepat untuk membandingkan 6.820 ... 6.802 adalah ...',
+      options: ['>', '<', '=', '≠'],
+      correct: 0,
+      discussion: 'Bandingkan dari kiri: ribuan sama (6), ratusan sama (8), lalu puluhan: 2 vs 0. Karena 2 > 0, maka <strong>6.820 > 6.802</strong>.'
+    },
+    {
+      id: 'p1q10',
+      question: 'Urutan bilangan dari yang terbesar ke terkecil yang benar untuk: 4.520, 4.250, 4.150, 4.052 adalah ...',
+      options: ['4.052, 4.150, 4.250, 4.520', '4.520, 4.250, 4.150, 4.052', '4.520, 4.150, 4.250, 4.052', '4.250, 4.520, 4.150, 4.052'],
+      correct: 1,
+      discussion: 'Bandingkan dari ribuan (sama 4), lalu ratusan: 5, 2, 1, 0. Jadi urutan terbesar ke terkecil: <strong>4.520, 4.250, 4.150, 4.052</strong>.'
+    },
+    {
+      id: 'p1q11',
+      question: 'Data pengumpulan beras bulanan KUD Tani Makmur:\n- Januari: 2.500 kg\n- Februari: 2.750 kg\n- Maret: 2.600 kg\n- April: 2.450 kg\n\nBulan dengan pengumpulan beras terbanyak adalah ...',
+      options: ['Januari', 'Februari', 'Maret', 'April'],
+      correct: 1,
+      discussion: 'Bandingkan: 2.750 > 2.600 > 2.500 > 2.450. Jadi <strong>Februari</strong> dengan 2.750 kg adalah yang terbanyak.'
+    },
+    {
+      id: 'p1q12',
+      question: 'Hasil pengumpulan baterai bekas 4 SD:\n- SD A: 4.250 batang\n- SD B: 4.520 batang\n- SD C: 4.052 batang\n- SD D: 4.150 batang\n\nUrutan dari yang terbanyak ke tersedikit adalah ...',
+      options: ['SD A, SD B, SD C, SD D', 'SD B, SD A, SD C, SD D', 'SD B, SD A, SD D, SD C', 'SD C, SD D, SD A, SD B'],
+      correct: 2,
+      discussion: 'Urutan terbesar: 4.520 (B) > 4.250 (A) > 4.150 (D) > 4.052 (C). Maka urutannya: <strong>SD B, SD A, SD D, SD C</strong>.'
+    },
+    // ── Soal 13-16: Dekomposisi Bilangan ──
+    {
+      id: 'p1q13',
+      question: 'Dekomposisi (penguraian) bilangan 7.642 yang tepat adalah ...',
+      options: ['7.000 + 600 + 40 + 2', '7.000 + 60 + 40 + 2', '7.000 + 600 + 4 + 2', '700 + 600 + 40 + 2'],
+      correct: 0,
+      discussion: '7.642 = 7 ribuan + 6 ratusan + 4 puluhan + 2 satuan = <strong>7.000 + 600 + 40 + 2</strong>.'
+    },
+    {
+      id: 'p1q14',
+      question: 'Bilangan yang sesuai dengan 5 ribuan + 0 ratusan + 8 puluhan + 3 satuan adalah ...',
+      options: ['5.83', '5.083', '5.830', '5.380'],
+      correct: 1,
+      discussion: '5 ribuan = 5.000, 0 ratusan = 0, 8 puluhan = 80, 3 satuan = 3. Total: 5.000 + 0 + 80 + 3 = <strong>5.083</strong>.'
+    },
+    {
+      id: 'p1q15',
+      question: 'Dekomposisi bilangan 8.095 yang tepat adalah ...',
+      options: ['8.000 + 90 + 5', '8.000 + 9 + 5', '8.000 + 900 + 5', '8.000 + 90 + 50'],
+      correct: 0,
+      discussion: '8.095 = 8 ribuan + 0 ratusan + 9 puluhan + 5 satuan = <strong>8.000 + 0 + 90 + 5</strong> = 8.000 + 90 + 5.'
+    },
+    {
+      id: 'p1q16',
+      question: 'PMI menerima donasi beras seberat 245 kg dan mi seberat 380 kg. Total berat donasi yang diterima PMI adalah ...',
+      options: ['525 kg', '615 kg', '625 kg', '635 kg'],
+      correct: 2,
+      discussion: '245 + 380: 5+0=5 (satuan), 4+8=12 tulis 2 simpan 1 (puluhan), 2+3+1=6 (ratusan). Hasil: <strong>625 kg</strong>.'
+    },
+    // ── Soal 17-20: Penjumlahan ──
+    {
+      id: 'p1q17',
+      question: 'Hasil dari 3.245 + 1.532 = ...',
+      options: ['4.777', '4.779', '4.787', '4.789'],
+      correct: 0,
+      discussion: '3.245 + 1.532: 5+2=7 (satuan), 4+3=7 (puluhan), 2+5=7 (ratusan), 3+1=4 (ribuan). Hasil: <strong>4.777</strong>.'
+    },
+    {
+      id: 'p1q18',
+      question: 'Kandang ayam Pak Budi menghasilkan 248 butir telur, sedangkan kandang ayam Pak Tono menghasilkan 375 butir telur. Total telur yang dihasilkan kedua kandang adalah ...',
+      options: ['513 butir', '523 butir', '613 butir', '623 butir'],
+      correct: 3,
+      discussion: '248 + 375: 8+5=13 (tulis 3 simpan 1), 4+7+1=12 (tulis 2 simpan 1), 2+3+1=6. Hasil: <strong>623 butir</strong>.'
+    },
+    {
+      id: 'p1q19',
+      question: 'Petani sayur memanen 1.425 ikat kangkung dan 2.375 ikat bayam. Total sayuran yang dipanen adalah ...',
+      options: ['3.700 ikat', '3.790 ikat', '3.800 ikat', '3.890 ikat'],
+      correct: 2,
+      discussion: '1.425 + 2.375: 5+5=10 (tulis 0 simpan 1), 2+7+1=10 (tulis 0 simpan 1), 4+3+1=8, 1+2=3. Hasil: <strong>3.800 ikat</strong>.'
+    },
+    {
+      id: 'p1q20',
+      question: 'Toko buku menerima 1.250 buku Bahasa Indonesia dan 2.045 buku Matematika. Jumlah buku yang diterima toko tersebut adalah ...',
+      options: ['3.195 buku', '3.205 buku', '3.295 buku', '3.305 buku'],
+      correct: 2,
+      discussion: '1.250 + 2.045: 0+5=5, 5+4=9, 2+0=2, 1+2=3. Hasil: <strong>3.295 buku</strong>.'
+    },
+    // ── Soal 21-24: Pengurangan ──
+    {
+      id: 'p1q21',
+      question: 'Hasil dari 725 − 368 = ...',
+      options: ['345', '357', '363', '463'],
+      correct: 1,
+      discussion: '725 − 368: 5−8 tidak bisa, pinjam: 15−8=7. 1−6 tidak bisa, pinjam: 11−6=5. 6−3=3. Hasil: <strong>357</strong>.'
+    },
+    {
+      id: 'p1q22',
+      question: 'Hasil dari 900 − 456 = ...',
+      options: ['434', '444', '454', '544'],
+      correct: 1,
+      discussion: '900 − 456: 0−6 tidak bisa, pinjam dari 0 (pinjam dari ratusan): 10−6=4. 9−5=4. 8−4=4. Hasil: <strong>444</strong>.'
+    },
+    {
+      id: 'p1q23',
+      question: 'Pak Andi memiliki 850 batu bata. Setelah digunakan untuk membangun tembok, tersisa 275 batu bata. Banyak batu bata yang telah digunakan adalah ...',
+      options: ['565 batu bata', '575 batu bata', '675 batu bata', '685 batu bata'],
+      correct: 1,
+      discussion: '850 − 275: 0−5 tidak bisa, pinjam: 10−5=5. 4−7 tidak bisa, pinjam: 14−7=7. 7−2=5. Hasil: <strong>575 batu bata</strong>.'
+    },
+    {
+      id: 'p1q24',
+      question: 'Perpustakaan sekolah memiliki 620 buku. Jika 385 buku dipinjam oleh siswa, maka buku yang tersisa di perpustakaan adalah ...',
+      options: ['235 buku', '245 buku', '335 buku', '345 buku'],
+      correct: 0,
+      discussion: '620 − 385: 0−5 tidak bisa, pinjam: 10−5=5. 1−8 tidak bisa, pinjam: 11−8=3. 5−3=2. Hasil: <strong>235 buku</strong>.'
+    },
+    // ── Soal 25-28: Perkalian ──
+    {
+      id: 'p1q25',
+      question: 'Hasil dari 14 × 6 adalah ...',
+      options: ['74', '84', '94', '64'],
+      correct: 1,
+      discussion: '14 × 6 = (10 + 4) × 6 = 60 + 24 = <strong>84</strong>. Atau 6 × 14 = 84.'
+    },
+    {
+      id: 'p1q26',
+      question: 'Hasil dari 16 × 5 adalah ...',
+      options: ['70', '75', '80', '85'],
+      correct: 2,
+      discussion: '16 × 5 = (10 + 6) × 5 = 50 + 30 = <strong>80</strong>. Atau 5 × 16 = 80.'
+    },
+    {
+      id: 'p1q27',
+      question: 'Siti membeli 8 bungkus biskuit. Setiap bungkus berisi 12 buah biskuit. Banyak biskuit yang dibeli Siti adalah ...',
+      options: ['86 buah', '92 buah', '96 buah', '104 buah'],
+      correct: 2,
+      discussion: '8 × 12 = 8 × (10 + 2) = 80 + 16 = <strong>96 buah biskuit</strong>.'
+    },
+    {
+      id: 'p1q28',
+      question: 'Ada 7 kotak pensil warna. Setiap kotak berisi 13 pensil warna. Banyak pensil warna seluruhnya adalah ...',
+      options: ['81 buah', '91 buah', '93 buah', '101 buah'],
+      correct: 1,
+      discussion: '7 × 13 = 7 × (10 + 3) = 70 + 21 = <strong>91 buah pensil warna</strong>.'
+    },
+    // ── Soal 29-32: Pembagian ──
+    {
+      id: 'p1q29',
+      question: 'Hasil dari 72 ÷ 8 adalah ...',
+      options: ['6', '7', '8', '9'],
+      correct: 3,
+      discussion: '72 ÷ 8 = 9, karena 9 × 8 = 72. (Ingat perkalian 8 × 9 = 72.)'
+    },
+    {
+      id: 'p1q30',
+      question: 'Hasil dari 56 ÷ 7 adalah ...',
+      options: ['6', '7', '8', '9'],
+      correct: 2,
+      discussion: '56 ÷ 7 = 8, karena 8 × 7 = 56. (Ingat perkalian 7 × 8 = 56.)'
+    },
+    {
+      id: 'p1q31',
+      question: 'Ibu membagi 48 permen secara rata kepada 6 anak. Banyak permen yang diterima setiap anak adalah ...',
+      options: ['6 buah', '7 buah', '8 buah', '9 buah'],
+      correct: 2,
+      discussion: '48 ÷ 6 = 8, karena 8 × 6 = 48. Jadi setiap anak menerima <strong>8 buah permen</strong>.'
+    },
+    {
+      id: 'p1q32',
+      question: 'Pak Guru membagikan 81 buku secara rata kepada 9 siswa. Banyak buku yang diterima setiap siswa adalah ...',
+      options: ['7 buah', '8 buah', '9 buah', '10 buah'],
+      correct: 2,
+      discussion: '81 ÷ 9 = 9, karena 9 × 9 = 81. Jadi setiap siswa menerima <strong>9 buah buku</strong>.'
+    },
+    // ── Soal 33-38: Faktor & Kelipatan ──
+    {
+      id: 'p1q33',
+      question: 'Faktor dari 12 adalah ...',
+      options: ['1, 2, 3, 4, 5, 12', '1, 2, 3, 4, 6, 12', '1, 2, 4, 6, 8, 12', '1, 3, 6, 9, 12'],
+      correct: 1,
+      discussion: 'Faktor 12 = bilangan yang habis membagi 12. 12÷1=12, 12÷2=6, 12÷3=4, 12÷4=3, 12÷6=2, 12÷12=1. Jadi: <strong>1, 2, 3, 4, 6, 12</strong>.'
+    },
+    {
+      id: 'p1q34',
+      question: 'Tiga kelipatan pertama dari 4 adalah ...',
+      options: ['4, 8, 12', '4, 8, 16', '4, 12, 16', '4, 8, 24'],
+      correct: 0,
+      discussion: 'Kelipatan 4 diperoleh dari 4×1, 4×2, 4×3, ... Tiga kelipatan pertama: <strong>4, 8, 12</strong>.'
+    },
+    {
+      id: 'p1q35',
+      question: 'Faktor dari 18 adalah ...',
+      options: ['1, 2, 3, 6, 9, 18', '1, 2, 3, 4, 6, 18', '1, 2, 3, 6, 8, 18', '1, 3, 6, 9, 12, 18'],
+      correct: 0,
+      discussion: '18÷1=18, 18÷2=9, 18÷3=6, 18÷6=3, 18÷9=2, 18÷18=1. Faktor 18: <strong>1, 2, 3, 6, 9, 18</strong>.'
+    },
+    {
+      id: 'p1q36',
+      question: 'Tiga kelipatan pertama dari 5 adalah ...',
+      options: ['5, 10, 15', '5, 10, 20', '5, 15, 20', '5, 10, 25'],
+      correct: 0,
+      discussion: 'Kelipatan 5: 5×1=5, 5×2=10, 5×3=15. Tiga kelipatan pertama: <strong>5, 10, 15</strong>.'
+    },
+    {
+      id: 'p1q37',
+      question: 'Faktor persekutuan dari 12 dan 18 adalah ...',
+      options: ['1, 2, 3', '1, 2, 3, 6', '2, 3, 6', '1, 2, 3, 6, 12'],
+      correct: 1,
+      discussion: 'Faktor 12: 1, 2, 3, 4, 6, 12. Faktor 18: 1, 2, 3, 6, 9, 18. Yang sama (faktor persekutuan): <strong>1, 2, 3, 6</strong>.'
+    },
+    {
+      id: 'p1q38',
+      question: 'FPB (Faktor Persekutuan Terbesar) dari 12 dan 18 adalah ...',
+      options: ['3', '6', '9', '12'],
+      correct: 1,
+      discussion: 'Faktor persekutuan 12 dan 18 = {1, 2, 3, 6}. Yang terbesar adalah <strong>6</strong>. Jadi FPB(12, 18) = 6.'
+    },
+    // ── Soal 39-40: FPB & KPK dalam Soal Cerita ──
+    {
+      id: 'p1q39',
+      question: 'Nenek membuat 24 kotak berbentuk persegi dan 30 kotak berbentuk persegi panjang. Nenek ingin merangkai kotak-kotak tersebut menjadi beberapa rangkaian, tiap rangkaian berisi jumlah kotak persegi dan persegi panjang yang sama. Banyak rangkaian maksimal yang dapat dibuat Nenek adalah ...',
+      options: ['4 rangkaian', '5 rangkaian', '6 rangkaian', '8 rangkaian'],
+      correct: 2,
+      discussion: 'Agar tiap rangkaian berisi jumlah yang sama, cari FPB(24, 30). Faktor 24: 1,2,3,4,6,8,12,24. Faktor 30: 1,2,3,5,6,10,15,30. FPB = <strong>6</strong>. Jadi 6 rangkaian, tiap rangkaian berisi 4 persegi + 5 persegi panjang.'
+    },
+    {
+      id: 'p1q40',
+      question: 'Dua lampu menyala bersama-sama untuk pertama kalinya. Lampu pertama menyala setiap 3 detik, lampu kedua menyala setiap 5 detik. Kedua lampu akan menyala bersama-sama lagi untuk kedua kalinya setelah ... detik.',
+      options: ['8 detik', '10 detik', '15 detik', '30 detik'],
+      correct: 2,
+      discussion: 'Agar menyala bersama lagi, cari KPK(3, 5). Karena 3 dan 5 relatif prima, KPK = 3 × 5 = <strong>15</strong>. Jadi kedua lampu menyala bersama lagi setelah 15 detik.'
+    }
+  ],
+
+  // ─────────────────────────────────────────────────────────────────────
+  // 👉 PART 2 — KOSONG (siap diisi paket soal kedua)
+  // Jika dikosongkan, section Part 2 akan otomatis tersembunyi.
+  // Untuk menambah soal, isi array di bawah dengan format yang sama
+  // seperti Part 1.
+  // ─────────────────────────────────────────────────────────────────────
+  part2: []
+};
+
+// =========================================================================
+// STATE
+// =========================================================================
+const state = {
+  mode: 'countdown',
+  defaultSeconds: 120,
+  currentQuestion: null,
+  questionStates: {},
+  examFinished: false,
+  totalQuestions: 0
+};
+
+function initState() {
+  const all = [...questionsData.part1, ...questionsData.part2];
+  state.totalQuestions = all.length;
+  all.forEach(q => {
+    state.questionStates[q.id] = {
+      selectedAnswer: null,
+      isAnswered: false,
+      isCorrect: false,
+      isTimeout: false,
+      timeSpent: 0,
+      timeRemaining: state.defaultSeconds,
+      extraTime: 0,
+      started: false
+    };
+  });
+  document.getElementById('totalCount').textContent = state.totalQuestions;
+  document.getElementById('unansweredCount').textContent = state.totalQuestions;
+}
+
+// =========================================================================
+// TIMER LOGIC — hanya 1 timer yang berjalan untuk soal aktif
+// =========================================================================
+let tickInterval = null;
+
+function startTick() {
+  if (tickInterval) clearInterval(tickInterval);
+  tickInterval = setInterval(tick, 1000);
+}
+
+function tick() {
+  if (state.examFinished) return;
+  if (!state.currentQuestion) return;
+  const qs = state.questionStates[state.currentQuestion];
+  if (qs.isAnswered) return;
+
+  if (state.mode === 'countdown') {
+    if (qs.timeRemaining > 0) {
+      qs.timeRemaining--;
+      if (qs.timeRemaining <= 0) {
+        handleTimeout(state.currentQuestion);
+      }
+    }
+  } else {
+    qs.timeSpent++;
+  }
+
+  updateTimerDisplay();
+  updateMiniTimer();
+}
+
+function handleTimeout(qid) {
+  const qs = state.questionStates[qid];
+  qs.isAnswered = true;
+  qs.isCorrect = false;
+  qs.isTimeout = true;
+  qs.selectedAnswer = null;
+
+  const card = document.getElementById(`card-${qid}`);
+  if (card) {
+    card.querySelectorAll('.option').forEach(o => {
+      o.classList.add('disabled');
+      const inp = o.querySelector('input'); if (inp) inp.disabled = true;
+    });
+
+    const fb = document.getElementById(`feedback-${qid}`);
+    if (fb) {
+      fb.className = 'feedback show timeout';
+      fb.innerHTML = `
+        <div class="feedback-head"><i class="fa-solid fa-hourglass-end"></i> Waktu Habis</div>
+        <div class="feedback-body">Soal ini dianggap tidak dijawab karena waktu habis. Pelajari pembahasan di bawah.</div>
+      `;
+    }
+    document.getElementById(`discussion-${qid}`).classList.add('show');
+    const btn = card.querySelector('button[data-action="discuss"]');
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Sembunyikan Pembahasan';
+  }
+
+  showToast('Waktu habis! Soal dianggap tidak dijawab.', 'error');
+  updateNavButtons();
+  updateProgress();
+  updateTimerDisplay();
+  updateMiniTimer();
+}
+
+function updateTimerDisplay() {
+  const valEl = document.getElementById('timerValue');
+  const labelEl = document.getElementById('timerLabel');
+  const timerEl = document.getElementById('timerDisplay');
+
+  if (!state.currentQuestion) {
+    if (state.mode === 'countdown') {
+      valEl.textContent = formatTime(state.defaultSeconds);
+      labelEl.textContent = 'Waktu / Soal';
+    } else {
+      valEl.textContent = '00:00';
+      labelEl.textContent = 'Waktu Berjalan';
+    }
+    timerEl.classList.remove('running', 'warning', 'danger');
+    return;
+  }
+
+  const qs = state.questionStates[state.currentQuestion];
+  const val = state.mode === 'countdown' ? qs.timeRemaining : qs.timeSpent;
+  valEl.textContent = formatTime(val);
+  labelEl.textContent = state.mode === 'countdown' ? 'Sisa Waktu' : 'Waktu Berjalan';
+
+  timerEl.classList.toggle('running', !qs.isAnswered);
+  timerEl.classList.remove('warning', 'danger');
+  if (state.mode === 'countdown' && !qs.isAnswered) {
+    if (qs.timeRemaining <= 10) timerEl.classList.add('danger');
+    else if (qs.timeRemaining <= 30) timerEl.classList.add('warning');
+  }
+}
+
+function updateMiniTimer() {
+  document.querySelectorAll('.q-timer-mini').forEach(el => {
+    const id = el.dataset.qid;
+    if (!id) return;
+    const qs = state.questionStates[id];
+    if (!qs) return;
+    const val = state.mode === 'countdown' ? qs.timeRemaining : qs.timeSpent;
+    el.querySelector('span').textContent = formatTime(val);
+    el.classList.toggle('done', qs.isAnswered);
+  });
+}
+
+function formatTime(seconds) {
+  seconds = Math.max(0, Math.floor(seconds));
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+// =========================================================================
+// RENDER
+// =========================================================================
+function renderQuestions() {
+  const p1 = document.getElementById('part1Container');
+  const p2 = document.getElementById('part2Container');
+  const p2Section = document.getElementById('part2Section');
+  p1.innerHTML = '';
+  p2.innerHTML = '';
+
+  // Tentukan nomor awal Part 2 (jika Part 1 berisi 40 soal, Part 2 mulai dari 41)
+  const part2StartNum = questionsData.part1.length + 1;
+
+  questionsData.part1.forEach((q, idx) => p1.appendChild(renderMC(q, idx + 1, 1)));
+  questionsData.part2.forEach((q, idx) => p2.appendChild(renderMC(q, part2StartNum + idx, 2)));
+
+  // Tampilkan/sembunyikan section Part 2
+  if (questionsData.part2.length > 0) {
+    p2Section.classList.remove('hidden');
+  } else {
+    p2Section.classList.add('hidden');
+  }
+
+  renderNavButtons();
+  updateProgress();
+}
+
+function renderMC(q, num, part) {
+  const card = document.createElement('div');
+  card.className = 'question-card';
+  card.id = `card-${q.id}`;
+  card.innerHTML = `
+    <div class="q-header">
+      <div class="q-meta">
+        <div class="q-number">${num}</div>
+        <div class="q-info">
+          <span class="q-label">Pilihan Ganda</span>
+          <span class="q-part">Part ${part} · Soal ${num}</span>
+        </div>
+      </div>
+      <div class="q-timer-mini" data-qid="${q.id}">
+        <i class="fa-solid fa-clock"></i>
+        <span>${formatTime(state.defaultSeconds)}</span>
+      </div>
+    </div>
+    <div class="q-text">${escapeHtml(q.question)}</div>
+    <div class="options">
+      ${q.options.map((opt, i) => `
+        <label class="option" data-index="${i}">
+          <input type="radio" name="${q.id}" value="${i}">
+          <div class="option-letter">${String.fromCharCode(65 + i)}</div>
+          <div class="option-text">${escapeHtml(opt)}</div>
+        </label>
+      `).join('')}
+    </div>
+    <div class="action-bar">
+      <button class="btn btn-primary" data-action="check" data-qid="${q.id}">
+        <i class="fa-solid fa-circle-check"></i> Cek Jawaban
+      </button>
+      <button class="btn" data-action="discuss" data-qid="${q.id}">
+        <i class="fa-solid fa-lightbulb"></i> Tampilkan Pembahasan
+      </button>
+    </div>
+    <div class="feedback" id="feedback-${q.id}"></div>
+    <div class="discussion" id="discussion-${q.id}">
+      <div class="discussion-head"><i class="fa-solid fa-book-open"></i> Pembahasan</div>
+      <div class="discussion-body">${q.discussion}</div>
+    </div>
+    <div class="q-nav">
+      ${num > 1 || part > 1
+        ? `<button class="btn btn-ghost" data-action="prev" data-part="${part}" data-num="${num}"><i class="fa-solid fa-arrow-left"></i> Sebelumnya</button>`
+        : '<span></span>'}
+      <button class="btn" data-action="next" data-part="${part}" data-num="${num}">Soal Berikutnya <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  `;
+
+  card.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const qs = state.questionStates[q.id];
+      if (qs.isAnswered) return;
+      card.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      opt.querySelector('input').checked = true;
+      qs.selectedAnswer = parseInt(opt.dataset.index);
+    });
+  });
+  return card;
+}
+
+function renderNavButtons() {
+  const n1 = document.getElementById('navPart1');
+  const n2 = document.getElementById('navPart2');
+  const navP2Wrap = document.getElementById('navPart2Wrap');
+  n1.innerHTML = '';
+  n2.innerHTML = '';
+
+  const part2StartNum = questionsData.part1.length + 1;
+
+  questionsData.part1.forEach((q, i) => {
+    const b = document.createElement('button');
+    b.className = 'qnav-btn';
+    b.dataset.qid = q.id;
+    b.textContent = i + 1;
+    b.addEventListener('click', () => navigateTo(q.id));
+    n1.appendChild(b);
+  });
+
+  if (questionsData.part2.length > 0) {
+    questionsData.part2.forEach((q, i) => {
+      const b = document.createElement('button');
+      b.className = 'qnav-btn';
+      b.dataset.qid = q.id;
+      b.textContent = part2StartNum + i;
+      b.addEventListener('click', () => navigateTo(q.id));
+      n2.appendChild(b);
+    });
+    navP2Wrap.classList.remove('hidden');
+  } else {
+    navP2Wrap.classList.add('hidden');
+  }
+
+  updateNavButtons();
+}
+
+function updateNavButtons() {
+  document.querySelectorAll('.qnav-btn').forEach(btn => {
+    const id = btn.dataset.qid;
+    const qs = state.questionStates[id];
+    btn.classList.remove('active', 'answered', 'correct', 'wrong', 'timeout');
+    if (state.currentQuestion === id) btn.classList.add('active');
+    if (qs.isAnswered) {
+      btn.classList.add('answered');
+      if (qs.isTimeout) btn.classList.add('timeout');
+      else btn.classList.add(qs.isCorrect ? 'correct' : 'wrong');
+    }
+  });
+}
+
+function navigateTo(qid) {
+  if (state.examFinished) return;
+  state.currentQuestion = qid;
+  state.questionStates[qid].started = true;
+  updateNavButtons();
+  updateTimerDisplay();
+  updateMiniTimer();
+
+  const card = document.getElementById(`card-${qid}`);
+  if (card) {
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    card.classList.add('highlight');
+    setTimeout(() => card.classList.remove('highlight'), 800);
+  }
+}
+
+// =========================================================================
+// CHECK ANSWER — timer soal itu berhenti
+// =========================================================================
+function checkAnswer(qid) {
+  const qs = state.questionStates[qid];
+  if (qs.isAnswered) {
+    showToast('Soal sudah diperiksa.', 'info');
+    return;
+  }
+  const question = findQuestion(qid);
+  if (!question) return;
+
+  if (qs.selectedAnswer === null || qs.selectedAnswer === undefined) {
+    showToast('Pilih jawaban terlebih dahulu!', 'error');
+    return;
+  }
+
+  const isCorrect = qs.selectedAnswer === question.correct;
+  qs.isAnswered = true;
+  qs.isCorrect = isCorrect;
+
+  const card = document.getElementById(`card-${qid}`);
+  card.querySelectorAll('.option').forEach((opt, i) => {
+    opt.classList.add('disabled');
+    const inp = opt.querySelector('input'); if (inp) inp.disabled = true;
+    if (i === question.correct) opt.classList.add('correct');
+    if (i === qs.selectedAnswer && !isCorrect) opt.classList.add('wrong');
+  });
+
+  const fb = document.getElementById(`feedback-${qid}`);
+  fb.className = `feedback show ${isCorrect ? 'correct' : 'wrong'}`;
+  const userText = question.options[qs.selectedAnswer];
+  fb.innerHTML = `
+    <div class="feedback-head">
+      <i class="fa-solid ${isCorrect ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
+      ${isCorrect ? 'Jawaban Benar!' : 'Jawaban Kurang Tepat'}
+    </div>
+    <div class="feedback-body">
+      ${isCorrect
+        ? 'Kerja bagus! Pemahamanmu tepat untuk soal ini.'
+        : `Jawabanmu: <strong>${escapeHtml(userText)}</strong>. Jawaban benar: <strong>${escapeHtml(question.options[question.correct])}</strong>. Pelajari pembahasan di bawah.`
+      }
+    </div>
+  `;
+
+  document.getElementById(`discussion-${qid}`).classList.add('show');
+  const btn = card.querySelector(`button[data-action="discuss"][data-qid="${qid}"]`);
+  if (btn) btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Sembunyikan Pembahasan';
+
+  updateNavButtons();
+  updateProgress();
+  updateTimerDisplay();
+  updateMiniTimer();
+
+  showToast(isCorrect ? 'Jawaban benar!' : 'Jawaban kurang tepat — lihat pembahasan.', isCorrect ? 'success' : 'error');
+}
+
+function toggleDiscussion(qid) {
+  const disc = document.getElementById(`discussion-${qid}`);
+  disc.classList.toggle('show');
+  const btn = document.querySelector(`button[data-action="discuss"][data-qid="${qid}"]`);
+  if (disc.classList.contains('show')) {
+    btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Sembunyikan Pembahasan';
+  } else {
+    btn.innerHTML = '<i class="fa-solid fa-lightbulb"></i> Tampilkan Pembahasan';
+  }
+}
+
+function findQuestion(qid) {
+  return [...questionsData.part1, ...questionsData.part2].find(q => q.id === qid);
+}
+
+function updateProgress() {
+  const all = Object.values(state.questionStates);
+  const answered = all.filter(q => q.isAnswered).length;
+  const correct = all.filter(q => q.isAnswered && q.isCorrect).length;
+  const wrong = all.filter(q => q.isAnswered && !q.isCorrect).length;
+  const unanswered = state.totalQuestions - answered;
+
+  document.getElementById('answeredCount').textContent = answered;
+  document.getElementById('correctCount').textContent = correct;
+  document.getElementById('wrongCount').textContent = wrong;
+  document.getElementById('unansweredCount').textContent = unanswered;
+  document.getElementById('progressFill').style.width = (answered / state.totalQuestions * 100) + '%';
+}
+
+// =========================================================================
+// TOAST
+// =========================================================================
+function showToast(message, type = 'info') {
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  const icon = type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-info';
+  t.innerHTML = `<i class="fa-solid ${icon}"></i> ${message}`;
+  document.getElementById('toastContainer').appendChild(t);
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(30px)';
+    t.style.transition = 'all 0.3s';
+    setTimeout(() => t.remove(), 300);
+  }, 3000);
+}
+
+// =========================================================================
+// FINISH EXAM
+// =========================================================================
+function finishExam() {
+  if (state.examFinished) return;
+  const unanswered = Object.values(state.questionStates).filter(q => !q.isAnswered).length;
+  if (unanswered > 0) {
+    if (!confirm(`Masih ada ${unanswered} soal belum diperiksa. Yakin menyelesaikan ujian?`)) return;
+  }
+  state.examFinished = true;
+  if (tickInterval) clearInterval(tickInterval);
+  showResults();
+}
+
+function showResults() {
+  const all = Object.values(state.questionStates);
+  const correct = all.filter(q => q.isAnswered && q.isCorrect).length;
+  const wrong = all.filter(q => q.isAnswered && !q.isCorrect).length;
+  const unanswered = all.filter(q => !q.isAnswered).length;
+  const score = Math.round((correct / state.totalQuestions) * 100);
+
+  document.getElementById('rCorrect').textContent = correct;
+  document.getElementById('rWrong').textContent = wrong;
+  document.getElementById('rUnanswered').textContent = unanswered;
+  document.getElementById('rScore').textContent = `${score} / 100`;
+
+  let grade = '';
+  if (score >= 90) grade = 'A — Sangat Baik';
+  else if (score >= 75) grade = 'B — Baik';
+  else if (score >= 60) grade = 'C — Cukup';
+  else if (score >= 40) grade = 'D — Kurang';
+  else grade = 'E — Perlu Bimbingan';
+  document.getElementById('rGrade').textContent = `Predikat: ${grade}`;
+
+  document.getElementById('analysisContent').innerHTML = generateAnalysis();
+  document.getElementById('resultsModal').classList.add('show');
+}
+
+function generateAnalysis() {
+  let html = '';
+
+  const parts = [
+    { key: 'part1', name: 'Part 1 — Bilangan Cacah Komprehensif (Soal 1-40)', alt: false },
+    { key: 'part2', name: 'Part 2 — Soal Tambahan', alt: true }
+  ];
+
+  parts.forEach(({ key, name, alt }) => {
+    const questions = questionsData[key];
+    if (!questions || questions.length === 0) return; // skip empty parts
+
+    const partStartNum = key === 'part1' ? 1 : (questionsData.part1.length + 1);
+    const partStates = questions.map((q, i) => ({
+      q, state: state.questionStates[q.id], idx: partStartNum + i
+    }));
+
+    const correct = partStates.filter(p => p.state.isAnswered && p.state.isCorrect).length;
+    const wrong = partStates.filter(p => p.state.isAnswered && !p.state.isCorrect && !p.state.isTimeout).length;
+    const timeout = partStates.filter(p => p.state.isTimeout).length;
+    const unanswered = partStates.filter(p => !p.state.isAnswered).length;
+
+    const answeredTimes = partStates.filter(p => p.state.isAnswered).map(p =>
+      state.mode === 'countdown'
+        ? (state.defaultSeconds + p.state.extraTime - p.state.timeRemaining)
+        : p.state.timeSpent
+    );
+    const avgTime = answeredTimes.length > 0
+      ? Math.round(answeredTimes.reduce((a, b) => a + b, 0) / answeredTimes.length) : 0;
+
+    html += `
+      <div class="part-analysis ${alt ? 'alt' : ''}">
+        <h4><i class="fa-solid fa-layer-group"></i> ${name}</h4>
+        <div class="part-analysis-stats">
+          <span><i class="fa-solid fa-check" style="color:var(--green);"></i> Benar: <strong>${correct}</strong></span>
+          <span><i class="fa-solid fa-xmark" style="color:var(--red);"></i> Salah: <strong>${wrong}</strong></span>
+          <span><i class="fa-solid fa-hourglass-end" style="color:var(--accent-2);"></i> Timeout: <strong>${timeout}</strong></span>
+          <span><i class="fa-solid fa-minus" style="color:var(--muted);"></i> Kosong: <strong>${unanswered}</strong></span>
+          <span><i class="fa-solid fa-clock" style="color:var(--teal);"></i> Rata-rata waktu: <strong>${formatTime(avgTime)}</strong></span>
+        </div>
+    `;
+
+    partStates.forEach(({ q, state: qs, idx }) => {
+      let priority = 'low', priorityText = '', advice = '', icon = 'fa-circle-check';
+      const timeUsed = state.mode === 'countdown'
+        ? (state.defaultSeconds + qs.extraTime - qs.timeRemaining)
+        : qs.timeSpent;
+
+      if (!qs.isAnswered) {
+        priority = 'high'; priorityText = 'Prioritas Tinggi'; icon = 'fa-triangle-exclamation';
+        advice = `Soal ${idx} <strong>belum diperiksa</strong> (waktu terpaksa ${formatTime(timeUsed)}). Pelajari konsep dasar materi ini dan kerjakan ulang.`;
+      } else if (qs.isTimeout) {
+        priority = 'high'; priorityText = 'Prioritas Tinggi'; icon = 'fa-hourglass-end';
+        advice = `Soal ${idx} <strong>waktu habis</strong> tanpa jawaban. Latih manajemen waktu — jangan terlalu lama di satu soal.`;
+      } else if (!qs.isCorrect) {
+        if (timeUsed < 30) {
+          priority = 'high'; priorityText = 'Prioritas Tinggi'; icon = 'fa-bolt';
+          advice = `Soal ${idx} salah dengan waktu terlalu cepat (${formatTime(timeUsed)}). <strong>Kurang teliti</strong> — baca pertanyaan saksama, jangan terburu-buru.`;
+        } else {
+          priority = 'high'; priorityText = 'Prioritas Tinggi'; icon = 'fa-book';
+          advice = `Soal ${idx} salah setelah berpikir lama (${formatTime(timeUsed)}). <strong>Konsep belum dipahami</strong> — pelajari pembahasan, minta penjelasan ulang dari tutor.`;
+        }
+      } else {
+        if (timeUsed > Math.round(state.defaultSeconds * 0.75)) {
+          priority = 'med'; priorityText = 'Perlu Maksimalkan'; icon = 'fa-gauge-high';
+          advice = `Soal ${idx} benar namun lama (${formatTime(timeUsed)}). <strong>Tingkatkan kecepatan</strong> — latih soal sejenis agar lebih fasih.`;
+        } else {
+          priority = 'low'; priorityText = 'Sudah Baik'; icon = 'fa-circle-check';
+          advice = `Soal ${idx} benar dengan waktu ideal (${formatTime(timeUsed)}). Pemahaman sudah baik — pertahankan!`;
+        }
+      }
+
+      html += `
+        <div class="analysis-item priority-${priority}">
+          <div class="ai-icon"><i class="fa-solid ${icon}"></i></div>
+          <div class="ai-text">
+            <strong>${priorityText} · Soal ${idx}</strong>
+            <span class="ai-meta">${advice}</span>
+          </div>
+        </div>
+      `;
+    });
+
+    // Part summary
+    let summary = '';
+    if (correct === questions.length) {
+      summary = `
+        <div class="analysis-item priority-low" style="margin-top:10px; background:rgba(74,222,128,0.08);">
+          <div class="ai-icon"><i class="fa-solid fa-trophy"></i></div>
+          <div class="ai-text">
+            <strong>${name.split('—')[0].trim()} dikuasai sempurna!</strong>
+            <span class="ai-meta">Semua soal benar. Fokus pada konsistensi dan kecepatan.</span>
+          </div>
+        </div>`;
+    } else if (correct < questions.length / 2) {
+      summary = `
+        <div class="analysis-item priority-high" style="margin-top:10px; background:rgba(248,113,113,0.08);">
+          <div class="ai-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div class="ai-text">
+            <strong>${name.split('—')[0].trim()} perlu pembelajaran ulang.</strong>
+            <span class="ai-meta">Sarankan tutor memberi materi tambahan dan latihan serupa pada part ini.</span>
+          </div>
+        </div>`;
+    } else {
+      summary = `
+        <div class="analysis-item priority-med" style="margin-top:10px; background:rgba(255,192,74,0.08);">
+          <div class="ai-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <div class="ai-text">
+            <strong>${name.split('—')[0].trim()} cukup dikuasai, masih bisa dimaksimalkan.</strong>
+            <span class="ai-meta">Latih soal yang salah hingga konsisten benar.</span>
+          </div>
+        </div>`;
+    }
+    html += summary + `</div>`;
+  });
+
+  return html;
+}
+
+// =========================================================================
+// MODE TOGGLE — countdown atau stopwatch (hanya 1 aktif)
+// =========================================================================
+function setMode(mode) {
+  if (state.mode === mode) return;
+
+  Object.entries(state.questionStates).forEach(([id, qs]) => {
+    if (qs.isAnswered) return;
+    if (state.mode === 'countdown' && mode === 'stopwatch') {
+      qs.timeSpent = Math.max(0, state.defaultSeconds + qs.extraTime - qs.timeRemaining);
+    } else if (state.mode === 'stopwatch' && mode === 'countdown') {
+      qs.timeRemaining = Math.max(0, state.defaultSeconds - qs.timeSpent);
+      qs.extraTime = 0;
+    }
+  });
+
+  state.mode = mode;
+  document.querySelectorAll('.mode-toggle').forEach(tg => {
+    tg.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  });
+
+  document.getElementById('addTimeBtn').style.display = mode === 'countdown' ? '' : 'none';
+  document.getElementById('defaultTimeRow').style.display = mode === 'countdown' ? '' : 'none';
+
+  updateTimerDisplay();
+  updateMiniTimer();
+  showToast(`Mode diubah ke ${mode === 'countdown' ? 'Hitung Mundur' : 'Stopwatch'}.`, 'info');
+}
+
+// =========================================================================
+// UTILITIES
+// =========================================================================
+function escapeHtml(str) {
+  if (typeof str !== 'string') str = String(str);
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+    .replace(/\n/g, '<br>');
+}
+
+// =========================================================================
+// EVENT LISTENERS
+// =========================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  initState();
+
+  document.querySelectorAll('.mode-toggle').forEach(tg => {
+    tg.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => setMode(b.dataset.mode));
+    });
+  });
+
+  document.getElementById('defaultTimeInput').addEventListener('change', (e) => {
+    let val = parseFloat(e.target.value);
+    if (isNaN(val) || val < 0.5) val = 0.5;
+    if (val > 60) val = 60;
+    e.target.value = val;
+    state.defaultSeconds = Math.round(val * 60);
+    Object.entries(state.questionStates).forEach(([id, qs]) => {
+      if (!qs.started) qs.timeRemaining = state.defaultSeconds;
+    });
+    updateTimerDisplay();
+    updateMiniTimer();
+    showToast(`Waktu default diatur ke ${val} menit per soal.`, 'info');
+  });
+
+  document.getElementById('addTimeBtn').addEventListener('click', () => {
+    if (state.mode !== 'countdown') {
+      showToast('Tombol +15 detik hanya aktif di mode Hitung Mundur.', 'error');
+      return;
+    }
+    if (!state.currentQuestion) {
+      showToast('Pilih soal terlebih dahulu.', 'error');
+      return;
+    }
+    const qs = state.questionStates[state.currentQuestion];
+    if (qs.isAnswered) {
+      showToast('Soal sudah selesai — tidak bisa tambah waktu.', 'error');
+      return;
+    }
+    qs.timeRemaining += 15;
+    qs.extraTime += 15;
+    updateTimerDisplay();
+    updateMiniTimer();
+    showToast('+15 detik ditambahkan untuk soal ini.', 'success');
+  });
+
+  document.getElementById('startBtn').addEventListener('click', () => {
+    document.getElementById('welcome').classList.add('hidden');
+    document.getElementById('examLayout').classList.remove('hidden');
+    renderQuestions();
+    navigateTo(questionsData.part1[0].id);
+    startTick();
+    showToast('Latihan dimulai. Timer berjalan otomatis.', 'info');
+    document.querySelectorAll('#modeToggle button').forEach(b => b.disabled = true);
+  });
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const action = btn.dataset.action;
+    const qid = btn.dataset.qid;
+    const part = parseInt(btn.dataset.part);
+    const num = parseInt(btn.dataset.num);
+
+    if (action === 'check') {
+      checkAnswer(qid);
+    } else if (action === 'discuss') {
+      toggleDiscussion(qid);
+    } else if (action === 'prev' || action === 'next') {
+      const partArr = part === 1 ? questionsData.part1 : questionsData.part2;
+      const currentIdx = partArr.findIndex(q => q.id === state.currentQuestion);
+      if (action === 'prev') {
+        if (currentIdx > 0) {
+          navigateTo(partArr[currentIdx - 1].id);
+        } else if (part === 2) {
+          navigateTo(questionsData.part1[questionsData.part1.length - 1].id);
+        }
+      } else {
+        if (currentIdx < partArr.length - 1) {
+          navigateTo(partArr[currentIdx + 1].id);
+        } else if (part === 1 && questionsData.part2.length > 0) {
+          navigateTo(questionsData.part2[0].id);
+        } else {
+          showToast('Itu soal terakhir. Klik Finish Exam untuk melihat hasil.', 'info');
+        }
+      }
+    }
+  });
+
+  document.getElementById('finishBtn').addEventListener('click', finishExam);
+  document.getElementById('finishBtn2').addEventListener('click', finishExam);
+
+  document.getElementById('closeResults').addEventListener('click', () => {
+    document.getElementById('resultsModal').classList.remove('show');
+  });
+  document.getElementById('resultsModal').addEventListener('click', (e) => {
+    if (e.target.id === 'resultsModal') {
+      document.getElementById('resultsModal').classList.remove('show');
+    }
+  });
+
+  document.getElementById('reviewBtn').addEventListener('click', () => {
+    document.getElementById('resultsModal').classList.remove('show');
+    showToast('Tinjau pembahasan tersedia di setiap soal.', 'info');
+    Object.keys(state.questionStates).forEach(qid => {
+      document.getElementById(`discussion-${qid}`).classList.add('show');
+      const btn = document.querySelector(`button[data-action="discuss"][data-qid="${qid}"]`);
+      if (btn) btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Sembunyikan Pembahasan';
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (!confirm('Yakin ingin mengulang? Semua jawaban & waktu akan direset.')) return;
+    location.reload();
+  });
+});
+</script>
+</body>
+</html>
