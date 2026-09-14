@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Latihan Olimpiade Matematika — 7 Part Interaktif</title>
+<style>
+:root{
+  --bg:#eef1f9; --card:#fff; --ink:#1f2440; --muted:#6b7194;
+  --primary:#3d43d8; --primary-soft:#eceeff; --gold:#f0a51f;
+  --green:#17945c; --green-soft:#e3f7ee; --red:#d64550; --red-soft:#fdeaec;
+  --amber:#b97900; --amber-soft:#fdf3dd; --line:#e3e7f2; --navy:#181c4c;
+  --radius:16px; --shadow:0 10px 30px rgba(24,28,76,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;min-height:100vh}
+.hidden{display:none!important}
+.container{max-width:1180px;margin:0 auto;padding:16px}
+h1{font-size:clamp(1.4rem,3vw,2rem);line-height:1.2}
+button{font-family:inherit}
+
+/* ===== SETUP ===== */
+#screen-setup{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.setup-card{background:var(--card);border-radius:24px;box-shadow:var(--shadow);max-width:900px;width:100%;overflow:hidden}
+.setup-hero{background:linear-gradient(135deg,#1d2158,#3d43d8);color:#fff;padding:34px 40px 30px;position:relative}
+.setup-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--gold),#ffd977)}
+.kicker{letter-spacing:.22em;font-size:.72rem;font-weight:800;color:#ffd977;margin-bottom:8px}
+.setup-hero p{opacity:.85;margin-top:8px;max-width:560px}
+.setup-body{padding:30px 40px 40px;display:grid;grid-template-columns:1.1fr .9fr;gap:30px}
+@media(max-width:780px){.setup-body{grid-template-columns:1fr;padding:24px}}
+.field{margin-bottom:18px}
+.field>label{display:block;font-weight:700;margin-bottom:8px;font-size:.88rem;color:var(--navy)}
+input[type=text],input[type=number]{padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;font-size:1rem;outline:none;background:#fbfcff;width:100%}
+input:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-soft)}
+.time-row{display:flex;gap:10px;align-items:center}
+.time-row input{width:90px;text-align:center}
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.mode-cards{grid-template-columns:1fr}}
+.mode-card{border:2px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;transition:.15s;display:block}
+.mode-card.active{border-color:var(--primary);background:var(--primary-soft)}
+.mc-head{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.mode-card p{font-size:.8rem;color:var(--muted)}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.preset{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:6px 12px;font-weight:700;cursor:pointer;color:#41476e}
+.preset:hover{border-color:var(--primary);color:var(--primary)}
+.hint{font-size:.8rem;color:var(--muted);margin-top:8px}
+.rules{background:#fbfcff;border:1.5px dashed #c9cfec;border-radius:16px;padding:18px 20px;font-size:.9rem;color:#41476e;align-self:start}
+.rules h3{color:var(--navy);margin-bottom:10px}
+.rules li{margin:7px 0 7px 18px}
+.btn{border:none;border-radius:12px;padding:11px 18px;font-weight:800;cursor:pointer;font-size:.95rem}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:#eef0fb;color:#41476e}
+.btn-start{width:100%;margin-top:6px;padding:14px;font-size:1.05rem}
+
+/* ===== HEADER EXAM ===== */
+.exam-head{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+.exam-head .inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:11px 18px;flex-wrap:wrap}
+.brand{font-weight:800;margin-right:auto}
+.brand small{display:block;font-weight:500;opacity:.7;font-size:.7rem}
+.chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);padding:5px 12px;border-radius:999px;font-size:.78rem}
+.btn-finish{background:var(--gold);color:#3a2800;border:none;font-weight:800;padding:10px 18px;border-radius:12px;cursor:pointer}
+.btn-finish:hover{filter:brightness(1.07)}
+.head-actions{display:flex;gap:8px;margin-left:auto}
+
+/* ===== TABS ===== */
+.tabs{max-width:1180px;margin:14px auto 0;padding:0 18px;display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.tab{flex:0 0 auto;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:8px 14px;font-weight:800;cursor:pointer;color:#41476e}
+.tab .sub{display:block;font-size:.68rem;color:var(--muted);font-weight:600}
+.tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.tab.active .sub{color:#d9dcff}
+
+/* ===== EXAM LAYOUT ===== */
+.exam-wrap{max-width:1180px;margin:16px auto;padding:0 18px;display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start}
+@media(max-width:920px){.exam-wrap{grid-template-columns:1fr}}
+.panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.7rem;color:var(--muted);margin-bottom:12px}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:4px;vertical-align:-1px;border:1px solid var(--line)}
+.dot.a{background:var(--amber-soft);border-color:#e2b04a}.dot.g{background:var(--green-soft);border-color:#57c492}
+.dot.r{background:var(--red-soft);border-color:#eb8f97}.dot.d{background:#e7e9f0;border-color:#b9bdd1}
+.qgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.qbtn{aspect-ratio:1;border:1.5px solid var(--line);border-radius:10px;background:#fff;font-weight:800;cursor:pointer;color:#41476e;font-size:.95rem}
+.qbtn.sel{background:var(--amber-soft);border-color:#e2b04a;color:var(--amber)}
+.qbtn.ok{background:var(--green-soft);border-color:#57c492;color:var(--green)}
+.qbtn.bad{background:var(--red-soft);border-color:#eb8f97;color:var(--red)}
+.qbtn.dead{background:#e7e9f0;border-color:#b9bdd1;color:#7a7f9d;text-decoration:line-through}
+.qbtn.active{outline:3px solid var(--primary);outline-offset:2px}
+.part-progress{margin-top:14px}
+.bar{height:8px;background:#edf0fa;border-radius:99px;overflow:hidden;margin-top:6px}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary),#7b81ff);transition:.3s}
+
+/* ===== QUESTION CARD ===== */
+.qcard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+.qtop{display:flex;gap:18px;justify-content:space-between;flex-wrap:wrap}
+.qmeta{font-size:.74rem;font-weight:800;letter-spacing:.06em;color:var(--primary);text-transform:uppercase;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.badge{background:var(--primary-soft);color:var(--primary);padding:3px 10px;border-radius:999px;font-size:.7rem;letter-spacing:0}
+.qtext{font-size:1.12rem;font-weight:600;margin-top:10px;max-width:640px}
+.timerbox{background:#f6f7ff;border:1.5px solid var(--line);border-radius:14px;padding:12px 16px;text-align:center;min-width:158px}
+.tlabel{font-size:.64rem;letter-spacing:.14em;color:var(--muted);font-weight:800}
+.tval{font-size:2.1rem;font-weight:800;font-variant-numeric:tabular-nums;color:var(--primary);line-height:1.15}
+.tval.twarn{color:var(--amber)}
+.tval.tcrit{color:var(--red);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.5}}
+.btn-add{margin-top:8px;background:var(--green-soft);color:var(--green);border:1.5px solid #9adcb9;border-radius:10px;padding:6px 12px;font-weight:800;cursor:pointer;width:100%}
+.btn-add:disabled{opacity:.45;cursor:not-allowed}
+.tused{font-size:.72rem;color:var(--muted);margin-top:7px}
+.opts{display:grid;gap:10px;margin-top:18px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font-size:1rem;transition:.12s}
+.opt:hover:not(:disabled){border-color:var(--primary);background:#fbfcff}
+.opt .letter{flex:0 0 30px;height:30px;border-radius:8px;background:#eef0fb;color:#41476e;display:grid;place-items:center;font-weight:800;font-size:.85rem}
+.opt.chosen{border-color:var(--primary);background:var(--primary-soft)}
+.opt.chosen .letter{background:var(--primary);color:#fff}
+.opt.correct{border-color:var(--green);background:var(--green-soft)}
+.opt.correct .letter{background:var(--green);color:#fff}
+.opt.wrongpick{border-color:var(--red);background:var(--red-soft)}
+.opt.wrongpick .letter{background:var(--red);color:#fff}
+.opt.dim{opacity:.55}
+.opt:disabled{cursor:default}
+.qactions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.btn-next{margin-left:auto;background:var(--navy);color:#fff}
+.fb{margin-top:18px;border-radius:14px;padding:14px 16px;border:1.5px solid}
+.fb.ok{background:var(--green-soft);border-color:#9adcb9}
+.fb.bad{background:var(--red-soft);border-color:#eb8f97}
+.fb.dead{background:#f0f1f6;border-color:#c9cde0}
+.fb .title{font-weight:800;display:flex;align-items:center;gap:8px}
+.fb.ok .title{color:var(--green)}.fb.bad .title{color:var(--red)}.fb.dead .title{color:#5a5f7d}
+.exp{margin-top:10px;background:#fff;border-radius:10px;padding:12px 14px;font-size:.94rem;color:#3c4266;border:1px dashed var(--line)}
+.exp b{color:var(--navy)}
+.kbd-hint{margin-top:16px;font-size:.72rem;color:var(--muted);text-align:center}
+
+/* ===== TOAST & MODAL ===== */
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:11px 18px;border-radius:12px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:200;box-shadow:0 10px 26px rgba(0,0,0,.3);max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal-back{position:fixed;inset:0;background:rgba(20,23,60,.55);display:grid;place-items:center;z-index:150;padding:20px}
+.modal{background:#fff;border-radius:18px;max-width:460px;width:100%;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.modal p{color:var(--muted);font-size:.94rem;margin-top:6px}
+.modal .row{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+.btn-danger{background:var(--red);color:#fff}
+
+/* ===== RESULTS ===== */
+.res-title{margin:8px 0 2px}
+.res-meta{color:var(--muted);font-size:.9rem;margin-bottom:6px}
+.sum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:16px 0 22px}
+.sum{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:18px;text-align:center;border-top:5px solid var(--primary)}
+.sum .num{font-size:1.9rem;font-weight:800;line-height:1.1}
+.sum .lbl{font-size:.78rem;color:var(--muted);font-weight:700;margin-top:4px}
+.sum.ok{border-color:var(--green)}.sum.bad{border-color:var(--red)}.sum.warn{border-color:var(--amber)}.sum.navy{border-color:var(--navy)}
+.sum small{display:block;color:var(--muted);font-size:.68rem}
+table.res{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);font-size:.9rem}
+table.res th{background:var(--navy);color:#fff;text-align:left;padding:10px 12px;font-size:.74rem;letter-spacing:.05em}
+table.res td{padding:9px 12px;border-top:1px solid var(--line)}
+.tag{padding:3px 10px;border-radius:999px;font-size:.73rem;font-weight:800;display:inline-block}
+.tag.ok{background:var(--green-soft);color:var(--green)}
+.tag.bad{background:var(--red-soft);color:var(--red)}
+.tag.warn{background:var(--amber-soft);color:var(--amber)}
+.tag.mut{background:#eef0fb;color:#5a5f7d}
+.part-block{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:20px;margin-top:18px}
+.part-block h3{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pstats{color:var(--muted);font-size:.86rem;margin-top:4px}
+.timecells{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:8px;margin-top:14px}
+.tcell{border:1.5px solid var(--line);border-radius:10px;padding:6px 4px;text-align:center;font-size:.7rem;color:var(--muted);font-weight:700}
+.tcell b{display:block;font-size:.86rem;color:var(--ink)}
+.tcell.ok{background:var(--green-soft);border-color:#9adcb9}
+.tcell.bad{background:var(--red-soft);border-color:#eb8f97}
+.tcell.sel{background:var(--amber-soft);border-color:#e8c26a}
+.tcell.dead{background:#e7e9f0;color:#7a7f9d}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.fix{border:1.5px solid var(--line);border-left:5px solid var(--red);border-radius:12px;padding:10px 14px;background:#fbfcff;font-size:.9rem;margin-top:8px}
+.fix.warn{border-left-color:var(--amber)}
+.fix.good{border-left-color:var(--green)}
+.fix b{color:var(--navy)}
+.fix-d{color:#4a5077;margin-top:2px}
+details.dt{margin-top:16px;border:1.5px solid var(--line);border-radius:12px;background:#fbfcff}
+details.dt summary{cursor:pointer;padding:12px 14px;font-weight:800;color:#41476e}
+.rec{margin-top:10px;background:var(--primary-soft);border-radius:10px;padding:10px 14px;font-size:.88rem;color:#2c3170}
+h2.sec{margin:26px 0 4px;color:var(--navy)}
+@media print{
+  body{background:#fff}
+  .btn,.btn-finish{display:none!important}
+  .sum,table.res,.part-block{box-shadow:none;border:1px solid #ccd}
+  .exam-head{position:static}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LAYAR SETUP (TUTOR) ============ -->
+<section id="screen-setup">
+  <div class="setup-card">
+    <div class="setup-hero">
+      <div class="kicker">OLIMPIADE MATEMATIKA</div>
+      <h1>Latihan Soal Interaktif — 7 Part</h1>
+      <p>140 soal pilihan ganda dengan cek jawaban otomatis, pembahasan lengkap, waktu per soal, dan analisis hasil per part.</p>
+    </div>
+    <div class="setup-body">
+      <div>
+        <div class="field">
+          <label for="inName">Nama Siswa (opsional)</label>
+          <input id="inName" type="text" placeholder="Contoh: Aisyah"/>
+        </div>
+        <div class="field">
+          <label>Mode Waktu — pilih salah satu</label>
+          <div class="mode-cards">
+            <label class="mode-card active" id="mcDown">
+              <input type="radio" name="mode" value="countdown" checked hidden>
+              <div class="mc-head"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Hitung Mundur</div>
+              <p>Waktu berkurang tiap soal. Jika habis, soal ditutup &amp; dihitung tidak dijawab. Tersedia tombol +15 detik.</p>
+            </label>
+            <label class="mode-card" id="mcUp">
+              <input type="radio" name="mode" value="stopwatch" hidden>
+              <div class="mc-head"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg> Stopwatch</div>
+              <p>Waktu berjalan maju tanpa batas. Cocok untuk mengukur kecepatan tiap soal.</p>
+            </label>
+          </div>
+        </div>
+        <div class="field">
+          <label id="lblTime">Waktu per soal (timer hitung mundur)</label>
+          <div class="time-row">
+            <input id="inMin" type="number" min="0" max="59" value="2"/><span>menit</span>
+            <input id="inSec" type="number" min="0" max="59" value="0"/><span>detik</span>
+          </div>
+          <div class="presets">
+            <button class="preset" onclick="setTime(1,0)">1:00</button>
+            <button class="preset" onclick="setTime(1,30)">1:30</button>
+            <button class="preset" onclick="setTime(2,0)">2:00</button>
+            <button class="preset" onclick="setTime(2,30)">2:30</button>
+            <button class="preset" onclick="setTime(3,0)">3:00</button>
+          </div>
+          <p class="hint" id="timeHint">Waktu mulai berjalan saat soal dibuka dan berhenti otomatis setelah siswa menekan "Cek Jawaban".</p>
+        </div>
+        <button class="btn btn-primary btn-start" onclick="startExam()">Mulai Latihan</button>
+      </div>
+      <div class="rules">
+        <h3>Alur Latihan</h3>
+        <ol>
+          <li>Tutor memilih mode waktu (hitung mundur <b>atau</b> stopwatch — hanya satu yang berjalan) dan durasi per soal (bawaan 2 menit).</li>
+          <li>Waktu berjalan ketika siswa menekan nomor soal, dan berhenti otomatis setelah tombol <b>Cek Jawaban</b> ditekan.</li>
+          <li>Setiap soal memiliki tombol <b>Cek Jawaban</b> dan <b>pembahasan</b>.</li>
+          <li>Mode hitung mundur menyediakan tombol <b>+15 detik</b> bila waktu hampir habis (juga bisa membuka kembali soal yang waktunya habis).</li>
+          <li>Tekan <b>Finish Exam</b> kapan saja untuk melihat rekap: jumlah benar, salah, tidak dijawab, waktu tiap soal, dan analisis per part beserta topik yang perlu diperbaiki/dimaksimalkan.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LAYAR UJIAN ============ -->
+<section id="screen-exam" class="hidden">
+  <header class="exam-head"><div class="inner">
+    <div class="brand">Latihan Olimpiade<small>7 Part · 140 Soal</small></div>
+    <span class="chip" id="chipStudent"></span>
+    <span class="chip" id="chipMode"></span>
+    <span class="chip" id="chipProgress"></span>
+    <button class="btn-finish" onclick="askFinish()">Finish Exam</button>
+  </div></header>
+  <nav class="tabs" id="tabs"></nav>
+  <div class="exam-wrap">
+    <aside>
+      <div class="panel">
+        <div class="legend">
+          <span><i class="dot"></i>Belum</span><span><i class="dot a"></i>Dipilih</span>
+          <span><i class="dot g"></i>Benar</span><span><i class="dot r"></i>Salah</span>
+          <span><i class="dot d"></i>Waktu Habis</span>
+        </div>
+        <div class="qgrid" id="navGrid"></div>
+        <div class="part-progress">
+          <div class="hint" id="navInfo"></div>
+          <div class="bar"><i id="pbar"></i></div>
+        </div>
+      </div>
+    </aside>
+    <main class="qcard" id="qarea"></main>
+  </div>
+</section>
+
+<!-- ============ LAYAR HASIL ============ -->
+<section id="screen-result" class="hidden">
+  <header class="exam-head"><div class="inner">
+    <div class="brand">Hasil Latihan<small id="resMeta"></small></div>
+    <div class="head-actions">
+      <button class="btn btn-ghost" onclick="location.reload()">Ulangi Latihan</button>
+      <button class="btn-finish" onclick="window.print()">Cetak Hasil</button>
+    </div>
+  </div></header>
+  <div class="container" id="resultContent"></div>
+</section>
+
+<div id="toast"></div>
+<div id="modal" class="modal-back hidden">
+  <div class="modal">
+    <h3>Selesaikan latihan?</h3>
+    <p>Hasil dihitung dari semua soal. Soal yang belum ditekan "Cek Jawaban"-nya akan dihitung sebagai <b>tidak dijawab</b>.</p>
+    <div class="row">
+      <button class="btn btn-ghost" onclick="closeModal()">Lanjut Kerjakan</button>
+      <button class="btn btn-danger" onclick="doFinish()">Ya, Finish Exam</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= DATA SOAL (7 PART x 20 SOAL) ================= */
+const DATA=[
+{name:"Part 1",qs:[
+{q:"Hasil dari 135.000 + 85.000 − 50.000 adalah...",o:["100.000","170.000","200.000","250.000"],a:1,t:"Operasi Hitung",e:"Jumlahkan dulu: 135.000 + 85.000 = 220.000, lalu 220.000 − 50.000 = 170.000."},
+{q:"Sebuah perusahaan memproduksi 17.500 botol minuman setiap hari. Berapa banyak botol yang diproduksi selama 4 hari?",o:["40.000","70.000","60.000","100.000"],a:1,t:"Soal Cerita",e:"Produksi 4 hari = 17.500 × 4 = 70.000 botol."},
+{q:"Hasil dari 6.000 : 12 adalah...",o:["50","500","5.000","550"],a:1,t:"Operasi Hitung",e:"6.000 : 12 = 500. Cek: 500 × 12 = 6.000."},
+{q:"Pecahan yang senilai dengan 12/13 adalah...",o:["24/26","23/24","22/25","25/26"],a:0,t:"Pecahan",e:"Kalikan pembilang dan penyebut dengan 2: 12/13 × 2/2 = 24/26."},
+{q:"Manakah pernyataan perbandingan yang benar?",o:["1/4 > 1/2","3/5 < 2/5","1/12 = 4/48","2/3 < 1/3"],a:2,t:"Pecahan",e:"4/48 disederhanakan (dibagi 4) menjadi 1/12, jadi 1/12 = 4/48. Pilihan lain salah: 1/4 < 1/2, 3/5 > 2/5, dan 2/3 > 1/3."},
+{q:"Bentuk paling sederhana dari 25/30 adalah...",o:["1/2","2/3","5/6","4/5"],a:2,t:"Pecahan",e:"FPB dari 25 dan 30 adalah 5. Maka 25 : 5 = 5 dan 30 : 5 = 6, sehingga 25/30 = 5/6."},
+{q:"Faktor dari bilangan 15 adalah...",o:["1, 2, 3, 4, 6, 12","2, 4, 6, 8, 10, 12","1, 3, 5, 15","12, 24, 36"],a:2,t:"Faktor & Kelipatan",e:"Faktor adalah bilangan yang habis membagi 15: 1 × 15 = 15 dan 3 × 5 = 15. Jadi faktornya 1, 3, 5, 15."},
+{q:"Kelipatan persekutuan dari 5 dan 10 yang kurang dari 20 adalah...",o:["6 dan 8","10","12 dan 16","12 dan 18"],a:1,t:"Faktor & Kelipatan",e:"Kelipatan 5: 5, 10, 15. Kelipatan 10: 10, 20. Yang sama dan kurang dari 20 hanya 10."},
+{q:"Sebuah persegi memiliki sisi 8 cm. Luas persegi tersebut adalah...",o:["16 cm²","32 cm²","64 cm²","81 cm²"],a:2,t:"Geometri",e:"Luas persegi = sisi × sisi = 8 × 8 = 64 cm²."},
+{q:"Keliling persegi panjang dengan panjang 14 cm dan lebar 8 cm adalah...",o:["19 cm","38 cm","84 cm","44 cm"],a:3,t:"Geometri",e:"Keliling = 2 × (panjang + lebar) = 2 × (14 + 8) = 2 × 22 = 44 cm."},
+{q:"Jika luas sebuah persegi adalah 64 cm², maka keliling persegi tersebut adalah...",o:["10 cm","15 cm","32 cm","28 cm"],a:2,t:"Geometri",e:"Sisi = akar dari 64 = 8 cm. Keliling = 4 × 8 = 32 cm."},
+{q:"Sudut yang besarnya kurang dari 90 derajat disebut sudut...",o:["Lancip","Tumpul","Siku-siku","Lurus"],a:0,t:"Sudut",e:"Sudut lancip: kurang dari 90°. Siku-siku: tepat 90°. Tumpul: antara 90° dan 180°. Lurus: tepat 180°."},
+{q:"Jarum jam yang menunjukkan pukul 03.00 membentuk sudut...",o:["45°","90°","180°","360°"],a:1,t:"Sudut",e:"Pukul 03.00: jarum pendek di angka 3, jarum panjang di angka 12. Jaraknya 3 angka = 3 × 30° = 90°."},
+{q:"Sudut yang besarnya 20° termasuk jenis sudut...",o:["Lancip","Siku-siku","Tumpul","Refleks"],a:0,t:"Sudut",e:"20° lebih kecil dari 90°, jadi termasuk sudut lancip."},
+{q:"Perhatikan pola: 1, 4, 9, 16, 25, 36 ... Angka berikutnya adalah...",o:["46","42","49","44"],a:2,t:"Pola Bilangan",e:"Polanya bilangan kuadrat: 1², 2², 3², 4², 5², 6², sehingga berikutnya 7² = 49."},
+{q:"Lanjutkan pola ini: 12, 16, 18, ...",o:["14","12","22","60"],a:2,t:"Pola Bilangan",e:"Pola bergantian +4 dan +2: 12 → (+4) 16 → (+2) 18 → (+4) 22."},
+{q:"Budi memiliki uang Rp50.000. Ia membeli 4 buku tulis seharga Rp3.000 per buku dan 2 pensil seharga Rp1.500 per pensil. Berapa sisa uang Budi?",o:["Rp20.000","Rp30.000","Rp35.000","Rp40.000"],a:2,t:"Soal Cerita",e:"Buku: 4 × 3.000 = 12.000. Pensil: 2 × 1.500 = 3.000. Total belanja 15.000. Sisa = 50.000 − 15.000 = 35.000."},
+{q:"Sebuah taman berbentuk persegi panjang memiliki keliling 40 meter. Jika lebarnya 6 meter, berapakah panjangnya?",o:["12 meter","16 meter","14 meter","32 meter"],a:2,t:"Geometri",e:"Keliling = 2 × (p + l) → 40 = 2 × (p + 6) → p + 6 = 20 → p = 14 meter."},
+{q:"Semua burung punya paruh. Merpati adalah burung. Kesimpulannya adalah...",o:["Merpati bisa makan","Merpati punya paruh","Semua yang berparuh adalah merpati","Burung tidak selalu merpati"],a:1,t:"Logika & Penalaran",e:"Semua burung punya paruh dan merpati adalah burung, maka merpati pasti punya paruh."},
+{q:"Jika hari ini adalah hari Selasa, maka 9 hari lagi adalah hari...",o:["Selasa","Rabu","Kamis","Senin"],a:2,t:"Waktu & Kalender",e:"9 hari = 7 hari + 2 hari. Setelah 7 hari kembali ke Selasa, lalu +2 hari menjadi Kamis."}
+]},
+{name:"Part 2",qs:[
+{q:"Hasil dari (1.250 + 1.250 + 1.250 + 1.250) × (200 : 4) adalah...",o:["250.000","500.000","1.000.000","25.000"],a:0,t:"Operasi Hitung",e:"1.250 × 4 = 5.000 dan 200 : 4 = 50. Maka 5.000 × 50 = 250.000."},
+{q:"Manakah di antara pecahan berikut yang nilainya paling mendekati 1?",o:["2/3","3/4","4/5","9/10"],a:3,t:"Pecahan",e:"Ubah ke desimal: 2/3 = 0,67; 3/4 = 0,75; 4/5 = 0,8; 9/10 = 0,9. Yang paling dekat dengan 1 adalah 9/10."},
+{q:"Lampu A menyala setiap 8 detik, lampu B setiap 12 detik, dan lampu C setiap 15 detik. Jika ketiga lampu menyala bersamaan pada detik ke-0, pada detik ke berapa mereka akan menyala bersamaan lagi untuk kedua kalinya?",o:["60","120","180","240"],a:1,t:"Faktor & Kelipatan",e:"Cari KPK: 8 = 2³, 12 = 2² × 3, 15 = 3 × 5 → KPK = 2³ × 3 × 5 = 120 detik."},
+{q:"Dua buah persegi identik dengan sisi 10 cm diletakkan berdampingan sehingga membentuk satu persegi panjang. Berapakah keliling bangunan gabungan tersebut?",o:["80 cm","60 cm","40 cm","70 cm"],a:1,t:"Geometri",e:"Gabungannya persegi panjang 20 cm × 10 cm. Keliling = 2 × (20 + 10) = 60 cm."},
+{q:"Perhatikan pola: 1, 4, 9, 16, 25, ..... Berapakah selisih antara suku ke-10 dan suku ke-9?",o:["17","19","21","23"],a:1,t:"Pola Bilangan",e:"Polanya kuadrat: suku ke-9 = 9² = 81 dan suku ke-10 = 10² = 100. Selisihnya 100 − 81 = 19."},
+{q:"Sebuah jam dinding menunjukkan pukul 09.00 tepat. Berapakah besar sudut terkecil yang terbentuk oleh jarum panjang dan jarum pendek?",o:["45°","90°","180°","270°"],a:1,t:"Sudut",e:"Pukul 09.00 membentuk sudut sejauh 3 angka jam = 3 × 30° = 90°."},
+{q:"Di sebuah peternakan, jumlah kaki ayam dan kambing adalah 100 buah. Jika jumlah kepala hewan di sana ada 35 buah, berapakah jumlah kambing di peternakan tersebut?",o:["15","20","10","25"],a:0,t:"Soal Cerita",e:"Trik: anggap semua ayam → 35 × 2 = 70 kaki. Kekurangan kaki = 100 − 70 = 30. Setiap kambing menambah 2 kaki, jadi kambing = 30 : 2 = 15 ekor."},
+{q:'Ada tiga kotak: Merah, Biru, dan Hijau. Salah satu berisi hadiah. Kotak Merah: "Hadiah tidak ada di sini." Kotak Biru: "Hadiah tidak ada di sini." Kotak Hijau: "Hadiah tidak ada di kotak Merah." Jika hanya satu pernyataan yang benar, di mana letak hadiahnya?',o:["Kotak Merah","Kotak Biru","Kotak Hijau","Tidak bisa ditentukan"],a:0,t:"Logika & Penalaran",e:"Uji satu per satu. Jika hadiah di kotak Merah: pernyataan Merah salah, pernyataan Biru benar (hadiah memang tidak di Biru), pernyataan Hijau salah → tepat satu yang benar. Jika di kotak Biru: dua pernyataan benar. Jika di kotak Hijau: ketiganya benar. Jadi hadiah ada di Kotak Merah."},
+{q:"Jika 123 × 9 + 4 = 1.111, berapakah hasil dari 12.345 × 9 + 6?",o:["111.111","111.101","111.116","111.121"],a:0,t:"Pola Bilangan",e:"Pola: 123 × 9 + 4 = 1.111; 1.234 × 9 + 5 = 11.111; 12.345 × 9 + 6 = 111.111."},
+{q:"Urutkan dari yang terkecil ke terbesar: 1/2 ; 0,75 ; 3/5",o:["1/2; 3/5; 0,75","0,75; 3/5; 1/2","3/5; 1/2; 0,75","1/2; 0,75; 3/5"],a:0,t:"Pecahan",e:"1/2 = 0,50 dan 3/5 = 0,60. Urutannya: 0,50 < 0,60 < 0,75 → 1/2; 3/5; 0,75."},
+{q:"Sebuah persegi memiliki luas yang sama dengan persegi panjang berukuran 16 cm × 4 cm. Berapakah keliling persegi tersebut?",o:["32 cm","16 cm","64 cm","40 cm"],a:0,t:"Geometri",e:"Luas persegi panjang = 16 × 4 = 64 cm². Sisi persegi = akar 64 = 8 cm. Keliling = 4 × 8 = 32 cm."},
+{q:"Banyaknya faktor dari bilangan 36 adalah...",o:["7","8","9","10"],a:2,t:"Faktor & Kelipatan",e:"Faktor 36: 1, 2, 3, 4, 6, 9, 12, 18, 36 → ada 9 faktor."},
+{q:"Jika sebuah sudut besarnya 1/3 dari sudut siku-siku, maka sudut tersebut termasuk jenis sudut...",o:["Tumpul","Siku-siku","Lancip","Lurus"],a:2,t:"Sudut",e:"Siku-siku = 90°. 1/3 × 90° = 30°. Karena 30° < 90°, sudut tersebut lancip."},
+{q:"Lengkapi pola berikut: 2, 6, 12, 20, 30, ......",o:["40","42","44","46"],a:1,t:"Pola Bilangan",e:"Selisihnya bertambah 2 tiap langkah: +4, +6, +8, +10, lalu +12. Maka 30 + 12 = 42."},
+{q:"Andi membaca buku dari halaman 25 sampai halaman 125. Berapa banyak digit angka \"5\" yang Andi temui dalam nomor halaman yang ia baca?",o:["20","21","22","23"],a:1,t:"Logika & Penalaran",e:"Digit 5 di satuan: 25, 35, 45, ..., 125 → ada 11. Digit 5 di puluhan: 50–59 → ada 10. Total 11 + 10 = 21."},
+{q:"Jumlah seluruh sudut dalam pada sebuah segitiga sama kaki adalah...",o:["90°","180°","360°","Tergantung panjang sisinya"],a:1,t:"Sudut",e:"Jumlah sudut dalam segitiga (apa pun jenisnya) selalu 180°."},
+{q:"Semua mamalia menyusui. Paus adalah mamalia. Kesimpulan yang paling tepat adalah...",o:["Paus hidup di air","Paus adalah ikan yang menyusui","Paus menyusui","Beberapa paus tidak menyusui"],a:2,t:"Logika & Penalaran",e:"Semua mamalia menyusui dan paus adalah mamalia → paus menyusui."},
+{q:"Berapakah nilai n jika (n − 2.500) : 50 = 20?",o:["3.000","3.500","2.600","4.000"],a:1,t:"Aljabar",e:"(n − 2.500) : 50 = 20 → n − 2.500 = 20 × 50 = 1.000 → n = 3.500."},
+{q:"Sebuah taman berbentuk segitiga sama sisi dengan panjang sisi 15 meter. Jika Budi berlari mengelilingi taman tersebut sebanyak 5 putaran, berapa jarak total yang ditempuh Budi?",o:["75 meter","150 meter","225 meter","300 meter"],a:2,t:"Geometri",e:"Keliling segitiga = 3 × 15 = 45 meter. Jarak 5 putaran = 45 × 5 = 225 meter."},
+{q:"Seperempat dari sebuah angka adalah 12. Berapakah hasil dari setengah angka tersebut ditambah 10?",o:["22","34","48","58"],a:1,t:"Aljabar",e:"1/4 × angka = 12 → angka = 48. Setengah angka = 24, lalu 24 + 10 = 34."}
+]},
+{name:"Part 3",qs:[
+{q:"Hasil dari 4.785 + 2.946 − 1.879 adalah ...",o:["5.742","5.852","5.862","5.972"],a:1,t:"Operasi Hitung",e:"4.785 + 2.946 = 7.731, lalu 7.731 − 1.879 = 5.852."},
+{q:"Hasil dari 8.250 − (1.375 + 2.486) adalah ...",o:["4.289","4.389","4.489","4.589"],a:1,t:"Operasi Hitung",e:"Kerjakan dalam kurung: 1.375 + 2.486 = 3.861. Lalu 8.250 − 3.861 = 4.389."},
+{q:"Pecahan yang senilai dengan 3/5 adalah ...",o:["6/8","9/15","12/15","15/20"],a:1,t:"Pecahan",e:"3/5 × 3/3 = 9/15."},
+{q:"Perbandingan kelereng Roni dan Dika adalah 4 : 7. Jika jumlah kelereng mereka 99, maka jumlah kelereng Dika adalah ...",o:["35","49","56","63"],a:3,t:"Perbandingan",e:"Jumlah bagian = 4 + 7 = 11. Satu bagian = 99 : 11 = 9. Dika = 7 × 9 = 63 kelereng."},
+{q:"Faktor terbesar dari 48 yang juga merupakan faktor dari 72 adalah ...",o:["12","18","24","36"],a:2,t:"Faktor & Kelipatan",e:"Ini sama dengan FPB dari 48 dan 72. 48 = 2⁴ × 3 dan 72 = 2³ × 3² → FPB = 2³ × 3 = 24."},
+{q:"Kelipatan persekutuan terkecil (KPK) dari 6 dan 8 adalah ...",o:["12","18","24","48"],a:2,t:"Faktor & Kelipatan",e:"Kelipatan 6: 6, 12, 18, 24, ... Kelipatan 8: 8, 16, 24, ... KPK = 24."},
+{q:"Sebuah persegi memiliki panjang sisi 18 cm. Keliling persegi tersebut adalah ...",o:["54 cm","62 cm","72 cm","81 cm"],a:2,t:"Geometri",e:"Keliling persegi = 4 × sisi = 4 × 18 = 72 cm."},
+{q:"Sebuah persegi panjang memiliki panjang 24 cm dan lebar 15 cm. Luasnya adalah ...",o:["320 cm²","340 cm²","360 cm²","380 cm²"],a:2,t:"Geometri",e:"Luas = panjang × lebar = 24 × 15 = 360 cm²."},
+{q:"2, 6, 12, 20, 30, __",o:["40","41","42","44"],a:2,t:"Pola Bilangan",e:"Selisihnya: +4, +6, +8, +10, lalu +12 → 30 + 12 = 42."},
+{q:"5, 9, 15, 23, 33, __",o:["43","44","45","46"],a:2,t:"Pola Bilangan",e:"Selisihnya: +4, +6, +8, +10, lalu +12 → 33 + 12 = 45."},
+{q:"Sudut yang besarnya kurang dari 90° disebut ...",o:["Sudut siku-siku","Sudut tumpul","Sudut lancip","Sudut refleks"],a:2,t:"Sudut",e:"Sudut lancip adalah sudut yang besarannya kurang dari 90°."},
+{q:"Dua sudut saling berpelurus. Jika salah satu sudut besarnya 128°, maka sudut lainnya adalah ...",o:["42°","52°","62°","72°"],a:1,t:"Sudut",e:"Sudut berpelurus berjumlah 180° → 180 − 128 = 52°."},
+{q:"Pak Amir memiliki 540 buah jeruk. Sebanyak 185 jeruk dijual pada pagi hari dan 127 jeruk dijual pada sore hari. Kemudian ia membeli lagi 96 jeruk dari pasar. Berapa jumlah jeruk sekarang?",o:["304","314","324","334"],a:2,t:"Soal Cerita",e:"540 − 185 = 355; 355 − 127 = 228; 228 + 96 = 324 jeruk."},
+{q:"Sebuah bus membawa 135 penumpang. Di halte pertama turun 48 orang dan naik 29 orang. Di halte kedua turun lagi 37 orang dan naik 16 orang. Jumlah penumpang sekarang adalah ...",o:["85","95","105","115"],a:1,t:"Soal Cerita",e:"135 − 48 = 87; 87 + 29 = 116; 116 − 37 = 79; 79 + 16 = 95 penumpang."},
+{q:"Ibu mempunyai 24 potong pizza. 3/8 bagian diberikan kepada tetangga. Berapa potong pizza yang diberikan?",o:["6","8","9","12"],a:2,t:"Pecahan",e:"3/8 × 24 = 24 : 8 × 3 = 3 × 3 = 9 potong."},
+{q:"Semua siswa kelas 4 mengikuti lomba matematika. Rina adalah siswa kelas 4. Maka ...",o:["Rina pasti mengikuti lomba matematika","Rina tidak mengikuti lomba","Rina kelas 5","Tidak dapat diketahui"],a:0,t:"Logika & Penalaran",e:"Semua siswa kelas 4 ikut lomba dan Rina siswa kelas 4 → Rina pasti ikut lomba matematika."},
+{q:"Jika Budi lebih tinggi dari Andi, Andi lebih tinggi dari Roni, dan Roni lebih tinggi dari Dika, maka siapa yang paling pendek?",o:["Budi","Andi","Roni","Dika"],a:3,t:"Logika & Penalaran",e:"Urutan dari tertinggi: Budi > Andi > Roni > Dika. Jadi yang paling pendek adalah Dika."},
+{q:"Sebuah toko memiliki 864 buku. Sebanyak 275 buku terjual pada minggu pertama dan 189 buku terjual pada minggu kedua. Kemudian toko mendapat kiriman 148 buku baru. Jumlah buku sekarang adalah ...",o:["528","538","548","558"],a:2,t:"Soal Cerita",e:"864 − 275 = 589; 589 − 189 = 400; 400 + 148 = 548 buku."},
+{q:"1, 4, 9, 16, 25, __",o:["30","32","36","49"],a:2,t:"Pola Bilangan",e:"Pola kuadrat: 1², 2², 3², 4², 5², berikutnya 6² = 36."},
+{q:"Dalam sebuah lomba: Sinta lebih cepat dari Rina. Rina lebih cepat dari Budi. Budi lebih cepat dari Dodi. Dodi lebih cepat dari Andi. Siapa urutan ketiga tercepat?",o:["Sinta","Rina","Budi","Dodi"],a:2,t:"Logika & Penalaran",e:"Urutan tercepat: Sinta, Rina, Budi, Dodi, Andi. Urutan ketiga = Budi."}
+]},
+{name:"Part 4",qs:[
+{q:"Hasil dari 8.945 + 7.286 − 4.978 + 1.356 adalah ...",o:["12.499","12.509","12.599","12.609"],a:3,t:"Operasi Hitung",e:"8.945 + 7.286 = 16.231; 16.231 − 4.978 = 11.253; 11.253 + 1.356 = 12.609."},
+{q:"Hasil dari (4.800 − 1.275) + (2.346 − 987) adalah ...",o:["4.774","4.784","4.884","4.984"],a:2,t:"Operasi Hitung",e:"4.800 − 1.275 = 3.525 dan 2.346 − 987 = 1.359. Jumlahnya 3.525 + 1.359 = 4.884."},
+{q:"Pecahan yang senilai dengan 7/9 adalah ...",o:["14/16","21/27","28/45","35/63"],a:1,t:"Pecahan",e:"7/9 × 3/3 = 21/27."},
+{q:"Perbandingan umur Dika dan Roni adalah 5 : 7. Jika jumlah umur mereka 96 tahun, maka selisih umur mereka adalah ...",o:["12 tahun","14 tahun","16 tahun","18 tahun"],a:2,t:"Perbandingan",e:"Jumlah bagian = 5 + 7 = 12 → satu bagian = 96 : 12 = 8. Selisih bagian = 7 − 5 = 2 → selisih umur = 2 × 8 = 16 tahun."},
+{q:"FPB dari 72 dan 96 adalah ...",o:["12","18","24","36"],a:2,t:"Faktor & Kelipatan",e:"72 = 2³ × 3² dan 96 = 2⁵ × 3 → FPB = 2³ × 3 = 24."},
+{q:"KPK dari 12, 18, dan 24 adalah ...",o:["48","60","72","96"],a:2,t:"Faktor & Kelipatan",e:"12 = 2² × 3; 18 = 2 × 3²; 24 = 2³ × 3 → KPK = 2³ × 3² = 72."},
+{q:"Sebuah persegi panjang memiliki panjang 28 cm dan lebar 17 cm. Keliling bangun tersebut adalah ...",o:["80 cm","85 cm","90 cm","95 cm"],a:2,t:"Geometri",e:"Keliling = 2 × (28 + 17) = 2 × 45 = 90 cm."},
+{q:"Sebuah taman berbentuk persegi dengan sisi 24 m. Luas taman tersebut adalah ...",o:["476 m²","526 m²","576 m²","626 m²"],a:2,t:"Geometri",e:"Luas persegi = 24 × 24 = 576 m²."},
+{q:"3, 8, 15, 24, 35, __",o:["44","46","48","50"],a:2,t:"Pola Bilangan",e:"Selisih: +5, +7, +9, +11, lalu +13 → 35 + 13 = 48. (Pola: n² − 1.)"},
+{q:"2, 5, 11, 23, 47, __",o:["91","93","95","97"],a:2,t:"Pola Bilangan",e:"Pola: kali 2 lalu tambah 1 → 47 × 2 + 1 = 95."},
+{q:"Dua sudut saling berpenyiku. Jika salah satu sudut 38°, maka sudut lainnya adalah ...",o:["42°","48°","52°","62°"],a:2,t:"Sudut",e:"Sudut berpenyiku berjumlah 90° → 90 − 38 = 52°."},
+{q:"Jumlah tiga sudut dalam sebuah segitiga adalah 180°. Jika dua sudutnya 45° dan 68°, maka sudut ketiga adalah ...",o:["57°","67°","77°","87°"],a:1,t:"Sudut",e:"180 − 45 − 68 = 67°."},
+{q:"Di perpustakaan terdapat 875 buku. Sebanyak 286 buku dipinjam minggu ini dan 147 buku rusak. Kemudian sekolah membeli lagi 235 buku baru. Berapa jumlah buku sekarang?",o:["667","677","687","697"],a:1,t:"Soal Cerita",e:"875 − 286 = 589; 589 − 147 = 442; 442 + 235 = 677 buku."},
+{q:"Sebuah toko memiliki 560 botol minuman. Hari pertama terjual 175 botol dan hari kedua terjual 138 botol. Kemudian toko mendapat tambahan 96 botol baru. Jumlah botol sekarang adalah ...",o:["333","343","353","363"],a:1,t:"Soal Cerita",e:"560 − 175 = 385; 385 − 138 = 247; 247 + 96 = 343 botol."},
+{q:"2/3 dari 90 adalah ...",o:["50","55","60","65"],a:2,t:"Pecahan",e:"2/3 × 90 = 90 : 3 × 2 = 30 × 2 = 60."},
+{q:"Semua peserta olimpiade memakai seragam biru. Andi adalah peserta olimpiade. Maka ...",o:["Andi pasti memakai seragam biru","Andi memakai seragam merah","Andi bukan peserta","Tidak dapat diketahui"],a:0,t:"Logika & Penalaran",e:"Semua peserta memakai seragam biru dan Andi peserta → Andi pasti memakai seragam biru."},
+{q:"Jika: Rina lebih tinggi dari Sinta. Sinta lebih tinggi dari Budi. Budi lebih tinggi dari Dodi. Dodi lebih tinggi dari Andi. Maka siapa urutan kedua paling pendek?",o:["Sinta","Budi","Dodi","Andi"],a:2,t:"Logika & Penalaran",e:"Urutan dari tertinggi: Rina, Sinta, Budi, Dodi, Andi. Paling pendek Andi, kedua paling pendek Dodi."},
+{q:"Pak Amir memanen 348 mangga pada hari Senin, 276 mangga pada hari Selasa, dan 189 mangga pada hari Rabu. Sebanyak 425 mangga dijual. Berapa sisa mangga Pak Amir?",o:["378","388","398","408"],a:1,t:"Soal Cerita",e:"Total = 348 + 276 + 189 = 813. Sisa = 813 − 425 = 388 mangga."},
+{q:"1, 3, 6, 10, 15, 21, __",o:["26","27","28","29"],a:2,t:"Pola Bilangan",e:"Pola penjumlahan bertingkat: +2, +3, +4, +5, +6, lalu +7 → 21 + 7 = 28."},
+{q:"Dalam perlombaan: Dika lebih cepat dari Rina. Rina lebih cepat dari Budi. Budi lebih cepat dari Sinta. Sinta lebih cepat dari Andi. Andi lebih cepat dari Riko. Siapa urutan keempat tercepat?",o:["Budi","Sinta","Andi","Riko"],a:1,t:"Logika & Penalaran",e:"Urutan tercepat: Dika, Rina, Budi, Sinta, Andi, Riko. Urutan keempat = Sinta."}
+]},
+{name:"Part 5",qs:[
+{q:"Hasil dari 9.875 − 3.486 + 2.197 − 1.258 adalah ...",o:["7.228","7.318","7.328","7.428"],a:2,t:"Operasi Hitung",e:"9.875 − 3.486 = 6.389; 6.389 + 2.197 = 8.586; 8.586 − 1.258 = 7.328."},
+{q:"Hasil dari (6.400 − 2.875) + (3.520 − 1.468) adalah ...",o:["5.567","5.577","5.587","5.597"],a:1,t:"Operasi Hitung",e:"6.400 − 2.875 = 3.525 dan 3.520 − 1.468 = 2.052. Jumlahnya 3.525 + 2.052 = 5.577."},
+{q:"Pecahan yang senilai dengan 5/8 adalah ...",o:["10/14","15/24","20/30","25/35"],a:1,t:"Pecahan",e:"5/8 × 3/3 = 15/24."},
+{q:"Perbandingan jumlah buku Rina dan Dodi adalah 7 : 9. Jika jumlah buku mereka 224, maka banyak buku Rina adalah ...",o:["84","88","98","108"],a:2,t:"Perbandingan",e:"Jumlah bagian = 7 + 9 = 16 → satu bagian = 224 : 16 = 14. Rina = 7 × 14 = 98 buku."},
+{q:"FPB dari 84 dan 126 adalah ...",o:["14","21","28","42"],a:3,t:"Faktor & Kelipatan",e:"84 = 2² × 3 × 7 dan 126 = 2 × 3² × 7 → FPB = 2 × 3 × 7 = 42."},
+{q:"KPK dari 15, 20, dan 30 adalah ...",o:["45","50","60","90"],a:2,t:"Faktor & Kelipatan",e:"15 = 3 × 5; 20 = 2² × 5; 30 = 2 × 3 × 5 → KPK = 2² × 3 × 5 = 60."},
+{q:"Sebuah persegi memiliki sisi 27 cm. Keliling persegi tersebut adalah ...",o:["81 cm","94 cm","108 cm","116 cm"],a:2,t:"Geometri",e:"Keliling = 4 × 27 = 108 cm."},
+{q:"Sebuah persegi panjang memiliki panjang 35 cm dan lebar 18 cm. Luasnya adalah ...",o:["530 cm²","580 cm²","630 cm²","680 cm²"],a:2,t:"Geometri",e:"Luas = 35 × 18 = 630 cm²."},
+{q:"4, 9, 16, 25, 36, __",o:["45","47","49","51"],a:2,t:"Pola Bilangan",e:"Pola kuadrat: 2², 3², 4², 5², 6², berikutnya 7² = 49."},
+{q:"2, 7, 17, 37, 77, __",o:["117","137","157","177"],a:2,t:"Pola Bilangan",e:"Pola: kali 2 lalu tambah 3 → 77 × 2 + 3 = 157."},
+{q:"Dua sudut berpelurus. Jika salah satu sudut 143°, maka sudut lainnya adalah ...",o:["27°","37°","47°","57°"],a:1,t:"Sudut",e:"Sudut berpelurus berjumlah 180° → 180 − 143 = 37°."},
+{q:"Dalam sebuah segitiga, dua sudut besarnya 58° dan 67°. Besar sudut ketiga adalah ...",o:["45°","55°","65°","75°"],a:1,t:"Sudut",e:"180 − 58 − 67 = 55°."},
+{q:"Sebuah toko memiliki 965 pensil. Sebanyak 278 pensil terjual pada pagi hari dan 196 pensil terjual pada sore hari. Kemudian toko membeli lagi 245 pensil baru. Jumlah pensil sekarang adalah ...",o:["726","736","746","756"],a:1,t:"Soal Cerita",e:"965 − 278 = 687; 687 − 196 = 491; 491 + 245 = 736 pensil."},
+{q:"Pak Amir memiliki 12 kotak apel. Setiap kotak berisi 24 apel. Jika 57 apel dijual dan 39 apel busuk, berapa apel yang masih baik?",o:["182","192","202","212"],a:1,t:"Soal Cerita",e:"Total apel = 12 × 24 = 288. Yang keluar = 57 + 39 = 96. Sisa = 288 − 96 = 192 apel."},
+{q:"3/4 dari 168 adalah ...",o:["116","126","136","146"],a:1,t:"Pecahan",e:"168 : 4 = 42, lalu 42 × 3 = 126."},
+{q:"Semua peserta final olimpiade mendapat medali. Dika adalah peserta final olimpiade. Maka ...",o:["Dika pasti mendapat medali","Dika tidak mendapat medali","Dika bukan peserta","Tidak dapat diketahui"],a:0,t:"Logika & Penalaran",e:"Semua peserta final mendapat medali dan Dika peserta final → Dika pasti mendapat medali."},
+{q:"Jika: Rina lebih cepat dari Budi. Budi lebih cepat dari Sinta. Sinta lebih cepat dari Dodi. Dodi lebih cepat dari Andi. Andi lebih cepat dari Riko. Siapa urutan ketiga tercepat?",o:["Rina","Budi","Sinta","Dodi"],a:2,t:"Logika & Penalaran",e:"Urutan tercepat: Rina, Budi, Sinta, Dodi, Andi, Riko. Urutan ketiga = Sinta."},
+{q:"Di perpustakaan terdapat 1.250 buku. Sebanyak 378 buku dipinjam minggu ini dan 186 buku rusak. Sekolah membeli lagi 425 buku baru. Jumlah buku sekarang adalah ...",o:["1.101","1.111","1.121","1.131"],a:1,t:"Soal Cerita",e:"1.250 − 378 = 872; 872 − 186 = 686; 686 + 425 = 1.111 buku."},
+{q:"Perhatikan pola: 1, 2, 4, 8, 16, ... Angka berikutnya adalah ...",o:["20","24","32","64"],a:2,t:"Pola Bilangan",e:"Setiap suku dikali 2: 1 → 2 → 4 → 8 → 16 → 32."},
+{q:"Dalam sebuah lomba: Dika lebih cepat dari Rina. Rina lebih cepat dari Budi. Budi lebih cepat dari Sinta. Sinta lebih cepat dari Andi. Andi lebih cepat dari Riko. Riko lebih cepat dari Nanda. Siapa urutan kelima tercepat?",o:["Sinta","Andi","Riko","Nanda"],a:1,t:"Logika & Penalaran",e:"Urutan tercepat: Dika, Rina, Budi, Sinta, Andi, Riko, Nanda. Urutan kelima = Andi."}
+]},
+{name:"Part 6",qs:[
+{q:"Hasil dari 12.500 + 8.750 − 6.250 + 4.375 adalah ...",o:["18.375","19.375","19.475","20.375"],a:1,t:"Operasi Hitung",e:"12.500 + 8.750 = 21.250; 21.250 − 6.250 = 15.000; 15.000 + 4.375 = 19.375."},
+{q:"Hasil dari (25.000 − 12.750) × 8 : 20 adalah ...",o:["4.700","4.800","4.900","5.000"],a:2,t:"Operasi Hitung",e:"Kerjakan kurung dulu: 25.000 − 12.750 = 12.250. Lalu 12.250 × 8 = 98.000. Terakhir 98.000 : 20 = 4.900."},
+{q:"Pecahan yang senilai dengan 24/36 adalah ...",o:["36/48","40/60","42/54","45/60"],a:1,t:"Pecahan",e:"Sederhanakan 24/36 = 2/3. Cek pilihan: 36/48 = 3/4; 40/60 = 2/3; 42/54 = 7/9; 45/60 = 3/4. Jadi 40/60 senilai dengan 24/36."},
+{q:"Perbandingan jumlah perangko Andi dan Bima adalah 8 : 13. Jika selisih perangko mereka 60 lembar, maka jumlah perangko Andi adalah ...",o:["84","96","104","156"],a:1,t:"Perbandingan",e:"Selisih bagian = 13 − 8 = 5 → satu bagian = 60 : 5 = 12. Andi = 8 × 12 = 96 perangko."},
+{q:"FPB dari 120 dan 168 adalah ...",o:["12","18","24","36"],a:2,t:"Faktor & Kelipatan",e:"120 = 2³ × 3 × 5 dan 168 = 2³ × 3 × 7 → FPB = 2³ × 3 = 24."},
+{q:"KPK dari 16, 24, dan 36 adalah ...",o:["96","120","144","288"],a:2,t:"Faktor & Kelipatan",e:"16 = 2⁴; 24 = 2³ × 3; 36 = 2² × 3² → KPK = 2⁴ × 3² = 144."},
+{q:"Sebuah persegi panjang memiliki keliling 96 cm. Jika panjangnya 30 cm, maka lebarnya adalah ...",o:["16 cm","18 cm","20 cm","24 cm"],a:1,t:"Geometri",e:"2 × (30 + l) = 96 → 30 + l = 48 → l = 18 cm."},
+{q:"Sebuah persegi panjang memiliki luas 240 cm² dan lebar 12 cm. Keliling persegi panjang tersebut adalah ...",o:["56 cm","60 cm","64 cm","68 cm"],a:2,t:"Geometri",e:"Panjang = 240 : 12 = 20 cm. Keliling = 2 × (20 + 12) = 64 cm."},
+{q:"Perhatikan pola: 2, 3, 5, 8, 12, 17, ... Angka berikutnya adalah ...",o:["21","22","23","24"],a:2,t:"Pola Bilangan",e:"Selisih: +1, +2, +3, +4, +5, lalu +6 → 17 + 6 = 23."},
+{q:"Perhatikan pola: 1, 2, 6, 24, 120, ... Angka berikutnya adalah ...",o:["600","620","720","840"],a:2,t:"Pola Bilangan",e:"Pola perkalian bertingkat: ×2, ×3, ×4, ×5, lalu ×6 → 120 × 6 = 720."},
+{q:"Dua sudut saling berpelurus dengan perbandingan 2 : 3. Besar sudut yang terbesar adalah ...",o:["72°","90°","108°","120°"],a:2,t:"Sudut",e:"Jumlah bagian = 2 + 3 = 5 → satu bagian = 180° : 5 = 36°. Sudut terbesar = 3 × 36° = 108°."},
+{q:"Sudut-sudut dalam sebuah segitiga berbanding 1 : 2 : 3. Besar sudut terbesarnya adalah ...",o:["60°","80°","90°","100°"],a:2,t:"Sudut",e:"Jumlah bagian = 1 + 2 + 3 = 6 → satu bagian = 180° : 6 = 30°. Sudut terbesar = 3 × 30° = 90°."},
+{q:"Sebuah percetakan memiliki 2.450 lembar kertas. Hari Senin terpakai 685 lembar dan hari Selasa terpakai 547 lembar. Kemudian datang kiriman 1.250 lembar, lalu hari Rabu terpakai lagi 980 lembar. Sisa kertas percetakan sekarang adalah ...",o:["1.388","1.488","1.588","1.688"],a:1,t:"Soal Cerita",e:"2.450 − 685 = 1.765; 1.765 − 547 = 1.218; 1.218 + 1.250 = 2.468; 2.468 − 980 = 1.488 lembar."},
+{q:"Pak Rahmat memiliki 18 kandang ayam. Setiap kandang berisi 45 ekor ayam. Sebanyak 215 ekor dijual dan 98 ekor mati. Ayam yang masih tersisa adalah ...",o:["467","477","497","507"],a:2,t:"Soal Cerita",e:"Total ayam = 18 × 45 = 810. Yang keluar = 215 + 98 = 313. Sisa = 810 − 313 = 497 ekor."},
+{q:"3/5 dari uang Budi adalah Rp27.000. Berapa jumlah uang Budi seluruhnya?",o:["Rp40.000","Rp45.000","Rp48.000","Rp54.000"],a:1,t:"Pecahan",e:"Uang seluruhnya = 27.000 : 3 × 5 = 9.000 × 5 = 45.000."},
+{q:"Semua siswa yang lolos seleksi mendapat beasiswa. Tidak semua siswa kelas 5 lolos seleksi. Kesimpulan yang paling tepat adalah ...",o:["Semua siswa kelas 5 mendapat beasiswa","Beberapa siswa kelas 5 mungkin tidak mendapat beasiswa","Tidak ada siswa kelas 5 yang mendapat beasiswa","Semua yang mendapat beasiswa adalah siswa kelas 5"],a:1,t:"Logika & Penalaran",e:"Karena tidak semua siswa kelas 5 lolos seleksi, ada kemungkinan sebagian siswa kelas 5 tidak mendapat beasiswa. Pilihan lain terlalu mutlak."},
+{q:"Lima bersaudara menurut umurnya: Ani lebih tua dari Budi. Budi lebih tua dari Cica. Dodi lebih muda dari Cica tetapi lebih tua dari Eka. Siapa yang paling muda?",o:["Ani","Cica","Dodi","Eka"],a:3,t:"Logika & Penalaran",e:"Urutan dari tertua: Ani, Budi, Cica, Dodi, Eka. Jadi yang paling muda adalah Eka."},
+{q:"Harga 3 buku tulis dan 2 pensil adalah Rp15.500. Harga 1 buku tulis dan 1 pensil adalah Rp6.000. Harga 1 buku tulis adalah ...",o:["Rp2.500","Rp3.000","Rp3.500","Rp4.000"],a:2,t:"Aljabar",e:"Dari b + p = 6.000 → 2b + 2p = 12.000. Kurangkan dari 3b + 2p = 15.500 → b = 3.500. Jadi harga satu buku tulis Rp3.500."},
+{q:"Jika (a + 1.250) : 25 = 240, maka nilai a adalah ...",o:["4.250","4.500","4.750","5.000"],a:2,t:"Aljabar",e:"a + 1.250 = 240 × 25 = 6.000 → a = 4.750."},
+{q:"Sebuah jam dinding menunjukkan pukul 03.30. Berapakah besar sudut terkecil yang terbentuk oleh jarum pendek dan jarum panjang?",o:["65°","75°","85°","90°"],a:1,t:"Sudut",e:"Pada 03.30, jarum panjang di angka 6 (180° dari 12). Jarum pendek di tengah-tengah antara angka 3 dan 4 (105° dari 12). Sudut = 180° − 105° = 75°."}
+]},
+{name:"Part 7",qs:[
+{q:"Hasil dari 15.480 + 9.365 − 12.750 + 2.895 adalah ...",o:["14.890","14.990","15.090","15.190"],a:1,t:"Operasi Hitung",e:"15.480 + 9.365 = 24.845; 24.845 − 12.750 = 12.095; 12.095 + 2.895 = 14.990."},
+{q:"Hasil dari (30.000 − 14.385) : 5 + 2.475 adalah ...",o:["5.498","5.598","5.698","5.798"],a:1,t:"Operasi Hitung",e:"30.000 − 14.385 = 15.615; 15.615 : 5 = 3.123; 3.123 + 2.475 = 5.598."},
+{q:"Manakah pecahan berikut yang nilainya paling besar?",o:["5/6","7/9","11/15","13/18"],a:0,t:"Pecahan",e:"Samakan penyebut menjadi 90: 5/6 = 75/90; 7/9 = 70/90; 11/15 = 66/90; 13/18 = 65/90. Terbesar adalah 75/90 yaitu 5/6."},
+{q:"Perbandingan uang Rina, Sari, dan Tika adalah 4 : 5 : 7. Jika jumlah uang mereka Rp128.000, maka uang Tika adalah ...",o:["Rp40.000","Rp48.000","Rp56.000","Rp64.000"],a:2,t:"Perbandingan",e:"Jumlah bagian = 4 + 5 + 7 = 16 → satu bagian = 128.000 : 16 = 8.000. Tika = 7 × 8.000 = Rp56.000."},
+{q:"FPB dari 96, 144, dan 192 adalah ...",o:["24","32","48","96"],a:2,t:"Faktor & Kelipatan",e:"96 = 2⁵ × 3; 144 = 2⁴ × 3²; 192 = 2⁶ × 3 → FPB = 2⁴ × 3 = 48."},
+{q:"Lampu merah menyala setiap 12 detik, lampu kuning setiap 18 detik, dan lampu hijau setiap 27 detik. Jika ketiganya menyala bersama pada detik ke-0, mereka akan menyala bersama lagi pada detik ke ...",o:["96","108","216","324"],a:1,t:"Faktor & Kelipatan",e:"12 = 2² × 3; 18 = 2 × 3²; 27 = 3³ → KPK = 2² × 3³ = 108 detik."},
+{q:"Sebuah persegi memiliki keliling 108 cm. Luas persegi tersebut adalah ...",o:["676 cm²","729 cm²","784 cm²","841 cm²"],a:1,t:"Geometri",e:"Sisi = 108 : 4 = 27 cm. Luas = 27 × 27 = 729 cm²."},
+{q:"Sebuah taman berbentuk persegi panjang dengan panjang 3 kali lebarnya. Jika kelilingnya 96 m, luas taman tersebut adalah ...",o:["384 m²","432 m²","480 m²","512 m²"],a:1,t:"Geometri",e:"Misal lebar = l, panjang = 3l. Keliling = 2 × (3l + l) = 8l = 96 → l = 12. Luas = 36 × 12 = 432 m²."},
+{q:"Perhatikan pola: 2, 4, 8, 14, 22, 32, ... Angka berikutnya adalah ...",o:["42","44","46","48"],a:1,t:"Pola Bilangan",e:"Selisih: +2, +4, +6, +8, +10, lalu +12 → 32 + 12 = 44."},
+{q:"Perhatikan pola: 1, 4, 13, 40, 121, ... Angka berikutnya adalah ...",o:["244","304","364","424"],a:2,t:"Pola Bilangan",e:"Pola: kali 3 lalu tambah 1 → 121 × 3 + 1 = 364."},
+{q:"Sudut A dua kali sudut B, dan keduanya saling berpenyiku. Besar sudut A adalah ...",o:["30°","45°","60°","75°"],a:2,t:"Sudut",e:"A + B = 90° dan A = 2B → 3B = 90° → B = 30°, sehingga A = 60°."},
+{q:"Sebuah segitiga sama kaki memiliki satu sudut 96°. Besar salah satu sudut lainnya yang mungkin adalah ...",o:["42°","48°","84°","96°"],a:0,t:"Sudut",e:"96° tidak mungkin menjadi sudut kaki (karena 2 × 96 > 180). Jadi 96° adalah sudut puncak, dan dua sudut kaki = (180 − 96) : 2 = 42°."},
+{q:"Sebuah pabrik memiliki 4.500 botol minuman. Hari pertama terjual 1.275 botol dan hari kedua terjual 985 botol. Pabrik memproduksi lagi 2.150 botol, kemudian terjual 1.890 botol. Jumlah botol sekarang adalah ...",o:["2.400","2.500","2.600","2.700"],a:1,t:"Soal Cerita",e:"4.500 − 1.275 = 3.225; 3.225 − 985 = 2.240; 2.240 + 2.150 = 4.390; 4.390 − 1.890 = 2.500 botol."},
+{q:"Ibu membeli 15 kotak donat. Setiap kotak berisi 12 donat. Sebanyak 4/9 bagian dibagikan kepada anak yatim dan 25 donat rusak. Sisa donat Ibu adalah ...",o:["65","70","75","85"],a:2,t:"Soal Cerita",e:"Total donat = 15 × 12 = 180. Dibagikan = 4/9 × 180 = 80. Sisa = 180 − 80 − 25 = 75 donat."},
+{q:"2/5 dari uang Sinta adalah Rp36.000. Jika 3/4 bagian dari uangnya dibelanjakan, sisa uang Sinta adalah ...",o:["Rp18.000","Rp22.500","Rp27.000","Rp30.000"],a:1,t:"Pecahan",e:"Uang seluruhnya = 36.000 : 2 × 5 = 90.000. Dibelanjakan = 3/4 × 90.000 = 67.500. Sisa = 90.000 − 67.500 = 22.500."},
+{q:"Semua peserta lomba wajib membawa kartu peserta. Sebagian peserta lomba adalah siswa SD. Kesimpulan yang pasti benar adalah ...",o:["Semua siswa SD membawa kartu peserta","Semua peserta yang siswa SD membawa kartu peserta","Tidak ada siswa SD yang menjadi peserta","Beberapa peserta tidak membawa kartu peserta"],a:1,t:"Logika & Penalaran",e:"Semua peserta wajib membawa kartu peserta. Karena sebagian peserta adalah siswa SD, maka semua peserta yang siswa SD pasti membawa kartu peserta."},
+{q:"Dika lebih cepat dari Eka tetapi lebih lambat dari Fira. Gilang lebih lambat dari Eka. Siapa yang tercepat?",o:["Dika","Eka","Fira","Gilang"],a:2,t:"Logika & Penalaran",e:"Urutan: Fira > Dika > Eka > Gilang. Jadi yang tercepat adalah Fira."},
+{q:"Di perpustakaan terdapat 2.150 buku. Sebanyak 486 buku dipinjam dan 275 buku rusak. Sekolah membeli lagi 780 buku, kemudian 195 buku dipinjam dikembalikan. Jumlah buku sekarang adalah ...",o:["2.264","2.364","2.464","2.564"],a:1,t:"Soal Cerita",e:"2.150 − 486 = 1.664; 1.664 − 275 = 1.389; 1.389 + 780 = 2.169; 2.169 + 195 = 2.364 buku."},
+{q:"Umur ayah 6 kali umur anaknya. Jika jumlah umur mereka 49 tahun, maka umur ayah adalah ...",o:["35 tahun","42 tahun","43 tahun","45 tahun"],a:1,t:"Aljabar",e:"Perbandingan umur ayah : anak = 6 : 1, jumlah 7 bagian = 49 → satu bagian = 7. Umur ayah = 6 × 7 = 42 tahun."},
+{q:"Dalam lomba lari: Sinta lebih cepat dari Rina tetapi lebih lambat dari Tuti. Umi lebih lambat dari Rina. Vivin lebih cepat dari Tuti. Siapa urutan kedua tercepat?",o:["Tuti","Sinta","Vivin","Rina"],a:0,t:"Logika & Penalaran",e:"Urutan tercepat: Vivin > Tuti > Sinta > Rina > Umi. Urutan kedua = Tuti."}
+]}
+];
+
+/* ================= STATE & UTIL ================= */
+const LETTERS=["A","B","C","D"];
+const IC={
+ check:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>',
+ cross:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>',
+ clock:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
+};
+let S=null, timerInt=null, lastTick=0, running=false, modalOpen=false;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function fmt(sec){sec=Math.max(0,Math.round(sec));const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;
+ return h>0? h+":"+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0") : m+":"+String(s).padStart(2,"0");}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove("show"),2400);}
+const limit=a=>S.perQ+a.extra;
+const linear=(p,q)=>p*20+q;
+const fromLinear=n=>({p:Math.floor(n/20),q:n%20});
+
+/* ================= SETUP ================= */
+document.querySelectorAll('input[name=mode]').forEach(r=>r.addEventListener('change',()=>{
+  const down=document.querySelector('input[name=mode]:checked').value==="countdown";
+  $("mcDown").classList.toggle("active",down); $("mcUp").classList.toggle("active",!down);
+  $("lblTime").textContent=down?"Waktu per soal (timer hitung mundur)":"Target waktu per soal (untuk analisis kecepatan)";
+  $("timeHint").textContent=down
+    ?'Waktu mulai berjalan saat soal dibuka dan berhenti otomatis setelah siswa menekan "Cek Jawaban". Jika waktu habis, soal ditutup & dihitung tidak dijawab.'
+    :'Stopwatch berjalan maju tiap soal tanpa batas. Nilai target di bawah dipakai untuk analisis "benar tetapi lambat" di hasil akhir.';
+}));
+function setTime(m,s){$("inMin").value=m;$("inSec").value=s;}
+function startExam(){
+  const m=parseInt($("inMin").value)||0, s=parseInt($("inSec").value)||0;
+  let perQ=m*60+s;
+  if(perQ<10){toast("Atur waktu per soal minimal 10 detik.");return;}
+  S={student:$("inName").value.trim(),mode:document.querySelector('input[name=mode]:checked').value,perQ,
+     cur:{p:0,q:0},
+     a:DATA.map(P=>P.qs.map(()=>({sel:null,checked:false,correct:false,time:0,extra:0,expired:false})))};
+  $("screen-setup").classList.add("hidden"); $("screen-exam").classList.remove("hidden");
+  $("chipStudent").textContent=S.student?("Siswa: "+S.student):"";
+  $("chipMode").textContent=(S.mode==="countdown"?"Hitung Mundur · ":"Stopwatch · target ")+fmt(S.perQ)+"/soal";
+  renderTabs(); openQuestion(0,0);
+  clearInterval(timerInt); timerInt=setInterval(tick,250);
+}
+
+/* ================= TIMER ================= */
+function tick(){
+  const now=performance.now();
+  if(!running||modalOpen){lastTick=now;return;}
+  const dt=(now-lastTick)/1000; lastTick=now;
+  const {p,q}=S.cur, a=S.a[p][q];
+  a.time+=dt;
+  if(S.mode==="countdown" && limit(a)-a.time<=0){
+    a.time=limit(a); a.expired=true; running=false;
+    renderQuestion(); renderNav(); renderTabs();
+    toast("Waktu untuk soal ini habis! Soal ditutup (bisa dibuka lagi dengan +15 detik).");
+  }
+  updateTimerUI();
+}
+function updateTimerUI(){
+  const el=$("tval"); if(!el)return;
+  const {p,q}=S.cur, a=S.a[p][q], lbl=$("tlabel");
+  if(a.checked||a.expired){
+    lbl.textContent="WAKTU PENGERJAAN"; el.textContent=fmt(a.time);
+    el.className="tval"+(a.expired?" tcrit":"");
+  }else if(S.mode==="countdown"){
+    const r=Math.max(0,limit(a)-a.time);
+    el.textContent=fmt(r); el.className="tval"+(r<=10?" tcrit":r<=30?" twarn":"");
+    lbl.textContent="SISA WAKTU";
+  }else{
+    el.textContent=fmt(a.time); el.className="tval"; lbl.textContent="STOPWATCH";
+  }
+  $("tused").textContent=(S.mode==="countdown"?"Terpakai: "+fmt(a.time):"")+" · Target: "+fmt(S.perQ);
+  const b=$("btnAdd"); if(b)b.disabled=a.checked;
+}
+
+/* ================= NAVIGASI & RENDER ================= */
+function openPart(pi){
+  const idx=S.a[pi].findIndex(a=>!a.checked&&!a.expired);
+  openQuestion(pi, idx<0?0:idx);
+}
+function openQuestion(p,q){
+  S.cur={p,q}; running=false;
+  const a=S.a[p][q];
+  if(!a.checked&&!a.expired){running=true;lastTick=performance.now();}
+  renderTabs(); renderNav(); renderQuestion();
+  if(window.innerWidth<920)$("qarea").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function renderTabs(){
+  const done=DATA.map((P,pi)=>S.a[pi].filter(a=>a.checked||a.expired).length);
+  $("tabs").innerHTML=DATA.map((P,pi)=>
+    `<button class="tab ${pi===S.cur.p?"active":""}" onclick="openPart(${pi})">${P.name}<span class="sub">${done[pi]}/20 selesai</span></button>`).join("");
+  $("chipProgress").textContent="Selesai: "+done.reduce((x,y)=>x+y,0)+"/140";
+}
+function renderNav(){
+  const pi=S.cur.p;
+  $("navGrid").innerHTML=DATA[pi].qs.map((_,i)=>{
+    const a=S.a[pi][i]; let cls="qbtn";
+    if(a.checked)cls+=a.correct?" ok":" bad";
+    else if(a.expired)cls+=" dead";
+    else if(a.sel!=null)cls+=" sel";
+    if(i===S.cur.q)cls+=" active";
+    return `<button class="${cls}" onclick="openQuestion(${pi},${i})">${i+1}</button>`;
+  }).join("");
+  const done=S.a[pi].filter(a=>a.checked||a.expired).length;
+  $("navInfo").textContent=DATA[pi].name+" — "+done+"/20 soal selesai";
+  $("pbar").style.width=(done/20*100)+"%";
+}
+function renderQuestion(){
+  const {p,q}=S.cur, P=DATA[p], Q=P.qs[q], a=S.a[p][q], locked=a.checked||a.expired;
+  const opts=Q.o.map((o,i)=>{
+    let cls="opt";
+    if(locked){ if(i===Q.a)cls+=" correct"; else if(i===a.sel)cls+=" wrongpick"; else cls+=" dim"; }
+    else if(a.sel===i)cls+=" chosen";
+    return `<button class="${cls}" ${locked?"disabled":""} onclick="selectOption(${i})"><span class="letter">${LETTERS[i]}</span><span>${esc(o)}</span></button>`;
+  }).join("");
+  let fb="";
+  if(a.checked){
+    fb=a.correct
+      ?`<div class="fb ok"><div class="title">${IC.check} Jawaban Benar! Waktu: ${fmt(a.time)}</div><div class="exp"><b>Pembahasan:</b> ${esc(Q.e)}</div></div>`
+      :`<div class="fb bad"><div class="title">${IC.cross} Jawaban Belum Tepat — kunci: ${LETTERS[Q.a]}. ${esc(Q.o[Q.a])} (Waktu: ${fmt(a.time)})</div><div class="exp"><b>Pembahasan:</b> ${esc(Q.e)}</div></div>`;
+  }else if(a.expired){
+    fb=`<div class="fb dead"><div class="title">${IC.clock} Waktu Habis — soal dihitung tidak dijawab. Kunci: ${LETTERS[Q.a]}. ${esc(Q.o[Q.a])}</div><div class="exp"><b>Pembahasan:</b> ${esc(Q.e)}</div></div>`;
+  }
+  $("qarea").innerHTML=`
+    <div class="qtop">
+      <div>
+        <div class="qmeta">${P.name} · Soal ${q+1} dari 20 <span class="badge">${esc(Q.t)}</span></div>
+        <div class="qtext">${esc(Q.q)}</div>
+      </div>
+      <div class="timerbox">
+        <div class="tlabel" id="tlabel">SISA WAKTU</div>
+        <div class="tval" id="tval">--:--</div>
+        ${S.mode==="countdown"?`<button class="btn-add" id="btnAdd" onclick="add15()" ${a.checked?"disabled":""}>+15 detik</button>`:""}
+        <div class="tused" id="tused"></div>
+      </div>
+    </div>
+    <div class="opts">${opts}</div>
+    <div class="qactions">
+      <button class="btn btn-ghost" onclick="prevQ()" ${(p===0&&q===0)?"disabled":""}>Sebelumnya</button>
+      <button class="btn btn-primary" onclick="checkAnswer()" ${locked?"disabled":""}>Cek Jawaban</button>
+      <button class="btn btn-next" onclick="nextQ()" ${(p===DATA.length-1&&q===19)?"disabled":""}>Berikutnya</button>
+    </div>
+    ${fb}
+    <div class="kbd-hint">Tombol pintar: 1–4 pilih jawaban · Enter cek jawaban · panah kiri/kanan pindah soal</div>`;
+  updateTimerUI();
+}
+function selectOption(i){const a=S.a[S.cur.p][S.cur.q];if(a.checked||a.expired)return;a.sel=i;renderQuestion();renderNav();}
+function checkAnswer(){
+  const {p,q}=S.cur, a=S.a[p][q], Q=DATA[p].qs[q];
+  if(a.checked||a.expired)return;
+  if(a.sel==null){toast("Pilih salah satu jawaban terlebih dahulu.");return;}
+  a.checked=true; a.correct=(a.sel===Q.a); running=false;
+  renderQuestion(); renderNav(); renderTabs();
+}
+function add15(){
+  const a=S.a[S.cur.p][S.cur.q]; if(a.checked)return;
+  a.extra+=15;
+  if(a.expired){a.expired=false;running=true;lastTick=performance.now();toast("Waktu +15 detik — soal dibuka kembali, cepat!");}
+  else toast("Waktu soal ini ditambah 15 detik.");
+  renderQuestion(); renderNav();
+}
+function prevQ(){const n=linear(S.cur.p,S.cur.q)-1;if(n>=0){const c=fromLinear(n);openQuestion(c.p,c.q);}}
+function nextQ(){const n=linear(S.cur.p,S.cur.q)+1;
+  if(n<140){const c=fromLinear(n);openQuestion(c.p,c.q);}
+  else toast("Ini soal terakhir. Tekan Finish Exam untuk melihat hasil.");}
+
+/* ================= FINISH & HASIL ================= */
+function askFinish(){modalOpen=true;$("modal").classList.remove("hidden");}
+function closeModal(){modalOpen=false;$("modal").classList.add("hidden");}
+function doFinish(){
+  running=false;modalOpen=false;$("modal").classList.add("hidden");clearInterval(timerInt);
+  const R=computeResults(); renderResults(R);
+  $("screen-exam").classList.add("hidden");$("screen-result").classList.remove("hidden");
+  window.scrollTo(0,0);
+}
+function statusOf(a){return a.checked?(a.correct?"ok":"bad"):(a.expired?"dead":"belum");}
+function predikat(acc){return acc>=85?["Sangat Baik","ok"]:acc>=70?["Baik","ok"]:acc>=50?["Cukup","warn"]:["Perlu Latihan","bad"];}
+function computeResults(){
+  const R={benar:0,salah:0,belum:0,dead:0,time:0,parts:[]};
+  DATA.forEach((P,pi)=>{
+    const part={ok:0,bad:0,belum:0,dead:0,slow:0,time:0,flags:[],topics:{}};
+    P.qs.forEach((Q,qi)=>{
+      const a=S.a[pi][qi]; part.time+=a.time; R.time+=a.time;
+      const st=statusOf(a), slow=a.checked&&a.correct&&a.time>S.perQ;
+      if(st==="ok"){part.ok++;R.benar++;if(slow){part.slow++;part.flags.push({qi,type:"slow"});}}
+      else if(st==="bad"){part.bad++;R.salah++;part.flags.push({qi,type:"bad"});}
+      else if(st==="dead"){part.belum++;R.belum++;R.dead++;part.dead++;part.flags.push({qi,type:"dead"});}
+      else{part.belum++;R.belum++;part.flags.push({qi,type:"belum"});}
+      const tp=part.topics[Q.t]||(part.topics[Q.t]={bad:0,belum:0,slow:0});
+      if(st==="bad")tp.bad++;else if(st==="dead"||st==="belum")tp.belum++;else if(slow)tp.slow++;
+    });
+    R.parts.push(part);
+  });
+  return R;
+}
+function renderResults(R){
+  const skor=(R.benar/140*100).toFixed(1);
+  const now=new Date().toLocaleString("id-ID",{dateStyle:"long",timeStyle:"short"});
+  $("resMeta").textContent=(S.student?S.student+" · ":"")+now;
+  // Agregat topik global
+  const gt={};
+  DATA.forEach((P,pi)=>P.qs.forEach((Q,qi)=>{
+    const a=S.a[pi][qi],st=statusOf(a),slow=a.checked&&a.correct&&a.time>S.perQ;
+    const g=gt[Q.t]||(gt[Q.t]={bad:0,belum:0,slow:0});
+    if(st==="bad")g.bad++;else if(st!=="ok")g.belum++;else if(slow)g.slow++;
+  }));
+  let gchips="";
+  Object.entries(gt).sort((x,y)=>(y[1].bad+y[1].belum+y[1].slow)-(x[1].bad+x[1].belum+x[1].slow))
+   .forEach(([t,v])=>{const n=v.bad+v.belum;
+     if(n>0)gchips+=`<span class="tag bad">${esc(t)} — ${n} soal perlu diperbaiki</span>`;
+     if(v.slow>0)gchips+=`<span class="tag warn">${esc(t)} — ${v.slow} soal perlu dipercepat</span>`;});
+  let html=`
+   <h2 class="res-title">Rekap Hasil ${S.student?"— "+esc(S.student):""}</h2>
+   <div class="res-meta">Mode: ${S.mode==="countdown"?"Timer Hitung Mundur":"Stopwatch (hitung maju)"} · Batas/target ${fmt(S.perQ)} per soal · Soal dianggap "lambat" bila waktunya melebihi target.</div>
+   <div class="sum-grid">
+     <div class="sum navy"><div class="num">${skor}%</div><div class="lbl">SKOR</div></div>
+     <div class="sum ok"><div class="num">${R.benar}</div><div class="lbl">BENAR</div><small>dari 140 soal</small></div>
+     <div class="sum bad"><div class="num">${R.salah}</div><div class="lbl">SALAH</div></div>
+     <div class="sum warn"><div class="num">${R.belum}</div><div class="lbl">TIDAK DIJAWAB</div>${R.dead>0?`<small>termasuk ${R.dead} waktu habis</small>`:""}</div>
+     <div class="sum"><div class="num">${fmt(R.time)}</div><div class="lbl">TOTAL WAKTU</div></div>
+     <div class="sum"><div class="num">${fmt(R.time/140)}</div><div class="lbl">RATA-RATA/SOAL</div></div>
+   </div>
+   <h2 class="sec">Analisis per Part</h2>
+   <table class="res"><thead><tr><th>Part</th><th>Benar</th><th>Salah</th><th>Tidak Dijawab</th><th>Akurasi</th><th>Total Waktu</th><th>Rata-rata/Soal</th><th>Predikat</th></tr></thead><tbody>`;
+  DATA.forEach((P,pi)=>{
+    const pt=R.parts[pi],acc=Math.round(pt.ok/20*100),[pk,pc]=predikat(acc);
+    html+=`<tr><td><b>${P.name}</b></td><td>${pt.ok}</td><td>${pt.bad}</td><td>${pt.belum}</td>
+      <td>${acc}%</td><td>${fmt(pt.time)}</td><td>${fmt(pt.time/20)}</td><td><span class="tag ${pc}">${pk}</span></td></tr>`;
+  });
+  html+=`</tbody></table>`;
+  if(gchips)html+=`<h2 class="sec">Topik yang Perlu Diperkuat (Semua Part)</h2><div class="chips">${gchips}</div>`;
+  else html+=`<h2 class="sec">Topik yang Perlu Diperkuat</h2><div class="fix good" style="margin-top:10px"><b>Sempurna!</b><div class="fix-d">Semua topik dikerjakan benar dan dalam target waktu.</div></div>`;
+  html+=`<h2 class="sec">Rincian per Part</h2>`;
+  DATA.forEach((P,pi)=>{
+    const pt=R.parts[pi],acc=Math.round(pt.ok/20*100),[pk,pc]=predikat(acc);
+    let cells="";
+    P.qs.forEach((Q,qi)=>{
+      const a=S.a[pi][qi],st=statusOf(a);
+      const cls=st==="ok"?"ok":st==="bad"?"bad":st==="dead"?"dead":(a.sel!=null?"sel":"");
+      cells+=`<div class="tcell ${cls}"><b>${qi+1}</b>${fmt(a.time)}</div>`;
+    });
+    let chips="";
+    Object.entries(pt.topics).forEach(([t,v])=>{
+      const n=v.bad+v.belum;
+      if(n>0)chips+=`<span class="tag bad">${esc(t)} — ${n} soal perlu diperbaiki</span>`;
+      if(v.slow>0)chips+=`<span class="tag warn">${esc(t)} — ${v.slow} soal benar tapi lambat</span>`;
+    });
+    let rec;
+    if(acc>=85&&pt.slow===0)rec="Luar biasa! Akurasi tinggi dan waktu terjaga. Pertahankan.";
+    else if(acc>=85)rec="Akurasi sudah bagus. Fokus tingkatkan kecepatan pada soal yang ditandai kuning.";
+    else if(acc>=70)rec="Cukup baik. Ulangi soal yang salah dan pelajari pembahasannya.";
+    else if(acc>=50)rec="Perlu pendalaman materi. Bahas ulang topik yang bermasalah di bawah ini.";
+    else rec="Perlu pembelajaran ulang pada part ini. Bahas pembahasan setiap soal bersama tutor.";
+    let fixes="";
+    if(pt.flags.length===0){
+      fixes=`<div class="fix good"><b>Semua soal di ${P.name} benar dan selesai dalam target waktu.</b><div class="fix-d">Pertahankan dan lanjutkan latihan rutin.</div></div>`;
+    }else{
+      pt.flags.forEach(f=>{
+        const Q=P.qs[f.qi],a=S.a[pi][f.qi];
+        if(f.type==="bad")fixes+=`<div class="fix"><b>Soal ${f.qi+1} — ${esc(Q.t)}</b><div class="fix-d">Salah (memilih ${LETTERS[a.sel]}). Kunci: ${LETTERS[Q.a]}. ${esc(Q.o[Q.a])}. Waktu: ${fmt(a.time)}. Pelajari kembali pembahasannya.</div></div>`;
+        else if(f.type==="dead")fixes+=`<div class="fix"><b>Soal ${f.qi+1} — ${esc(Q.t)}</b><div class="fix-d">Waktu habis sebelum terjawab. Kunci: ${LETTERS[Q.a]}. ${esc(Q.o[Q.a])}. Latih soal serupa dengan batas waktu.</div></div>`;
+        else if(f.type==="belum")fixes+=`<div class="fix"><b>Soal ${f.qi+1} — ${esc(Q.t)}</b><div class="fix-d">Tidak dijawab. Kunci: ${LETTERS[Q.a]}. ${esc(Q.o[Q.a])}. Jangan biarkan soal kosong, tebak jika waktu hampir habis.</div></div>`;
+        else fixes+=`<div class="fix warn"><b>Soal ${f.qi+1} — ${esc(Q.t)}</b><div class="fix-d">Benar tetapi waktu ${fmt(a.time)} melebihi target ${fmt(S.perQ)}. Pahami sudah baik — tingkatkan kecepatan dengan latihan rutin.</div></div>`;
+      });
+    }
+    let rows="";
+    P.qs.forEach((Q,qi)=>{
+      const a=S.a[pi][qi],st=statusOf(a);
+      const tag=st==="ok"?'<span class="tag ok">Benar</span>':st==="bad"?'<span class="tag bad">Salah</span>':st==="dead"?'<span class="tag bad">Waktu Habis</span>':'<span class="tag mut">Tidak Dijawab</span>';
+      rows+=`<tr><td>${qi+1}</td><td>${esc(Q.t)}</td><td>${tag}</td><td>${a.sel!=null?LETTERS[a.sel]:"—"}</td><td>${LETTERS[Q.a]}</td><td>${fmt(a.time)}</td></tr>`;
+    });
+    html+=`<div class="part-block">
+      <h3>${P.name} <span class="tag ${pc}">${pk} · ${acc}%</span></h3>
+      <div class="pstats">Benar ${pt.ok} · Salah ${pt.bad} · Tidak dijawab ${pt.belum} · Waktu total ${fmt(pt.time)} · Rata-rata ${fmt(pt.time/20)}/soal</div>
+      <div class="rec"><b>Rekomendasi tutor:</b> ${rec}</div>
+      <div class="timecells">${cells}</div>
+      ${chips?`<div class="chips">${chips}</div>`:""}
+      <div style="margin-top:14px">${fixes}</div>
+      <details class="dt"><summary>Lihat detail waktu &amp; jawaban semua soal di ${P.name}</summary>
+        <div style="padding:0 14px 14px;overflow-x:auto"><table class="res" style="box-shadow:none">
+        <thead><tr><th>No</th><th>Topik</th><th>Status</th><th>Jawaban</th><th>Kunci</th><th>Waktu</th></tr></thead><tbody>${rows}</tbody></table></div>
+      </details>
+    </div>`;
+  });
+  $("resultContent").innerHTML=html;
+}
+
+/* ================= KEYBOARD ================= */
+document.addEventListener("keydown",e=>{
+  if(!S||$("screen-exam").classList.contains("hidden")||modalOpen)return;
+  if(e.target.tagName==="INPUT")return;
+  const {p,q}=S.cur,a=S.a[p][q];
+  if(e.key>="1"&&e.key<="4")selectOption(+e.key-1);
+  else if(e.key==="Enter"){if(!a.checked&&!a.expired)checkAnswer();else nextQ();}
+  else if(e.key==="ArrowRight")nextQ();
+  else if(e.key==="ArrowLeft")prevQ();
+});
+</script>
+</body>
+</html>
