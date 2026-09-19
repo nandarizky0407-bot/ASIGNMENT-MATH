@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Latihan Soal Sumatif Akhir — Paket 1 &amp; Paket 2 (2 Siswa · 100 Soal)</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧮</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#4f46e5;--accent:#f59e0b;--bg:#eef2f7;--card:#fff;--text:#1e293b;--muted:#64748b;
+  --good:#16a34a;--good-bg:#ecfdf5;--bad:#dc2626;--bad-bg:#fef2f2;--warn:#d97706;--warn-bg:#fffbeb;
+  --shadow:0 10px 30px rgba(30,41,59,.08);
+}
+body{font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+h1,h2,h3,h4{font-family:'Baloo 2','Poppins',sans-serif}
+.topbar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 14px rgba(79,70,229,.35)}
+.brand{display:flex;gap:10px;align-items:center}
+.brand .logo{font-size:1.6rem}
+.brand small{display:block;opacity:.85;font-size:.72rem;font-weight:500}
+.brand b{font-family:'Baloo 2'}
+.badge-soft{background:rgba(255,255,255,.18);padding:6px 12px;border-radius:999px;font-size:.75rem;font-weight:600}
+.wrap{max-width:1240px;margin:0 auto;padding:24px 20px 70px}
+.screen{display:none}
+.screen.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.sec-head{margin-bottom:18px}
+.sec-head h2{font-size:1.5rem}
+.sub{color:var(--muted);font-size:.92rem;margin-top:4px}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:600;font-size:.95rem;padding:11px 20px;border-radius:12px;transition:transform .12s,filter .12s;display:inline-flex;align-items:center;gap:8px}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;box-shadow:0 6px 16px rgba(79,70,229,.35)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:#f1f5f9;color:#334155}
+.btn.ghost:hover{background:#e2e8f0}
+.btn.danger{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;box-shadow:0 6px 16px rgba(220,38,38,.3)}
+.btn.big{font-size:1.05rem;padding:14px 26px}
+.btn.add{background:#eef2ff;color:#4f46e5;border:2px solid #c7d2fe;font-weight:700}
+.btn.add:hover{background:#e0e7ff}
+.btn.add:disabled{opacity:.4;cursor:not-allowed}
+.nav-row{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-top:22px;flex-wrap:wrap}
+.pos{font-family:'Baloo 2';font-weight:800;font-size:1.1rem;color:#475569}
+.cover-card{max-width:640px;margin:30px auto 0;background:var(--card);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
+.cover-top{background:linear-gradient(135deg,#4f46e5,#9333ea);padding:36px 20px;color:#fff;text-align:center}
+.cover-emoji{font-size:3rem}
+.cover-top h1{font-size:1.65rem;margin-top:6px;line-height:1.25}
+.cover-top p{opacity:.9;font-size:.9rem;margin-top:6px}
+.cover-body{padding:24px 30px 30px}
+.paket-info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.pbox{border-radius:12px;padding:10px 12px;font-size:.82rem;line-height:1.5}
+.pbox b{display:block;font-size:.9rem}
+.pbox.a{background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe}
+.pbox.b{background:#fdf2f8;color:#9d174d;border:1px solid #fbcfe8}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:600;margin-bottom:6px;font-size:.9rem}
+.field label span{font-weight:400;color:var(--muted);font-size:.78rem}
+input,select{width:100%;padding:12px 14px;border:2px solid #e2e8f0;border-radius:12px;font:inherit;transition:border .2s;background:#fff}
+input:focus,select:focus{outline:none;border-color:var(--primary)}
+.tiny{font-size:.78rem;color:var(--muted);text-align:center;margin-top:14px;line-height:1.6}
+.bab-item{background:var(--card);border-radius:16px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
+.bab-head{display:flex;align-items:center;gap:14px;width:100%;padding:15px 18px;background:none;border:none;cursor:pointer;text-align:left;font:inherit}
+.bab-num{min-width:42px;height:42px;border-radius:12px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;font-family:'Baloo 2'}
+.bab-name{font-weight:700;font-size:1.02rem}
+.bab-meta{margin-left:auto;display:flex;gap:10px;align-items:center;color:var(--muted);font-size:.82rem;white-space:nowrap}
+.chev{transition:transform .25s;display:inline-block}
+.bab-item.open .chev{transform:rotate(180deg)}
+.bab-body{display:none;padding:14px 20px 20px;border-top:1px dashed #e2e8f0}
+.bab-item.open .bab-body{display:block;animation:fade .25s}
+.bab-body h4{color:var(--primary);margin-bottom:8px}
+.bab-body li{margin:6px 0 6px 18px;color:#334155;font-size:.92rem;line-height:1.5}
+.exam-top{display:flex;flex-wrap:wrap;align-items:center;gap:12px;background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px 18px;margin-bottom:16px}
+.exam-title{font-family:'Baloo 2';font-weight:700;font-size:1.05rem}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:7px 14px;border-radius:999px;font-size:.85rem;font-weight:600}
+.chip.c1{background:#eef2ff;color:#4f46e5}
+.chip.c2{background:#fdf2f8;color:#db2777}
+.chip.ctime{background:#ecfdf5;color:#047857}
+.exam-top .btn{margin-left:auto}
+.navbox{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:16px 18px;margin-bottom:16px}
+.navbox-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.navbox-head h3{font-size:1rem}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-left:auto;font-size:.74rem;color:#475569}
+.lg{display:flex;align-items:center;gap:5px}
+.dot{width:12px;height:12px;border-radius:4px;display:inline-block}
+.dot.none{background:#e2e8f0}.dot.partial{background:#93c5fd}.dot.ok{background:#4ade80}.dot.mix{background:#fbbf24}.dot.bad{background:#f87171}
+.navgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:7px;max-height:300px;overflow:auto;padding:4px 2px}
+.navbtn{border:2px solid #e2e8f0;background:#fff;border-radius:10px;padding:6px 0 4px;font:inherit;font-weight:700;cursor:pointer;transition:.15s;text-align:center;line-height:1.1}
+.navbtn b{font-family:'Baloo 2';font-size:.95rem}
+.navbtn:hover{border-color:#a5b4fc;transform:translateY(-1px)}
+.navbtn.current{outline:3px solid #7c3aed;outline-offset:1px}
+.navbtn.none{background:#fff;color:#475569}
+.navbtn.partial{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8}
+.navbtn.ok{background:#dcfce7;border-color:#86efac;color:#15803d}
+.navbtn.mix{background:#fef3c7;border-color:#fcd34d;color:#b45309}
+.navbtn.bad{background:#fee2e2;border-color:#fca5a5;color:#b91c1c}
+.ss{display:flex;gap:3px;justify-content:center;margin-top:3px}
+.ss i{width:16px;height:4px;border-radius:2px;background:#eef2f7;display:block}
+.ss i.g{background:#16a34a}.ss i.r{background:#dc2626}.ss i.n{background:#94a3b8}
+.exam-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.panel{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:20px;border-top:6px solid #ccc}
+.panel.s1{border-color:#4f46e5}
+.panel.s2{border-color:#db2777}
+.panel-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fff;flex-shrink:0}
+.avatar.big{width:52px;height:52px;font-size:1.6rem}
+.p-name{font-weight:700;font-family:'Baloo 2'}
+.p-sub{font-size:.78rem;color:var(--muted)}
+.p-progress{margin-left:auto;padding:4px 10px;border-radius:999px;font-size:.78rem;font-weight:600;white-space:nowrap}
+.badges{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.badge{padding:4px 10px;border-radius:8px;color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.3px}
+.badge.type{background:#f1f5f9;color:#475569}
+.badge.paket1{background:#4f46e5}
+.badge.paket2{background:#db2777}
+.q-text{font-size:1rem;font-weight:600;line-height:1.6;margin-bottom:12px}
+.fig{margin:-2px 0 14px}
+.fig svg{display:block}
+fieldset.q-body{border:none;display:flex;flex-direction:column;gap:8px}
+label.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:2px solid #e2e8f0;border-radius:12px;cursor:pointer;transition:.15s;font-size:.94rem;line-height:1.45}
+label.opt:hover{border-color:#a5b4fc;background:#f8faff}
+label.opt input{width:auto;margin-top:3px;accent-color:var(--primary)}
+label.bs-opt{justify-content:center;font-weight:700}
+.isian-input{font-size:1rem}
+.hint{font-size:.78rem;color:var(--muted);margin-top:6px}
+.timer-row{display:flex;align-items:center;gap:14px;margin:16px 0 6px}
+.timer{font-size:1.7rem;font-weight:800;font-family:'Baloo 2';font-variant-numeric:tabular-nums;background:#0f172a;color:#fff;padding:6px 16px;border-radius:14px;min-width:110px;text-align:center}
+.timer.warn{background:#b45309}
+.timer.danger{background:#dc2626;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.5}}
+.timer-sub{font-size:.75rem;color:var(--muted);margin-top:4px;text-align:center}
+.actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.feedback{margin-top:14px;display:none}
+.fb{border-radius:12px;padding:12px 14px;font-weight:700;line-height:1.5}
+.fb.good{background:var(--good-bg);color:#166534;border:1px solid #bbf7d0}
+.fb.bad{background:var(--bad-bg);color:#991b1b;border:1px solid #fecaca}
+.fb.skip{background:#f8fafc;color:#475569;border:1px solid #e2e8f0}
+.ans-line{font-weight:600;font-size:.86rem;margin-top:4px}
+.pembahasan{margin-top:10px;background:#eff6ff;border-left:4px solid #3b82f6;padding:10px 14px;border-radius:0 10px 10px 0;font-size:.9rem;color:#1e3a8a;font-weight:500;line-height:1.55}
+.pembahasan b{color:#1d4ed8}
+.note{margin-top:18px;font-size:.85rem;color:var(--muted);text-align:center;line-height:1.6}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.panel.shake{animation:shake .4s}
+.res-grid{display:grid;grid-template-columns:1fr;gap:18px}
+.result-card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.rc-head{padding:18px 20px;color:#fff;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.rc-head.s1{background:linear-gradient(135deg,#4f46e5,#6d28d9)}
+.rc-head.s2{background:linear-gradient(135deg,#db2777,#9333ea)}
+.rc-score{margin-left:auto;background:rgba(255,255,255,.22);padding:6px 14px;border-radius:999px;font-weight:800;font-family:'Baloo 2';white-space:nowrap}
+.rc-body{padding:18px 20px}
+.rc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat{border-radius:12px;padding:10px 6px;text-align:center}
+.stat b{display:block;font-size:1.4rem;font-family:'Baloo 2'}
+.stat span{font-size:.7rem;font-weight:600}
+.stat.good{background:var(--good-bg);color:#15803d}
+.stat.bad{background:var(--bad-bg);color:#b91c1c}
+.stat.neutral{background:#f1f5f9;color:#475569}
+.stat.time{background:#eff6ff;color:#1d4ed8}
+.avg-line{font-size:.85rem;color:var(--muted);margin-bottom:12px}
+.mini-head{font-weight:700;margin:14px 0 8px;font-size:.95rem}
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px}
+.mini{border-radius:9px;padding:6px 4px 5px;text-align:center;cursor:pointer;border:2px solid transparent;transition:.12s}
+.mini:hover{transform:translateY(-1px);filter:brightness(.97)}
+.mini b{display:block;font-family:'Baloo 2';font-size:.85rem}
+.mini span{font-size:.62rem;font-weight:600;opacity:.85}
+.mini.skip{background:#f8fafc;color:#64748b;border-color:#e2e8f0}
+.mini.ok{background:var(--good-bg);color:#15803d;border-color:#bbf7d0}
+.mini.bad{background:var(--bad-bg);color:#b91c1c;border-color:#fecaca}
+.analysis{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.an-item{display:flex;gap:10px;padding:10px 12px;border-radius:10px;font-size:.86rem;line-height:1.55;align-items:flex-start}
+.an-item.bad{background:var(--bad-bg);border-left:4px solid var(--bad)}
+.an-item.warn{background:var(--warn-bg);border-left:4px solid var(--warn)}
+.an-item.good{background:var(--good-bg);border-left:4px solid var(--good)}
+.an-title{font-weight:700}
+.focus-box{margin-top:14px;padding:12px 14px;border-radius:12px;background:#f5f3ff;border:1px solid #ddd6fe;font-size:.88rem;color:#4c1d95;line-height:1.6}
+.res-actions{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+.modal-ov{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:90;padding:20px}
+.modal-ov.show{display:flex}
+.modal{background:#fff;border-radius:18px;max-width:640px;width:100%;max-height:85vh;overflow:auto;padding:22px 24px;animation:fade .25s}
+.modal h3{margin-bottom:12px}
+.pill{padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:700;display:inline-block;white-space:nowrap}
+.pill.benar{background:var(--good-bg);color:#15803d}
+.pill.salah{background:var(--bad-bg);color:#b91c1c}
+.pill.kosong{background:#f1f5f9;color:#475569}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:12px 20px;border-radius:999px;font-size:.9rem;opacity:0;pointer-events:none;transition:.3s;z-index:99;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+@media(max-width:920px){.exam-grid{grid-template-columns:1fr}.rc-stats{grid-template-columns:repeat(2,1fr)}.legend{margin-left:0}.paket-info{grid-template-columns:1fr}}
+@media print{.no-print,.topbar,.toast,.modal-ov{display:none!important}body{background:#fff}.wrap{padding:0;max-width:100%}.result-card{box-shadow:none;border:1px solid #e2e8f0;page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="logo">🧮</span>
+    <div><b>Sumatif Akhir Matematika</b><small>Kelas 3 SD · Paket 1 &amp; Paket 2 · 100 Soal · 2 Siswa</small></div>
+  </div>
+  <span class="badge-soft">✨ Interaktif</span>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ COVER ============ -->
+  <section id="screen-cover" class="screen active">
+    <div class="cover-card">
+      <div class="cover-top">
+        <div class="cover-emoji">🧮</div>
+        <h1>Latihan Soal Sumatif Akhir</h1>
+        <p>Matematika Kelas 3 SD · 100 Soal · Bab 1–9 · Dua Paket Berbeda</p>
+      </div>
+      <div class="cover-body">
+        <div class="paket-info">
+          <div class="pbox a"><b>👦 Siswa 1 → Paket 1</b>Panel kiri · 100 soal dari <b>File 1</b> (Set 2)</div>
+          <div class="pbox b"><b>👧 Siswa 2 → Paket 2</b>Panel kanan · 100 soal dari <b>File 2</b></div>
+        </div>
+        <div class="field">
+          <label>👦 Nama Siswa 1 <span>(Paket 1 · panel kiri)</span></label>
+          <input id="name1" maxlength="30" placeholder="Tulis nama siswa pertama...">
+        </div>
+        <div class="field">
+          <label>👧 Nama Siswa 2 <span>(Paket 2 · panel kanan)</span></label>
+          <input id="name2" maxlength="30" placeholder="Tulis nama siswa kedua...">
+        </div>
+        <div class="field">
+          <label>⏱ Waktu hitung mundur per soal <span>(dapat diatur oleh tutor)</span></label>
+          <select id="timeSel">
+            <option value="60">1 menit</option>
+            <option value="90">1,5 menit</option>
+            <option value="120" selected>2 menit ⭐ (bawaan)</option>
+            <option value="180">3 menit</option>
+            <option value="240">4 menit</option>
+            <option value="300">5 menit</option>
+          </select>
+        </div>
+        <button class="btn primary big" id="btnStart" style="width:100%;justify-content:center">Mulai ➜ Rangkuman Bab &amp; Ujian</button>
+        <p class="tiny">Nomor soal <b>1–100</b> dikerjakan bersama-sama, namun <b>isi soal berbeda</b> sesuai paket masing-masing.<br>
+        Timer tiap siswa <b>berhenti saat menekan "Cek Jawaban"</b> · tersedia tombol <b>+15 detik</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DAFTAR BAB + RANGKUMAN ============ -->
+  <section id="screen-bab" class="screen">
+    <div class="sec-head">
+      <h2>📚 Daftar Bab &amp; Rangkuman</h2>
+      <p class="sub">Klik setiap bab untuk membuka rangkumannya. Urutan bab kedua paket sama (Bab 1–9), sehingga nomor soal bisa dikerjakan berdampingan.</p>
+    </div>
+    <div id="babList"></div>
+    <div class="nav-row">
+      <button class="btn ghost" id="btnBackCover">⟵ Ganti Nama / Waktu</button>
+      <button class="btn primary big" id="btnToExam">🚀 Mulai Ujian 100 Soal ➜</button>
+    </div>
+  </section>
+
+  <!-- ============ UJIAN ============ -->
+  <section id="screen-exam" class="screen">
+    <div class="exam-top no-print">
+      <div class="exam-title">📝 Sesi Latihan Soal</div>
+      <div class="chips">
+        <span class="chip c1" id="chip1">👦 Siswa 1 · Paket 1 · 0/100</span>
+        <span class="chip c2" id="chip2">👧 Siswa 2 · Paket 2 · 0/100</span>
+        <span class="chip ctime">⏱ <b id="examTime">02:00</b> / soal</span>
+      </div>
+      <button class="btn danger" id="btnFinish">🏁 Finish Exam (kedua siswa)</button>
+    </div>
+
+    <div class="navbox no-print">
+      <div class="navbox-head">
+        <h3>🧭 Navigasi Soal 1–100</h3>
+        <div class="legend">
+          <span class="lg"><i class="dot none"></i>Belum dicek</span>
+          <span class="lg"><i class="dot partial"></i>1 siswa cek</span>
+          <span class="lg"><i class="dot ok"></i>Keduanya benar</span>
+          <span class="lg"><i class="dot mix"></i>Hasil berbeda</span>
+          <span class="lg"><i class="dot bad"></i>Keduanya salah</span>
+        </div>
+      </div>
+      <div class="navgrid" id="navGrid"></div>
+      <p class="tiny" style="margin-top:10px;text-align:left">Klik nomor untuk berpindah soal (juga bisa dengan tombol ⬅ ➡). Titik kecil = status Siswa 1 (kiri) &amp; Siswa 2 (kanan). Nomor yang sama = bab yang sama, tetapi isi soalnya sesuai paket masing-masing.</p>
+    </div>
+
+    <div class="exam-grid">
+      <div class="panel s1" id="panel-s1"></div>
+      <div class="panel s2" id="panel-s2"></div>
+    </div>
+
+    <div class="nav-row no-print">
+      <button class="btn ghost" id="btnPrev">⟵ Soal Sebelumnya</button>
+      <div class="pos" id="posLabel">Soal 1 / 100</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn danger" id="btnFinish2">🏁 Finish Exam</button>
+        <button class="btn primary" id="btnNext">Soal Berikutnya ➜</button>
+      </div>
+    </div>
+    <p class="note">💡 Timer masing-masing siswa berjalan pada soal yang sedang dibuka dan <b>berhenti otomatis saat siswa itu menekan "✅ Cek Jawaban"</b> — pembahasan paketnya langsung muncul di panelnya. Gunakan <b>⏱ +15 detik</b> bila perlu waktu tambahan.</p>
+  </section>
+
+  <!-- ============ HASIL ============ -->
+  <section id="screen-hasil" class="screen">
+    <div class="sec-head">
+      <h2>🏁 Hasil Ujian</h2>
+      <p class="sub">Rekap per siswa (soal sesuai paket masing-masing): benar / salah / tidak dijawab, waktu pengerjaan setiap soal, dan analisis bab yang perlu diperbaiki &amp; dimaksimalkan. <b>Klik kotak nomor</b> untuk membuka soal + pembahasan paket siswa tersebut.</p>
+    </div>
+    <div class="res-grid" id="resWrap"></div>
+    <div class="res-actions no-print">
+      <button class="btn primary" id="btnAgain">🔄 Ulangi Ujian (reset semua)</button>
+      <button class="btn ghost" id="btnPrint">🖨️ Cetak Hasil</button>
+      <button class="btn ghost" id="btnHome">🏠 Kembali ke Awal</button>
+    </div>
+  </section>
+
+</main>
+
+<div class="modal-ov" id="modalOv"><div class="modal" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= KONSTANTA ================= */
+const LET = i => 'ABCD'[i];
+const TYPE_LABEL = {pg:'Pilihan Ganda', pgk:'PG Kompleks', bs:'Benar / Salah', isian:'Isian Singkat'};
+const TOTAL = 100;
+
+const BAB = [
+ {no:1, icon:'🔢', warna:'#d9376e', nama:'Bilangan Cacah sampai 1.000', rangkum:[
+  'Bilangan cacah dimulai dari 0, 1, 2, … hingga 1.000.',
+  'Nilai tempat: ratusan–puluhan–satuan. Contoh: 846 = 8 ratusan, 4 puluhan, 6 satuan.',
+  'Membandingkan bilangan dengan tanda <, >, = lalu mengurutkan dari terkecil/terbesar.',
+  'Penjumlahan & pengurangan dengan teknik menyimpan dan meminjam.',
+  'Perkalian = penjumlahan berulang; pembagian = membagi sama rata.',
+  'Kelipatan bilangan: kelipatan 4 → 4, 8, 12, 16, …']},
+ {no:2, icon:'🧮', warna:'#e0742c', nama:'Kalimat Matematika', rangkum:[
+  'Kalimat matematika memuat bilangan, tanda operasi, dan tanda "=" yang bernilai benar/salah.',
+  'Kata kunci cerita: "diberikan kepada" → berkurang (−); "diberi/ditambah" → bertambah (+); "kalah/hilang" → berkurang.',
+  'Mencari nilai yang belum diketahui menggunakan operasi kebalikan. Contoh: … + 22 = 50 → 50 − 22 = 28.',
+  'Perkalian dan pembagian saling berkebalikan: … × 8 = 56 → 56 : 8 = 7.']},
+ {no:3, icon:'📏', warna:'#ca8a04', nama:'Pengukuran Panjang dan Berat', rangkum:[
+  'Satuan panjang baku: km, m, cm. 1 km = 1.000 m; 1 m = 100 cm.',
+  'Satuan tidak baku: jengkal, depa, langkah (hasilnya berbeda-beda tiap orang).',
+  'Satuan berat baku: kilogram dan gram. 1 kg = 1.000 gram.',
+  'Alat ukur: penggaris/meteran pita (panjang), timbangan/neraca (berat) — pilih sesuai benda yang diukur.',
+  'Mengubah satuan campuran: 2 m 15 cm = 200 cm + 15 cm = 215 cm.']},
+ {no:4, icon:'📐', warna:'#0d9488', nama:'Unsur-unsur Bangun Datar', rangkum:[
+  'Unsur bangun datar: sisi (ruas garis), titik sudut, dan sudut.',
+  'Jenis sudut: lancip (<90°), siku-siku (90°), tumpul (>90°). Alat ukur sudut: busur derajat.',
+  'Posisi dua garis: berpotongan, sejajar (jarak selalu sama, tak pernah bertemu), tegak lurus (berpotongan membentuk 90°).',
+  'Contoh: segitiga 3 sisi; persegi 4 sisi sama panjang bersudut siku-siku.']},
+ {no:5, icon:'🔷', warna:'#2563eb', nama:'Poligon', rangkum:[
+  'Poligon (segi banyak) = bangun datar tertutup dari garis lurus. Lingkaran & oval BUKAN poligon.',
+  'Poligon beraturan: semua sisi dan sudutnya sama besar (contoh: persegi).',
+  'Nama poligon: pentagon (5), heksagon (6), heptagon (7), oktagon (8).',
+  'Keliling persegi = 4 × s; keliling persegi panjang = 2 × (p + l).',
+  'Luas persegi panjang = p × l; luas persegi = s × s.']},
+ {no:6, icon:'📊', warna:'#7c3aed', nama:'Penyajian Data dalam Tabel', rangkum:[
+  'Data disajikan dalam tabel agar mudah dibaca, dibandingkan, dan dicari informasinya.',
+  'Turus (tally): 4 garis lurus |||| = 4; garis kelima dicoret miring = 5.',
+  'Dari tabel dapat ditentukan: paling banyak, paling sedikit, total, dan nilai yang paling sering muncul.',
+  'Data dapat diurutkan menaik (kecil → besar) atau menurun (besar → kecil).']},
+ {no:7, icon:'🍕', warna:'#db2777', nama:'Pecahan', rangkum:[
+  'Pecahan menunjukkan bagian dari keseluruhan yang dibagi sama besar.',
+  'Pembilang = angka atas; penyebut = angka bawah.',
+  'Pecahan senilai: 1/2 = 2/4 = 3/6 (pembilang & penyebut dikali bilangan yang sama).',
+  'Membandingkan: penyebut sama → bandingkan pembilang; pembilang sama → penyebut lebih kecil nilainya lebih besar (1/3 > 1/5).',
+  'Pada garis bilangan, pecahan yang lebih kecil di sebelah kiri. Sisa = utuh − bagian yang diambil.']},
+ {no:8, icon:'🔄', warna:'#0891b2', nama:'Pola Gambar dan Pola Bilangan', rangkum:[
+  'Pola bilangan dapat bertambah/berkurang tetap (3,6,9… atau 100,90,80…).',
+  'Pola dikalikan: 2, 4, 8, 16, … (dikali 2). Pola selisih membesar: 1, 3, 6, 10, 15, …',
+  'Pola gambar/huruf berulang: temukan kelompok yang diulang, lalu hitung posisi suku yang ditanya.',
+  'Tentukan aturan pola terlebih dahulu, baru cari suku berikutnya atau suku yang hilang.']},
+ {no:9, icon:'🧩', warna:'#16a34a', nama:'Penalaran Spasial', rangkum:[
+  'Menggabungkan bangun identik membentuk bangun baru: 2 segitiga sama sisi → belah ketupat; 2 segitiga siku-siku (sisi miring) → persegi/panjang.',
+  'Memecah bangun: persegi panjang (panjang = 2 × lebar) → 2 persegi; persegi → 2 segitiga sama besar lewat diagonal.',
+  'Jaring-jaring kubus = 6 persegi; jaring-jaring balok = 6 sisi persegi panjang.',
+  'Sisi balok berbentuk persegi panjang; sisi kubus berbentuk persegi. Lingkaran memiliki simetri lipat tak terhingga.']}
+];
+
+/* =====================================================================
+   PAKET 1 — 100 SOAL DARI FILE PERTAMA  →  UNTUK SISWA 1 (PANEL KIRI)
+   ===================================================================== */
+const SET_A = [
+{id:1,bab:1,type:'pg',q:"Lambang bilangan 'sembilan ratus dua puluh satu' adalah ...",opts:["912","921","291","920"],ans:["B"],ex:"Sembilan ratus dua puluh satu ditulis 921."},
+{id:2,bab:1,type:'isian',q:"Pada bilangan 846, angka 8 menempati nilai tempat ...",ans:["ratusan"],hint:"Contoh: puluhan",ex:"846 = 8 ratusan, 4 puluhan, 6 satuan."},
+{id:3,bab:1,type:'bs',q:"Pernyataan: Bilangan 578 lebih kecil dari bilangan 587.",ans:["Benar"],ex:"578 < 587 karena puluhannya lebih kecil (7 < 8)."},
+{id:4,bab:1,type:'pgk',q:"Pilihlah pernyataan yang benar tentang bilangan 419! (Jawaban bisa lebih dari 1)",opts:["Terdiri dari 4 ratusan","Angka 1 adalah puluhan","Nilai tempat 9 adalah puluhan","Dibaca empat ratus sembilan belas"],ans:["A","B","D"],ex:"4 ratusan, 1 puluhan, 9 satuan. Dibaca empat ratus sembilan belas. (C salah: nilai tempat 9 adalah satuan.)"},
+{id:5,bab:1,type:'pg',q:"Urutan bilangan 350, 315, 345, 305 dari yang terbesar adalah ...",opts:["350, 345, 315, 305","350, 315, 345, 305","305, 315, 345, 350","345, 350, 315, 305"],ans:["A"],ex:"Urutannya turun dari yang paling besar ke paling kecil: 350, 345, 315, 305."},
+{id:6,bab:1,type:'isian',q:"Hasil dari 56 + 28 adalah ...",ans:["84"],ex:"56 + 28 = 84."},
+{id:7,bab:1,type:'pg',q:"Hasil pengurangan 92 − 35 adalah ...",opts:["57","67","55","65"],ans:["A"],ex:"92 − 35 = 57."},
+{id:8,bab:1,type:'bs',q:"Pernyataan: Hasil dari 8 × 6 adalah 48.",ans:["Benar"],ex:"Perkalian 8 dikali 6 hasilnya memang 48."},
+{id:9,bab:1,type:'isian',q:"Hasil dari 54 : 9 adalah ...",ans:["6"],ex:"Karena 6 × 9 = 54, maka 54 : 9 = 6."},
+{id:10,bab:1,type:'pgk',q:"Operasi hitung di bawah ini yang hasilnya 36 adalah ... (Jawaban bisa lebih dari 1)",opts:["6 × 6","9 × 4","20 + 16","50 − 12"],ans:["A","B","C"],ex:"6×6=36, 9×4=36, 20+16=36, sementara 50−12=38."},
+{id:11,bab:1,type:'pg',q:"Nilai tempat puluhan pada bilangan 604 ditempati oleh angka ...",opts:["6","0","4","10"],ans:["B"],ex:"6 adalah ratusan, 0 puluhan, 4 satuan."},
+{id:12,bab:1,type:'isian',q:"Bilangan kelipatan 4 setelah 28 adalah ...",ans:["32"],ex:"28 + 4 = 32."},
+{id:13,bab:1,type:'bs',q:"Pernyataan: Bentuk panjang dari 730 adalah 700 + 3 + 0.",ans:["Salah"],ex:"Bentuk panjangnya adalah 700 + 30 + 0."},
+{id:14,bab:1,type:'pg',q:"Ada 5 keranjang, setiap keranjang berisi 7 apel. Total apel seluruhnya adalah ...",opts:["30","35","40","42"],ans:["B"],ex:"5 keranjang × 7 apel = 35 apel."},
+{id:15,bab:1,type:'isian',q:"Ayah mempunyai 40 kelereng, dibagikan kepada 8 anak sama rata. Setiap anak mendapat ... kelereng.",ans:["5"],ex:"40 dibagi 8 sama dengan 5."},
+{id:16,bab:2,type:'pg',q:"Bentuk kalimat matematika dari: 'Siti punya 15 boneka, diberikan kepada adik 4 boneka' adalah ...",opts:["15 − 4 = 11","15 + 4 = 19","15 × 4 = 60","15 : 4 = 3"],ans:["A"],ex:"Kata 'diberikan' berarti berkurang (−)."},
+{id:17,bab:2,type:'isian',q:"Nilai titik-titik pada kalimat matematika 22 + ... = 50 adalah ...",ans:["28"],ex:"50 − 22 = 28."},
+{id:18,bab:2,type:'bs',q:"Pernyataan: Pada kalimat matematika 70 − y = 25, nilai y adalah 45.",ans:["Benar"],ex:"70 − 45 = 25, jadi pernyataan ini benar."},
+{id:19,bab:2,type:'pg',q:"Bilangan yang tepat untuk mengisi titik-titik pada ... × 8 = 56 adalah ...",opts:["6","7","8","9"],ans:["B"],ex:"Karena 56 : 8 = 7."},
+{id:20,bab:2,type:'isian',q:"Sebuah bilangan jika dibagi 3 hasilnya 9. Bilangan itu adalah ...",ans:["27"],ex:"9 × 3 = 27 (kebalikan dari membagi adalah mengalikan)."},
+{id:21,bab:2,type:'pgk',q:"Manakah kalimat matematika yang bernilai salah? (Jawaban bisa lebih dari 1)",opts:["15 + 15 = 30","40 − 15 = 35","6 × 7 = 42","24 : 4 = 5"],ans:["B","D"],ex:"40−15=25 (bukan 35) dan 24:4=6 (bukan 5)."},
+{id:22,bab:2,type:'pg',q:"Udin memiliki 3 kotak pensil. Jika total pensilnya ada 18, dan setiap kotak isinya sama, maka kalimat matematikanya adalah ...",opts:["3 + 18 = 21","18 − 3 = 15","18 : 3 = 6","18 × 3 = 54"],ans:["C"],ex:"Mencari isi per kotak dengan cara 18 dibagi 3."},
+{id:23,bab:2,type:'isian',q:"Jika m + 14 = 30, maka nilai m adalah ...",ans:["16"],ex:"m = 30 − 14 = 16."},
+{id:24,bab:2,type:'bs',q:"Pernyataan: Jika 36 : b = 4, maka nilai b = 9.",ans:["Benar"],ex:"36 dibagi 9 hasilnya memang 4."},
+{id:25,bab:2,type:'pg',q:"Doni membeli beberapa permen. Ia memakan 3 permen dan sisanya 12. Kalimat matematika yang tepat adalah ...",opts:["p − 3 = 12","p + 3 = 12","3 − p = 12","12 − 3 = p"],ans:["A"],ex:"Jumlah awal (p) dikurangi 3 sisanya 12."},
+{id:26,bab:3,type:'pg',q:"Alat ukur yang biasa digunakan oleh penjahit untuk mengukur lingkar pinggang adalah ...",opts:["Penggaris besi","Meteran pita","Jangka sorong","Timbangan"],ans:["B"],ex:"Meteran pita lentur sehingga cocok untuk mengukur tubuh."},
+{id:27,bab:3,type:'isian',q:"5 meter = ... centimeter.",ans:["500"],ex:"1 m = 100 cm, maka 5 m = 500 cm."},
+{id:28,bab:3,type:'bs',q:"Pernyataan: Langkah kaki dapat digunakan sebagai alat ukur panjang baku.",ans:["Salah"],ex:"Langkah kaki adalah alat ukur tidak baku."},
+{id:29,bab:3,type:'pgk',q:"Satuan yang BUKAN merupakan satuan baku untuk panjang adalah ... (Jawaban bisa lebih dari 1)",opts:["Jengkal","Kilometer (km)","Depa","Centimeter (cm)"],ans:["A","C"],ex:"Jengkal dan depa bergantung pada tubuh seseorang (tidak baku)."},
+{id:30,bab:3,type:'pg',q:"Paman membeli 3 kg beras. Berat beras paman sama dengan ... gram.",opts:["30","300","3.000","30.000"],ans:["C"],ex:"1 kg = 1.000 gram, maka 3 kg = 3.000 gram."},
+{id:31,bab:3,type:'isian',q:"Jarak desa A ke desa B adalah 2.000 meter. 2.000 meter = ... km.",ans:["2"],ex:"1.000 meter sama dengan 1 km."},
+{id:32,bab:3,type:'bs',q:"Pernyataan: 450 cm lebih pendek daripada 4 m.",ans:["Salah"],ex:"4 m = 400 cm. 450 cm lebih panjang dari 400 cm."},
+{id:33,bab:3,type:'pg',q:"Alat ukur yang tepat untuk menimbang emas adalah ...",opts:["Timbangan kue","Timbangan badan","Neraca digital / Timbangan emas","Penggaris"],ans:["C"],ex:"Neraca digital sangat teliti untuk benda ringan seperti emas."},
+{id:34,bab:3,type:'isian',q:"5.000 gram = ... kg",ans:["5"],ex:"Karena 1.000 g = 1 kg, maka 5.000 g = 5 kg."},
+{id:35,bab:3,type:'pgk',q:"Pernyataan yang benar mengenai kesetaraan ukuran adalah ... (Jawaban bisa lebih dari 1)",opts:["2 m = 200 cm","3 km = 300 m","1 kg = 1.000 gram","500 cm = 50 m"],ans:["A","C"],ex:"3 km = 3.000 m (B salah). 500 cm = 5 m (D salah)."},
+{id:36,bab:3,type:'pg',q:"Panjang sebuah meja adalah 2 m 15 cm. Panjang meja tersebut dalam satuan cm adalah ...",opts:["215 cm","251 cm","125 cm","2150 cm"],ans:["A"],ex:"2 m = 200 cm. 200 cm + 15 cm = 215 cm."},
+{id:37,bab:3,type:'isian',q:"Lani membeli anggur 2 kg lebih 200 gram. Total berat anggur tersebut dalam gram adalah ...",ans:["2.200","2200"],hint:"Contoh: 2.200",ex:"2 kg = 2.000 g. 2.000 + 200 = 2.200 g."},
+{id:38,bab:4,type:'pg',q:"Bangun datar yang memiliki 3 sisi dan 3 titik sudut adalah ...",opts:["Persegi panjang","Segitiga","Persegi","Lingkaran"],ans:["B"],ex:"Segitiga memiliki 3 sisi dan 3 sudut."},
+{id:39,bab:4,type:'isian',q:"Banyak sisi pada bangun datar segi enam beraturan adalah ...",ans:["6"],ex:"Sesuai namanya, segi enam memiliki tepat 6 sisi."},
+{id:40,bab:4,type:'bs',q:"Pernyataan: Sudut lancip memiliki besar lebih dari 90 derajat.",ans:["Salah"],ex:"Sudut lancip besarnya kurang dari 90 derajat."},
+{id:41,bab:4,type:'pgk',q:"Contoh bangun datar yang memiliki sudut tumpul adalah ... (Jawaban bisa lebih dari 1)",opts:["Segitiga siku-siku","Trapesium","Jajargenjang","Persegi panjang"],ans:["B","C"],ex:"Trapesium dan jajargenjang biasanya memiliki sudut tumpul. Persegi panjang hanya siku-siku."},
+{id:42,bab:4,type:'pg',q:"Dua garis yang jaraknya selalu sama dan tidak pernah berpotongan disebut garis ...",opts:["Sejajar","Tegak lurus","Berpotongan","Bersilangan"],ans:["A"],ex:"Garis sejajar tidak akan pernah bertemu walau diperpanjang."},
+{id:43,bab:4,type:'isian',q:"Garis vertikal dan horizontal yang membentuk tanda tambah (+) adalah contoh garis saling ...",ans:["tegak lurus","tegaklurus"],ex:"Keduanya berpotongan membentuk sudut siku-siku (90 derajat)."},
+{id:44,bab:4,type:'bs',q:"Pernyataan: Segitiga sama sisi memiliki tiga sudut yang sama besar.",ans:["Benar"],ex:"Segitiga sama sisi memiliki 3 sisi dan 3 sudut yang sama besar."},
+{id:45,bab:4,type:'pg',q:"Gambar yang menunjukkan sudut lancip adalah sudut yang ...",opts:["Lebih kecil dari sudut siku-siku","Sama dengan sudut siku-siku","Lebih besar dari sudut siku-siku","Berupa garis lurus"],ans:["A"],ex:"Sudut lancip besarnya kurang dari 90 derajat (lebih sempit dari siku-siku)."},
+{id:46,bab:4,type:'isian',q:"Alat yang digunakan untuk mengukur besar suatu sudut disebut ...",ans:["busur derajat","busurderajat","busur"],ex:"Busur derajat adalah alat ukur sudut baku."},
+{id:47,bab:4,type:'pgk',q:"Pernyataan yang tepat mengenai garis tegak lurus adalah ... (Jawaban bisa lebih dari 1)",opts:["Kedua garis berpotongan","Tidak pernah bertemu","Membentuk sudut 90 derajat","Selalu sejajar"],ans:["A","C"],ex:"Garis tegak lurus pasti berpotongan dan membentuk sudut siku-siku (90 derajat)."},
+{id:48,bab:5,type:'pg',q:"Bangun datar di bawah ini yang merupakan poligon beraturan adalah ...",opts:["Segitiga sembarang","Persegi","Lingkaran","Trapesium siku-siku"],ans:["B"],ex:"Persegi memiliki semua sisi yang sama panjang dan sudut sama besar, sehingga disebut poligon beraturan."},
+{id:49,bab:5,type:'isian',q:"Rumus keliling persegi panjang dengan panjang 'p' dan lebar 'l' adalah ...",ans:["2 x (p + l)","2(p + l)","(p + l) x 2","2 x p + 2 x l","p + l + p + l"],hint:"Contoh: 2 x (p + l)",ex:"Keliling persegi panjang adalah jumlah seluruh sisinya: p + l + p + l = 2 × (p + l)."},
+{id:50,bab:5,type:'bs',q:"Pernyataan: Segi delapan (oktagon) memiliki 8 sisi dan 8 sudut.",ans:["Benar"],ex:"Sesuai namanya, oktagon terdiri dari 8 sisi."},
+{id:51,bab:5,type:'pgk',q:"Sifat-sifat yang dimiliki oleh belah ketupat adalah ... (Jawaban bisa lebih dari 1)",opts:["Memiliki 4 sisi sama panjang","Keempat sudutnya siku-siku","Sudut yang berhadapan sama besar","Tidak memiliki sudut"],ans:["A","C"],ex:"Belah ketupat tidak memiliki sudut siku-siku, kecuali belah ketupat khusus (persegi)."},
+{id:52,bab:5,type:'pg',q:"Keliling bangun persegi dengan sisi 8 cm adalah ...",opts:["16 cm","24 cm","32 cm","64 cm"],ans:["C"],ex:"Keliling = 4 × sisi = 4 × 8 = 32 cm."},
+{id:53,bab:5,type:'isian',q:"Luas persegi panjang yang memiliki panjang 12 cm dan lebar 5 cm adalah ... cm².",ans:["60"],ex:"Luas = panjang × lebar = 12 × 5 = 60 cm²."},
+{id:54,bab:5,type:'bs',q:"Pernyataan: Keliling persegi panjang dengan p = 10 cm dan l = 6 cm adalah 32 cm.",ans:["Benar"],ex:"Keliling = 2 × (10 + 6) = 2 × 16 = 32 cm."},
+{id:55,bab:5,type:'pg',q:"Bangun datar yang dibentuk dari tiga sisi lurus disebut ...",opts:["Trapesium","Jajargenjang","Segitiga","Segi enam"],ans:["C"],ex:"Segitiga adalah poligon dengan sisi paling sedikit, yaitu 3."},
+{id:56,bab:5,type:'isian',q:"Sebuah persegi memiliki luas 81 cm². Panjang sisinya adalah ... cm.",ans:["9"],ex:"Sisi = akar dari 81 = 9 cm (karena 9 × 9 = 81)."},
+{id:57,bab:5,type:'pgk',q:"Bangun datar di bawah ini yang BUKAN segi banyak (poligon) adalah ... (Jawaban bisa lebih dari 1)",opts:["Lingkaran","Trapesium","Oval (elips)","Segi lima"],ans:["A","C"],ex:"Lingkaran dan oval memiliki garis lengkung, bukan garis lurus."},
+{id:58,bab:5,type:'pg',q:"Luas sebuah persegi panjang adalah 72 cm². Jika panjangnya 9 cm, maka lebarnya adalah ...",opts:["6 cm","7 cm","8 cm","9 cm"],ans:["C"],ex:"Lebar = Luas : panjang = 72 : 9 = 8 cm."},
+{id:59,bab:5,type:'isian',q:"Jumlah sisi pada bangun heptagon (segi tujuh) adalah ...",ans:["7"],ex:"Heptagon memiliki 7 sisi."},
+{id:60,bab:5,type:'bs',q:"Pernyataan: Lingkaran merupakan contoh poligon.",ans:["Salah"],ex:"Poligon harus terbuat dari ruas garis lurus, sedangkan lingkaran adalah kurva melengkung."},
+{id:61,bab:5,type:'pg',q:"Sebuah kebun berbentuk persegi panjang dengan ukuran panjang 15 m dan lebar 10 m. Kebun tersebut akan dipasangi pagar di sekelilingnya. Panjang pagar yang dibutuhkan adalah ...",opts:["25 m","50 m","150 m","100 m"],ans:["B"],ex:"Panjang pagar = Keliling = 2 × (15 + 10) = 2 × 25 = 50 m."},
+{id:62,bab:6,type:'pg',q:"Berikut adalah data berat badan siswa (dalam kg): 25, 30, 28, 26, 29. Berat badan tertinggi adalah ...",opts:["25","28","29","30"],ans:["D"],ex:"Dari kumpulan data tersebut, nilai yang paling besar adalah 30."},
+{id:63,bab:6,type:'isian',q:"Jika data angka 10, 15, 12, 14, 11 diurutkan dari yang terkecil, hasilnya adalah ...",ans:["10, 11, 12, 14, 15","10,11,12,14,15","10, 11, 12, 14 dan 15"],hint:"Pisahkan dengan koma",ex:"Diurutkan secara menaik dari angka paling kecil."},
+{id:64,bab:6,type:'bs',q:"Pernyataan: Tabel data membantu kita menemukan informasi penting lebih cepat dibandingkan data acak.",ans:["Benar"],ex:"Tabel menyusun data secara sistematis sehingga mudah dibaca."},
+{id:65,bab:6,type:'pgk',q:"Pernyataan yang benar dari tabel warna kesukaan (Merah=6, Kuning=4, Biru=7) adalah ... (Jawaban bisa lebih dari 1)",opts:["Warna yang paling disukai adalah Biru","Warna yang paling sedikit disukai adalah Kuning","Ada 5 anak menyukai Merah","Total siswa ada 17 orang"],ans:["A","B","D"],ex:"6+4+7=17 siswa. Biru paling tinggi (7), Kuning paling rendah (4). (C salah karena Merah 6)."},
+{id:66,bab:6,type:'pg',q:"Dari tabel kendaraan ke sekolah, yang jalan kaki 10 anak, diantar motor 18 anak, dan naik sepeda 7 anak. Kendaraan apa yang paling banyak digunakan?",opts:["Jalan kaki","Diantar motor","Naik sepeda","Naik bus"],ans:["B"],ex:"Motor dipilih oleh 18 anak, jumlah terbanyak."},
+{id:67,bab:6,type:'isian',q:"Total siswa kelas 3 ada 32 orang. 15 orang suka matematika, 10 orang suka IPA, dan sisanya suka bahasa. Banyak siswa yang suka bahasa ada ... orang.",ans:["7"],ex:"32 − (15+10) = 32 − 25 = 7 orang."},
+{id:68,bab:6,type:'bs',q:"Pernyataan: Turus (tally) '|||' melambangkan bilangan 4.",ans:["Salah"],ex:"Simbol '|||' melambangkan 3."},
+{id:69,bab:6,type:'pg',q:"Tabel menunjukkan jumlah pensil: Rara=5, Susi=2, Tina=8, Umi=4. Siapa yang memiliki pensil paling sedikit?",opts:["Rara","Susi","Tina","Umi"],ans:["B"],ex:"Susi hanya memiliki 2 pensil, jumlah paling sedikit."},
+{id:70,bab:6,type:'isian',q:"Berdasarkan kumpulan data nilai: (80, 90, 80, 100, 90, 80, 70), nilai yang paling banyak didapat siswa adalah ...",ans:["80"],ex:"Nilai 80 muncul paling banyak, yaitu 3 kali."},
+{id:71,bab:6,type:'pgk',q:"Data tinggi bibit tanaman (cm): 12, 15, 12, 14, 16. Manakah pernyataan yang tepat? (Jawaban bisa lebih dari 1)",opts:["Ada 2 tanaman setinggi 12 cm","Tanaman tertinggi adalah 16 cm","Tanaman terpendek adalah 10 cm","Semua tanaman tingginya sama"],ans:["A","B"],ex:"Tanaman terpendek 12 cm, bukan 10 cm (C salah)."},
+{id:72,bab:7,type:'pg',q:"Pada pecahan 4/7, angka 7 disebut sebagai ...",opts:["Penyebut","Pembagi","Pembilang","Hasil bagi"],ans:["A"],ex:"Angka yang berada di bagian bawah pecahan dinamakan penyebut."},
+{id:73,bab:7,type:'isian',q:"Pada pecahan 5/9, angka yang berfungsi sebagai pembilang adalah ...",ans:["5"],ex:"Angka di bagian atas garis disebut pembilang."},
+{id:74,bab:7,type:'bs',q:"Pernyataan: Pecahan 1/3 nilainya lebih kecil daripada pecahan 1/5.",ans:["Salah"],ex:"Membagi benda menjadi 3 bagian (1/3) hasilnya lebih besar dari membagi 5 bagian (1/5)."},
+{id:75,bab:7,type:'pgk',q:"Pecahan-pecahan yang senilai dengan 1/3 adalah ... (Jawaban bisa lebih dari 1)",opts:["2/6","3/9","4/12","3/6"],ans:["A","B","C"],ex:"Jika 2/6, 3/9, dan 4/12 disederhanakan, semuanya bernilai sama dengan 1/3."},
+{id:76,bab:7,type:'pg',q:"Sebuah pizza dipotong menjadi 6 bagian sama besar. Tono memakan 2 potong. Pecahan yang menunjukkan pizza yang dimakan Tono adalah ...",opts:["6/2","1/6","2/6","4/6"],ans:["C"],ex:"Tono memakan 2 bagian dari keseluruhan 6 bagian, ditulis 2/6."},
+{id:77,bab:7,type:'isian',q:"Pecahan 4/5, 2/5, 3/5 jika diurutkan dari yang ukurannya paling besar menjadi ...",ans:["4/5, 3/5, 2/5","4/5,3/5,2/5"],hint:"Pisahkan dengan koma",ex:"Jika penyebut sudah sama, urutkan dari pembilang terbesar: 4, 3, 2."},
+{id:78,bab:7,type:'bs',q:"Pernyataan: Pada garis bilangan, letak pecahan 1/8 berada di sebelah kiri dari pecahan 5/8.",ans:["Benar"],ex:"Nilai 1/8 lebih kecil dari 5/8, sehingga letaknya lebih ke kiri."},
+{id:79,bab:7,type:'pg',q:"Pecahan senilai untuk 3/4 jika pembilang dan penyebut masing-masing dikalikan 3 adalah ...",opts:["6/8","9/12","3/12","9/4"],ans:["B"],ex:"(3 × 3) / (4 × 3) = 9/12."},
+{id:80,bab:7,type:'isian',q:"Tanda perbandingan yang tepat untuk 7/10 ... 4/10 adalah ...",ans:[">","> (lebih dari)","lebih dari"],hint:"Isi dengan tanda >, < atau =",ex:"7 bagian lebih besar daripada 4 bagian dari keseluruhan yang sama (10)."},
+{id:81,bab:7,type:'pgk',q:"Manakah perbandingan pecahan berikut yang bernilai salah? (Jawaban bisa lebih dari 1)",opts:["2/5 > 4/5","3/8 < 5/8","2/3 = 4/6","1/4 > 1/2"],ans:["A","D"],ex:"2/5 harusnya lebih kecil dari 4/5, dan 1/4 lebih kecil dari 1/2."},
+{id:82,bab:7,type:'pg',q:"Jika digambar pada sebuah garis bilangan dari 0 sampai 1 yang dibagi menjadi 4 bagian, titik pertama setelah 0 bernilai ...",opts:["1/2","1/3","1/4","3/4"],ans:["C"],ex:"Titik pertama dari 4 bagian sama besar adalah 1/4."},
+{id:83,bab:7,type:'isian',q:"Kue bolu dibagi menjadi 8 potong. Ayah makan 3 potong, Ibu makan 2 potong. Sisa kue dalam bentuk pecahan adalah ...",ans:["3/8"],hint:"Contoh: 3/8",ex:"Total dimakan = 3/8 + 2/8 = 5/8. Sisa = 8/8 − 5/8 = 3/8."},
+{id:84,bab:8,type:'pg',q:"Perhatikan pola bilangan berikut: 3, 6, 9, 12, ... Bilangan selanjutnya adalah ...",opts:["13","14","15","18"],ans:["C"],ex:"Ini adalah pola kelipatan 3. 12 + 3 = 15."},
+{id:85,bab:8,type:'isian',q:"Suku berikutnya dari pola bilangan: 10, 20, 30, 40, ... adalah ...",ans:["50"],ex:"Pola bertambah 10 setiap sukunya. 40 + 10 = 50."},
+{id:86,bab:8,type:'bs',q:"Pernyataan: Pola bilangan 25, 20, 15, 10 adalah pola bilangan yang berkurang 5.",ans:["Benar"],ex:"25−5=20, 20−5=15, 15−5=10."},
+{id:87,bab:8,type:'pgk',q:"Dari barisan bilangan berikut ini, yang termasuk pola bertambah 4 adalah ... (Jawaban bisa lebih dari 1)",opts:["4, 8, 12, 16","1, 5, 9, 13","10, 14, 18, 22","2, 4, 6, 8"],ans:["A","B","C"],ex:"D adalah pola bertambah 2, yang lainnya bertambah 4."},
+{id:88,bab:8,type:'pg',q:"Jika terdapat pola gambar: 🌸 − 🌼 − 🌺 − 🌸 − 🌼 − ... , maka gambar selanjutnya adalah ...",opts:["🌸","🌼","🌺","🌻"],ans:["C"],ex:"Pola berulang: Bunga 1 (🌸), Bunga 2 (🌼), Bunga 3 (🌺)."},
+{id:89,bab:8,type:'isian',q:"Terdapat pola bilangan loncat: 2, 4, 8, 16, ... Bilangan selanjutnya adalah ...",ans:["32"],ex:"Pola dikalikan 2. 16 × 2 = 32."},
+{id:90,bab:8,type:'bs',q:"Pernyataan: Pola 1, 2, 3, 1, 2, 3 disebut pola berulang setiap tiga langkah.",ans:["Benar"],ex:"Kelompok angka 1, 2, 3 diulang secara terus menerus."},
+{id:91,bab:8,type:'pg',q:"Nilai titik-titik pada pola bilangan 50, 45, 40, ..., 30 adalah ...",opts:["38","35","32","25"],ans:["B"],ex:"Pola ini berkurang 5 setiap sukunya. 40 − 5 = 35."},
+{id:92,bab:8,type:'isian',q:"Tiga bilangan genap pertama yang berurutan membentuk pola adalah 2, 4, dan ...",ans:["6"],ex:"Bilangan genap berurutan bertambah 2. 4 + 2 = 6."},
+{id:93,bab:8,type:'pgk',q:"Ada pola huruf: A, B, C, A, B, C, ... Huruf urutan ke-8 dan ke-9 adalah ... (Jawaban bisa lebih dari 1)",opts:["A","B","C","D"],ans:["B","C"],ex:"Urutan ke-7 adalah A, ke-8 adalah B, ke-9 adalah C."},
+{id:94,bab:9,type:'pg',fig:"<svg width='130' height='52' viewBox='0 0 130 52'><polygon points='8,46 52,46 30,7' fill='#d8b4fe' stroke='#9333ea'/><text x='58' y='33' font-size='16' fill='#475569'>+</text><polygon points='74,6 118,6 96,45' fill='#d8b4fe' stroke='#9333ea'/></svg>",q:"Jika dua buah segitiga sama sisi yang identik disatukan pada salah satu sisinya, maka akan membentuk bangun datar ...",opts:["Persegi panjang","Belah ketupat","Segi lima","Trapesium"],ans:["B"],ex:"Dua segitiga sama sisi yang disatukan alasnya akan membentuk bangun belah ketupat."},
+{id:95,bab:9,type:'isian',q:"Bangun ruang balok memiliki sisi-sisi yang utamanya berbentuk bangun datar ...",ans:["persegi panjang","persegi panjang / persegi","persegi"],ex:"Balok tersusun dari 6 sisi yang mayoritas (atau semuanya) berbentuk persegi panjang."},
+{id:96,bab:9,type:'bs',q:"Pernyataan: Sebuah persegi panjang dapat dipotong menjadi dua buah persegi yang lebih kecil.",ans:["Benar"],ex:"Jika panjangnya dua kali lebarnya, persegi panjang dipotong di tengah akan membentuk dua persegi."},
+{id:97,bab:9,type:'pgk',q:"Pernyataan yang tepat tentang jaring-jaring bangun ruang adalah ... (Jawaban bisa lebih dari 1)",opts:["Jaring-jaring kubus terdiri dari 6 persegi","Jaring-jaring balok terdiri dari segitiga","Jaring-jaring balok memiliki bentuk persegi panjang","Kubus tidak bisa dibuat jaring-jaring"],ans:["A","C"],ex:"Balok terbuat dari persegi panjang (bukan segitiga) dan kubus bisa dibuat jaring-jaringnya."},
+{id:98,bab:9,type:'pg',q:"Jaring-jaring balok terdiri dari rangkaian bangun datar berjumlah ... buah.",opts:["4","5","6","8"],ans:["C"],ex:"Sama seperti kubus, jaring-jaring balok terdiri atas 6 sisi."},
+{id:99,bab:9,type:'isian',q:"Jika kamu menyatukan dua buah persegi panjang identik secara berdampingan, akan terbentuk satu bangun ... yang lebih besar.",ans:["persegi panjang","persegi panjang / persegi","persegi"],hint:"Contoh: persegi panjang",ex:"Bisa menjadi persegi panjang yang lebih besar atau persegi (jika dimensinya sesuai)."},
+{id:100,bab:9,type:'pg',q:"Bentuk bangun datar apakah yang memiliki jumlah simetri lipat tak terhingga?",opts:["Persegi","Segitiga","Lingkaran","Jajargenjang"],ans:["C"],ex:"Lingkaran memiliki garis simetri yang tak berhingga dari segala arah pusatnya."}
+];
+
+/* =====================================================================
+   PAKET 2 — 100 SOAL DARI FILE KEDUA  →  UNTUK SISWA 2 (PANEL KANAN)
+   ===================================================================== */
+const SET_B = [
+{id:1,bab:1,type:'pg',q:"Lambang bilangan 'delapan ratus lima belas' adalah ...",opts:["805","815","850","518"],ans:["B"],ex:"Delapan ratus lima belas ditulis 815."},
+{id:2,bab:1,type:'isian',q:"Pada bilangan 735, angka 3 menempati nilai tempat ...",ans:["puluhan"],hint:"Contoh: puluhan",ex:"7 ratusan, 3 puluhan, 5 satuan."},
+{id:3,bab:1,type:'bs',q:"Pernyataan: Bilangan 456 lebih besar dari bilangan 465.",ans:["Salah"],ex:"456 lebih kecil dari 465 karena puluhannya lebih kecil (5 < 6)."},
+{id:4,bab:1,type:'pgk',q:"Pilihlah pernyataan yang benar tentang bilangan 325! (Jawaban bisa lebih dari 1)",opts:["Terdiri dari 3 ratusan","Angka 2 adalah satuan","Nilai tempat 5 adalah satuan","Dibaca tiga ratus lima puluh dua"],ans:["A","C"],ex:"3 ratusan, 2 puluhan, 5 satuan. Dibaca tiga ratus dua puluh lima. (B salah: angka 2 adalah puluhan; D salah pembacaannya.)"},
+{id:5,bab:1,type:'pg',q:"Urutan bilangan 234, 214, 245, 201 dari yang terkecil adalah ...",opts:["201, 214, 234, 245","201, 234, 214, 245","245, 234, 214, 201","214, 201, 234, 245"],ans:["A"],ex:"Urutannya naik dari yang paling kecil ke paling besar: 201, 214, 234, 245."},
+{id:6,bab:1,type:'isian',q:"Hasil dari 45 + 32 adalah ...",ans:["77"],ex:"45 + 32 = 77."},
+{id:7,bab:1,type:'pg',q:"Hasil pengurangan 80 − 24 adalah ...",opts:["54","56","64","66"],ans:["B"],ex:"80 − 24 = 56."},
+{id:8,bab:1,type:'bs',q:"Pernyataan: Hasil dari 7 × 8 adalah 54.",ans:["Salah"],ex:"Hasil dari 7 × 8 adalah 56, bukan 54."},
+{id:9,bab:1,type:'isian',q:"Hasil dari 42 : 6 adalah ...",ans:["7"],ex:"Karena 7 × 6 = 42, maka 42 : 6 = 7."},
+{id:10,bab:1,type:'pgk',q:"Operasi hitung di bawah ini yang hasilnya 24 adalah ... (Jawaban bisa lebih dari 1)",opts:["6 × 4","8 × 3","12 + 12","30 − 4"],ans:["A","B","C"],ex:"6×4=24, 8×3=24, 12+12=24, sementara 30−4=26."},
+{id:11,bab:1,type:'pg',q:"Nilai tempat ratusan pada bilangan 873 ditempati oleh angka ...",opts:["8","7","3","0"],ans:["A"],ex:"8 adalah ratusan, 7 puluhan, 3 satuan."},
+{id:12,bab:1,type:'isian',q:"Bilangan kelipatan 5 setelah 35 adalah ...",ans:["40"],ex:"35 + 5 = 40."},
+{id:13,bab:1,type:'bs',q:"Pernyataan: Bentuk panjang dari 542 adalah 500 + 40 + 2.",ans:["Benar"],ex:"500 + 40 + 2 = 542."},
+{id:14,bab:1,type:'pg',q:"Ada 4 kotak, setiap kotak berisi 8 kelereng. Total kelereng seluruhnya adalah ...",opts:["12","24","32","40"],ans:["C"],ex:"4 kotak × 8 kelereng = 32 kelereng."},
+{id:15,bab:1,type:'isian',q:"Ibu mempunyai 30 permen, dibagikan kepada 5 anak sama rata. Setiap anak mendapat ... permen.",ans:["6"],ex:"30 dibagi 5 sama dengan 6."},
+{id:16,bab:2,type:'pg',q:"Bentuk kalimat matematika dari: 'Budi punya 10 buku, diberi ayah 5 buku' adalah ...",opts:["10 − 5 = 5","10 + 5 = 15","10 × 5 = 50","10 : 5 = 2"],ans:["B"],ex:"Kata 'diberi' berarti bertambah (+)."},
+{id:17,bab:2,type:'isian',q:"Nilai titik-titik pada kalimat matematika 15 + ... = 40 adalah ...",ans:["25"],ex:"40 − 15 = 25."},
+{id:18,bab:2,type:'bs',q:"Pernyataan: Pada kalimat matematika 50 − x = 20, nilai x adalah 30.",ans:["Benar"],ex:"50 − 30 = 20, jadi pernyataan ini benar."},
+{id:19,bab:2,type:'pg',q:"Bilangan yang tepat untuk mengisi titik-titik pada ... × 6 = 42 adalah ...",opts:["6","7","8","9"],ans:["B"],ex:"Karena 42 : 6 = 7."},
+{id:20,bab:2,type:'isian',q:"Sebuah bilangan jika dikalikan 4 hasilnya 36. Bilangan itu adalah ...",ans:["9"],ex:"36 : 4 = 9."},
+{id:21,bab:2,type:'pgk',q:"Manakah kalimat matematika yang bernilai benar? (Jawaban bisa lebih dari 1)",opts:["12 + 8 = 20","25 − 10 = 15","4 × 5 = 25","18 : 3 = 6"],ans:["A","B","D"],ex:"Opsi C salah karena 4 × 5 = 20, bukan 25."},
+{id:22,bab:2,type:'pg',q:"Mita membeli 2 lusin pensil. Jika 1 lusin berisi 12 pensil, kalimat matematikanya adalah ...",opts:["2 + 12 = 14","12 − 2 = 10","2 × 12 = 24","12 : 2 = 6"],ans:["C"],ex:"2 lusin berarti 2 dikali 12, yaitu 24 pensil."},
+{id:23,bab:2,type:'isian',q:"Jika p − 12 = 18, maka nilai p adalah ...",ans:["30"],ex:"p = 18 + 12 = 30."},
+{id:24,bab:2,type:'bs',q:"Pernyataan: Jika 5 × a = 35, maka nilai a = 6.",ans:["Salah"],ex:"Seharusnya a = 7 (karena 5 × 7 = 35)."},
+{id:25,bab:2,type:'pg',q:"Andi punya sejumlah kelereng. Ia kalah bermain sebanyak 5 kelereng sehingga sisanya 15. Kalimat matematika yang tepat adalah ...",opts:["k − 5 = 15","k + 5 = 15","5 − k = 15","15 − 5 = k"],ans:["A"],ex:"Kalah berarti kelereng awal (k) berkurang 5 dan sisanya 15."},
+{id:26,bab:3,type:'pg',q:"Alat ukur baku yang biasa digunakan untuk mengukur panjang pita adalah ...",opts:["Jengkal","Langkah","Meteran / Penggaris","Timbangan"],ans:["C"],ex:"Meteran atau penggaris adalah alat ukur panjang yang baku."},
+{id:27,bab:3,type:'isian',q:"3 meter = ... centimeter.",ans:["300"],ex:"1 m = 100 cm, maka 3 m = 300 cm."},
+{id:28,bab:3,type:'bs',q:"Pernyataan: Jengkal tangan adalah satuan ukur baku untuk panjang.",ans:["Salah"],ex:"Jengkal tidak baku karena panjang tangan setiap orang berbeda-beda."},
+{id:29,bab:3,type:'pgk',q:"Satuan baku untuk berat di bawah ini adalah ... (Jawaban bisa lebih dari 1)",opts:["Kilogram (kg)","Gram (g)","Meter (m)","Liter (L)"],ans:["A","B"],ex:"Kilogram dan gram untuk berat; meter untuk panjang, liter untuk volume."},
+{id:30,bab:3,type:'pg',q:"Ibu membeli 2 kg apel. Berat apel ibu sama dengan ... gram.",opts:["20","200","2.000","20.000"],ans:["C"],ex:"1 kg = 1.000 gram, maka 2 kg = 2.000 gram."},
+{id:31,bab:3,type:'isian',q:"Jarak rumah ke sekolah adalah 1 km. 1 km = ... meter.",ans:["1.000","1000"],ex:"1 kilometer sama dengan 1.000 meter."},
+{id:32,bab:3,type:'bs',q:"Pernyataan: 500 cm lebih panjang daripada 6 m.",ans:["Salah"],ex:"6 m = 600 cm. 500 cm lebih pendek dari 600 cm."},
+{id:33,bab:3,type:'pg',q:"Alat ukur yang tepat untuk menimbang berat badan adalah ...",opts:["Timbangan kue","Timbangan badan","Timbangan beras (duduk)","Penggaris"],ans:["B"],ex:"Timbangan badan khusus dirancang untuk menimbang berat manusia."},
+{id:34,bab:3,type:'isian',q:"4.000 gram = ... kg",ans:["4"],ex:"Karena 1.000 g = 1 kg, maka 4.000 g = 4 kg."},
+{id:35,bab:3,type:'pgk',q:"Pernyataan yang benar mengenai pengukuran dan satuan adalah ... (Jawaban bisa lebih dari 1)",opts:["1 m = 100 cm","1 km = 100 m","Penggaris adalah alat ukur panjang","Berat badan diukur dengan meteran pita"],ans:["A","C"],ex:"1 km = 1.000 m (B salah). Berat badan diukur dengan timbangan (D salah)."},
+{id:36,bab:3,type:'pg',q:"Panjang seutas tali adalah 1 m 20 cm. Panjang tali tersebut dalam satuan cm adalah ...",opts:["120 cm","210 cm","102 cm","200 cm"],ans:["A"],ex:"1 m = 100 cm. 100 cm + 20 cm = 120 cm."},
+{id:37,bab:3,type:'isian',q:"Budi menimbang telur seberat 1 kg lebih 500 gram. Total berat telur tersebut dalam gram adalah ...",ans:["1.500","1500"],hint:"Contoh: 1.500",ex:"1 kg = 1.000 g. 1.000 + 500 = 1.500 g."},
+{id:38,bab:4,type:'pg',q:"Bangun datar yang memiliki 4 sisi sama panjang dan 4 sudut siku-siku adalah ...",opts:["Persegi panjang","Segitiga","Persegi","Lingkaran"],ans:["C"],ex:"Persegi memiliki 4 sisi yang sama panjang dan 4 sudut 90 derajat."},
+{id:39,bab:4,type:'isian',q:"Banyak sisi pada bangun datar segitiga adalah ...",ans:["3"],ex:"Sesuai namanya, segitiga memiliki tepat 3 sisi."},
+{id:40,bab:4,type:'bs',q:"Pernyataan: Sudut siku-siku memiliki besar 90 derajat.",ans:["Benar"],ex:"Sudut siku-siku adalah sudut tegak lurus yang besarnya pasti 90 derajat."},
+{id:41,bab:4,type:'pgk',q:"Contoh bangun datar yang memiliki sudut lancip adalah ... (Jawaban bisa lebih dari 1)",opts:["Segitiga lancip","Persegi","Jajargenjang","Lingkaran"],ans:["A","C"],ex:"Persegi bersudut siku-siku, lingkaran tidak memiliki sudut, jajargenjang memiliki sudut lancip dan tumpul."},
+{id:42,bab:4,type:'pg',q:"Dua garis yang saling berpotongan tegak dan membentuk sudut siku-siku disebut garis ...",opts:["Sejajar","Tegak lurus","Berimpit","Bersilangan"],ans:["B"],ex:"Garis yang berpotongan membentuk 90 derajat disebut garis tegak lurus."},
+{id:43,bab:4,type:'isian',q:"Lintasan rel kereta api adalah salah satu contoh dari dua garis yang saling ...",ans:["sejajar"],ex:"Dua rel tidak akan pernah berpotongan, sehingga disebut garis sejajar."},
+{id:44,bab:4,type:'bs',q:"Pernyataan: Persegi panjang memiliki dua pasang sisi yang sejajar.",ans:["Benar"],ex:"Sisi atas sejajar dengan sisi bawah, sisi kiri sejajar dengan sisi kanan."},
+{id:45,bab:4,type:'pg',q:"Gambar yang menunjukkan sudut tumpul adalah sudut yang ...",opts:["Lebih kecil dari sudut siku-siku","Sama dengan sudut siku-siku","Lebih besar dari sudut siku-siku","Tidak berbentuk"],ans:["C"],ex:"Sudut tumpul besarnya lebih dari 90 derajat (lebih besar dari siku-siku)."},
+{id:46,bab:4,type:'isian',q:"Pertemuan dua buah ruas garis (sisi) pada bangun datar akan membentuk suatu ...",ans:["sudut"],ex:"Titik potong antara dua sisi disebut titik sudut."},
+{id:47,bab:4,type:'pgk',q:"Pernyataan yang tepat mengenai garis sejajar adalah ... (Jawaban bisa lebih dari 1)",opts:["Kedua garis tidak akan pernah berpotongan","Selalu berpotongan di satu titik","Jarak kedua garis di setiap titik selalu sama","Membentuk sudut siku-siku"],ans:["A","C"],ex:"Garis sejajar jaraknya konstan dan tidak akan pernah bertemu/berpotongan."},
+{id:48,bab:5,type:'pg',q:"Manakah bangun di bawah ini yang BUKAN merupakan poligon (segi banyak)?",opts:["Segitiga","Persegi","Lingkaran","Segi lima"],ans:["C"],ex:"Poligon dibentuk hanya oleh garis lurus. Lingkaran terbuat dari kurva lengkung."},
+{id:49,bab:5,type:'isian',q:"Rumus keliling persegi dengan panjang sisi 's' adalah ...",ans:["4 x s","4xs","s + s + s + s","s+s+s+s"],hint:"Contoh: 4 x s",ex:"Keliling persegi adalah jumlah keempat sisinya: 4 × s."},
+{id:50,bab:5,type:'bs',q:"Pernyataan: Poligon yang memiliki 5 sisi disebut pentagon.",ans:["Benar"],ex:"Pentagon adalah nama lain dari segi lima."},
+{id:51,bab:5,type:'pgk',q:"Sifat-sifat yang dimiliki oleh persegi panjang adalah ... (Jawaban bisa lebih dari 1)",opts:["Memiliki 4 sisi","Semua sisi sama panjang","Sisi yang berhadapan sama panjang","Memiliki 4 sudut siku-siku"],ans:["A","C","D"],ex:"Semua sisi sama panjang adalah sifat persegi, bukan persegi panjang."},
+{id:52,bab:5,type:'pg',q:"Keliling bangun persegi dengan sisi 5 cm adalah ...",opts:["10 cm","20 cm","25 cm","30 cm"],ans:["B"],ex:"Keliling = 4 × sisi = 4 × 5 = 20 cm."},
+{id:53,bab:5,type:'isian',q:"Luas persegi panjang yang memiliki panjang 8 cm dan lebar 4 cm adalah ... cm².",ans:["32"],ex:"Luas = panjang × lebar = 8 × 4 = 32 cm²."},
+{id:54,bab:5,type:'bs',q:"Pernyataan: Luas persegi dengan sisi 6 cm adalah 24 cm².",ans:["Salah"],ex:"Luas = s × s = 6 × 6 = 36 cm². 24 cm adalah kelilingnya (4 × 6)."},
+{id:55,bab:5,type:'pg',q:"Bangun segi banyak teratur yang memiliki 6 sisi sama panjang disebut ...",opts:["Segitiga","Segi empat","Segi lima (Pentagon)","Segi enam (Heksagon)"],ans:["D"],ex:"Bangun dengan 6 sisi disebut segi enam atau heksagon."},
+{id:56,bab:5,type:'isian',q:"Sebuah persegi memiliki keliling 40 cm. Panjang sisinya adalah ... cm.",ans:["10"],ex:"Sisi = Keliling : 4 = 40 : 4 = 10 cm."},
+{id:57,bab:5,type:'pgk',q:"Bangun datar di bawah ini yang termasuk bangun segi banyak (poligon) adalah ... (Jawaban bisa lebih dari 1)",opts:["Jajargenjang","Trapesium","Setengah lingkaran","Belah ketupat"],ans:["A","B","D"],ex:"Setengah lingkaran punya garis lengkung, sehingga bukan segi banyak."},
+{id:58,bab:5,type:'pg',q:"Luas sebuah persegi panjang adalah 50 cm². Jika panjangnya 10 cm, maka lebarnya adalah ...",opts:["5 cm","10 cm","40 cm","60 cm"],ans:["A"],ex:"Lebar = Luas : panjang = 50 : 10 = 5 cm."},
+{id:59,bab:5,type:'isian',q:"Jumlah total sudut pada bangun datar segi empat (seperti persegi) adalah ...",ans:["4"],ex:"Semua segi empat pasti memiliki 4 sudut dan 4 sisi."},
+{id:60,bab:5,type:'bs',q:"Pernyataan: Persegi adalah bentuk khusus dari persegi panjang.",ans:["Benar"],ex:"Persegi adalah persegi panjang yang keempat sisinya sama panjang."},
+{id:61,bab:5,type:'pg',q:"Beni berlari mengelilingi lapangan berbentuk persegi panjang. Panjang lapangan 20 m dan lebarnya 10 m. Jarak yang ditempuh Beni untuk satu putaran adalah ...",opts:["30 m","60 m","200 m","400 m"],ans:["B"],ex:"Keliling = 2 × (Panjang + Lebar) = 2 × (20 + 10) = 2 × 30 = 60 m."},
+{id:62,bab:6,type:'pg',q:"Berikut adalah data nilai ulangan matematika Rio: 80, 90, 70, 100, 80. Nilai terendah Rio adalah ...",opts:["70","80","90","100"],ans:["A"],ex:"Dari kumpulan data tersebut, nilai yang paling kecil adalah 70."},
+{id:63,bab:6,type:'isian',q:"Jika data angka 5, 8, 3, 9, 4 diurutkan dari yang terbesar, hasilnya adalah ...",ans:["9, 8, 5, 4, 3","9,8,5,4,3","9, 8, 5, 4 dan 3"],hint:"Pisahkan dengan koma",ex:"Diurutkan secara menurun dari angka paling besar."},
+{id:64,bab:6,type:'bs',q:"Pernyataan: Menyajikan data ke dalam tabel bertujuan untuk memudahkan kita membaca dan memahami data.",ans:["Benar"],ex:"Tabel mengelompokkan data agar lebih rapi dan sangat mudah dibaca."},
+{id:65,bab:6,type:'pgk',q:"Pernyataan yang benar dari tabel buah kesukaan (Apel=5 siswa, Jeruk=8 siswa, Mangga=3 siswa) adalah ... (Jawaban bisa lebih dari 1)",opts:["Buah yang paling disukai adalah Mangga","Buah yang paling disukai adalah Jeruk","Ada 5 anak menyukai Apel","Total siswa ada 16 orang"],ans:["B","C","D"],ex:"5+8+3=16 siswa. Jeruk paling tinggi peminatnya (8). (A salah karena Mangga hanya 3)."},
+{id:66,bab:6,type:'pg',q:"Dari tabel hobi, siswa yang suka Renang ada 12 anak, Sepak Bola 15 anak, dan Menari 8 anak. Hobi apa yang paling sedikit peminatnya?",opts:["Renang","Sepak Bola","Menari","Basket"],ans:["C"],ex:"Menari hanya dipilih oleh 8 anak, jumlah paling sedikit."},
+{id:67,bab:6,type:'isian',q:"Banyak siswa kelas 3 adalah 30 orang. Sebanyak 12 orang suka warna merah, 10 orang suka biru, dan sisanya suka hijau. Banyak siswa yang suka hijau ada ... orang.",ans:["8"],ex:"30 − (12+10) = 30 − 22 = 8 orang."},
+{id:68,bab:6,type:'bs',q:"Pernyataan: Simbol turus (tally) '||||' melambangkan bilangan 5.",ans:["Salah"],ex:"Simbol '||||' melambangkan 4. Jika ada garis miring mencoretnya, baru bernilai 5."},
+{id:69,bab:6,type:'pg',q:"Tabel menunjukkan jumlah buku cerita: Andi=4, Budi=6, Cita=3, Doni=7. Siapa yang memiliki buku cerita paling banyak?",opts:["Andi","Budi","Cita","Doni"],ans:["D"],ex:"Doni memiliki 7 buku, jumlah terbanyak di antara semuanya."},
+{id:70,bab:6,type:'isian',q:"Berdasarkan kumpulan data (Merah, Biru, Hijau, Merah, Merah, Kuning), warna yang paling sering muncul adalah ...",ans:["merah"],ex:"Warna merah muncul sebanyak 3 kali (paling banyak)."},
+{id:71,bab:6,type:'pgk',q:"Data umur (dalam tahun) 5 orang siswa: 8, 9, 8, 10, 9. Manakah pernyataan yang tepat? (Jawaban bisa lebih dari 1)",opts:["Ada 2 siswa berumur 8 tahun","Siswa tertua berumur 10 tahun","Siswa termuda berumur 7 tahun","Ada 2 siswa berumur 9 tahun"],ans:["A","B","D"],ex:"Siswa termuda berumur 8 tahun, bukan 7 (C salah)."},
+{id:72,bab:7,type:'pg',q:"Pada pecahan 3/5, angka 3 disebut sebagai ...",opts:["Penyebut","Pembagi","Pembilang","Hasil bagi"],ans:["C"],ex:"Angka yang berada di bagian atas pecahan dinamakan pembilang."},
+{id:73,bab:7,type:'isian',q:"Pada pecahan 2/7, angka yang berfungsi sebagai penyebut adalah ...",ans:["7"],ex:"Angka di bagian bawah garis disebut penyebut."},
+{id:74,bab:7,type:'bs',q:"Pernyataan: Pecahan 1/2 nilainya lebih besar daripada pecahan 1/4.",ans:["Benar"],ex:"Satu benda utuh dibagi dua akan menghasilkan bagian yang lebih besar daripada benda utuh yang dibagi empat."},
+{id:75,bab:7,type:'pgk',q:"Pecahan-pecahan yang senilai dengan 1/2 adalah ... (Jawaban bisa lebih dari 1)",opts:["2/4","3/6","4/8","1/3"],ans:["A","B","C"],ex:"Jika 2/4, 3/6, dan 4/8 disederhanakan, semuanya bernilai sama dengan 1/2."},
+{id:76,bab:7,type:'pg',q:"Sebuah kue dipotong menjadi 8 bagian sama besar. Rini memakan 3 potong. Pecahan yang menunjukkan jumlah kue yang dimakan Rini adalah ...",opts:["8/3","3/8","5/8","1/8"],ans:["B"],ex:"Rini memakan 3 bagian dari keseluruhan 8 bagian, ditulis 3/8."},
+{id:77,bab:7,type:'isian',q:"Pecahan 2/3, 1/3, 3/3 jika diurutkan dari yang ukurannya paling kecil menjadi ...",ans:["1/3, 2/3, 3/3","1/3,2/3,3/3"],hint:"Pisahkan dengan koma",ex:"Jika penyebut sudah sama, cukup urutkan angka pembilangnya: 1, 2, 3."},
+{id:78,bab:7,type:'bs',q:"Pernyataan: Pada garis bilangan, letak pecahan 3/4 berada di sebelah kanan dari pecahan 1/4.",ans:["Benar"],ex:"Nilai 3/4 lebih besar dari 1/4, sehingga letaknya lebih ke kanan di garis bilangan."},
+{id:79,bab:7,type:'pg',q:"Pecahan senilai untuk 2/5 jika pembilang dan penyebut masing-masing dikalikan 2 adalah ...",opts:["4/5","2/10","4/10","6/15"],ans:["C"],ex:"(2 × 2) / (5 × 2) = 4/10."},
+{id:80,bab:7,type:'isian',q:"Tanda perbandingan yang tepat untuk 2/6 ... 5/6 adalah ...",ans:["<","< (kurang dari)","kurang dari"],hint:"Isi dengan tanda >, < atau =",ex:"2 bagian lebih kecil daripada 5 bagian dari keseluruhan yang sama (6)."},
+{id:81,bab:7,type:'pgk',q:"Manakah perbandingan pecahan berikut yang bernilai benar? (Jawaban bisa lebih dari 1)",opts:["1/3 < 2/3","4/5 > 1/5","2/4 = 1/2","3/7 > 5/7"],ans:["A","B","C"],ex:"Pernyataan D salah karena 3/7 seharusnya lebih kecil dari 5/7."},
+{id:82,bab:7,type:'pg',q:"Jika digambar pada sebuah garis bilangan, titik A berada tepat di tengah-tengah antara angka 0 dan 1, maka titik A bernilai ...",opts:["1/3","1/2","1/4","1/5"],ans:["B"],ex:"Tepat di tengah antara 0 dan 1 adalah setengah atau 1/2."},
+{id:83,bab:7,type:'isian',q:"Ibu memotong semangka menjadi 5 potong sama besar. Adik memakan 2 potong. Sisa semangka dalam bentuk pecahan adalah ...",ans:["3/5"],hint:"Contoh: 3/5",ex:"Awalnya 5/5, dimakan 2/5. Sisa: 5/5 − 2/5 = 3/5."},
+{id:84,bab:8,type:'pg',q:"Perhatikan pola bilangan berikut: 2, 4, 6, 8, ... Bilangan selanjutnya adalah ...",opts:["9","10","11","12"],ans:["B"],ex:"Ini adalah pola bilangan genap, bertambah 2 setiap sukunya. 8 + 2 = 10."},
+{id:85,bab:8,type:'isian',q:"Suku berikutnya dari pola bilangan: 5, 10, 15, 20, ... adalah ...",ans:["25"],ex:"Pola bertambah atau kelipatan 5. 20 + 5 = 25."},
+{id:86,bab:8,type:'bs',q:"Pernyataan: Pola bilangan 10, 8, 6, 4 adalah pola bilangan yang mengecil atau berkurang 2.",ans:["Benar"],ex:"10−2=8, 8−2=6, 6−2=4."},
+{id:87,bab:8,type:'pgk',q:"Dari barisan bilangan berikut ini, yang termasuk pola bertambah 3 adalah ... (Jawaban bisa lebih dari 1)",opts:["3, 6, 9, 12","1, 4, 7, 10","5, 10, 15, 20","10, 13, 16, 19"],ans:["A","B","D"],ex:"C adalah pola bertambah 5, yang lainnya bertambah 3."},
+{id:88,bab:8,type:'pg',q:"Jika terdapat pola gambar: 🔵 − ⬛ − 🔺 − 🔵 − ⬛ − ... , maka gambar selanjutnya untuk melengkapi pola adalah ...",opts:["🔵 (Lingkaran)","⬛ (Persegi)","🔺 (Segitiga)","⭐ (Bintang)"],ans:["C"],ex:"Pola berulang secara berurutan: Lingkaran, Persegi, Segitiga."},
+{id:89,bab:8,type:'isian',q:"Terdapat pola bilangan: 1, 3, 6, 10, 15, ... Bilangan selanjutnya adalah ...",ans:["21"],ex:"Penambahannya semakin membesar: +2, +3, +4, +5, selanjutnya +6. (15+6=21)."},
+{id:90,bab:8,type:'bs',q:"Pernyataan: Pola susunan huruf A, B, A, B, A, B disebut sebagai pola bergantian secara teratur.",ans:["Benar"],ex:"Polanya konsisten berulang A lalu B secara bergantian."},
+{id:91,bab:8,type:'pg',q:"Nilai titik-titik pada pola bilangan 100, 90, 80, ..., 60 adalah ...",opts:["85","75","70","65"],ans:["C"],ex:"Pola ini berkurang 10 setiap sukunya. 80 − 10 = 70."},
+{id:92,bab:8,type:'isian',q:"Tiga bilangan ganjil pertama yang berurutan membentuk pola adalah 1, 3, dan ...",ans:["5"],ex:"Bilangan ganjil berurutan selalu bertambah 2, sehingga 3 + 2 = 5."},
+{id:93,bab:8,type:'pgk',q:"Ada pola gambar: 🌙 Bulan, ⭐ Bintang, ☀️ Matahari, 🌙 Bulan, ⭐ Bintang, ... Gambar urutan ke-6 dan ke-7 adalah ... (Jawaban bisa lebih dari 1)",opts:["☀️ Matahari","🌙 Bulan","⭐ Bintang","☁️ Awan"],ans:["A","B"],ex:"Pola berulang tiap 3 tahap. Gambar ke-6 adalah Matahari, dan ke-7 kembali ke Bulan."},
+{id:94,bab:9,type:'pg',fig:"<svg width='130' height='52' viewBox='0 0 130 52'><polygon points='8,10 8,46 48,46' fill='#93c5fd' stroke='#2563eb'/><polygon points='82,6 122,6 122,42' fill='#93c5fd' stroke='#2563eb'/></svg>",q:"Jika dua buah segitiga siku-siku yang identik (sama besar) disatukan tepat pada sisi miringnya, maka akan membentuk bangun datar ...",opts:["Persegi panjang / Persegi","Lingkaran","Segi lima","Trapesium"],ans:["A"],ex:"Dua segitiga siku-siku identik bila disatukan pada sisi miringnya akan membentuk persegi atau persegi panjang."},
+{id:95,bab:9,type:'isian',q:"Sebuah kubus memiliki sisi yang keseluruhannya berbentuk bangun datar ...",ans:["persegi"],ex:"Kubus tersusun dari tepat 6 buah sisi yang semuanya berbentuk persegi identik."},
+{id:96,bab:9,type:'bs',fig:"<svg width='60' height='60' viewBox='0 0 60 60'><rect x='4' y='4' width='52' height='52' fill='none' stroke='#1e293b' stroke-width='2.5'/><line x1='4' y1='56' x2='56' y2='4' stroke='#dc2626' stroke-width='2.5' stroke-dasharray='7 5'/></svg>",q:"Pernyataan: Sebuah persegi dapat diuraikan/dibagi menjadi dua buah segitiga yang sama besar dengan menarik satu garis diagonal dari sudut ke sudut.",ans:["Benar"],ex:"Garis diagonal membelah persegi menjadi tepat dua segitiga siku-siku yang kongruen (sama besar)."},
+{id:97,bab:9,type:'pgk',q:"Bangun datar yang dapat terbentuk apabila menggabungkan dua buah persegi identik yang disejajarkan berdempetan adalah ... (Jawaban bisa lebih dari 1)",opts:["Persegi panjang","Segi enam","Bangun segi empat","Bangun dengan 4 sudut siku-siku"],ans:["A","C","D"],ex:"Gabungannya membentuk persegi panjang, yang juga merupakan segi empat bersudut siku-siku."},
+{id:98,bab:9,type:'pg',q:"Jaring-jaring kubus terdiri dari rangkaian jajaran bangun datar berjumlah ... buah.",opts:["4","5","6","8"],ans:["C"],ex:"Jaring-jaring kubus terdiri atas 6 buah sisi persegi."},
+{id:99,bab:9,type:'isian',q:"Jika kamu menggunting selembar kertas berbentuk lingkaran tepat menjadi dua bagian yang sama besar, maka akan diperoleh dua buah bangun yang disebut ...",ans:["setengah lingkaran","setengahlingkaran"],ex:"Satu bagian utuh (1) yang dibagi dua sama besar menjadi bentuk setengah lingkaran."},
+{id:100,bab:9,type:'pg',q:"Bentuk bangun datar apakah yang melengkung sempurna dan tidak memiliki sudut sama sekali?",opts:["Segitiga","Persegi panjang","Lingkaran","Trapesium"],ans:["C"],ex:"Lingkaran hanya terdiri dari satu sisi lengkung penuh dan tidak bersudut."}
+];
+
+/* ================= STATE ================= */
+const SETS = {s1:SET_A, s2:SET_B};
+const PAKET = {s1:'Paket 1 (File 1)', s2:'Paket 2 (File 2)'};
+const qOf = (k,i) => SETS[k][i];
+
+const state = {
+  timePerQ: 120,
+  qIndex: 0,
+  students: {
+    s1: {name:'Siswa 1', results:new Array(TOTAL).fill(null), run:null},
+    s2: {name:'Siswa 2', results:new Array(TOTAL).fill(null), run:null}
+  }
+};
+
+/* ================= UTIL ================= */
+const $ = id => document.getElementById(id);
+const val = id => $(id).value;
+const P = k => state.students[k];
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmt(s){const m=Math.floor(s/60),ss=s%60;return m+':'+String(ss).padStart(2,'0');}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function norm(s){return String(s).toLowerCase().replace(/×/g,'x').replace(/−/g,'-').replace(/\s+/g,'').replace(/\./g,'');}
+let toastT;
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600);}
+function labelOf(r){return r.status==='benar'?'✔ Benar ('+fmt(r.timeUsed)+')':r.status==='salah'?'✘ Salah ('+fmt(r.timeUsed)+')':'— Tidak dijawab';}
+
+/* ================= DAFTAR BAB ================= */
+function buildBabList(){
+  $('babList').innerHTML = BAB.map(b=>{
+    const cA = SET_A.filter(q=>q.bab===b.no).length, cB = SET_B.filter(q=>q.bab===b.no).length;
+    return `<div class="bab-item" id="bab-${b.no}">
+      <button class="bab-head" onclick="toggleBab(${b.no})">
+        <span class="bab-num" style="background:${b.warna}">${b.no}</span>
+        <span class="bab-name">${b.icon} ${b.nama}</span>
+        <span class="bab-meta">${cA}+${cB} soal <span class="chev">▾</span></span>
+      </button>
+      <div class="bab-body">
+        <h4>📖 Rangkuman Bab ${b.no}</h4>
+        <ul>${b.rangkum.map(r=>`<li>${r}</li>`).join('')}</ul>
+      </div>
+    </div>`;
+  }).join('');
+}
+function toggleBab(n){$('bab-'+n).classList.toggle('open');}
+
+/* ================= NAVIGATOR 1–100 ================= */
+let navBtns = [];
+function buildNav(){
+  const g = $('navGrid'); g.innerHTML=''; navBtns=[];
+  for(let i=0;i<TOTAL;i++){
+    const b=document.createElement('button');
+    b.className='navbtn none'; b.type='button';
+    b.innerHTML=`<b>${i+1}</b><span class="ss"><i class="d1"></i><i class="d2"></i></span>`;
+    b.onclick=()=>gotoQ(i);
+    g.appendChild(b); navBtns.push(b);
+  }
+}
+function navClass(i){
+  const r1=P('s1').results[i], r2=P('s2').results[i];
+  if(r1&&r2){
+    if(r1.status==='benar'&&r2.status==='benar')return'ok';
+    if(r1.status==='salah'&&r2.status==='salah')return'bad';
+    if(r1.status==='kosong'&&r2.status==='kosong')return'none';
+    return'mix';
+  }
+  if(r1||r2)return'partial';
+  return'none';
+}
+function dotCls(r){return !r?'':(r.status==='benar'?'g':r.status==='salah'?'r':'n');}
+function updateNav(){
+  for(let i=0;i<TOTAL;i++){
+    const b=navBtns[i];
+    b.className='navbtn '+navClass(i)+(i===state.qIndex?' current':'');
+    const r1=P('s1').results[i], r2=P('s2').results[i];
+    b.querySelector('.d1').className='d1 '+dotCls(r1);
+    b.querySelector('.d2').className='d2 '+dotCls(r2);
+    b.title=`Soal ${i+1}\n${P('s1').name} — Paket 1: ${r1?labelOf(r1):'belum dicek'}\n${P('s2').name} — Paket 2: ${r2?labelOf(r2):'belum dicek'}`;
+  }
+}
+function updateChips(){
+  const c1=P('s1').results.filter(Boolean).length, c2=P('s2').results.filter(Boolean).length;
+  $('chip1').textContent=`👦 ${P('s1').name} · Paket 1 · ${c1}/${TOTAL}`;
+  $('chip2').textContent=`👧 ${P('s2').name} · Paket 2 · ${c2}/${TOTAL}`;
+}
+
+/* ================= RENDER SOAL ================= */
+function stopAllTimers(){['s1','s2'].forEach(k=>stopTimer(k));}
+function gotoQ(i){state.qIndex=Math.max(0,Math.min(TOTAL-1,i));renderQuestion();navBtns[state.qIndex].scrollIntoView({block:'nearest',behavior:'smooth'});}
+
+function renderQuestion(){
+  stopAllTimers();
+  const i=state.qIndex;
+  $('posLabel').textContent=`Soal ${i+1} / ${TOTAL}`;
+  $('btnPrev').disabled=(i===0);
+  $('btnNext').disabled=(i===TOTAL-1);
+  ['s1','s2'].forEach(k=>{
+    const panel=$('panel-'+k);
+    panel.classList.remove('shake');
+    panel.innerHTML = P(k).results[i] ? lockedHTML(k) : liveHTML(k);
+    if(!P(k).results[i]){
+      $('cek-'+k).onclick=()=>checkAnswer(k);
+      $('skip-'+k).onclick=()=>skipQuestion(k);
+      $('add-'+k).onclick=()=>addFifteen(k);
+      const inp=$('ans-'+k);
+      if(inp)inp.addEventListener('keydown',e=>{if(e.key==='Enter')checkAnswer(k);});
+      resetTimer(k);
+    }
+  });
+  updateNav(); updateChips();
+}
+
+function bodyHTML(k,q){
+  if(q.type==='pg')
+    return '<fieldset class="q-body">'+q.opts.map((o,j)=>`<label class="opt"><input type="radio" name="ans-${k}" value="${LET(j)}"><span><b>${LET(j)}.</b> ${esc(o)}</span></label>`).join('')+'</fieldset>';
+  if(q.type==='pgk')
+    return '<fieldset class="q-body">'+q.opts.map((o,j)=>`<label class="opt"><input type="checkbox" name="ans-${k}" value="${LET(j)}"><span><b>${LET(j)}.</b> ${esc(o)}</span></label>`).join('')+'</fieldset>';
+  if(q.type==='bs')
+    return '<fieldset class="q-body" style="flex-direction:row">'+['Benar','Salah'].map(v=>`<label class="opt bs-opt"><input type="radio" name="ans-${k}" value="${v}"><span>${v==='Benar'?'✔':'✘'} ${v}</span></label>`).join('')+'</fieldset>';
+  return `<input type="text" class="isian-input" id="ans-${k}" placeholder="Ketik jawabanmu di sini..." autocomplete="off">`+(q.hint?`<p class="hint">💡 ${q.hint}</p>`:'');
+}
+
+function liveHTML(k){
+  const st=P(k), i=state.qIndex, q=qOf(k,i), bab=BAB.find(b=>b.no===q.bab);
+  const color=k==='s1'?'#4f46e5':'#db2777', emo=k==='s1'?'👦':'👧';
+  return `
+    <div class="panel-head">
+      <div class="avatar" style="background:${color}">${emo}</div>
+      <div><div class="p-name">${esc(st.name)}</div><div class="p-sub">${k==='s1'?'Siswa 1 · panel kiri':'Siswa 2 · panel kanan'} · ${PAKET[k]}</div></div>
+      <div class="p-progress" style="background:${color}1a;color:${color}">Soal ${i+1}/${TOTAL}</div>
+    </div>
+    <div class="badges">
+      <span class="badge paket${k==='s1'?1:2}">${PAKET[k]}</span>
+      <span class="badge" style="background:${bab.warna}">Bab ${bab.no} · ${bab.nama}</span>
+      <span class="badge type">${TYPE_LABEL[q.type]}</span>
+    </div>
+    <p class="q-text">${esc(q.q)}</p>
+    ${q.fig?`<div class="fig">${q.fig}</div>`:''}
+    ${bodyHTML(k,q)}
+    <div class="timer-row">
+      <div class="timer" id="timer-${k}">${fmt(state.timePerQ)}</div>
+      <div>
+        <button class="btn add" id="add-${k}">⏱ +15 detik</button>
+        <div class="timer-sub" id="tsub-${k}">sisa waktu soal ini</div>
+      </div>
+    </div>
+    <div class="feedback" id="fb-${k}"></div>
+    <div class="actions">
+      <button class="btn primary" id="cek-${k}">✅ Cek Jawaban</button>
+      <button class="btn ghost" id="skip-${k}">Lewati soal</button>
+    </div>`;
+}
+
+function lockedHTML(k){
+  const st=P(k), i=state.qIndex, q=qOf(k,i), bab=BAB.find(b=>b.no===q.bab), r=st.results[i];
+  const color=k==='s1'?'#4f46e5':'#db2777', emo=k==='s1'?'👦':'👧';
+  const pill=r.status==='benar'?'<span class="pill benar">✔ Benar</span>':r.status==='salah'?'<span class="pill salah">✘ Salah</span>':'<span class="pill kosong">— Tidak dijawab</span>';
+  const fb=r.status==='benar'
+    ? `<div class="fb good">🎉 Benar, ${esc(st.name)}! Jawabanmu tepat.<div class="ans-line">⏱ Waktu pengerjaan: ${fmt(r.timeUsed)}${r.expired?' (melewati batas waktu)':''}</div>${pemb(q)}</div>`
+    : r.status==='salah'
+    ? `<div class="fb bad">❌ Belum tepat, ${esc(st.name)}.<div class="ans-line">Jawaban: ${esc(r.student)} &nbsp;·&nbsp; Kunci: ${esc(r.kunci)}<br>⏱ Waktu pengerjaan: ${fmt(r.timeUsed)}${r.expired?' (melewati batas waktu)':''}</div>${pemb(q)}</div>`
+    : `<div class="fb skip">⏭️ Soal dilewati / tidak dijawab.${pemb(q)}</div>`;
+  return `
+    <div class="panel-head">
+      <div class="avatar" style="background:${color}">${emo}</div>
+      <div><div class="p-name">${esc(st.name)}</div><div class="p-sub">${k==='s1'?'Siswa 1 · panel kiri':'Siswa 2 · panel kanan'} · sudah dicek</div></div>
+      <div class="p-progress">${pill}</div>
+    </div>
+    <div class="badges">
+      <span class="badge paket${k==='s1'?1:2}">${PAKET[k]}</span>
+      <span class="badge" style="background:${bab.warna}">Bab ${bab.no} · ${bab.nama}</span>
+      <span class="badge type">${TYPE_LABEL[q.type]}</span>
+    </div>
+    <p class="q-text">${esc(q.q)}</p>
+    ${q.fig?`<div class="fig">${q.fig}</div>`:''}
+    ${fb}`;
+}
+
+function pemb(q){return `<div class="pembahasan"><b>Pembahasan:</b> ${esc(q.ex)}</div>`;}
+
+/* ================= TIMER ================= */
+function resetTimer(k){
+  const st=P(k);
+  if(st.run&&st.run.interval)clearInterval(st.run.interval);
+  st.run={allotted:state.timePerQ,remaining:state.timePerQ,extra:0,checked:false,expired:false,interval:null};
+  st.run.interval=setInterval(()=>{
+    const r=st.run; r.remaining--; paintTimer(k);
+    if(r.remaining<=0){
+      r.remaining=0;paintTimer(k);
+      clearInterval(r.interval);r.interval=null;r.expired=true;
+      toast('⏰ Waktu habis untuk '+st.name+' — soal '+(state.qIndex+1)+'! (bisa +15 detik)');
+    }
+  },1000);
+  paintTimer(k);
+}
+function stopTimer(k){const r=P(k).run;if(r&&r.interval){clearInterval(r.interval);r.interval=null;}}
+function paintTimer(k){
+  const r=P(k).run, el=$('timer-'+k), sub=$('tsub-'+k);
+  if(!el||!r)return;
+  el.textContent=fmt(r.remaining);
+  el.classList.toggle('warn',r.remaining>0&&r.remaining<=30);
+  el.classList.toggle('danger',r.remaining<=0);
+  sub.textContent=r.extra>0?`sisa waktu (tambahan +${r.extra}s)`:'sisa waktu soal ini';
+}
+function addFifteen(k){
+  const st=P(k),r=st.run;
+  if(!r||r.checked)return;
+  r.remaining+=15;r.allotted+=15;r.extra+=15;
+  if(r.expired){
+    r.expired=false;
+    if(r.interval)clearInterval(r.interval);
+    r.interval=setInterval(()=>{
+      r.remaining--;paintTimer(k);
+      if(r.remaining<=0){r.remaining=0;paintTimer(k);clearInterval(r.interval);r.interval=null;r.expired=true;toast('⏰ Waktu habis untuk '+st.name+'!');}
+    },1000);
+  }
+  paintTimer(k);
+  toast('⏱ +15 detik untuk '+st.name);
+}
+
+/* ================= CEK JAWABAN (per siswa, paketnya sendiri) ================= */
+function collectAnswer(k){
+  const q=qOf(k,state.qIndex);
+  if(q.type==='isian'){const v=$('ans-'+k).value.trim();return v===''?null:[v];}
+  const sel=[...document.querySelectorAll(`input[name="ans-${k}"]:checked`)].map(i=>i.value);
+  return sel.length?sel:null;
+}
+function isCorrect(q,sel){
+  if(q.type==='isian'){const v=norm(sel[0]);return q.ans.some(a=>norm(a)===v);}
+  const s=[...sel].sort(),a=[...q.ans].sort();
+  return s.length===a.length&&s.every((v,i)=>v===a[i]);
+}
+function ansText(q,sel){
+  if(q.type==='isian')return sel[0];
+  return [...sel].sort().map(v=>q.type==='bs'?v:(v+'. '+(q.opts[v.charCodeAt(0)-65]||''))).join(', ');
+}
+function kunciText(q){
+  if(q.type==='isian'||q.type==='bs')return q.ans[0];
+  return q.ans.map(L=>L+'. '+(q.opts[L.charCodeAt(0)-65]||'')).join(', ');
+}
+
+function checkAnswer(k){
+  const st=P(k),r=st.run,i=state.qIndex,q=qOf(k,i);
+  if(!r||r.checked)return;
+  const sel=collectAnswer(k);
+  if(!sel){
+    toast('✋ '+st.name+' belum memilih / mengisi jawaban!');
+    const p=$('panel-'+k);p.classList.remove('shake');void p.offsetWidth;p.classList.add('shake');
+    return;
+  }
+  stopTimer(k);r.checked=true;
+  const timeUsed=Math.max(0,r.allotted-r.remaining);
+  const correct=isCorrect(q,sel);
+  st.results[i]={status:correct?'benar':'salah',timeUsed,expired:r.expired,student:ansText(q,sel),kunci:kunciText(q)};
+  const fb=$('fb-'+k);fb.style.display='block';
+  fb.innerHTML=correct
+    ? `<div class="fb good">🎉 Benar, ${esc(st.name)}!<div class="ans-line">⏱ Waktu pengerjaan: ${fmt(timeUsed)}${r.expired?' (melewati batas waktu)':''}</div>${pemb(q)}</div>`
+    : `<div class="fb bad">❌ Belum tepat, ${esc(st.name)}.<div class="ans-line">Jawaban: ${esc(st.results[i].student)} &nbsp;·&nbsp; Kunci: ${esc(st.results[i].kunci)}<br>⏱ Waktu pengerjaan: ${fmt(timeUsed)}${r.expired?' (melewati batas waktu)':''}</div>${pemb(q)}</div>`;
+  const fs=$('panel-'+k).querySelector('fieldset');if(fs)fs.disabled=true;
+  const inp=$('ans-'+k);if(inp)inp.disabled=true;
+  $('cek-'+k).style.display='none';$('skip-'+k).style.display='none';$('add-'+k).disabled=true;
+  updateNav();updateChips();
+}
+
+function skipQuestion(k){
+  const st=P(k),r=st.run,i=state.qIndex,q=qOf(k,i);
+  if(!r||r.checked)return;
+  stopTimer(k);r.checked=true;
+  st.results[i]={status:'kosong',timeUsed:Math.max(0,r.allotted-r.remaining),expired:r.expired,student:'—',kunci:kunciText(q)};
+  const fb=$('fb-'+k);fb.style.display='block';
+  fb.innerHTML=`<div class="fb skip">⏭️ ${esc(st.name)} melewatkan soal ini — dihitung <b>tidak dijawab</b>.${pemb(q)}</div>`;
+  const fs=$('panel-'+k).querySelector('fieldset');if(fs)fs.disabled=true;
+  const inp=$('ans-'+k);if(inp)inp.disabled=true;
+  $('cek-'+k).style.display='none';$('skip-'+k).style.display='none';$('add-'+k).disabled=true;
+  updateNav();updateChips();
+}
+
+/* ================= FINISH (KEDUA SISWA SEKALIGUS) ================= */
+function finishExam(){
+  ['s1','s2'].forEach(k=>{
+    stopTimer(k);
+    for(let i=0;i<TOTAL;i++){
+      if(!P(k).results[i]){
+        const live=(state.qIndex===i&&P(k).run)?P(k).run:null;
+        P(k).results[i]={status:'kosong',timeUsed:live?Math.max(0,live.allotted-live.remaining):0,
+          expired:live?live.expired:false,student:'—',kunci:kunciText(qOf(k,i))};
+      }
+    }
+  });
+  buildResults();
+  showScreen('screen-hasil');
+}
+
+function buildResults(){
+  const slowLimit=state.timePerQ*0.75;
+  let html='';
+  ['s1','s2'].forEach(k=>{
+    const st=P(k), res=st.results;
+    const benar=res.filter(r=>r.status==='benar').length;
+    const salah=res.filter(r=>r.status==='salah').length;
+    const kosong=res.filter(r=>r.status==='kosong').length;
+    const total=res.reduce((a,r)=>a+r.timeUsed,0);
+    const answered=TOTAL-kosong;
+    const avg=answered?Math.round(total/answered):0;
+    const nilai=Math.round(benar/TOTAL*100);
+    const mini=res.map((r,i)=>{
+      const q=qOf(k,i);
+      const cls=r.status==='benar'?'ok':r.status==='salah'?'bad':'skip';
+      return `<div class="mini ${cls}" title="Soal ${i+1} (${PAKET[k]}) — ${labelOf(r)}&#10;${esc(q.q.slice(0,70))}…&#10;Jawaban: ${esc(r.student)} | Kunci: ${esc(r.kunci)}" onclick="openReview(${i},'${k}')"><b>${i+1}</b><span>${fmt(r.timeUsed)}</span></div>`;
+    }).join('');
+    const perBab={};
+    res.forEach((r,i)=>{
+      const b=qOf(k,i).bab;
+      perBab[b]=perBab[b]||{bad:[],slow:[],good:0};
+      if(r.status!=='benar')perBab[b].bad.push(i+1);
+      else if(r.timeUsed>slowLimit)perBab[b].slow.push(i+1);
+      else perBab[b].good++;
+    });
+    let an='',prior=[];
+    BAB.forEach(b=>{
+      const d=perBab[b.no];if(!d)return;
+      const nm=`<b>Bab ${b.no} — ${b.nama}</b>`;
+      if(d.bad.length){
+        an+=`<li class="an-item bad"><span>🔴</span><div><span class="an-title">Perlu Diperbaiki · ${nm}</span><br>${d.bad.length} soal salah/tidak dijawab: nomor ${d.bad.join(', ')}. Bahas ulang rangkuman bab ini lalu latih soal serupa.</div></li>`;
+        prior.push({b:b.no,nama:b.nama,n:d.bad.length,tipe:'perbaikan'});
+      }else if(d.slow.length){
+        an+=`<li class="an-item warn"><span>🟡</span><div><span class="an-title">Perlu Dimaksimalkan · ${nm}</span><br>${d.slow.length} soal benar tetapi lambat (lebih dari 75% waktu): nomor ${d.slow.join(', ')}. Latih kelancaran berhitung.</div></li>`;
+        prior.push({b:b.no,nama:b.nama,n:d.slow.length,tipe:'kecepatan'});
+      }else{
+        an+=`<li class="an-item good"><span>🟢</span><div><span class="an-title">Maksimal · ${nm}</span><br>Seluruh ${d.good} soal di bab ini tepat dan cepat. Pertahankan!</div></li>`;
+      }
+    });
+    prior.sort((a,b)=>b.n-a.n);
+    const focus=prior.length
+      ? '🎯 <b>Prioritas latihan ulang '+esc(st.name)+':</b><br>'+prior.slice(0,4).map(p=>`• Bab ${p.b} (${p.nama}) — ${p.n} soal ${p.tipe}`).join('<br>')
+      : '🌟 Semua bab dikuasai dengan baik — pertahankan!';
+    html+=`
+    <div class="result-card">
+      <div class="rc-head ${k}">
+        <div class="avatar big" style="background:rgba(255,255,255,.22)">${k==='s1'?'👦':'👧'}</div>
+        <div><h3>${esc(st.name)}</h3><span style="opacity:.85;font-size:.78rem">${k==='s1'?'Siswa 1':'Siswa 2'} · ${PAKET[k]} · ${TOTAL} soal</span></div>
+        <div class="rc-score">Nilai: ${nilai}</div>
+      </div>
+      <div class="rc-body">
+        <div class="rc-stats">
+          <div class="stat good"><b>${benar}</b><span>Benar</span></div>
+          <div class="stat bad"><b>${salah}</b><span>Salah</span></div>
+          <div class="stat neutral"><b>${kosong}</b><span>Tidak Dijawab</span></div>
+          <div class="stat time"><b>${fmt(total)}</b><span>Total Waktu</span></div>
+        </div>
+        <div class="avg-line">⏱ Rata-rata waktu per soal yang dikerjakan: <b>${fmt(avg)}</b> · alokasi ${fmt(state.timePerQ)}/soal</div>
+        <div class="mini-head">🗺️ Peta Hasil 100 Soal <span style="font-weight:400;color:var(--muted);font-size:.78rem">(angka = waktu; klik untuk soal &amp; pembahasan paket ini)</span></div>
+        <div class="mini-grid">${mini}</div>
+        <div class="mini-head" style="margin-top:18px">🔎 Analisis per Bab: yang Perlu Diperbaiki &amp; Dimaksimalkan</div>
+        <ul class="analysis">${an}</ul>
+        <div class="focus-box">${focus}</div>
+      </div>
+    </div>`;
+  });
+  $('resWrap').innerHTML=html;
+}
+
+/* ================= MODAL PEMBAHASAN (soal paket siswa terkait) ================= */
+function openReview(i,k){
+  const q=qOf(k,i),bab=BAB.find(b=>b.no===q.bab),r=P(k).results[i];
+  const pill=r.status==='benar'?'<span class="pill benar">✔ Benar</span>':r.status==='salah'?'<span class="pill salah">✘ Salah</span>':'<span class="pill kosong">— Tidak dijawab</span>';
+  $('modalBox').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <h3>Soal ${i+1} — ${esc(P(k).name)} · ${PAKET[k]}</h3>
+      <button class="btn ghost" onclick="closeReview()">✕ Tutup</button>
+    </div>
+    <div class="badges"><span class="badge" style="background:${bab.warna}">Bab ${bab.no} · ${bab.nama}</span><span class="badge type">${TYPE_LABEL[q.type]}</span></div>
+    <p class="q-text">${esc(q.q)}</p>
+    ${q.fig?`<div class="fig">${q.fig}</div>`:''}
+    ${q.opts?`<p style="font-size:.9rem;color:#475569;line-height:1.7;margin-bottom:8px">${q.opts.map((o,j)=>`<b>${LET(j)}.</b> ${esc(o)}`).join(' &nbsp;·&nbsp; ')}</p>`:''}
+    <div style="display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:10px;background:#f8fafc;margin-top:8px;font-size:.88rem;flex-wrap:wrap">
+      ${k==='s1'?'👦':'👧'} Jawaban: <b>${esc(r.student)}</b> · Kunci: <b>${esc(r.kunci)}</b> · ⏱ ${fmt(r.timeUsed)} ${pill}
+    </div>
+    <div class="pembahasan" style="margin-top:14px"><b>Pembahasan:</b> ${esc(q.ex)}</div>`;
+  $('modalOv').classList.add('show');
+}
+function closeReview(){$('modalOv').classList.remove('show');}
+ $('modalOv').addEventListener('click',e=>{if(e.target===$('modalOv'))closeReview();});
+
+/* ================= EVENT ================= */
+ $('btnStart').onclick=()=>{
+  const n1=val('name1').trim(),n2=val('name2').trim();
+  if(!n1||!n2){toast('✍️ Isi nama kedua siswa terlebih dahulu!');return;}
+  state.timePerQ=parseInt(val('timeSel'))||120;
+  P('s1').name=n1;P('s2').name=n2;
+  showScreen('screen-bab');
+};
+ $('btnBackCover').onclick=()=>showScreen('screen-cover');
+ $('btnToExam').onclick=()=>{
+  $('examTime').textContent=fmt(state.timePerQ);
+  gotoQ(0);
+  showScreen('screen-exam');
+};
+ $('btnPrev').onclick=()=>gotoQ(state.qIndex-1);
+ $('btnNext').onclick=()=>gotoQ(state.qIndex+1);
+function confirmFinish(){
+  const pending=P('s1').results.filter(r=>!r).length+P('s2').results.filter(r=>!r).length;
+  if(pending>0&&!confirm(`Masih ada ${pending} jawaban yang belum dicek (kedua siswa digabung).\nSoal tersebut akan dihitung TIDAK DIJAWAB.\n\nSelesaikan ujian untuk KEDUA siswa sekarang?`))return;
+  finishExam();
+}
+ $('btnFinish').onclick=confirmFinish;
+ $('btnFinish2').onclick=confirmFinish;
+ $('btnAgain').onclick=()=>{
+  ['s1','s2'].forEach(k=>{stopTimer(k);P(k).results=new Array(TOTAL).fill(null);});
+  gotoQ(0);showScreen('screen-exam');
+  toast('🔄 Ujian direset — mulai dari soal 1');
+};
+ $('btnPrint').onclick=()=>window.print();
+ $('btnHome').onclick=()=>showScreen('screen-cover');
+document.addEventListener('keydown',e=>{
+  if(!$('screen-exam').classList.contains('active'))return;
+  if(/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName))return;
+  if(e.key==='ArrowRight')gotoQ(state.qIndex+1);
+  if(e.key==='ArrowLeft')gotoQ(state.qIndex-1);
+  if(e.key==='Escape')closeReview();
+});
+
+/* ================= INIT ================= */
+buildBabList();
+buildNav();
+</script>
+</body>
+</html>
