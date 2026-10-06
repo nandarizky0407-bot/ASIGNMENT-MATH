@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serbu Pecahan! — Latihan Olimpiade Matematika SD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Plus+Jakarta+Sans:wght@400..800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5EFE2; --card:#FFFCF3; --ink:#2B2420; --ink-soft:rgba(43,36,32,.6);
+  --acc:#D14B2C; --green:#1F6E46; --amber:#E9A63B; --amber-soft:#F6D48C;
+  --line:rgba(43,36,32,.16);
+  --mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;color:var(--ink);
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(rgba(43,36,32,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(43,36,32,.05) 1px, transparent 1px);
+  background-size:28px 28px;
+  min-height:100vh;
+}
+[hidden]{display:none!important}
+button{font-family:inherit;color:inherit}
+b{font-weight:800}
+.mono{font-family:var(--mono)}
+.ok{color:var(--green)} .bad{color:var(--acc)} .miss{color:#8a6a1f}
+
+.ic{width:1.05em;height:1.05em;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em;flex:none}
+
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.12;margin:0 .2em;font-weight:700;text-align:center}
+.fr>.n{padding:0 .32em;border-bottom:2.5px solid currentColor}
+.fr>.d{padding:0 .32em}
+.mx{white-space:nowrap}
+.mx>.w{margin-right:.14em;font-weight:700}
+.cfr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .3em;line-height:1.4;font-weight:700;text-align:center}
+.cfr>.ct{padding:0 .45em .1em;border-bottom:3px solid currentColor}
+.cfr>.cb{padding:.1em .45em 0}
+
+#topbar{position:fixed;inset:0 0 auto 0;height:64px;z-index:50;display:flex;align-items:center;gap:14px;padding:0 18px;
+  background:rgba(245,239,226,.94);backdrop-filter:blur(5px);border-bottom:2px solid var(--ink)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .logo{width:38px;height:38px;background:var(--ink);color:var(--paper);border-radius:11px;display:grid;place-items:center;
+  font-family:Fraunces,serif;font-weight:900;font-size:1.3rem;transform:rotate(-6deg)}
+.brand span{font-family:Fraunces,serif;font-weight:900;letter-spacing:.06em;font-size:.95rem}
+.who{font-size:.8rem;color:var(--ink-soft);font-weight:600;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.who b{color:var(--ink)}
+#dots{display:flex;gap:3px;margin:0 auto;flex-wrap:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:transparent;border:2px solid rgba(43,36,32,.3);cursor:pointer;transition:.2s}
+.dot.c{background:var(--green);border-color:var(--green)}
+.dot.w{background:var(--acc);border-color:var(--acc)}
+.dot.s{background:var(--amber);border-color:var(--amber)}
+.dot.cur{border-color:var(--ink);background:var(--ink);transform:scale(1.25)}
+#timerWrap{position:relative;display:flex;align-items:center;gap:10px}
+#timerBox{position:relative;width:54px;height:54px}
+#timerBox svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--line);stroke-width:5}
+#ring{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-dasharray:163.4;transition:stroke-dashoffset .25s linear,stroke .3s}
+#timeTxt{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:.8rem}
+#timerBox.idle{opacity:.35}
+#timerBox.done{opacity:.6}
+#timerBox.done #ring{stroke:var(--green)}
+#timerBox.low #ring{stroke:var(--acc)}
+#timerBox.low #timeTxt{color:var(--acc);animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.35}}
+.mini{border:2px solid var(--ink);border-radius:999px;padding:7px 12px;font-weight:800;font-size:.75rem;
+  background:var(--amber-soft);cursor:pointer;box-shadow:2px 2px 0 var(--ink);transition:.15s;white-space:nowrap}
+.mini:hover:not(:disabled){transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.mini:disabled{opacity:.4;cursor:default;box-shadow:none}
+.p15{position:absolute;right:-4px;top:-16px;font-family:var(--mono);font-weight:700;color:var(--green);animation:pup .9s forwards;pointer-events:none}
+@keyframes pup{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-26px)}}
+.navb{display:flex;align-items:center;gap:6px;height:42px;padding:0 12px;border:2px solid var(--ink);border-radius:12px;
+  background:var(--card);cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:.15s;font-weight:800;font-size:.85rem}
+.navb .ic{width:1.2em;height:1.2em}
+.navb:hover:not(:disabled){transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+.navb:active:not(:disabled){transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.navb:disabled{opacity:.35;cursor:default;box-shadow:none}
+#navWrap{display:flex;gap:8px;align-items:center}
+.hide{visibility:hidden}
+
+#stage{max-width:1100px;margin:0 auto;padding:92px 22px 64px}
+.slide{animation:rise .5s cubic-bezier(.22,1,.36,1)}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.kick{font-family:var(--mono);font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
+
+.cover{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:center;min-height:calc(100vh - 180px)}
+.cover h1{font-family:Fraunces,serif;font-weight:900;font-size:clamp(3rem,7vw,5.4rem);line-height:.98;margin:16px 0 18px;letter-spacing:-.01em}
+.cover h1 mark{background:var(--amber-soft);padding:0 .14em;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.cover .desc{font-size:1.06rem;line-height:1.85;color:rgba(43,36,32,.82);max-width:52ch}
+.c-info{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:26px;font-weight:700;font-size:.88rem}
+.c-info span{display:flex;align-items:center;gap:7px}
+.c-info .ic{color:var(--acc)}
+.pcard{position:relative;transform:rotate(1.4deg)}
+.pcard .card-body{background:var(--card);border:2.5px solid var(--ink);border-radius:18px;box-shadow:9px 9px 0 var(--ink);padding:32px 32px 30px}
+.tape{position:absolute;top:-15px;left:50%;transform:translateX(-50%) rotate(-3deg);width:140px;height:30px;
+  background:rgba(233,166,59,.6);border-left:2px dashed rgba(43,36,32,.25);border-right:2px dashed rgba(43,36,32,.25);z-index:2}
+.ptitle{font-family:var(--mono);font-weight:700;letter-spacing:.22em;font-size:.78rem;margin-bottom:20px;padding-bottom:12px;border-bottom:2px dashed var(--line)}
+.plabel{display:block;font-size:.8rem;font-weight:700;color:var(--ink-soft);margin-bottom:4px}
+#nameInput{width:100%;border:0;border-bottom:3px solid var(--ink);background:transparent;font-family:Fraunces,serif;
+  font-size:1.55rem;font-weight:600;padding:6px 2px;outline:none;color:var(--ink)}
+#nameInput:focus{border-color:var(--acc)}
+#nameInput::placeholder{color:rgba(43,36,32,.3)}
+.err{color:var(--acc);font-weight:700;font-size:.85rem;min-height:1.3em;margin-top:6px}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.plist{list-style:none;margin:14px 0 24px;display:grid;gap:10px}
+.plist li{display:flex;gap:10px;font-size:.88rem;line-height:1.55;align-items:flex-start}
+.plist .ic{margin-top:3px;color:var(--green)}
+
+.btn{display:inline-flex;align-items:center;gap:10px;font-weight:800;border:2.5px solid var(--ink);border-radius:13px;
+  padding:.85em 1.6em;background:var(--card);cursor:pointer;box-shadow:4px 4px 0 var(--ink);transition:.15s;font-size:.95rem}
+.btn:hover:not(:disabled){transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.btn:active:not(:disabled){transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn:disabled{opacity:.45;cursor:default;box-shadow:2px 2px 0 var(--ink)}
+.btn.pri{background:var(--ink);color:var(--paper)}
+.btn.acc{background:var(--acc);color:#fff}
+.btn.big{font-size:1.05rem;padding:1em 1.9em}
+
+.bekal{max-width:840px;margin:0 auto;padding-top:20px}
+.bekal h2{font-family:Fraunces,serif;font-weight:900;font-size:clamp(2rem,4vw,2.8rem);margin:10px 0 8px}
+.rules{margin-top:16px}
+.rule{display:grid;grid-template-columns:76px 1fr;gap:20px;padding:24px 0;border-bottom:2px dashed var(--line);align-items:start}
+.rule:last-of-type{border-bottom:0}
+.rule .no{font-family:Fraunces,serif;font-weight:900;font-size:52px;line-height:1;color:var(--ink)}
+@supports (-webkit-text-stroke:2px black){
+  .rule .no,.q-no,.dnum{color:transparent;-webkit-text-stroke:2.5px var(--ink)}
+  .dnum{-webkit-text-stroke:3px var(--ink)}
+}
+.rule h3{font-family:Fraunces,serif;font-weight:800;font-size:1.28rem;margin-bottom:5px}
+.rule p{font-size:.95rem;line-height:1.7;color:rgba(43,36,32,.8)}
+.ex{display:inline-block;background:var(--card);border:2px solid var(--ink);border-radius:10px;padding:9px 16px;margin-top:10px;
+  font-family:Fraunces,serif;font-weight:600;font-size:1.05rem;box-shadow:3px 3px 0 rgba(43,36,32,.15)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{border:2px solid var(--ink);border-radius:999px;padding:6px 14px;background:var(--card);font-family:Fraunces,serif;font-weight:600;font-size:.98rem;box-shadow:2px 2px 0 rgba(43,36,32,.15)}
+.center{text-align:center;margin-top:26px}
+
+.divider{min-height:calc(100vh - 190px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px}
+.dnum{font-family:Fraunces,serif;font-weight:900;font-size:clamp(90px,15vw,168px);line-height:1;color:var(--ink)}
+.divider h2{font-family:Fraunces,serif;font-weight:900;font-size:clamp(2rem,4.5vw,3rem)}
+.divider p{max-width:60ch;line-height:1.85;color:rgba(43,36,32,.82);font-size:1.02rem}
+.tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0 20px}
+.pill{display:inline-block;border:2px solid var(--ink);border-radius:999px;padding:3px 13px;font-size:.8rem;font-weight:800;background:var(--card)}
+
+.qgrid{display:grid;grid-template-columns:250px 1fr;gap:40px;align-items:start}
+.qside{position:sticky;top:88px;display:grid;gap:8px}
+.rlabel{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.16em;color:var(--ink-soft)}
+.q-no{font-family:Fraunces,serif;font-weight:900;font-size:clamp(70px,9vw,112px);line-height:.9;color:var(--ink)}
+.q-pos{font-weight:800;font-size:.92rem}
+.q-tag{display:inline-flex;align-items:center;gap:7px;border:2px solid var(--ink);border-radius:999px;padding:5px 13px;
+  font-size:.78rem;font-weight:800;background:var(--amber-soft);width:fit-content;margin-top:4px}
+.q-status{font-weight:800;font-size:.9rem;display:flex;align-items:center;gap:7px}
+.qcard{position:relative;background:var(--card);border:2.5px solid var(--ink);border-radius:20px;box-shadow:9px 9px 0 var(--ink);padding:32px 36px 30px}
+.q-text{font-family:Fraunces,serif;font-weight:600;font-size:clamp(1.25rem,2.2vw,1.6rem);line-height:2;padding-bottom:20px;border-bottom:2px dashed var(--line)}
+.opts{display:grid;gap:12px;margin-top:22px}
+.opt{display:flex;align-items:center;gap:15px;width:100%;text-align:left;padding:11px 16px;border:2px solid rgba(43,36,32,.3);
+  border-radius:13px;background:transparent;cursor:pointer;font-family:Fraunces,serif;font-weight:600;font-size:1.1rem;transition:.15s}
+.opt:not(:disabled):hover{border-color:var(--ink);background:rgba(43,36,32,.045);transform:translateX(5px)}
+.opt .key{width:34px;height:34px;border:2px solid var(--ink);border-radius:50%;display:grid;place-items:center;
+  font-weight:800;font-family:'Plus Jakarta Sans';font-size:.9rem;background:var(--card);flex:none}
+.opt.picked{border-color:var(--ink);background:#FFF3D3;box-shadow:3px 3px 0 var(--ink)}
+.opt.picked .key{background:var(--ink);color:var(--paper)}
+.opt.right{border-color:var(--green);background:#E9F3EB}
+.opt.right .key{background:var(--green);border-color:var(--green);color:#fff}
+.opt.wrongpick{border-color:var(--acc);background:#FBE9E3}
+.opt.wrongpick .key{background:var(--acc);border-color:var(--acc);color:#fff}
+.opt.dim{opacity:.45}
+.opt:disabled{cursor:default}
+.qfoot{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:24px}
+.hint{font-size:.82rem;color:var(--ink-soft);font-weight:600}
+.stamp{position:absolute;top:16px;right:22px;transform:rotate(7deg);font-family:Fraunces,serif;font-weight:900;
+  letter-spacing:.1em;font-size:1.15rem;border:3px solid;border-radius:10px;padding:.25em .65em;
+  animation:stamp .5s cubic-bezier(.2,1.5,.4,1);z-index:3;background:var(--card)}
+@keyframes stamp{0%{transform:rotate(24deg) scale(2.4);opacity:0}55%{opacity:1}100%{transform:rotate(7deg) scale(1)}}
+.stamp.ok{color:var(--green);border-color:var(--green);background:#E9F3EB}
+.stamp.bad{color:var(--acc);border-color:var(--acc);background:#FBE9E3}
+.stamp.miss{color:#8a6a1f;border-color:#8a6a1f;background:#F9F0D8}
+.explain{margin-top:22px;border:2px solid var(--ink);border-left-width:10px;border-radius:14px;background:#FBF6E8;padding:18px 22px;animation:rise .45s ease}
+.explain.ok{border-left-color:var(--green)}
+.explain.bad{border-left-color:var(--acc)}
+.explain.miss{border-left-color:var(--amber)}
+.explain h4{display:flex;gap:9px;align-items:center;font-family:Fraunces,serif;font-size:1.06rem;margin-bottom:10px}
+.exbody{font-size:.98rem;line-height:2.1;color:rgba(43,36,32,.9)}
+
+.report{position:relative;background:var(--card);border:2.5px solid var(--ink);border-radius:20px;box-shadow:10px 10px 0 var(--ink);
+  padding:38px 42px;max-width:880px;margin:0 auto}
+.vstamp{position:absolute;top:28px;right:32px;transform:rotate(7deg);font-family:Fraunces,serif;font-weight:900;letter-spacing:.08em;
+  font-size:1.3rem;border:3px solid;border-radius:12px;padding:.3em .75em;animation:stamp .6s .2s cubic-bezier(.2,1.5,.4,1) both}
+.vstamp.ok{color:var(--green);border-color:var(--green);background:#E9F3EB}
+.vstamp.mid{color:#8a6a1f;border-color:var(--amber);background:#F9F0D8}
+.vstamp.bad{color:var(--acc);border-color:var(--acc);background:#FBE9E3}
+.rname{font-family:Fraunces,serif;font-weight:900;font-size:clamp(1.7rem,3.5vw,2.4rem);margin:8px 0 24px}
+.score-row{display:flex;gap:44px;align-items:center;flex-wrap:wrap;border-bottom:2px dashed var(--line);padding-bottom:26px;margin-bottom:24px}
+.big-score{font-family:Fraunces,serif;font-weight:900;font-size:clamp(84px,12vw,124px);line-height:.85}
+.big-score small{display:block;font-family:'Plus Jakarta Sans';font-weight:700;font-size:.95rem;line-height:1.5;margin-top:12px;color:rgba(43,36,32,.75)}
+.ledger{list-style:none;flex:1;min-width:270px;font-size:.98rem}
+.ledger li{display:flex;align-items:baseline;gap:12px;padding:8px 0;font-weight:700}
+.ledger .fill{flex:1;border-bottom:2px dotted rgba(43,36,32,.35);transform:translateY(-4px)}
+.ledger b{font-size:1.1rem}
+.sec-row{display:grid;grid-template-columns:170px 1fr 58px;gap:14px;align-items:center;margin:12px 0;font-weight:700;font-size:.9rem}
+.track{height:18px;border:2px solid var(--ink);border-radius:999px;background:var(--paper);overflow:hidden}
+.fillb{display:block;height:100%;background:var(--green);border-radius:999px;animation:grow .8s cubic-bezier(.22,1,.36,1)}
+@keyframes grow{from{width:0!important}}
+.fillb.mid{background:var(--amber)}
+.fillb.bad{background:var(--acc)}
+.analysis{border-left:10px solid var(--amber);background:#FBF6E8;border-radius:0 14px 14px 0;padding:20px 26px;margin:26px 0}
+.analysis h4{display:flex;gap:9px;align-items:center;font-family:Fraunces,serif;font-size:1.15rem;margin-bottom:12px}
+.analysis p{font-size:.97rem;line-height:1.9;margin-bottom:10px}
+.analysis p:last-child{margin-bottom:0}
+.recapwrap{margin-top:8px}
+.rh2{font-family:var(--mono);font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px}
+.recap{display:flex;gap:34px;flex-wrap:wrap}
+.rcol .rh{font-weight:800;font-size:.82rem;margin-bottom:8px}
+.cells{display:flex;gap:6px;flex-wrap:wrap;max-width:560px}
+.cell{width:22px;height:22px;border-radius:7px;border:2px solid rgba(43,36,32,.3)}
+.cell.c{background:var(--green);border-color:var(--green)}
+.cell.w{background:var(--acc);border-color:var(--acc)}
+.cell.s{background:var(--amber);border-color:var(--amber)}
+.legend{display:flex;gap:20px;margin-top:14px;font-size:.8rem;font-weight:700;color:var(--ink-soft)}
+.legend span{display:flex;align-items:center;gap:7px}
+.sw{width:13px;height:13px;border-radius:4px;display:inline-block}
+.sw.c{background:var(--green)} .sw.w{background:var(--acc)} .sw.s{background:var(--amber)}
+.rbtns{text-align:center;margin-top:32px}
+
+@media(max-width:920px){
+  .qgrid{grid-template-columns:1fr;gap:18px}
+  .qside{position:static;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .q-no{font-size:54px}
+  #dots,.who,#brandTxt{display:none}
+  .cover{grid-template-columns:1fr;gap:34px;min-height:0;padding-top:10px}
+  .report{padding:28px 22px}
+  .vstamp{position:static;display:inline-block;transform:rotate(-3deg);margin-bottom:14px}
+  .sec-row{grid-template-columns:110px 1fr 50px}
+  .rule{grid-template-columns:52px 1fr;gap:14px}
+  .rule .no{font-size:38px}
+}
+</style>
+</head>
+<body>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-cl" viewBox="0 0 24 24"><path d="M14.5 5.5L8 12l6.5 6.5"/></symbol>
+  <symbol id="i-cr" viewBox="0 0 24 24"><path d="M9.5 5.5L16 12l-6.5 6.5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2.2"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4m0 1h12l-3 4 3 4H5"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-2-1.6-5-1.6-8-1v13c3-.6 6-.6 8 1 2-1.6 5-1.6 8-1V5c-3-.6-6-.6-8 1zm0 0v13"/></symbol>
+  <symbol id="i-rt" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5"/></symbol>
+</svg>
+
+<header id="topbar">
+  <div class="brand"><div class="logo">&divide;</div><span id="brandTxt">SERBU PECAHAN</span></div>
+  <div class="who">Peserta: <b id="stName">—</b></div>
+  <div id="dots"></div>
+  <div id="timerWrap">
+    <div id="timerBox" class="idle">
+      <svg viewBox="0 0 60 60"><circle class="ring-bg" cx="30" cy="30" r="26"/><circle id="ring" cx="30" cy="30" r="26"/></svg>
+      <span id="timeTxt">3:00</span>
+    </div>
+    <button id="addBtn" class="mini" disabled>+15 dtk</button>
+  </div>
+  <div id="navWrap" class="hide">
+    <button class="navb" id="prevBtn" title="Sebelumnya"><svg class="ic"><use href="#i-cl"/></svg></button>
+    <button class="navb" id="nextBtn" title="Pindah tanpa menekan Cek Jawaban akan dihitung tidak dijawab"><span id="nextLbl">Lanjut</span><svg class="ic"><use href="#i-cr"/></svg></button>
+  </div>
+</header>
+
+<main id="stage"></main>
+
+<script>
+/* =========================================================
+   UTILITAS
+========================================================= */
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fr = (a,b) => `<span class="fr"><span class="n">${a}</span><span class="d">${b}</span></span>`;
+const mx = (w,a,b) => `<span class="mx"><span class="w">${w}</span>${fr(a,b)}</span>`;
+const cfr = (t,b) => `<span class="cfr"><span class="ct">${t}</span><span class="cb">${b}</span></span>`;
+const B  = s => `<b>${s}</b>`;
+const fmt = s => { s = Math.round(s); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
+const DUR = 180; // 3 menit per soal
+
+/* =========================================================
+   DATA PUTARAN
+========================================================= */
+const SECTIONS = [
+  { kick:'PUTARAN 1 · 10 SOAL', short:'Operasi Pecahan',
+    title:'Operasi Hitung Pecahan',
+    desc:'Sepuluh soal pilihan ganda yang menuntunmu dari yang paling dasar: <b>penjumlahan & pengurangan</b> (samakan penyebut dengan KPK dulu), <b>perkalian</b> (langsung kalikan), dan <b>pembagian</b> (balik lalu kalikan) — pada pecahan biasa dengan pecahan biasa, pecahan campuran dengan pecahan biasa, pecahan campuran dengan pecahan campuran, serta pecahan dengan bilangan cacah.',
+    tags:['Biasa ↔ Biasa','Campuran ↔ Biasa','Campuran ↔ Campuran','Pecahan ↔ Cacah'] },
+  { kick:'PUTARAN 2 · 10 SOAL', short:'Operasi Campuran',
+    title:'Operasi Hitung Campuran',
+    desc:'Kini beberapa operasi digabung dalam satu soal. Kuncinya satu: <b>urutan operasi</b> — kerjakan tanda kurung terlebih dahulu, lalu perkalian dan pembagian, terakhir penjumlahan dan pengurangan. Ingat juga trik dari Materi 4: ubah semua campuran ke pecahan biasa lebih dulu!',
+    tags:['Tanda Kurung','Kali & Bagi Dulu','Campuran','Bilangan Cacah'] },
+  { kick:'PUTARAN 3 · 20 SOAL', short:'Olimpiade',
+    title:'Tantangan Olimpiade (HOTS)',
+    desc:'Dua puluh soal dari latihan resmi olimpiade: urutan operasi dengan desimal dan persen, pecahan bersusun, soal cerita "sisa", pekerjaan bersama, pola pantulan bola, perbandingan, umur, diskon bertahap, sampai soal lilin. Semua berlabel HOTS — nalar tingkat tinggi. Baca pelan-pelan, tulis langkahmu di kertas!',
+    tags:['Urutan Operasi','Persen & Desimal','Pecahan Bersusun','Soal "Sisa"','Kerja Bersama','Pola & Perbandingan'] },
+];
+
+const Q = [
+/* ======== PUTARAN 1 — OPERASI HITUNG PECAHAN ======== */
+{ sec:0, tag:'Penjumlahan · Biasa dengan Biasa',
+  q:`Hitunglah: ${fr(2,5)} + ${fr(1,4)}`,
+  opts:[fr(3,9), fr(3,20), fr(13,20), fr(2,9)], a:2,
+  exp:`Penjumlahan pecahan: samakan penyebut dengan KPK dari 5 dan 4, yaitu <b>20</b>. ${fr(2,5)} = ${fr(8,20)} dan ${fr(1,4)} = ${fr(5,20)}. Maka ${fr(8,20)} + ${fr(5,20)} = ${B(fr(13,20))}.` },
+
+{ sec:0, tag:'Pengurangan · Biasa dengan Biasa',
+  q:`Hitunglah: ${fr(5,6)} − ${fr(1,3)}`,
+  opts:[fr(4,3), fr(2,3), fr(1,3), fr(1,2)], a:3,
+  exp:`KPK dari 6 dan 3 adalah 6. ${fr(1,3)} = ${fr(2,6)}. Maka ${fr(5,6)} − ${fr(2,6)} = ${fr(3,6)} = ${B(fr(1,2))} (disederhanakan dengan dibagi 3).` },
+
+{ sec:0, tag:'Perkalian · Biasa dengan Biasa',
+  q:`Hitunglah: ${fr(3,4)} × ${fr(2,5)}`,
+  opts:[fr(5,12), fr(6,5), fr(3,10), fr(3,20)], a:2,
+  exp:`Mengalikan pecahan: kalikan pembilang dengan pembilang dan penyebut dengan penyebut. ${fr(3,4)} × ${fr(2,5)} = ${fr('3 × 2','4 × 5')} = ${fr(6,20)} = ${B(fr(3,10))} (dibagi 2).` },
+
+{ sec:0, tag:'Pembagian · Biasa dengan Biasa',
+  q:`Hitunglah: ${fr(2,3)} ÷ ${fr(3,4)}`,
+  opts:[fr(1,2), fr(8,9), fr(9,8), fr(6,7)], a:1,
+  exp:`Membagi pecahan: <b>balik pecahan kedua</b> lalu kalikan. ${fr(2,3)} ÷ ${fr(3,4)} = ${fr(2,3)} × ${fr(4,3)} = ${B(fr(8,9))}.` },
+
+{ sec:0, tag:'Pengurangan · Campuran dengan Biasa',
+  q:`Hitunglah: ${mx(3,2,5)} − ${fr(1,2)}`,
+  opts:[mx(2,1,10), mx(3,1,10), mx(2,3,10), mx(2,9,10)], a:3,
+  exp:`Ubah dulu ke pecahan biasa: ${mx(3,2,5)} = ${fr(17,5)}. KPK dari 5 dan 2 adalah 10, jadi ${fr(17,5)} = ${fr(34,10)} dan ${fr(1,2)} = ${fr(5,10)}. Maka ${fr(34,10)} − ${fr(5,10)} = ${fr(29,10)} = ${B(mx(2,9,10))}.` },
+
+{ sec:0, tag:'Penjumlahan · Campuran dengan Biasa',
+  q:`Hitunglah: ${mx(2,1,2)} + ${fr(3,4)}`,
+  opts:[mx(3,1,4), mx(2,3,4), mx(5,1,4), mx(3,1,3)], a:0,
+  exp:`${mx(2,1,2)} = ${fr(5,2)} = ${fr(10,4)}. Maka ${fr(10,4)} + ${fr(3,4)} = ${fr(13,4)} = ${B(mx(3,1,4))}.` },
+
+{ sec:0, tag:'Perkalian · Campuran dengan Campuran',
+  q:`Hitunglah: ${mx(1,1,2)} × ${mx(2,1,4)}`,
+  opts:[mx(2,3,8), mx(3,3,8), mx(2,3,4), mx(3,1,8)], a:1,
+  exp:`Ubah ke pecahan biasa: ${mx(1,1,2)} = ${fr(3,2)} dan ${mx(2,1,4)} = ${fr(9,4)}. Maka ${fr(3,2)} × ${fr(9,4)} = ${fr(27,8)} = ${B(mx(3,3,8))}.` },
+
+{ sec:0, tag:'Pembagian · Campuran dengan Campuran',
+  q:`Hitunglah: ${mx(3,1,2)} ÷ ${mx(1,3,4)}`,
+  opts:[mx(1,1,2), '2', mx(2,1,2), '4'], a:1,
+  exp:`${mx(3,1,2)} = ${fr(7,2)} dan ${mx(1,3,4)} = ${fr(7,4)}. Maka ${fr(7,2)} ÷ ${fr(7,4)} = ${fr(7,2)} × ${fr(4,7)} = ${fr(28,14)} = ${B('2')}.` },
+
+{ sec:0, tag:'Pengurangan · Bilangan Cacah dengan Pecahan',
+  q:`Hitunglah: 5 − ${fr(7,12)}`,
+  opts:[mx(4,7,12), mx(5,5,12), mx(4,1,12), mx(4,5,12)], a:3,
+  exp:`Tulis 5 = ${fr(60,12)}. Maka ${fr(60,12)} − ${fr(7,12)} = ${fr(53,12)} = ${B(mx(4,5,12))}.` },
+
+{ sec:0, tag:'Penjumlahan · Campuran dengan Campuran',
+  q:`Hitunglah: ${mx(2,2,5)} + ${mx(1,3,4)}`,
+  opts:[mx(3,3,20), mx(4,1,4), mx(4,3,20), mx(3,13,20)], a:2,
+  exp:`${mx(2,2,5)} = ${fr(12,5)} dan ${mx(1,3,4)} = ${fr(7,4)}. KPK dari 5 dan 4 adalah 20, jadi ${fr(48,20)} + ${fr(35,20)} = ${fr(83,20)} = ${B(mx(4,3,20))}.` },
+
+/* ======== PUTARAN 2 — OPERASI HITUNG CAMPURAN ======== */
+{ sec:1, tag:'Kali lebih dulu',
+  q:`Hitunglah: ${fr(1,2)} + ${fr(1,3)} × ${fr(1,4)}`,
+  opts:[fr(5,12), fr(7,24), fr(7,12), fr(1,3)], a:2,
+  exp:`Kerjakan perkalian lebih dulu: ${fr(1,3)} × ${fr(1,4)} = ${fr(1,12)}. Lalu ${fr(1,2)} = ${fr(6,12)}, sehingga ${fr(6,12)} + ${fr(1,12)} = ${B(fr(7,12))}.` },
+
+{ sec:1, tag:'Kerjakan kurung dulu',
+  q:`Hitunglah: (${fr(1,2)} + ${fr(1,3)}) × ${fr(1,4)}`,
+  opts:[fr(5,6), fr(5,24), fr(3,8), fr(5,12)], a:1,
+  exp:`Kerjakan yang di dalam kurung dulu: ${fr(1,2)} + ${fr(1,3)} = ${fr(3,6)} + ${fr(2,6)} = ${fr(5,6)}. Lalu ${fr(5,6)} × ${fr(1,4)} = ${B(fr(5,24))}.` },
+
+{ sec:1, tag:'Kerjakan kurung dulu',
+  q:`Hitunglah: ${fr(2,3)} × (${fr(3,4)} + ${fr(1,2)})`,
+  opts:[fr(5,6), fr(5,12), fr(3,4), fr(11,12)], a:0,
+  exp:`Kurung dulu: ${fr(3,4)} + ${fr(2,4)} = ${fr(5,4)}. Lalu ${fr(2,3)} × ${fr(5,4)} = ${fr(10,12)} = ${B(fr(5,6))}.` },
+
+{ sec:1, tag:'Bagi dulu, baru kurang',
+  q:`Hitunglah: ${fr(3,4)} ÷ ${fr(1,2)} − ${fr(1,4)}`,
+  opts:['1', mx(1,1,4), fr(5,8), fr(7,8)], a:1,
+  exp:`Bagi dulu: ${fr(3,4)} ÷ ${fr(1,2)} = ${fr(3,4)} × 2 = ${fr(3,2)}. Lalu ${fr(3,2)} − ${fr(1,4)} = ${fr(6,4)} − ${fr(1,4)} = ${fr(5,4)} = ${B(mx(1,1,4))}.` },
+
+{ sec:1, tag:'Campuran dan bilangan cacah',
+  q:`Hitunglah: ${mx(2,1,2)} + ${mx(1,1,2)} × 2`,
+  opts:[mx(5,1,2), mx(6,1,2), '5', mx(4,1,2)], a:0,
+  exp:`Kerjakan perkalian dulu: ${mx(1,1,2)} × 2 = ${fr(3,2)} × 2 = 3. Lalu ${mx(2,1,2)} + 3 = ${B(mx(5,1,2))}.` },
+
+{ sec:1, tag:'Kurung lalu pembagian',
+  q:`Hitunglah: (2 − ${fr(1,2)}) ÷ ${fr(3,4)}`,
+  opts:[fr(3,2), '3', '2', fr(4,3)], a:2,
+  exp:`Kurung: 2 − ${fr(1,2)} = ${fr(4,2)} − ${fr(1,2)} = ${fr(3,2)}. Lalu ${fr(3,2)} ÷ ${fr(3,4)} = ${fr(3,2)} × ${fr(4,3)} = ${B('2')}.` },
+
+{ sec:1, tag:'Campuran dengan bilangan cacah',
+  q:`Hitunglah: ${mx(1,2,5)} × 2 − ${fr(3,4)}`,
+  opts:[mx(1,1,20), mx(2,3,4), mx(3,1,20), mx(2,1,20)], a:3,
+  exp:`${mx(1,2,5)} × 2 = ${fr(7,5)} × 2 = ${fr(14,5)}. Lalu ${fr(14,5)} − ${fr(3,4)} = ${fr(56,20)} − ${fr(15,20)} = ${fr(41,20)} = ${B(mx(2,1,20))}.` },
+
+{ sec:1, tag:'Cacah, kali dan bagi dulu',
+  q:`Hitunglah: 3 ÷ ${fr(1,2)} + ${fr(1,2)} × 4`,
+  opts:['7', '8', '6', '10'], a:1,
+  exp:`Kerjakan kali dan bagi lebih dulu: 3 ÷ ${fr(1,2)} = 3 × 2 = 6 dan ${fr(1,2)} × 4 = 2. Maka 6 + 2 = ${B('8')}.` },
+
+{ sec:1, tag:'Kurung lalu pembagian',
+  q:`Hitunglah: (${mx(1,1,2)} + ${mx(2,1,3)}) ÷ ${fr(5,6)}`,
+  opts:[mx(3,4,5), mx(4,2,5), mx(4,3,5), mx(5,3,5)], a:2,
+  exp:`Kurung: ${mx(1,1,2)} + ${mx(2,1,3)} = ${fr(3,2)} + ${fr(7,3)} = ${fr(9,6)} + ${fr(14,6)} = ${fr(23,6)}. Lalu ${fr(23,6)} ÷ ${fr(5,6)} = ${fr(23,6)} × ${fr(6,5)} = ${fr(23,5)} = ${B(mx(4,3,5))}.` },
+
+{ sec:1, tag:'Perkalian lebih dulu',
+  q:`Hitunglah: ${mx(4,1,2)} − ${fr(2,3)} × ${mx(1,1,2)}`,
+  opts:[mx(3,1,4), mx(3,1,2), mx(3,1,3), mx(4,1,2)], a:1,
+  exp:`Kali dulu: ${fr(2,3)} × ${mx(1,1,2)} = ${fr(2,3)} × ${fr(3,2)} = 1. Lalu ${mx(4,1,2)} − 1 = ${B(mx(3,1,2))}.` },
+
+/* =========================================================
+   PUTARAN 3 — SOAL OLIMPIADE
+   Sumber: "Soal Latihan Olimpiade Matematika SD Kelas 6,
+   Materi: Operasi Hitung Pecahan (HOTS)" — 20 soal.
+   (Soal no. 13 file asli disesuaikan: "enam tahun" →
+   "delapan tahun" agar jawaban eksak 30 tahun.)
+========================================================= */
+{ sec:2, tag:'Olimpiade · Urutan Operasi',
+  q:`Hasil dari ${mx(2,1,2)} + ${mx(1,1,4)} × ${mx(3,1,5)} − ${fr(3,8)} ÷ 0,75 adalah …`,
+  opts:['5', mx(5,1,2), '6', mx(6,1,2)], a:2,
+  exp:`Kerjakan kali dan bagi lebih dulu: ${mx(1,1,4)} × ${mx(3,1,5)} = ${fr(5,4)} × ${fr(16,5)} = 4, dan ${fr(3,8)} ÷ 0,75 = ${fr(3,8)} ÷ ${fr(3,4)} = ${fr(3,8)} × ${fr(4,3)} = ${fr(1,2)}. Maka ${fr(5,2)} + 4 − ${fr(1,2)} = ${fr(4,2)} + 4 = ${B('6')}.` },
+
+{ sec:2, tag:'Olimpiade · Persen & Desimal',
+  q:`Nilai dari (${mx(3,3,4)} − 1,5) ÷ (20% + ${fr(1,4)}) × ${fr(2,5)} adalah …`,
+  opts:['1', mx(1,1,2), '2', mx(2,1,2)], a:2,
+  exp:`Ubah semua ke desimal: (3,75 − 1,5) ÷ (0,20 + 0,25) × 0,4 = 2,25 ÷ 0,45 × 0,4. Bagi dulu: 2,25 ÷ 0,45 = 5. Lalu 5 × 0,4 = ${B('2')}. Atau dengan pecahan: (${fr(15,4)} − ${fr(3,2)}) ÷ (${fr(1,5)} + ${fr(1,4)}) × ${fr(2,5)} = ${fr(9,4)} ÷ ${fr(9,20)} × ${fr(2,5)} = 5 × ${fr(2,5)} = 2.` },
+
+{ sec:2, tag:'Olimpiade · Persen & Desimal',
+  q:`Hasil operasi hitung ${fr(5,6)} × 1,2 + 45% ÷ ${fr(3,4)} − ${mx(1,1,10)} adalah …`,
+  opts:[fr(1,2), fr(2,5), fr(3,4), '1'], a:0,
+  exp:`Ubah: 1,2 = ${fr(6,5)} dan 45% = ${fr(45,100)} = ${fr(9,20)}. Maka ${fr(5,6)} × ${fr(6,5)} = 1 dan ${fr(9,20)} ÷ ${fr(3,4)} = ${fr(9,20)} × ${fr(4,3)} = ${fr(3,5)}. Jadi 1 + ${fr(3,5)} − ${fr(11,10)} = ${fr(10,10)} + ${fr(6,10)} − ${fr(11,10)} = ${fr(5,10)} = ${B(fr(1,2))}.` },
+
+{ sec:2, tag:'Olimpiade · Pecahan Bersusun',
+  q:`Bentuk paling sederhana dari pecahan bersusun ${cfr(mx(2,1,3)+' + '+mx(1,1,2), mx(1,5,6)+' − 0,5')} adalah …`,
+  opts:[mx(1,7,8), mx(2,7,8), mx(3,1,8), mx(3,7,8)], a:1,
+  exp:`Ubah dulu ke pecahan biasa. <b>Pembilang:</b> ${mx(2,1,3)} + ${mx(1,1,2)} = ${fr(7,3)} + ${fr(3,2)} = ${fr(14,6)} + ${fr(9,6)} = ${fr(23,6)}. <b>Penyebut:</b> ${mx(1,5,6)} − 0,5 = ${fr(11,6)} − ${fr(3,6)} = ${fr(8,6)}. Maka ${fr(23,6)} ÷ ${fr(8,6)} = ${fr(23,6)} × ${fr(6,8)} = ${fr(23,8)} = ${B(mx(2,7,8))}.` },
+
+{ sec:2, tag:'Olimpiade · Urutan Operasi',
+  q:`Hasil dari 4,5 ÷ ${mx(1,1,2)} − 0,25 × ${fr(4,5)} + ${fr(7,10)} adalah …`,
+  opts:[mx(2,1,2), '3', mx(3,1,2), '4'], a:2,
+  exp:`Kali dan bagi dulu: 4,5 ÷ 1,5 = 3 dan 0,25 × ${fr(4,5)} = ${fr(1,4)} × ${fr(4,5)} = ${fr(1,5)} = 0,2. Maka 3 − 0,2 + 0,7 = 3,5 = ${B(mx(3,1,2))}.` },
+
+{ sec:2, tag:'Olimpiade · Soal Cerita "Sisa"',
+  q:`Andi membaca sebuah buku. Pada hari pertama ia membaca ${fr(1,4)} bagian dari total halaman. Pada hari kedua, ia membaca ${fr(2,5)} dari <b>sisa</b> halaman hari pertama. Jika masih ada 90 halaman yang belum dibaca, total halaman buku tersebut adalah …`,
+  opts:['150 halaman','200 halaman','240 halaman','300 halaman'], a:1,
+  exp:`Sisa setelah hari pertama: 1 − ${fr(1,4)} = ${fr(3,4)}. Dibaca hari kedua: ${fr(2,5)} × ${fr(3,4)} = ${fr(6,20)} = ${fr(3,10)}. Total dibaca: ${fr(1,4)} + ${fr(3,10)} = ${fr(5,20)} + ${fr(6,20)} = ${fr(11,20)}. Sisa belum dibaca: 1 − ${fr(11,20)} = ${fr(9,20)} bagian = 90 halaman. Maka total = 90 × ${fr(20,9)} = ${B('200 halaman')}.` },
+
+{ sec:2, tag:'Olimpiade · Kerja Bersama',
+  q:`Pekerjaan membangun pagar dapat diselesaikan oleh Budi dalam 12 hari, sedangkan Iwan dalam 24 hari. Jika Budi, Iwan, dan Amir bekerja bersama-sama, pekerjaan selesai dalam 4 hari. Berapa hari yang dibutuhkan Amir jika ia bekerja sendirian?`,
+  opts:['6 hari','8 hari','10 hari','12 hari'], a:1,
+  exp:`Anggap seluruh pekerjaan = 1. Budi = ${fr(1,12)} pekerjaan/hari, Iwan = ${fr(1,24)}, dan ketiganya bersama = ${fr(1,4)} pekerjaan/hari. Bagian Amir = ${fr(1,4)} − (${fr(1,12)} + ${fr(1,24)}) = ${fr(6,24)} − ${fr(3,24)} = ${fr(3,24)} = ${fr(1,8)}. Berarti Amir menyelesaikan ${fr(1,8)} pekerjaan per hari, jadi sendirian butuh ${B('8 hari')}.` },
+
+{ sec:2, tag:'Olimpiade · Soal Cerita "Sisa"',
+  q:`Pak Danu membagikan uang warisan kepada ketiga anaknya. Anak pertama mendapat ${fr(1,3)} bagian. Anak kedua mendapat ${fr(3,4)} dari <b>sisa</b> uang setelah diambil anak pertama. Anak ketiga mendapat sisa uang tersebut, yaitu sebesar Rp25.000.000,00. Total uang warisan Pak Danu adalah …`,
+  opts:['Rp100.000.000,00','Rp150.000.000,00','Rp200.000.000,00','Rp250.000.000,00'], a:1,
+  exp:`Sisa setelah anak pertama: 1 − ${fr(1,3)} = ${fr(2,3)}. Anak kedua mendapat ${fr(3,4)} × ${fr(2,3)} = ${fr(6,12)} = ${fr(1,2)} bagian. Anak ketiga mendapat 1 − ${fr(1,3)} − ${fr(1,2)} = ${fr(6,6)} − ${fr(2,6)} − ${fr(3,6)} = ${fr(1,6)} bagian = Rp25.000.000. Maka total warisan = 25.000.000 × 6 = ${B('Rp150.000.000,00')}.` },
+
+{ sec:2, tag:'Olimpiade · Pola Perkalian',
+  q:`Sebuah bola karet dijatuhkan dari ketinggian 16 meter. Setiap kali memantul, bola tersebut mencapai ketinggian ${fr(3,4)} dari ketinggian sebelumnya. Ketinggian pantulan bola pada pantulan ke-3 adalah …`,
+  opts:[`${mx(6,3,4)} meter`,'9 meter','12 meter',`${mx(5,1,16)} meter`], a:0,
+  exp:`Pantulan 1: 16 × ${fr(3,4)} = 12 m. Pantulan 2: 12 × ${fr(3,4)} = 9 m. Pantulan 3: 9 × ${fr(3,4)} = ${fr(27,4)} = ${B(mx(6,3,4)+' meter')}.` },
+
+{ sec:2, tag:'Olimpiade · Nilai Bagian',
+  q:`Dalam sebuah kelas, ${fr(5,8)} dari jumlah siswa adalah perempuan. Dari seluruh siswa perempuan tersebut, ${fr(2,5)} di antaranya menyukai matematika. Jika jumlah siswa perempuan yang menyukai matematika ada 10 orang, jumlah siswa laki-laki di kelas tersebut adalah …`,
+  opts:['15 orang','20 orang','25 orang','40 orang'], a:0,
+  exp:`${fr(2,5)} × P = 10, maka banyak perempuan P = 10 × ${fr(5,2)} = 25 orang. Karena P = ${fr(5,8)} × T, maka total siswa T = 25 × ${fr(8,5)} = 40 siswa. Laki-laki = 40 − 25 = ${B('15 orang')}.` },
+
+{ sec:2, tag:'Olimpiade · Soal Cerita Bertahap',
+  q:`Sebuah tangki air awalnya berisi penuh. Pagi hari air digunakan sebanyak ${fr(1,3)} bagian, siang hari digunakan lagi ${fr(1,4)} bagian dari kapasitas total tangki. Sore hari hujan menambah air sebanyak ${fr(1,5)} dari <b>sisa air</b> yang ada saat itu. Jika sekarang air di tangki berjumlah 30 liter, kapasitas penuh tangki tersebut adalah …`,
+  opts:['50 liter','60 liter','75 liter','100 liter'], a:1,
+  exp:`Sisa setelah siang: 1 − ${fr(1,3)} − ${fr(1,4)} = ${fr(12,12)} − ${fr(4,12)} − ${fr(3,12)} = ${fr(5,12)}. Hujan menambah ${fr(1,5)} × ${fr(5,12)} = ${fr(1,12)}. Total sekarang: ${fr(5,12)} + ${fr(1,12)} = ${fr(6,12)} = ${fr(1,2)} kapasitas. Karena ${fr(1,2)} kapasitas = 30 liter, kapasitas penuh = 30 × 2 = ${B('60 liter')}.` },
+
+{ sec:2, tag:'Olimpiade · Persen & "Sisa"',
+  q:`Tiga perlima dari pendapatan Tono digunakan untuk biaya hidup, 15% dari pendapatannya untuk transportasi, dan ${fr(1,2)} dari <b>sisanya</b> ditabung. Jika uang yang ditabung Tono Rp600.000,00, pendapatan total Tono adalah …`,
+  opts:['Rp4.000.000,00','Rp4.800.000,00','Rp5.000.000,00','Rp6.000.000,00'], a:1,
+  exp:`Biaya hidup = ${fr(3,5)} = 60% dan transportasi = 15%, jadi terpakai 75%. Sisa = 25% = ${fr(1,4)}. Ditabung = ${fr(1,2)} × ${fr(1,4)} = ${fr(1,8)} pendapatan. Maka pendapatan = 600.000 × 8 = ${B('Rp4.800.000,00')}.` },
+
+{ sec:2, tag:'Olimpiade · Soal Umur',
+  q:`Umur Ayah sekarang adalah ${mx(3,1,2)} kali umur Budi. Delapan tahun yang akan datang, umur Ayah menjadi ${mx(2,1,2)} kali umur Budi. Selisih umur Ayah dan Budi saat ini adalah …`,
+  opts:['20 tahun','25 tahun','30 tahun','35 tahun'], a:2,
+  exp:`Misal umur Budi = B, maka umur Ayah = ${fr(7,2)}B. Delapan tahun lagi: ${fr(7,2)}B + 8 = ${fr(5,2)}(B + 8). Kalikan 2: 7B + 16 = 5B + 40, sehingga 2B = 24 dan B = 12. Umur Ayah = ${fr(7,2)} × 12 = 42 tahun. Cek: 8 tahun lagi umurnya 50 dan 20, dan 50 = ${mx(2,1,2)} × 20 ✓. Selisihnya = 42 − 12 = ${B('30 tahun')}.` },
+
+{ sec:2, tag:'Olimpiade · Soal Cerita "Sisa"',
+  q:`Pak Edo menanam jagung pada ${fr(2,5)} bagian ladangnya dan menanam singkong pada ${fr(1,3)} bagian. Seperempat dari <b>sisa</b> ladangnya dibuat kolam ikan. Jika luas kolam ikan tersebut 200 m², luas ladang yang ditanami jagung adalah …`,
+  opts:['800 m²','1.000 m²','1.200 m²','3.000 m²'], a:2,
+  exp:`Ditanam: ${fr(2,5)} + ${fr(1,3)} = ${fr(6,15)} + ${fr(5,15)} = ${fr(11,15)}. Sisa ladang: ${fr(4,15)}. Kolam ikan: ${fr(1,4)} × ${fr(4,15)} = ${fr(1,15)} bagian = 200 m², jadi luas ladang = 200 × 15 = 3.000 m². Luas jagung = ${fr(2,5)} × 3.000 = ${B('1.200 m²')}.` },
+
+{ sec:2, tag:'Olimpiade · Mencari Pecahan',
+  q:`Sebuah pecahan memiliki nilai ${fr(3,5)}. Jika pembilang pecahan tersebut ditambah 4 dan penyebutnya ditambah 10, nilainya menjadi ${fr(1,2)}. Selisih antara penyebut dan pembilang pecahan awal adalah …`,
+  opts:['2','4','6','8'], a:1,
+  exp:`Misal pecahan awal = ${fr('3x','5x')}. Maka ${cfr('3x + 4','5x + 10')} = ${fr(1,2)}. Kali silang: 2(3x + 4) = 5x + 10 → 6x + 8 = 5x + 10 → x = 2. Pecahan awal = ${fr(6,10)}. Selisih = 10 − 6 = ${B('4')}.` },
+
+{ sec:2, tag:'Olimpiade · Soal Cerita "Sisa"',
+  q:`Dari sebuah pita panjang, Dina memotong ${fr(1,5)} bagian untuk Siska. Kemudian ia memotong ${fr(1,3)} dari <b>sisa</b> pita untuk Rini. Terakhir, Dina memberikan ${fr(1,4)} dari sisa pita di tangannya kepada Ayu. Jika panjang pita milik Dina sekarang 24 cm, panjang pita mula-mula adalah …`,
+  opts:['40 cm','50 cm','60 cm','80 cm'], a:2,
+  exp:`Kerjakan bertahap: sisa setelah Siska = 1 − ${fr(1,5)} = ${fr(4,5)}. Sisa setelah Rini = ${fr(2,3)} × ${fr(4,5)} = ${fr(8,15)}. Sisa setelah Ayu = ${fr(3,4)} × ${fr(8,15)} = ${fr(24,60)} = ${fr(2,5)} bagian. Karena ${fr(2,5)} bagian = 24 cm, panjang mula-mula = 24 × ${fr(5,2)} = ${B('60 cm')}.` },
+
+{ sec:2, tag:'Olimpiade · Perbandingan',
+  q:`Perbandingan jumlah apel, jeruk, dan mangga dalam sebuah keranjang adalah 2 : 3 : 5. Jika jumlah seluruh buah 80 buah dan ${fr(1,4)} dari jumlah mangga diberikan kepada tetangga, sisa mangga di keranjang sekarang adalah …`,
+  opts:['10 buah','20 buah','30 buah','40 buah'], a:2,
+  exp:`Jumlah perbandingan = 2 + 3 + 5 = 10 bagian. Mangga = ${fr(5,10)} × 80 = 40 buah. Diberikan ke tetangga = ${fr(1,4)} × 40 = 10 buah. Sisa mangga = 40 − 10 = ${B('30 buah')}.` },
+
+{ sec:2, tag:'Olimpiade · Maju-Mundur',
+  q:`Kereta api tiba di stasiun A: sebanyak ${fr(1,6)} penumpang turun dan 20 penumpang baru naik. Di stasiun B, ${fr(1,4)} dari total penumpang yang ada turun dan 15 penumpang naik. Jika saat ini ada 75 penumpang, jumlah penumpang saat kereta belum tiba di stasiun A adalah …`,
+  opts:['60 orang','72 orang','84 orang','96 orang'], a:1,
+  exp:`Kerjakan <b>mundur</b> dari akhir. Sebelum naik 15 di stasiun B: 75 − 15 = 60. Karena ${fr(1,4)} turun, tersisa ${fr(3,4)}-nya, maka jumlah sebelum turun di B = 60 × ${fr(4,3)} = 80. Sebelum naik 20 di stasiun A: 80 − 20 = 60. Karena ${fr(1,6)} turun, tersisa ${fr(5,6)}-nya, maka jumlah awal = 60 × ${fr(6,5)} = ${B('72 orang')}.` },
+
+{ sec:2, tag:'Olimpiade · Diskon Bertahap',
+  q:`Harga sebuah sepatu didiskon 20%, kemudian dari harga setelah diskon tersebut dipotong lagi sebesar ${fr(1,10)} bagian. Jika harga sepatu setelah dua kali pemotongan Rp288.000,00, harga awal sepatu tersebut adalah …`,
+  opts:['Rp350.000,00','Rp400.000,00','Rp450.000,00','Rp500.000,00'], a:1,
+  exp:`Setelah diskon 20%, harga tersisa ${fr(4,5)} dari harga awal. Setelah dipotong ${fr(1,10)}, tersisa ${fr(9,10)} × ${fr(4,5)} = ${fr(36,50)} harga awal. Maka harga awal = 288.000 × ${fr(50,36)} = 288.000 × 50 ÷ 36 = ${B('Rp400.000,00')}.` },
+
+{ sec:2, tag:'Olimpiade · Soal Lilin',
+  q:`Dua buah lilin memiliki panjang yang sama tetapi ketebalannya berbeda. Lilin pertama habis terbakar dalam 4 jam, sedangkan lilin kedua habis dalam 3 jam. Jika kedua lilin dinyalakan bersamaan, setelah berapa jam tinggi lilin pertama menjadi tepat dua kali tinggi lilin kedua?`,
+  opts:['2 jam', `${mx(2,2,5)} jam`, `${mx(2,1,2)} jam`, `${mx(2,3,4)} jam`], a:1,
+  exp:`Misal panjang awal lilin = 1. Setiap jam lilin 1 terbakar ${fr(1,4)} bagian dan lilin 2 terbakar ${fr(1,3)} bagian. Setelah t jam: tinggi lilin 1 = 1 − ${fr('t','4')} dan lilin 2 = 1 − ${fr('t','3')}. Syarat: 1 − ${fr('t','4')} = 2 × (1 − ${fr('t','3')}). Samakan penyebut 12: 12 − 3t = 24 − 8t → 5t = 12 → t = ${fr(12,5)} = ${B(mx(2,2,5)+' jam')}. Cek: lilin 1 tersisa ${fr(2,5)} dan lilin 2 tersisa ${fr(1,5)} — memang dua kali lipatnya!` },
+];
+
+/* =========================================================
+   STATE & PEMETAAN SLIDE
+   0 cover · 1-4 materi · 5/16/27 pembatas
+   6-15 P1 · 17-26 P2 · 28-47 P3 · 48 hasil
+========================================================= */
+const SEC_N = [10,10,20];
+const TOTAL = Q.length;      // 40
+const LAST  = TOTAL + 8;     // 48
+function freshState(){
+  return { name:'', idx:0, qs:Q.map(()=>({picked:null, result:null, timeUsed:null})) };
+}
+let state = freshState();
+const timer = { int:null, deadline:0, startedAt:0 };
+
+function slideToQ(i){
+  if(i>=6&&i<=15)  return i-6;
+  if(i>=17&&i<=26) return i-7;
+  if(i>=28&&i<=47) return i-8;
+  return null;
+}
+function qToSlide(qi){ return qi<10 ? 6+qi : qi<20 ? 17+(qi-10) : 28+(qi-20); }
+
+/* =========================================================
+   TIMER
+========================================================= */
+function startTimer(){
+  stopTimer();
+  timer.startedAt = Date.now();
+  timer.deadline  = timer.startedAt + DUR*1000;
+  timer.int = setInterval(tick, 200);
+  tick();
+}
+function stopTimer(){ if(timer.int){ clearInterval(timer.int); timer.int = null; } $('#addBtn').disabled = true; }
+function tick(){
+  const cq = slideToQ(state.idx);
+  if(cq == null) return;
+  const rem = timer.deadline - Date.now();
+  if(rem <= 0){
+    if(state.qs[cq].result == null){ finalize(cq,'timeout'); render(); }
+    return;
+  }
+  $('#timeTxt').textContent = fmt(Math.ceil(rem/1000));
+  const frac = Math.min(1, rem/(DUR*1000));
+  $('#ring').style.strokeDashoffset = 163.4 * (1 - frac);
+  $('#timerBox').classList.toggle('low', rem <= 30000);
+}
+
+/* =========================================================
+   LOGIKA JAWABAN
+========================================================= */
+function finalize(qi, kind, silent){
+  stopTimer();
+  const st = state.qs[qi];
+  if(st.result != null) return;
+  st.timeUsed = Math.max(1, Math.round((Date.now() - timer.startedAt)/1000));
+  st.result = kind === 'check' ? (st.picked === Q[qi].a ? 'correct' : 'wrong') : kind;
+  if(!silent) render();
+}
+function onPick(qi, k, btn){
+  if(state.qs[qi].result != null) return;
+  state.qs[qi].picked = k;
+  document.querySelectorAll('#stage .opt').forEach(x => x.classList.toggle('picked', x === btn));
+  const cb = $('#checkBtn'); if(cb) cb.disabled = false;
+}
+
+/* =========================================================
+   NAVIGASI
+========================================================= */
+function go(i){
+  const cq = slideToQ(state.idx);
+  if(cq != null && state.qs[cq].result == null) finalize(cq, 'skip', true);
+  stopTimer();
+  state.idx = i;
+  window.scrollTo({top:0});
+  render();
+}
+function next(){ if(state.idx < LAST) go(state.idx + 1); }
+function prev(){ if(state.idx > 0) go(state.idx - 1); }
+
+/* =========================================================
+   TEMPLATE SLIDE
+========================================================= */
+function coverHTML(){
+  return `<div class="slide cover">
+    <div>
+      <div class="kick">Lembar Latihan Olimpiade Matematika · Sekolah Dasar</div>
+      <h1>SERBU<br><mark>PECAHAN</mark>!</h1>
+      <p class="desc">Empat slide materi, lalu tiga putaran berisi <b>40 soal pilihan ganda</b>: operasi hitung pecahan, operasi hitung campuran, dan 20 soal olimpiade HOTS. Setiap soal dijaga waktu 3 menit — jawab, cek, baca pembahasannya, lalu maju!</p>
+      <div class="c-info">
+        <span><svg class="ic"><use href="#i-book"/></svg>4 slide materi dasar</span>
+        <span><svg class="ic"><use href="#i-flag"/></svg>10 + 10 soal operasi pecahan & campuran</span>
+        <span><svg class="ic"><use href="#i-bolt"/></svg>20 soal olimpiade HOTS</span>
+        <span><svg class="ic"><use href="#i-clock"/></svg>3 menit per soal · tombol +15 dtk</span>
+      </div>
+    </div>
+    <div class="pcard">
+      <div class="tape"></div>
+      <div class="card-body">
+        <div class="ptitle">KARTU PESERTA</div>
+        <label class="plabel" for="nameInput">Nama lengkap siswa</label>
+        <input id="nameInput" type="text" placeholder="Tulis namamu di sini…" maxlength="40" autocomplete="off" value="${esc(state.name)}">
+        <div class="err" id="nameErr"></div>
+        <ul class="plist">
+          <li><svg class="ic"><use href="#i-check"/></svg><span>Pilih satu jawaban, lalu tekan <b>Cek Jawaban</b> untuk melihat pembahasan.</span></li>
+          <li><svg class="ic"><use href="#i-clock"/></svg><span>Waktu berhenti saat jawaban dicek, dan tereset kembali 3 menit di soal berikutnya.</span></li>
+          <li><svg class="ic"><use href="#i-bolt"/></svg><span>Kurang waktu? Tekan tombol <b>+15 dtk</b> di pojok kanan atas.</span></li>
+        </ul>
+        <button class="btn pri big" id="startBtn">Mulai Latihan <svg class="ic"><use href="#i-cr"/></svg></button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function materiHTML(n){ // n = 1..4
+  let kick, title, body;
+  if(n===1){
+    kick = 'MATERI 1 DARI 4 · DASAR';
+    title = 'Mengubah Bentuk Pecahan';
+    body = `
+    <div class="rule"><div class="no">1</div><div>
+      <h3>Sederhanakan pecahan</h3>
+      <p>Bagi pembilang dan penyebut dengan angka yang sama — nilainya tidak berubah.</p>
+      <span class="ex">${fr(6,20)} = ${fr(3,10)} &nbsp;(÷2) &nbsp;&nbsp;·&nbsp;&nbsp; ${fr(9,12)} = ${fr(3,4)} &nbsp;(÷3)</span></div></div>
+    <div class="rule"><div class="no">2</div><div>
+      <h3>Pecahan campuran → pecahan biasa</h3>
+      <p>Rumus: (bilangan bulat × penyebut + pembilang) ditulis di atas penyebut yang sama. Ini wajib dilakukan sebelum berhitung!</p>
+      <span class="ex">${mx(2,2,5)} = ${fr('2 × 5 + 2','5')} = ${fr(12,5)} &nbsp;&nbsp;·&nbsp;&nbsp; ${mx(3,2,5)} = ${fr(17,5)}</span></div></div>
+    <div class="rule"><div class="no">3</div><div>
+      <h3>Pecahan biasa → pecahan campuran</h3>
+      <p>Bagi pembilang dengan penyebut: hasil baginya menjadi bilangan bulat, sisanya tetap pembilang.</p>
+      <span class="ex">${fr(29,10)} = ${mx(2,9,10)} &nbsp;(29 ÷ 10 = 2 sisa 9)</span></div></div>
+    <div class="rule"><div class="no">4</div><div>
+      <h3>Bilangan cacah adalah pecahan juga</h3>
+      <p>Tulis sebagai pembilang di atas 1, lalu samakan penyebutnya bila perlu.</p>
+      <span class="ex">5 = ${fr(5,1)} = ${fr(60,12)}</span></div></div>
+    <div class="rule"><div class="no">5</div><div>
+      <h3>Kartu hafalan desimal &amp; persen</h3>
+      <p>Soal olimpiade suka mencampur desimal dan persen dengan pecahan. Hafalkan padanan yang paling sering muncul:</p>
+      <div class="chips">
+        <span class="chip">0,5 = ${fr(1,2)}</span>
+        <span class="chip">0,25 = ${fr(1,4)}</span>
+        <span class="chip">0,75 = ${fr(3,4)}</span>
+        <span class="chip">0,2 = ${fr(1,5)}</span>
+        <span class="chip">1,2 = ${fr(6,5)}</span>
+        <span class="chip">20% = ${fr(1,5)}</span>
+        <span class="chip">45% = ${fr(9,20)}</span>
+        <span class="chip">15% = ${fr(3,20)}</span>
+      </div></div></div>`;
+  }
+  else if(n===2){
+    kick = 'MATERI 2 DARI 4';
+    title = 'Penjumlahan & Pengurangan';
+    body = `
+    <div class="rule"><div class="no">1</div><div>
+      <h3>Syaratnya satu: penyebut harus sama dulu</h3>
+      <p>Cari KPK kedua penyebut, ubah kedua pecahan, baru jumlahkan atau kurangkan <b>pembilangnya</b>. Ingat: penyebut TIDAK ikut dijumlahkan!</p>
+      <span class="ex">${fr(2,5)} + ${fr(1,4)} = ${fr(8,20)} + ${fr(5,20)} = ${fr(13,20)}</span></div></div>
+    <div class="rule"><div class="no">2</div><div>
+      <h3>Sederhanakan jawaban akhir</h3>
+      <p>Setelah berhitung, bagi pembilang dan penyebut dengan FPB-nya.</p>
+      <span class="ex">${fr(5,6)} − ${fr(1,3)} = ${fr(5,6)} − ${fr(2,6)} = ${fr(3,6)} = ${fr(1,2)}</span></div></div>
+    <div class="rule"><div class="no">3</div><div>
+      <h3>Ada pecahan campuran? Ubah dulu ke pecahan biasa</h3>
+      <p>Baru samakan penyebutnya seperti biasa.</p>
+      <span class="ex">${mx(3,2,5)} − ${fr(1,2)} = ${fr(17,5)} − ${fr(1,2)} = ${fr(34,10)} − ${fr(5,10)} = ${fr(29,10)} = ${mx(2,9,10)}</span></div></div>
+    <div class="rule"><div class="no">4</div><div>
+      <h3>Ada bilangan cacah? Ubah jadi pecahan dengan penyebut yang sama</h3>
+      <p>Pecahkan bilangan cacah menjadi pecahan berpenyebut sama, baru kurangkan.</p>
+      <span class="ex">5 − ${fr(7,12)} = ${fr(60,12)} − ${fr(7,12)} = ${fr(53,12)} = ${mx(4,5,12)}</span></div></div>`;
+  }
+  else if(n===3){
+    kick = 'MATERI 3 DARI 4';
+    title = 'Perkalian & Pembagian';
+    body = `
+    <div class="rule"><div class="no">1</div><div>
+      <h3>Perkalian: langsung kalikan</h3>
+      <p>Tidak perlu menyamakan penyebut! Atas × atas, bawah × bawah, lalu sederhanakan.</p>
+      <span class="ex">${fr(2,3)} × ${fr(3,4)} = ${fr(6,12)} = ${fr(1,2)}</span></div></div>
+    <div class="rule"><div class="no">2</div><div>
+      <h3>Trik silang: sederhanakan sebelum mengalikan</h3>
+      <p>Pembilang satu pecahan boleh dibagi habiskan dengan penyebut pecahan lain — hasilnya jadi bilangan kecil dan cepat.</p>
+      <span class="ex">${fr(5,6)} × ${fr(3,10)} = ${fr(1,4)} &nbsp;(5 dengan 10, lalu 3 dengan 6, saling habis dibagi)</span></div></div>
+    <div class="rule"><div class="no">3</div><div>
+      <h3>Pembagian: balik lalu kalikan</h3>
+      <p>Ubah tanda ÷ menjadi ×, lalu balik (tukar atas-bawah) pecahan kedua.</p>
+      <span class="ex">${fr(2,3)} ÷ ${fr(3,4)} = ${fr(2,3)} × ${fr(4,3)} = ${fr(8,9)}</span></div></div>
+    <div class="rule"><div class="no">4</div><div>
+      <h3>Kata "dari" berarti kali</h3>
+      <p>Sangat sering muncul di soal cerita olimpiade: "⅖ <b>dari</b> 60" berarti ${fr(2,5)} × 60.</p>
+      <span class="ex">${fr(2,5)} dari 60 = ${fr(2,5)} × 60 = 24</span></div></div>
+    <div class="rule"><div class="no">5</div><div>
+      <h3>Campuran: ubah dulu ke pecahan biasa, baru kalikan atau bagi</h3>
+      <span class="ex">${mx(1,1,2)} × ${mx(2,1,4)} = ${fr(3,2)} × ${fr(9,4)} = ${fr(27,8)} = ${mx(3,3,8)}</span></div></div>`;
+  }
+  else{
+    kick = 'MATERI 4 DARI 4 · KUNCI OLIMPIADE';
+    title = 'Urutan Operasi Hitung Campuran';
+    body = `
+    <div class="rule"><div class="no">1</div><div>
+      <h3>Tanda kurung ( … ) — paling dulu</h3>
+      <p>Apa pun yang ada di dalam kurung harus diselesaikan lebih dulu.</p>
+      <span class="ex">(3,75 − 1,5) = 2,25</span></div></div>
+    <div class="rule"><div class="no">2</div><div>
+      <h3>Kali & bagi — sebelum tambah & kurang</h3>
+      <p>Kerjakan dari kiri ke kanan. Kalau ada × dan ÷ sekaligus, keduanya sama kuat — ambil yang paling kiri dulu.</p>
+      <span class="ex">${mx(1,1,4)} × ${mx(3,1,5)} = ${fr(5,4)} × ${fr(16,5)} = 4 &nbsp;&nbsp;·&nbsp;&nbsp; ${fr(3,8)} ÷ 0,75 = ${fr(1,2)}</span></div></div>
+    <div class="rule"><div class="no">3</div><div>
+      <h3>Tambah & kurang — paling akhir</h3>
+      <p>Baru jumlahkan dan kurangkan, juga dari kiri ke kanan.</p>
+      <span class="ex">${mx(2,1,2)} + 4 − ${fr(1,2)} = 6</span></div></div>
+    <div class="rule"><div class="no">4</div><div>
+      <h3>Contoh utuh dari awal sampai akhir</h3>
+      <p>Gabungkan semua aturan — dan perhatikan, contoh ini <b>persis soal olimpiade yang akan kamu temui di Putaran 3!</b></p>
+      <span class="ex">${mx(2,1,2)} + ${mx(1,1,4)} × ${mx(3,1,5)} − ${fr(3,8)} ÷ 0,75<br>= ${mx(2,1,2)} + 4 − ${fr(1,2)} = ${B('6')}</span></div></div>`;
+  }
+  return `<div class="slide bekal">
+    <div class="kick">${kick} · baca pelan-pelan</div>
+    <h2>${title}</h2>
+    <div class="rules">${body}</div>
+    <div class="center"><button class="btn pri big" id="bekalBtn">${n===4?'Oke, Saya Siap Mulai!':'Lanjut ke Materi Berikutnya'} <svg class="ic"><use href="#i-cr"/></svg></button></div>
+  </div>`;
+}
+
+function dividerHTML(i){
+  const r = i===5 ? 0 : i===16 ? 1 : 2;
+  const s = SECTIONS[r];
+  return `<div class="slide divider">
+    <div class="dnum">0${r+1}</div>
+    <div class="kick">${s.kick}</div>
+    <h2>${s.title}</h2>
+    <p>${s.desc}</p>
+    <div class="tags">${s.tags.map(t=>`<span class="pill">${t}</span>`).join('')}</div>
+    <button class="btn pri big" id="goSec">Mulai Putaran ${r+1} <svg class="ic"><use href="#i-cr"/></svg></button>
+  </div>`;
+}
+
+function questionHTML(qi){
+  const q = Q[qi], st = state.qs[qi], sec = SECTIONS[q.sec];
+  const pos = qi >= 20 ? qi-20+1 : qi >= 10 ? qi-10+1 : qi+1;
+  const done = st.result != null;
+  const letters = ['A','B','C','D'];
+
+  const optHtml = q.opts.map((o,k)=>{
+    let cls = 'opt';
+    if(!done){ if(st.picked === k) cls += ' picked'; }
+    else{
+      if(k === q.a) cls += ' right';
+      else if(st.picked === k) cls += ' wrongpick';
+      else cls += ' dim';
+    }
+    return `<button class="${cls}" data-k="${k}" ${done?'disabled':''}><span class="key">${letters[k]}</span><span class="val">${o}</span></button>`;
+  }).join('');
+
+  let stampHtml = '', explainHtml = '';
+  if(done){
+    const map = {correct:['BENAR','ok'], wrong:['SALAH','bad'], timeout:['WAKTU HABIS','bad'], skip:['TERLEWAT','miss']};
+    const [t,c] = map[st.result];
+    stampHtml = `<div class="stamp ${c}">${t}</div>`;
+    const head = st.result==='correct' ? 'Tepat sekali, ini caranya:'
+               : st.result==='wrong'    ? 'Belum tepat. Bandingkan dengan ini:'
+               : st.result==='timeout'  ? 'Waktu habis sebelum kamu menekan Cek Jawaban:'
+               : 'Soal ini dilewati tanpa menjawab. Ini pembahasannya:';
+    explainHtml = `<div class="explain ${c}"><h4><svg class="ic"><use href="#i-book"/></svg>Pembahasan — ${head}</h4><div class="exbody">${q.exp}</div></div>`;
+  }
+
+  const stLabel = {correct:'Benar', wrong:'Salah', timeout:'Waktu habis', skip:'Tidak dijawab'};
+  const stLine = done
+    ? `<div class="q-status ${st.result==='correct'?'ok':st.result==='wrong'?'bad':'miss'}"><svg class="ic"><use href="#i-clock"/></svg>${stLabel[st.result]} · ${fmt(st.timeUsed)}</div>`
+    : `<div class="q-status" style="color:var(--ink-soft)"><svg class="ic"><use href="#i-clock"/></svg>Waktu berjalan…</div>`;
+
+  const foot = done
+    ? `<button class="btn pri" id="goNext">${qi===TOTAL-1?'Lihat Hasil Latihan':'Lanjut ke Soal Berikutnya'} <svg class="ic"><use href="#i-cr"/></svg></button>`
+    : `<button class="btn acc" id="checkBtn" ${st.picked==null?'disabled':''}>Cek Jawaban</button>
+       <span class="hint">Pilih satu jawaban, lalu tekan <b>Cek Jawaban</b> — waktunya akan berhenti.</span>`;
+
+  return `<div class="slide">
+    <div class="qgrid">
+      <aside class="qside">
+        <div class="rlabel">PUTARAN ${q.sec+1} — ${sec.short.toUpperCase()}</div>
+        <div class="q-no">${String(pos).padStart(2,'0')}</div>
+        <div class="q-pos">Soal ${pos} dari ${SEC_N[q.sec]}</div>
+        <div class="q-tag"><svg class="ic"><use href="#i-flag"/></svg>${q.tag}</div>
+        ${stLine}
+      </aside>
+      <div class="qcard">
+        ${stampHtml}
+        <div class="q-text">${q.q}</div>
+        <div class="opts">${optHtml}</div>
+        <div class="qfoot">${foot}</div>
+        ${explainHtml}
+      </div>
+    </div>
+  </div>`;
+}
+
+function resultHTML(){
+  const R = state.qs;
+  const cnt = k => R.filter(s=>s.result===k).length;
+  const correct = cnt('correct'), wrong = cnt('wrong'), skipped = cnt('skip'), timeout = cnt('timeout');
+  const un = skipped + timeout;
+  const total = R.reduce((a,s)=>a+(s.timeUsed||0),0), avg = total/R.length;
+  const pct = Math.round(correct/R.length*100);
+  const per = [0,1,2].map(s=>{
+    let b=0; Q.forEach((q,i)=>{ if(q.sec===s && R[i].result==='correct') b++; }); return b;
+  });
+
+  let vStamp, vCls, conclusion;
+  if(pct>=85){ vStamp='MENGUASAI'; vCls='ok';
+    conclusion=`Luar biasa! <b>${esc(state.name)} terbukti sudah memahami materi operasi hitung pecahan dengan sangat baik</b> — mulai dari konsep dasar, operasi campuran, sampai soal olimpiade HOTS. Siap melanjutkan ke soal olimpiade yang lebih menantang.`; }
+  else if(pct>=70){ vStamp='MEMAHAMI BAIK'; vCls='ok';
+    conclusion=`<b>${esc(state.name)} sudah memahami sebagian besar materi operasi hitung pecahan</b> dan berada di jalur yang benar menuju olimpiade. Perdalam jenis soal yang masih keliru di bawah ini agar makin mantap sebelum hari pertandingan.`; }
+  else if(pct>=50){ vStamp='CUKUP'; vCls='mid';
+    conclusion=`<b>${esc(state.name)} baru memahami sebagian materi operasi hitung pecahan</b>. Konsep dasarnya mulai terbentuk, tetapi masih goyah di beberapa jenis soal. Ulangi pembahasan soal yang salah, lalu kerjakan kembali ketiga putaran ini sebelum bertanding.`; }
+  else{ vStamp='PERLU LATIHAN'; vCls='bad';
+    conclusion=`Berdasarkan hasil ini, <b>${esc(state.name)} belum memahami materi operasi hitung pecahan secara utuh</b>. dampingi kembali belajarnya dari 4 slide materi (mengubah bentuk pecahan dan menyamakan penyebut), lalu ulangi latihan ini secara bertahap dari Putaran 1.`; }
+
+  const weak = [...new Set(R.map((s,i)=> s.result!=='correct' ? Q[i].tag : null).filter(Boolean))];
+  const weakHtml = weak.length
+    ? `<p><b>Perlu penguatan:</b> ${weak.slice(0,6).map(t=>`<span class="pill">${t}</span>`).join(' ')}${weak.length>6?' …':''}</p>`
+    : `<p><b>Tidak ada materi yang tertinggal</b> — pertahankan, dan tambah porsi soal sulit!</p>`;
+
+  const secLine = `Per putaran: operasi pecahan <b class="mono">${per[0]}/10</b>, operasi campuran <b class="mono">${per[1]}/10</b>, olimpiade <b class="mono">${per[2]}/20</b>.`;
+  const timeNote = avg<=45 ? 'Tempo pengerjaanmu sangat lancar.' : avg<=90 ? 'Tempo pengerjaanmu cukup baik.' : 'Waktu pengerjaan tergolong lama — biasakan hitung cepat dan cermat.';
+
+  const li = (l,v,cls='') => `<li><span>${l}</span><span class="fill"></span><b class="mono ${cls}">${v}</b></li>`;
+  const bars = [0,1,2].map(s=>{
+    const w = Math.round(per[s]/SEC_N[s]*100), cls = w>=60?'':w>=40?'mid':'bad';
+    return `<div class="sec-row"><span>${SECTIONS[s].short}</span><span class="track"><span class="fillb ${cls}" style="width:${w}%"></span></span><b class="mono">${per[s]}/${SEC_N[s]}</b></div>`;
+  }).join('');
+  const rec = [0,1,2].map(s=>{
+    const cells = Q.map((q,i)=>({q,i})).filter(o=>o.q.sec===s).map(o=>{
+      const r = R[o.i].result;
+      return `<span class="cell ${r==='correct'?'c':r==='wrong'?'w':r?'s':''}" title="Soal ${o.i%10+1}"></span>`;
+    }).join('');
+    return `<div class="rcol"><div class="rh">P${s+1} · ${SECTIONS[s].short} (${SEC_N[s]})</div><div class="cells">${cells}</div></div>`;
+  }).join('');
+  const dstr = new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  return `<div class="slide"><div class="report">
+    <div class="vstamp ${vCls}">${vStamp}</div>
+    <div class="kick">Rapor Latihan · ${dstr} · ${TOTAL} Soal</div>
+    <h2 class="rname">${esc(state.name)}</h2>
+    <div class="score-row">
+      <div class="big-score">${correct}<small>dari ${TOTAL} soal<br><b class="mono" style="font-size:1.2rem">${pct}%</b></small></div>
+      <ul class="ledger">
+        ${li('Jawaban benar', correct, 'ok')}
+        ${li('Jawaban salah', wrong, 'bad')}
+        ${li('Tidak dijawab', un, 'miss')}
+        ${li('Rata-rata waktu per soal', fmt(avg))}
+        ${li('Total waktu latihan', fmt(total))}
+      </ul>
+    </div>
+    <div class="kick" style="margin-bottom:6px">Penguasaan per putaran</div>
+    ${bars}
+    <div class="analysis">
+      <h4><svg class="ic"><use href="#i-book"/></svg>Analisis Hasil Belajar</h4>
+      <p>${secLine}</p>
+      <p>Rata-rata waktu pengerjaan <b class="mono">${fmt(avg)}</b> per soal. ${timeNote}${timeout?` <b>${timeout} soal</b> kehabisan waktu.`:''}${skipped?` <b>${skipped} soal</b> dilewati tanpa menjawab.`:''}</p>
+      <p>${conclusion}</p>
+      ${weakHtml}
+    </div>
+    <div class="recapwrap">
+      <div class="rh2">Rekap ${TOTAL} Soal</div>
+      <div class="recap">${rec}</div>
+      <div class="legend"><span><i class="sw c"></i>Benar</span><span><i class="sw w"></i>Salah</span><span><i class="sw s"></i>Tidak dijawab</span></div>
+    </div>
+    <div class="rbtns"><button class="btn pri big" id="retryBtn"><svg class="ic"><use href="#i-rt"/></svg> Ulangi Latihan</button></div>
+  </div></div>`;
+}
+
+/* =========================================================
+   RENDER & TOPBAR
+========================================================= */
+function updateTopbar(){
+  $('#stName').textContent = state.name || '—';
+  $('#navWrap').classList.toggle('hide', state.idx===0);
+  $('#prevBtn').disabled = state.idx===0;
+  $('#nextBtn').disabled = state.idx>=LAST;
+
+  const qi = slideToQ(state.idx);
+  $('#nextLbl').textContent = (qi===TOTAL-1 && state.qs[TOTAL-1].result) ? 'Hasil' : 'Lanjut';
+
+  $('#dots').innerHTML = Q.map((q,i)=>{
+    const r = state.qs[i].result;
+    let c = r==='correct'?'c':r==='wrong'?'w':r?'s':'';
+    if(i===qi && !c) c = 'cur';
+    return `<span class="dot ${c}" data-q="${i}" title="Soal ${i+1}"></span>`;
+  }).join('');
+
+  const tb = $('#timerBox');
+  if(qi == null){ $('#timeTxt').textContent='3:00'; $('#ring').style.strokeDashoffset=0; tb.className='idle'; }
+  else if(state.qs[qi].result != null){ $('#timeTxt').textContent=fmt(state.qs[qi].timeUsed); $('#ring').style.strokeDashoffset=0; tb.className='done'; }
+  else { $('#timeTxt').textContent=fmt(DUR); $('#ring').style.strokeDashoffset=0; tb.className=''; }
+  tb.classList.remove('low');
+}
+
+function render(){
+  updateTopbar();
+  const stage = $('#stage'), i = state.idx;
+  if(i===0) stage.innerHTML = coverHTML();
+  else if(i>=1&&i<=4) stage.innerHTML = materiHTML(i);
+  else if(i===5||i===16||i===27) stage.innerHTML = dividerHTML(i);
+  else if(i===LAST) stage.innerHTML = resultHTML();
+  else stage.innerHTML = questionHTML(slideToQ(i));
+
+  if(i===0){
+    const start = ()=>{
+      const v = $('#nameInput').value.trim();
+      if(!v){
+        $('#nameErr').textContent = 'Isi dulu namamu, ya!';
+        $('#nameInput').classList.add('shake');
+        setTimeout(()=>$('#nameInput').classList.remove('shake'),450);
+        return;
+      }
+      state.name = v; go(1);
+    };
+    $('#startBtn').onclick = start;
+    $('#nameInput').onkeydown = e => { if(e.key==='Enter') start(); };
+    $('#nameInput').oninput = () => $('#nameErr').textContent = '';
+  }
+  else if(i>=1&&i<=4) $('#bekalBtn').onclick = next;
+  else if(i===5||i===16||i===27) $('#goSec').onclick = next;
+  else if(i===LAST) $('#retryBtn').onclick = ()=>{ const nm=state.name; state=freshState(); state.name=nm; render(); };
+  else{
+    const qi = slideToQ(i);
+    stage.querySelectorAll('.opt').forEach(b => b.onclick = ()=>onPick(qi, +b.dataset.k, b));
+    const cb = $('#checkBtn'); if(cb) cb.onclick = ()=>finalize(qi,'check');
+    const gn = $('#goNext');   if(gn) gn.onclick = next;
+    if(state.qs[qi].result == null) startTimer();
+  }
+}
+
+/* =========================================================
+   EVENT GLOBAL
+========================================================= */
+ $('#addBtn').onclick = ()=>{
+  if(!timer.int) return;
+  timer.deadline += 15000;
+  const p = document.createElement('span');
+  p.className = 'p15'; p.textContent = '+15 dtk';
+  $('#timerWrap').appendChild(p);
+  setTimeout(()=>p.remove(), 950);
+  tick();
+};
+ $('#prevBtn').onclick = prev;
+ $('#nextBtn').onclick = next;
+ $('#dots').addEventListener('click', e=>{
+  const d = e.target.closest('.dot');
+  if(!d) return;
+  const qi = +d.dataset.q;
+  if(state.qs[qi].result != null) go(qToSlide(qi));
+});
+document.addEventListener('keydown', e=>{
+  if(state.idx===0) return;
+  if(e.target.tagName==='INPUT') return;
+  if(e.key==='ArrowRight' && !$('#nextBtn').disabled) next();
+  if(e.key==='ArrowLeft'  && !$('#prevBtn').disabled) prev();
+});
+
+render();
+</script>
+</body>
+</html>
