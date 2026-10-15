@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ular Tangga Matematika Kelas 3 SD — 100 Soal (Bab 1–9)</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f7eeda;--ink:#3d2c1e;--wood:#7a4a22;--wood2:#5b3a1a;--cream:#fffaf0;--cream2:#f4e8cd;--green:#2f9e44;--greenD:#256b33;--red:#d9480f;--p1:#e8590c;--p2:#0ca678;--gold:#e8b30f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;color:var(--ink);min-height:100vh;background-color:var(--paper);background-image:radial-gradient(rgba(122,74,34,.10) 1.2px,transparent 1.3px);background-size:26px 26px}
+header{text-align:center;padding:18px 12px 4px}
+h1{font-family:'Baloo 2',cursive;font-size:clamp(26px,5vw,44px);color:var(--wood2);line-height:1.05}
+h1 .a{color:#c92a2a}h1 .b{color:var(--greenD)}h1 .c{color:#1971c2}
+.tagline{font-weight:700;color:#8a6a3f;margin-top:2px;font-size:clamp(12px,2vw,16px)}
+.stage{display:flex;gap:22px;justify-content:center;align-items:flex-start;flex-wrap:wrap;padding:14px 16px 40px;max-width:1120px;margin:0 auto}
+.boardWrap{width:min(94vw,620px)}
+.board{position:relative;aspect-ratio:1;border:10px solid var(--wood);border-radius:16px;overflow:hidden;background:var(--cream);box-shadow:0 12px 26px rgba(91,58,26,.28),inset 0 0 0 3px rgba(255,255,255,.35)}
+.grid{position:absolute;inset:0;z-index:1;display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(10,1fr)}
+.cell{position:relative;background:var(--cream);border:.5px solid rgba(122,74,34,.16);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1px;overflow:hidden;text-align:center}
+.cell.alt{background:var(--cream2)}
+.cell.p1{background:#eef7e2}.cell.p1.alt{background:#e4f0d3}
+.cell.p2{background:#fdf6e0}.cell.p2.alt{background:#f6eccd}
+.cell.p3{background:#fdeeea}.cell.p3.alt{background:#f8e2da}
+.cell .num{position:absolute;top:1px;left:3px;font-family:'Baloo 2';font-weight:800;font-size:clamp(7px,1.6vw,12px);color:#9a6a33}
+.cell .q{font-size:clamp(6px,1.3vw,10.5px);line-height:1.08;font-weight:800;color:#5a4527;margin-top:9px;word-break:break-word}
+.cell.lad{background:linear-gradient(180deg,#e6f6dd,#d0efc0)}.cell.lad .q{color:var(--greenD)}
+.cell.snk{background:linear-gradient(180deg,#ffe8e0,#ffd4c8)}.cell.snk .q{color:var(--redD)}
+.cell.start{background:#ffedb0}
+.cell.finish{background:radial-gradient(circle at 50% 42%,#ffe9a0,#ffd43b)}
+.cell .mini{width:36%;max-width:24px;aspect-ratio:1;margin-top:7px}
+.cell.occ0{box-shadow:inset 0 0 0 3px rgba(232,89,12,.65)}
+.cell.occ1{box-shadow:inset 0 0 0 3px rgba(12,166,120,.65)}
+#overlay{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}
+.rail{stroke:#8a5a2b;stroke-width:7;stroke-linecap:round}
+.rung{stroke:#c98d4f;stroke-width:5;stroke-linecap:round}
+.pawn{position:absolute;z-index:10;width:6.2%;aspect-ratio:1;border-radius:50%;border:2.5px solid #fff;box-shadow:0 3px 7px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Baloo 2';font-weight:800;font-size:clamp(10px,2.4vw,17px);transition:left .3s ease,top .3s ease}
+.pawn.x0{background:radial-gradient(circle at 32% 28%,#ffa94d,var(--p1) 55%,#a83c04)}
+.pawn.x1{background:radial-gradient(circle at 32% 28%,#4fd8b0,var(--p2) 55%,#057a5b)}
+.pawn.noTrans{transition:none}
+.legend{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:12.5px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#fffdf6;border:1.5px solid #e5d5b0;border-radius:999px;padding:3px 10px;font-weight:700}
+.chip i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.panel{width:min(94vw,340px);display:flex;flex-direction:column;gap:12px}
+.card{background:#fffdf6;border:2px solid #e5d5b0;border-radius:14px;padding:14px;box-shadow:0 4px 10px rgba(91,58,26,.08)}
+.cardTitle{font-family:'Baloo 2';font-weight:800;font-size:15px;color:#8a6a3f;margin-bottom:6px}
+.who{font-family:'Baloo 2';font-weight:800;font-size:20px}
+.diceRow{display:flex;align-items:center;gap:16px;margin-top:10px}
+.dice{width:64px;height:64px;flex:none;background:#fff;border:2px solid #d9c79b;border-radius:12px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:9px;gap:2px;box-shadow:0 4px 0 #d9c79b}
+.dice.rolling{animation:droll .12s linear infinite}
+@keyframes droll{50%{transform:rotate(7deg) scale(1.05)}}
+.pip{width:9px;height:9px;border-radius:50%;background:#3d2c1e;place-self:center;visibility:hidden}
+.pip.on{visibility:visible}
+.diceSide{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.hintKbd{font-size:11.5px;color:#a08755;font-weight:700}
+.diceVal{font-size:13px;font-weight:800;color:#8a6a3f}
+#msg{min-height:46px;font-weight:700;color:#5b4632;background:#fbf3df;border:1.5px dashed #dcc794;border-radius:10px;padding:8px 10px;margin-top:12px;font-size:14px}
+.playerCard{display:flex;align-items:center;gap:11px;transition:transform .15s}
+.playerCard.active{outline:3px solid #f1d38a;transform:translateY(-1px)}
+.pdot{width:18px;height:18px;border-radius:50%;flex:none;box-shadow:inset -2px -3px 4px rgba(0,0,0,.25)}
+.pname{font-family:'Baloo 2';font-weight:800;font-size:17px}
+.pstat{font-size:13px;color:#6b5335;font-weight:700}
+.st{width:13px;height:13px;vertical-align:-2px}
+.logBox{max-height:150px;overflow:auto;font-size:12.5px;display:flex;flex-direction:column;gap:4px}
+.logBox div{background:#faf4e4;border-radius:8px;padding:4px 8px;border-left:4px solid #e3d2a8}
+.logBox div.lp0{border-left-color:var(--p1)}
+.logBox div.lp1{border-left-color:var(--p2)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font-family:'Baloo 2';font-weight:700;border:none;border-radius:12px;padding:11px 20px;font-size:16px;cursor:pointer;background:var(--red);color:#fff;box-shadow:0 4px 0 #a63c05;transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #a63c05}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn.green{background:var(--green);box-shadow:0 4px 0 #1b6e2c}
+.btn.green:active{box-shadow:0 1px 0 #1b6e2c}
+.btn.ghost{background:#fff;color:#6b4f23;border:2px solid #d9c79b;box-shadow:0 3px 0 #d9c79b}
+.btn.small{padding:7px 12px;font-size:13px}
+.ovl{position:fixed;inset:0;background:rgba(59,42,22,.55);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.ovl.top{z-index:60}
+.hidden{display:none!important}
+.sheet{background:#fffdf6;border-radius:18px;padding:22px;max-width:540px;width:100%;max-height:92vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.35);border:3px solid var(--wood)}
+.sheet h2{font-family:'Baloo 2';color:var(--wood2);font-size:24px;margin-bottom:6px}
+.nameRow{display:flex;align-items:center;gap:10px;margin:10px 0}
+.nameRow label{font-weight:800;width:118px;font-size:14px;display:flex;align-items:center;gap:7px}
+.nameRow .pdot{width:14px;height:14px}
+input[type=text]{padding:10px 12px;border:2px solid #d9c79b;border-radius:10px;font:inherit;font-weight:700;background:#fff}
+input[type=text]:focus{outline:none;border-color:var(--green)}
+.rules{background:#f6efdb;border-radius:12px;padding:12px 14px;font-size:13.5px;margin:12px 0}
+.rules ol{margin-left:18px}
+.rules li{margin:5px 0}
+.tips{margin-top:8px;background:#fdf6d8;border:1.5px dashed #dcb95c;border-radius:8px;padding:8px 10px;font-size:12.5px}
+.center{text-align:center}
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:'Baloo 2';font-weight:800;font-size:12.5px;padding:4px 12px;border-radius:999px}
+.badge svg{width:14px;height:14px}
+.badge.p1{background:#d7efc0;color:#256b33}
+.badge.p2{background:#fbe8b8;color:#8a6410}
+.badge.p3{background:#ffd6c9;color:#a03018}
+.badge.hots{background:#ffe9ae;color:#8a6400}
+#qText{font-size:16.5px;font-weight:700;margin:12px 0 4px;line-height:1.6}
+.qFig{margin:8px 0 4px;display:flex;justify-content:center}
+.qFig svg{width:min(100%,280px);height:auto;background:#faf4e4;border:1.5px solid #e8dcbc;border-radius:10px}
+.optGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.optBtn{display:flex;align-items:center;gap:9px;text-align:left;padding:10px 12px;border:2px solid #d9c79b;border-radius:11px;background:#fff;cursor:pointer;font:inherit;font-weight:700;color:#3d2c1e;transition:.12s}
+.optBtn:hover:not(:disabled){border-color:#b08d3e;background:#fdf6e0;transform:translateY(-1px)}
+.optBtn .key{flex:none;width:26px;height:26px;border-radius:8px;background:#f1e4c3;display:flex;align-items:center;justify-content:center;font-family:'Baloo 2';font-weight:800;color:#6b4f23}
+.optBtn.correct{border-color:#2f9e44;background:#e3f5e1}
+.optBtn.correct .key{background:#2f9e44;color:#fff}
+.optBtn.wrong{border-color:#d64545;background:#fdeaea;opacity:.75}
+.optBtn.wrong .key{background:#d64545;color:#fff}
+.optBtn.reveal{border-color:#2f9e44;box-shadow:0 0 0 2px rgba(47,158,68,.35)}
+.optBtn:disabled{cursor:default}
+.kbdHint{font-size:11.5px;color:#a08755;font-weight:700;margin-top:9px;text-align:center}
+.qFeedback{margin-top:12px;font-weight:800;display:none;gap:8px;align-items:flex-start;font-size:15px;line-height:1.4}
+.qFeedback.show{display:flex}
+.qFeedback.good{color:#2b8a3e}
+.qFeedback.bad{color:#c92a2a}
+.fi{width:20px;height:20px;flex:none;margin-top:1px}
+.explain{margin-top:10px;background:#f6efdb;border-left:4px solid #b08d3e;padding:9px 11px;font-size:13.5px;border-radius:0 8px 8px 0;line-height:1.55;display:none}
+.explain.show{display:block}
+.qactions{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+.shake{animation:shake .28s 2}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+details{margin:4px 0;border:1.5px solid #efe3c4;border-radius:10px;padding:4px 12px;background:#fdf9ef}
+summary{font-family:'Baloo 2';color:var(--wood2);font-size:15px;padding:7px 0;cursor:pointer;list-style-position:inside}
+.kitem{font-size:13px;line-height:1.55;padding:8px 0;border-bottom:1px solid #efe3c4}
+.kitem i{color:#7a6134}
+.wrow{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;background:#faf4e4;border-radius:10px;padding:8px 12px;margin:6px 0;font-size:14px}
+.winTag{background:var(--gold);color:#5b3a1a;font-family:'Baloo 2';font-weight:800;padding:2px 10px;border-radius:999px;font-size:12px}
+.bigTrophy{width:84px;height:84px;filter:drop-shadow(0 5px 7px rgba(0,0,0,.25))}
+.confettiLayer{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.confettiLayer i{position:absolute;top:-8%;display:block;animation:cfall linear infinite}
+@keyframes cfall{0%{transform:translateY(-10vh) rotate(0)}100%{transform:translateY(112vh) rotate(760deg)}}
+footer{text-align:center;font-size:12.5px;color:#a08755;padding:0 12px 26px;font-weight:700}
+@media (max-width:600px){.cell .q{display:none}.cell.spec .q{display:block;font-size:6.5px}.optGrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span class="a">ULAR</span> <span class="b">TANGGA</span> <span class="c">MATEMATIKA</span></h1>
+  <div class="tagline">Kelas 3 SD &bull; 100 Soal Bab 1&ndash;9 &bull; Bilangan, Operasi Hitung, KPK/FPB, Pecahan, Satuan, Pola, Poligon, Sudut &amp; Bangun Datar</div>
+</header>
+
+<main class="stage">
+  <section class="boardWrap">
+    <div class="board" id="board">
+      <div class="grid" id="grid"></div>
+      <svg id="overlay" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
+    </div>
+    <div class="legend">
+      <span class="chip"><i style="background:#d9ecbf"></i>Kotak 2&ndash;33 &bull; MUDAH (Bab 1&ndash;2)</span>
+      <span class="chip"><i style="background:#f3e3ad"></i>Kotak 34&ndash;66 &bull; SEDANG (Bab 3&ndash;5)</span>
+      <span class="chip"><i style="background:#f5c4b4"></i>Kotak 67&ndash;99 &bull; SULIT (Bab 6&ndash;8)</span>
+      <span class="chip"><i style="background:#bde3ac"></i>Tangga = HOTS (Bab 9)</span>
+      <span class="chip"><i style="background:#ffc4b0"></i>Ular = HOTS (Bab 9)</span>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <div class="card">
+      <div class="who">Giliran: <span id="turnName">&ndash;</span></div>
+      <div class="diceRow">
+        <div class="dice" id="dice"></div>
+        <div class="diceSide">
+          <button class="btn green" id="btnRoll" disabled>Lempar Dadu</button>
+          <div class="diceVal">Dadu: <b id="diceVal">&ndash;</b></div>
+          <div class="hintKbd">atau tekan tombol Spasi</div>
+        </div>
+      </div>
+      <div id="msg">Isi nama pemain untuk memulai petualangan!</div>
+    </div>
+    <div class="card playerCard" id="pc0"></div>
+    <div class="card playerCard" id="pc1"></div>
+    <div class="card">
+      <div class="cardTitle">Catatan Permainan</div>
+      <div class="logBox" id="log"></div>
+    </div>
+    <div class="tools">
+      <button class="btn ghost small" id="btnKey">Kunci Jawaban (Tutor)</button>
+      <button class="btn ghost small" id="btnSound">Suara: ON</button>
+      <button class="btn ghost small" id="btnHow">Cara Bermain</button>
+    </div>
+  </aside>
+</main>
+
+<footer>Dibuat untuk belajar Matematika Kelas 3 SD sambil bermain bersama tutor.</footer>
+
+<!-- ============ SETUP ============ -->
+<div class="ovl" id="setupOvl">
+  <div class="sheet">
+    <h2 class="center">Selamat Datang, Petualang Matematika!</h2>
+    <p class="center" style="font-weight:700;color:#8a6a3f">Masukkan nama 2 pemain untuk memulai.</p>
+    <div class="nameRow">
+      <label><span class="pdot" style="background:var(--p1)"></span>Pemain 1:</label>
+      <input type="text" id="inName1" maxlength="14" placeholder="Nama pemain pertama" autocomplete="off">
+    </div>
+    <div class="nameRow">
+      <label><span class="pdot" style="background:var(--p2)"></span>Pemain 2:</label>
+      <input type="text" id="inName2" maxlength="14" placeholder="Nama pemain kedua" autocomplete="off">
+    </div>
+    <div class="rules" id="setupRules"></div>
+    <div class="center"><button class="btn green" id="btnStart" onclick="startGame()" style="font-size:19px;padding:13px 34px">Mulai Bermain!</button></div>
+  </div>
+</div>
+
+<!-- ============ MODAL SOAL ============ -->
+<div class="ovl top hidden" id="qOvl">
+  <div class="sheet">
+    <span class="badge p1" id="qBadge">SOAL</span>
+    <h2 id="qTitle" style="margin-top:8px">Kotak</h2>
+    <p id="qText"></p>
+    <div class="qFig hidden" id="qFigWrap"></div>
+    <div class="optGrid" id="opts"></div>
+    <div class="kbdHint">Tips: tekan tombol <b>A</b>&ndash;<b>D</b> (atau 1&ndash;4) di keyboard untuk memilih</div>
+    <div class="qFeedback" id="qFeedback"></div>
+    <div class="explain" id="qExplain"></div>
+    <div class="qactions">
+      <button class="btn ghost small" id="btnSkip">Lewati (putusan tutor)</button>
+      <button class="btn green hidden" id="btnNext">Lanjutkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ KUNCI JAWABAN ============ -->
+<div class="ovl top hidden" id="keyOvl">
+  <div class="sheet">
+    <h2>Kunci Jawaban &amp; Pembahasan <span style="font-size:13px;color:#a08755">(khusus tutor)</span></h2>
+    <div id="keyBody"></div>
+    <div class="center" style="margin-top:14px"><button class="btn" id="btnKeyClose">Tutup</button></div>
+  </div>
+</div>
+
+<!-- ============ CARA BERMAIN ============ -->
+<div class="ovl top hidden" id="howOvl">
+  <div class="sheet">
+    <h2>Cara Bermain</h2>
+    <div id="howBody"></div>
+    <div class="center" style="margin-top:14px"><button class="btn" id="btnHowClose">Tutup</button></div>
+  </div>
+</div>
+
+<!-- ============ PEMENANG ============ -->
+<div class="ovl hidden" id="winOvl">
+  <div class="confettiLayer" id="confetti"></div>
+  <div class="sheet center">
+    <svg class="bigTrophy" viewBox="0 0 24 24" fill="#e8b30f"><path d="M7 2h10v2h4v3a5 5 0 0 1-5 5h-.4a5.5 5.5 0 0 1-2.6 2.5V17h3v3H8v-3h3v-2.5A5.5 5.5 0 0 1 8.4 12H8a5 5 0 0 1-5-5V4h4V2zm-2 4v1a3 3 0 0 0 3 3V6H5zm14 0h-3v4a3 3 0 0 0 3-3V6z"/></svg>
+    <h2 style="font-size:30px">SELAMAT, <span id="winName"></span>!</h2>
+    <p style="font-weight:700;color:#8a6a3f;margin-bottom:10px">Kamu mencapai kotak 100 dan menjadi pemenangnya!</p>
+    <div id="winStats"></div>
+    <div class="center" style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn green" id="btnAgain">Main Lagi</button>
+      <button class="btn ghost" id="btnNew">Ganti Pemain</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+/* Pelapor galat: bila ada skrip yang gagal, tampilkan di kotak pesan agar terlihat */
+window.addEventListener('error',function(e){var m=document.getElementById('msg');if(m)m.textContent='Terjadi galat skrip: '+((e&&e.message)||e);});
+
+/* ================= DATA PAPAN ================= */
+var LADDERS={3:24,9:31,21:42,36:55,43:77,62:81,71:92,80:99};
+var SNAKES={98:79,97:64,93:46,89:53,87:57,74:39,66:44,33:13,17:5};
+var PCOL=['#e8590c','#0ca678'];
+var SNAKE_COLORS=[
+ {b:'#2f9e44',d:'#1b6e2c'},{b:'#e8590c',d:'#a83e07'},{b:'#1098ad',d:'#0b6f80'},
+ {b:'#d6336c',d:'#96204a'},{b:'#74b816',d:'#4f7d0e'}
+];
+
+/* ============ BANK SOAL MATEMATIKA KELAS 3 SD (Bab 1–9) ============
+   part: 1 = MUDAH  (Bab 1–2, soal 1–24)   -> kotak 2-33
+         2 = SEDANG (Bab 3–5, soal 25–57)  -> kotak 34-66
+         3 = SULIT  (Bab 6–8, soal 58–87)  -> kotak 67-99
+         4 = HOTS   (Bab 9,   soal 88–100) -> kotak tangga & kepala ular
+   Semua jawaban diverifikasi terhadap tabel kunci & pembahasan dokumen.
+   Catatan: "55/56" di halaman 6 dokumen adalah salah cetak nomor;
+   sesuai kunci & pembahasan, keduanya adalah soal #65 dan #66. */
+var QUESTIONS=[
+{n:1,part:1,t:"Lambang",q:"Lambang bilangan dari \u201Cdua belas ribu tiga ratus empat puluh lima\u201D adalah ...",opts:["12.345","12.354","21.345","12.435"],ans:0,ex:"Dua belas ribu (12.000) + tiga ratus (300) + empat puluh lima (45) = 12.345."},
+{n:2,part:1,t:"Nama Bilangan",q:"Nama bilangan dari 24.085 adalah ...",opts:["Dua puluh empat ribu delapan puluh lima","Dua puluh empat ribu delapan ratus lima","Dua ratus empat puluh ribu delapan lima","Dua puluh empat ribu lima puluh delapan"],ans:0,ex:"24.085 dibaca dua puluh empat ribu delapan puluh lima (ratusannya 0)."},
+{n:3,part:1,t:"Nilai Tempat",q:"Pada bilangan 37.492, angka 7 menempati nilai tempat ...",opts:["Puluh ribuan","Ribuan","Ratusan","Puluhan"],ans:1,ex:"Pada 37.492: 3 = puluh ribuan, 7 = ribuan, 4 = ratusan, 9 = puluhan, 2 = satuan."},
+{n:4,part:1,t:"Nilai Tempat",q:"Nilai angka 8 pada bilangan 58.210 adalah ...",opts:["800","8.000","80.000","80"],ans:1,ex:"Angka 8 berada di tempat ribuan sehingga nilainya 8.000."},
+{n:5,part:1,t:"Bentuk Panjang",q:"Bentuk panjang dari bilangan 46.329 adalah ...",opts:["40.000 + 6.000 + 300 + 20 + 9","4.000 + 6.000 + 300 + 20 + 9","46.000 + 300 + 20 + 9","40.000 + 600 + 30 + 29"],ans:0,ex:"Uraian nilai tempat 46.329 = 40.000 + 6.000 + 300 + 20 + 9."},
+{n:6,part:1,t:"Membandingkan",q:"Tanda pembanding yang tepat untuk 34.210 ... 34.120 adalah ...",opts:[">","<","=","+"],ans:0,ex:"Bandingkan angka ratusan: 200 lebih besar dari 100, maka 34.210 > 34.120."},
+{n:7,part:1,t:"Mengurutkan",q:"Urutan bilangan dari terkecil ke terbesar untuk 15.200, 15.020, 15.500, 15.250 adalah ...",opts:["15.020, 15.200, 15.250, 15.500","15.500, 15.250, 15.200, 15.020","15.020, 15.250, 15.200, 15.500","15.200, 15.020, 15.250, 15.500"],ans:0,ex:"Urutan ratusan dari terkecil: 020, 200, 250, 500 \u2192 15.020, 15.200, 15.250, 15.500."},
+{n:8,part:1,t:"Bilangan",q:"Bilangan yang terletak tepat di antara 42.150 dan 42.152 adalah ...",opts:["42.149","42.151","42.153","42.160"],ans:1,ex:"Bilangan cacah di antara 42.150 dan 42.152 adalah 42.151."},
+{n:9,part:1,t:"Pembulatan",q:"Bilangan 78.431 jika dibulatkan ke ribuan terdekat menjadi ...",opts:["78.000","79.000","78.400","80.000"],ans:0,ex:"Angka ratusan pada 78.431 adalah 4 (kurang dari 5), dibulatkan ke bawah menjadi 78.000."},
+{n:10,part:1,t:"Nilai Tempat",q:"Hasil penjumlahan nilai tempat 50.000 + 4.000 + 300 + 20 + 1 adalah ...",opts:["54.321","5.432","54.312","54.021"],ans:0,ex:"50.000 + 4.000 + 300 + 20 + 1 = 54.321."},
+{n:11,part:1,t:"Nilai Tempat",q:"Pada bilangan 89.104, angka yang menempati nilai tempat puluh ribuan adalah ...",opts:["8","9","1","4"],ans:0,ex:"Angka paling kiri pada bilangan 5 digit (89.104) menempati puluh ribuan, yaitu 8."},
+{n:12,part:1,t:"Membandingkan",q:"Manakah bilangan di bawah ini yang nilainya paling besar?",opts:["65.430","65.340","64.990","65.099"],ans:0,ex:"Bandingkan ribuannya (65 ribu) lalu ratusannya (430 > 340 > 099), terbesar adalah 65.430."},
+{n:13,part:1,t:"Penjumlahan",q:"Hasil penjumlahan dari 348 + 215 adalah ...",opts:["553","563","543","653"],ans:1,ex:"Penjumlahan bersusun: 348 + 215 = 563 (8+5=13 simpan 1; 4+1+1=6; 3+2=5)."},
+{n:14,part:1,t:"Pengurangan",q:"Hasil pengurangan dari 624 \u2212 382 adalah ...",opts:["242","252","342","232"],ans:0,ex:"Pengurangan bersusun: 624 \u2212 382 = 242 (4\u22122=2; 12\u22128=4; 5\u22123=2)."},
+{n:15,part:1,t:"Perkalian",q:"Hasil perkalian dari 45 \u00D7 6 adalah ...",opts:["240","270","260","280"],ans:1,ex:"Perkalian: 45 \u00D7 6 = (40 \u00D7 6) + (5 \u00D7 6) = 240 + 30 = 270."},
+{n:16,part:1,t:"Pembagian",q:"Hasil pembagian dari 216 \u00F7 4 adalah ...",opts:["54","46","56","64"],ans:0,ex:"Pembagian: 216 \u00F7 4 = (200 \u00F7 4) + (16 \u00F7 4) = 50 + 4 = 54."},
+{n:17,part:1,t:"Campuran",q:"Hasil operasi campuran 120 + 40 \u00D7 3 adalah ...",opts:["480","240","200","160"],ans:1,ex:"Kerjakan perkalian lebih dulu: 120 + (40 \u00D7 3) = 120 + 120 = 240."},
+{n:18,part:1,t:"Campuran",q:"Hasil dari (250 \u2212 150) \u00F7 10 adalah ...",opts:["10","100","20","25"],ans:0,ex:"Kerjakan dalam kurung dahulu: (250 \u2212 150) \u00F7 10 = 100 \u00F7 10 = 10."},
+{n:19,part:1,t:"Cerita",q:"Ibu membeli 4 bungkus permen. Tiap bungkus berisi 35 permen. Jumlah seluruh permen ibu adalah ...",opts:["120","140","150","130"],ans:1,ex:"Total permen = 4 \u00D7 35 = 140 buah permen."},
+{n:20,part:1,t:"Cerita",q:"Pak Budi membagikan 180 pensil kepada 6 anaknya sama banyak. Tiap anak menerima ... pensil.",opts:["20","40","30","25"],ans:2,ex:"Pensil tiap anak = 180 \u00F7 6 = 30 batang pensil."},
+{n:21,part:1,t:"Cerita",q:"Perpustakaan memiliki 350 buku. Sebanyak 125 buku dipinjam siswa. Sisa buku sekarang adalah ...",opts:["215","225","235","245"],ans:1,ex:"Sisa buku = 350 \u2212 125 = 225 buku."},
+{n:22,part:1,t:"Cerita",q:"Siti punya 75 kelereng, diberi Ayah 120, lalu diberikan ke adiknya 50. Sisa kelereng Siti adalah ...",opts:["145","155","135","165"],ans:0,ex:"Kelereng Siti = 75 + 120 \u2212 50 = 195 \u2212 50 = 145 butir."},
+{n:23,part:1,t:"Cerita",q:"Peternak memanen 420 butir telur dan dimasukkan ke dalam 7 kotak sama banyak. Isi tiap kotak adalah ...",opts:["60 butir","70 butir","50 butir","80 butir"],ans:0,ex:"Isi tiap kotak = 420 \u00F7 7 = 60 butir telur."},
+{n:24,part:1,t:"Campuran",q:"Hasil dari 500 \u2212 120 + 85 adalah ...",opts:["465","455","395","475"],ans:0,ex:"Urut dari kiri: (500 \u2212 120) + 85 = 380 + 85 = 465."},
+{n:25,part:2,t:"Faktor",q:"Semua faktor dari bilangan 12 adalah ...",opts:["1, 2, 3, 4, 6, 12","1, 2, 3, 4, 5, 6"],ans:0,ex:"Pembagi habis 12 adalah: 1\u00D712, 2\u00D76, 3\u00D74 \u2192 {1, 2, 3, 4, 6, 12}."},
+{n:26,part:2,t:"Kelipatan",q:"Empat kelipatan pertama dari bilangan 4 adalah ...",opts:["4, 8, 12, 16","4, 6, 8, 10"],ans:0,ex:"Kelipatan 4: 4\u00D71=4, 4\u00D72=8, 4\u00D73=12, 4\u00D74=16."},
+{n:27,part:2,t:"Kelipatan",q:"Kelipatan persekutuan dari 2 dan 3 yang kurang dari 20 adalah ...",opts:["2, 3, 6, 9","6, 12, 18"],ans:1,ex:"Kelipatan persekutuan 2 dan 3 adalah kelipatan 6. Yang < 20 adalah 6, 12, 18."},
+{n:28,part:2,t:"KPK",q:"KPK dari bilangan 4 dan 6 adalah ...",opts:["12","24","8","16"],ans:0,ex:"Kelipatan 4 = {4,8,12,16}; kelipatan 6 = {6,12,18}. Terkecil yang sama (KPK) = 12."},
+{n:29,part:2,t:"FPB",q:"FPB dari bilangan 12 dan 18 adalah ...",opts:["3","6","9","2"],ans:1,ex:"Faktor 12 = {1,2,3,4,6,12}; faktor 18 = {1,2,3,6,9,18}. Faktor sama terbesar (FPB) = 6."},
+{n:30,part:2,t:"Faktor",q:"Faktor persekutuan dari 8 dan 12 adalah ...",opts:["1, 2, 4","1, 2, 3, 4","2, 4, 8","1, 4, 6"],ans:0,ex:"Faktor 8 = {1,2,4,8}; faktor 12 = {1,2,3,4,6,12}. Faktor persekutuannya = 1, 2, 4."},
+{n:31,part:2,t:"KPK",q:"KPK dari bilangan 3 dan 5 adalah ...",opts:["15","30","8","12"],ans:0,ex:"Kelipatan 3 = {3,6,9,12,15}; kelipatan 5 = {5,10,15}. KPK = 15."},
+{n:32,part:2,t:"FPB",q:"FPB dari bilangan 16 dan 24 adalah ...",opts:["8","4","6","2"],ans:0,ex:"Faktor 16 = {1,2,4,8,16}; faktor 24 = {1,2,3,4,6,8,12,24}. FPB = 8."},
+{n:33,part:2,t:"KPK",q:"KPK dari bilangan 5 dan 10 adalah ...",opts:["10","5","15","20"],ans:0,ex:"Karena 10 habis dibagi 5, maka KPK dari 5 dan 10 adalah 10."},
+{n:34,part:2,t:"Kelipatan",q:"Bilangan di bawah ini yang merupakan kelipatan 7 adalah ...",opts:["14, 21, 28","14, 20, 27","7, 15, 21","7, 12, 19"],ans:0,ex:"Kelipatan 7: 7\u00D72=14, 7\u00D73=21, 7\u00D74=28."},
+{n:35,part:2,t:"Pecahan",fig:"pie8",q:"Bagian biru pada Gambar 1 di atas menunjukkan pecahan ...",opts:["3/8","5/8","3/5","8/3"],ans:0,ex:"Gambar 1 memiliki 8 bagian sama besar dan 3 bagian diarsir biru = 3/8."},
+{n:36,part:2,t:"Senilai",q:"Pecahan yang senilai dengan 2/3 adalah ...",opts:["4/6","3/4","5/6","2/6"],ans:0,ex:"Kalikan pembilang & penyebut dengan 2: (2\u00D72)/(3\u00D72) = 4/6."},
+{n:37,part:2,t:"Membandingkan",q:"Tanda yang tepat untuk membandingkan 3/5 ... 4/5 adalah ...",opts:["<",">","=","+"],ans:0,ex:"Penyebut sudah sama (5), bandingkan pembilang: 3 < 4 maka 3/5 < 4/5."},
+{n:38,part:2,t:"Mengurutkan",q:"Urutan pecahan 1/4, 3/4, 2/4 dari yang terkecil adalah ...",opts:["1/4, 2/4, 3/4","3/4, 2/4, 1/4"],ans:0,ex:"Penyebut sama (4), urutkan pembilang dari terkecil: 1/4, 2/4, 3/4."},
+{n:39,part:2,t:"Pecahan",fig:"bar6",q:"Bagian diarsir pada Gambar 2 (Halaman 3) melambangkan pecahan ...",opts:["4/6","2/6","4/2","6/4"],ans:0,ex:"Gambar 2 terdiri dari 6 kotak sama besar dan 4 kotak diarsir biru = 4/6."},
+{n:40,part:2,t:"Pecahan",q:"Ibu memotong kue menjadi 6 bagian sama besar. Ani makan 2 bagian. Bagian yang dimakan Ani adalah ...",opts:["2/6","6/2","1/2","2/4"],ans:0,ex:"2 bagian dari total 6 bagian sama besar ditulis sebagai pecahan 2/6."},
+{n:41,part:2,t:"Sederhana",q:"Pecahan paling sederhana yang senilai dengan 6/8 adalah ...",opts:["3/4","2/3","4/5","1/2"],ans:0,ex:"Bagi pembilang dan penyebut dengan 2: (6\u00F72)/(8\u00F72) = 3/4."},
+{n:42,part:2,t:"Mengurutkan",q:"Urutan pecahan 4/6, 1/6, 5/6 dari yang terbesar adalah ...",opts:["5/6, 4/6, 1/6","1/6, 4/6, 5/6"],ans:0,ex:"Urutan pembilang dari terbesar (penyebut 6): 5/6, 4/6, 1/6."},
+{n:43,part:2,t:"Membandingkan",q:"Tanda pembanding yang tepat untuk 2/5 ... 3/5 adalah ...",opts:["<",">","=","+"],ans:0,ex:"Karena pembilang 2 kurang dari 3, maka 2/5 < 3/5."},
+{n:44,part:2,t:"Pecahan",q:"Satu buah semangka dipotong 10 bagian sama besar. Budi mengambil 3 potong. Sisa semangka adalah ... bagian.",opts:["7/10","3/10","10/7","5/10"],ans:0,ex:"Sisa semangka = 10/10 \u2212 3/10 = 7/10 bagian."},
+{n:45,part:2,t:"Pengukuran",fig:"ruler",q:"Berdasarkan Gambar A di atas, panjang pensil yang diukur dengan penggaris adalah ...",opts:["6 cm","5 cm","7 cm","4 cm"],ans:0,ex:"Pangkal pensil di 0 cm dan ujung pensil tepat lurus di angka 6 cm, jadi panjangnya 6 cm."},
+{n:46,part:2,t:"Pengukuran",fig:"scale",q:"Berdasarkan Gambar B di atas, berat buah semangka pada timbangan adalah ...",opts:["2 kg","1 kg","3 kg","4 kg"],ans:0,ex:"Jarum merah pada timbangan menunjuk tepat ke angka 2 kg."},
+{n:47,part:2,t:"Alat Ukur",q:"Alat ukur baku yang tepat untuk mengukur panjang kain adalah ...",opts:["Meteran pita / penggaris","Timbangan duduk"],ans:0,ex:"Panjang kain diukur menggunakan meteran pita atau penggaris."},
+{n:48,part:2,t:"Konversi",q:"2 meter sama dengan ... centimeter (cm).",opts:["20","200","2.000","2"],ans:1,ex:"1 meter = 100 cm, maka 2 meter = 2 \u00D7 100 = 200 cm."},
+{n:49,part:2,t:"Konversi",q:"300 cm sama dengan ... meter (m).",opts:["3","30","300","0,3"],ans:0,ex:"100 cm = 1 m, maka 300 cm = 300 \u00F7 100 = 3 m."},
+{n:50,part:2,t:"Konversi",q:"Hasil konversi dari 2 km + 500 m adalah ... meter.",opts:["2.500 m","700 m","2.050 m","25.000 m"],ans:0,ex:"2 km = 2.000 m. Maka 2.000 m + 500 m = 2.500 m."},
+{n:51,part:2,t:"Konversi",q:"1 kilogram (kg) sama dengan ... gram (g).",opts:["10 g","100 g","1.000 g","10.000 g"],ans:2,ex:"Tangga satuan berat: 1 kilogram (kg) = 1.000 gram (g)."},
+{n:52,part:2,t:"Konversi",q:"Berat semangka 3 kg 400 g. Jika diubah ke dalam satuan gram menjadi ...",opts:["3.400 g","340 g","34.000 g","3.040 g"],ans:0,ex:"3 kg + 400 g = 3.000 g + 400 g = 3.400 g."},
+{n:53,part:2,t:"Cerita",q:"Ibu membeli 2 kg gula dan 1.500 g tepung. Total berat belanjaan ibu adalah ... gram.",opts:["3.500 g","2.500 g","3.000 g","4.000 g"],ans:0,ex:"2 kg = 2.000 g. Total = 2.000 g + 1.500 g = 3.500 g."},
+{n:54,part:2,t:"Konversi",q:"Panjang tali 4 m 25 cm sama dengan ... cm.",opts:["425 cm","405 cm","450 cm","4.025 cm"],ans:0,ex:"4 m = 400 cm. Maka 400 cm + 25 cm = 425 cm."},
+{n:55,part:2,t:"Konversi",q:"Panjang pensil 15 cm. Jika diubah ke milimeter (mm) menjadi ...",opts:["150 mm","1,5 mm","15 mm","1.500 mm"],ans:0,ex:"1 cm = 10 mm, maka 15 cm = 15 \u00D7 10 = 150 mm."},
+{n:56,part:2,t:"Konversi",q:"Berat 5 kg setara dengan ... ons (1 kg = 10 ons).",opts:["50 ons","5 ons","500 ons","15 ons"],ans:0,ex:"1 kg = 10 ons (hg), sehingga 5 kg = 5 \u00D7 10 = 50 ons."},
+{n:57,part:2,t:"Konversi",q:"Jarak rumah Ani ke sekolah 1 km 200 m, atau sama dengan ... meter.",opts:["1.200 m","1.020 m","12.000 m","120 m"],ans:0,ex:"1 km = 1.000 m. Maka 1.000 m + 200 m = 1.200 m."},
+{n:58,part:3,t:"Pola Bilangan",q:"Dua bilangan selanjutnya dari pola 2, 4, 6, 8, ... adalah ...",opts:["10, 12","9, 11","12, 14","10, 14"],ans:0,ex:"Pola bilangan genap bertambah 2 (+2): 8 + 2 = 10, 10 + 2 = 12."},
+{n:59,part:3,t:"Pola Bilangan",q:"Bilangan yang tepat untuk mengisi titik-titik pada pola 5, 10, 15, ..., 25, 30 adalah ...",opts:["20","18","22","17"],ans:0,ex:"Pola kelipatan 5 (+5): 15 + 5 = 20."},
+{n:60,part:3,t:"Pola Bilangan",q:"Pada pola bilangan 3, 6, 12, 24, ..., bilangan selanjutnya adalah ...",opts:["36","48","30","42"],ans:1,ex:"Pola dikali 2 (\u00D72): 24 \u00D7 2 = 48."},
+{n:61,part:3,t:"Pola Gambar",fig:"patternA",q:"Berdasarkan Pola A pada gambar di atas, bangun selanjutnya adalah ...",opts:["Lingkaran","Segitiga","Persegi","Trapesium"],ans:0,ex:"Pola berulang setiap 3 bangun (Lingkaran, Segitiga, Persegi). Setelah Persegi adalah Lingkaran."},
+{n:62,part:3,t:"Pola Gambar",fig:"patternB",q:"Berdasarkan Pola B pada gambar di atas, banyaknya titik pada urutan ke-4 adalah ...",opts:["8 titik","7 titik","9 titik","10 titik"],ans:0,ex:"Noktah bertambah 2 setiap suku: 2, 4, 6, maka suku ke-4 adalah 8 titik."},
+{n:63,part:3,t:"Pola Bilangan",q:"Aturan dari pola bilangan 50, 45, 40, 35, ... adalah ...",opts:["Berkurang 5","Bertambah 5"],ans:0,ex:"Dari 50 ke 45 lalu 40 dan 35 selalu dikurangi 5 (berkurang 5)."},
+{n:64,part:3,t:"Pola Bilangan",q:"Bilangan berikutnya dari pola 3, 7, 11, 15, ... adalah ...",opts:["19","18","20","21"],ans:0,ex:"Pola bertambah 4 (+4): 15 + 4 = 19."},
+{n:65,part:3,t:"Pola Bilangan",q:"Pola bilangan: 100, 90, 80, 70, ... Bilangan selanjutnya adalah ...",opts:["60","50","65","55"],ans:0,ex:"Pola berkurang 10 (\u221210): 70 \u2212 10 = 60."},
+{n:66,part:3,t:"Pola Bilangan",q:"Pola bilangan: 1, 4, 7, 10, ... Suku ke-5 adalah ...",opts:["13","12","14","15"],ans:0,ex:"Pola bertambah 3 (+3): 1, 4, 7, 10, maka suku ke-5 = 10 + 3 = 13."},
+{n:67,part:3,t:"Poligon",q:"Bangun datar tertutup yang dibatasi oleh ruas-ruas garis lurus disebut ...",opts:["Poligon","Lingkaran","Elips","Busur"],ans:0,ex:"Poligon (segi banyak) adalah bangun datar tertutup yang sisinya berupa ruas garis lurus."},
+{n:68,part:3,t:"Poligon",q:"Manakah yang merupakan contoh poligon beraturan (semua sisi & sudut sama)?",opts:["Persegi & Segitiga sama sisi","Persegi panjang & Trapesium"],ans:0,ex:"Poligon beraturan memiliki semua sisi sama panjang dan semua sudut sama besar (contoh: persegi)."},
+{n:69,part:3,t:"Poligon",fig:"pentagon",q:"Poligon yang memiliki 5 sisi dan 5 sudut disebut ...",opts:["Segilima (Pentagon)","Segiempat","Segienam","Segitiga"],ans:0,ex:"Bangun segi banyak dengan 5 sisi dan 5 sudut dinamakan segilima (pentagon)."},
+{n:70,part:3,t:"Poligon",q:"Banyaknya sudut pada bangun segi delapan (oktagon) adalah ...",opts:["8 sudut","6 sudut","7 sudut","10 sudut"],ans:0,ex:"Banyak sudut pada poligon sama dengan banyak sisinya: oktagon punya 8 sudut."},
+{n:71,part:3,t:"Poligon",q:"Bangun datar di bawah ini yang BUKAN poligon adalah ...",opts:["Lingkaran","Segitiga","Persegi","Trapesium"],ans:0,ex:"Lingkaran bukan poligon karena dibatasi oleh sisi lengkung, bukan garis lurus."},
+{n:72,part:3,t:"Poligon",q:"Segi enam beraturan (heksagon) memiliki ... sisi yang sama panjang.",opts:["6 sisi","5 sisi","8 sisi","7 sisi"],ans:0,ex:"Segi enam beraturan (heksagon) memiliki 6 sisi yang sama panjang."},
+{n:73,part:3,t:"Poligon",q:"Poligon dengan jumlah sisi paling sedikit (3 sisi) adalah ...",opts:["Segitiga","Segiempat","Segilima","Garis"],ans:0,ex:"Poligon paling sederhana membutuhkan minimal 3 ruas garis lurus, yaitu segitiga."},
+{n:74,part:3,t:"Poligon",q:"Ciri utama poligon tidak beraturan adalah ...",opts:["Panjang sisi tidak semuanya sama","Dibatasi garis lengkung"],ans:0,ex:"Poligon tidak beraturan memiliki panjang sisi atau besar sudut yang tidak sama."},
+{n:75,part:3,t:"Garis",fig:"parallel",q:"Dua garis yang tidak pernah berpotongan walau diperpanjang disebut garis ...",opts:["Sejajar","Berpotongan","Tegak lurus","Berimpit"],ans:0,ex:"Dua garis pada satu bidang yang jaraknya selalu tetap dan tak pernah berpotongan disebut sejajar."},
+{n:76,part:3,t:"Garis",q:"Dua garis yang berpotongan membentuk sudut 90\u00B0 disebut garis ...",opts:["Tegak lurus","Sejajar","Berimpit","Miring"],ans:0,ex:"Garis tegak lurus berpotongan membentuk sudut siku-siku (90\u00B0)."},
+{n:77,part:3,t:"Sudut",q:"Sudut yang besarnya kurang dari 90\u00B0 disebut sudut ...",opts:["Lancip","Tumpul","Siku-siku","Lurus"],ans:0,ex:"Sudut lancip memiliki ukuran antara 0\u00B0 dan 90\u00B0 (kurang dari 90\u00B0)."},
+{n:78,part:3,t:"Sudut",q:"Besar sudut siku-siku adalah tepat ...",opts:["90\u00B0","180\u00B0","45\u00B0","360\u00B0"],ans:0,ex:"Sudut siku-siku besarnya tepat 90\u00B0."},
+{n:79,part:3,t:"Sudut",q:"Sudut yang besarnya antara 90\u00B0 dan 180\u00B0 disebut sudut ...",opts:["Tumpul","Lancip","Siku-siku","Lurus"],ans:0,ex:"Sudut tumpul berukuran lebih dari 90\u00B0 dan kurang dari 180\u00B0."},
+{n:80,part:3,t:"Sudut",fig:"clock3",q:"Pada pukul 03.00 tepat, jarum jam membentuk sudut ...",opts:["Siku-siku","Lancip","Tumpul","Lurus"],ans:0,ex:"Pukul 03.00 berjarak 3 angka: 3 \u00D7 30\u00B0 = 90\u00B0 (sudut siku-siku)."},
+{n:81,part:3,t:"Sudut",q:"Pada pukul 06.00 tepat, kedua jarum jam membentuk sudut ...",opts:["Lurus (180\u00B0)","Siku-siku","Lancip","Tumpul"],ans:0,ex:"Pukul 06.00 jarum pendek di 6 dan jarum panjang di 12 membentuk garis lurus (180\u00B0)."},
+{n:82,part:3,t:"Sudut",q:"Pertemuan antara dua kaki sudut disebut ...",opts:["Titik sudut","Kaki sudut","Sisi sudut","Busur"],ans:0,ex:"Titik temu dua sinar garis (kaki sudut) disebut titik sudut."},
+{n:83,part:3,t:"Garis",q:"Dua garis yang terletak pada satu garis lurus hingga terlihat seperti satu garis disebut ...",opts:["Garis berimpit","Garis sejajar","Tegak lurus","Bersilangan"],ans:0,ex:"Dua garis yang saling menutupi pada satu jalur lurus disebut garis berimpit."},
+{n:84,part:3,t:"Sudut",q:"Sudut yang besarnya tepat 180\u00B0 dinamakan sudut ...",opts:["Lurus","Siku-siku","Lancip","Tumpul"],ans:0,ex:"Sudut 180\u00B0 membentuk garis lurus sehingga disebut sudut lurus."},
+{n:85,part:3,t:"Sudut",q:"Besar sudut terkecil yang dibentuk jarum jam pada pukul 01.00 adalah ...",opts:["30\u00B0","60\u00B0","90\u00B0","45\u00B0"],ans:0,ex:"Satu putaran jam = 360\u00B0 dibagi 12 angka = 30\u00B0 tiap 1 jam. Pukul 01.00 = 30\u00B0."},
+{n:86,part:3,t:"Garis",q:"Dua garis yang bertemu di satu titik potong disebut garis ...",opts:["Berpotongan","Sejajar","Berimpit","Lengkung"],ans:0,ex:"Dua garis yang bertemu pada satu titik persekutuan disebut garis berpotongan."},
+{n:87,part:3,t:"Sudut",q:"Sudut terkecil pada jam pukul 02.00 termasuk jenis sudut ...",opts:["Lancip (60\u00B0)","Siku-siku","Tumpul","Lurus"],ans:0,ex:"Pukul 02.00 membentuk sudut 2 \u00D7 30\u00B0 = 60\u00B0, karena < 90\u00B0 maka termasuk sudut lancip."},
+{n:88,part:4,t:"Bangun Datar",q:"Bangun datar yang memiliki 4 sisi sama panjang dan 4 sudut siku-siku adalah ...",opts:["Persegi","Persegi panjang","Jajargenjang","Trapesium"],ans:0,ex:"Persegi memiliki 4 sisi sama panjang dan keempat sudutnya siku-siku (90\u00B0)."},
+{n:89,part:4,t:"Bangun Datar",q:"Ciri sisi pada bangun persegi panjang adalah ...",opts:["Memiliki 2 pasang sisi berhadapan sama panjang","Keempat sisinya sama panjang"],ans:0,ex:"Persegi panjang memiliki 4 sisi dengan 2 pasang sisi berhadapan sejajar dan sama panjang."},
+{n:90,part:4,t:"Bangun Datar",q:"Banyaknya titik sudut pada bangun segitiga adalah ...",opts:["3 titik sudut","4 titik sudut","2 titik sudut","Tidak ada"],ans:0,ex:"Segitiga memiliki 3 sisi dan 3 titik sudut."},
+{n:91,part:4,t:"Bangun Datar",q:"Bangun datar yang hanya memiliki 1 sisi lengkung dan tidak punya titik sudut adalah ...",opts:["Lingkaran","Segitiga","Persegi","Trapesium"],ans:0,ex:"Lingkaran hanya dibatasi 1 sisi lengkung tertutup dan tidak memiliki titik sudut."},
+{n:92,part:4,t:"Bangun Datar",q:"Bangun segiempat yang memiliki 4 sisi sama panjang tetapi sudutnya bukan siku-siku adalah ...",opts:["Belah ketupat","Persegi panjang","Trapesium","Layang-layang"],ans:0,ex:"Belah ketupat memiliki 4 sisi sama panjang dan sudut berhadapan sama besar (bukan 90\u00B0)."},
+{n:93,part:4,t:"Bangun Datar",q:"Bangun datar segiempat yang hanya memiliki tepat sepasang sisi sejajar adalah ...",opts:["Trapesium","Persegi","Layang-layang","Jajargenjang"],ans:0,ex:"Trapesium adalah segiempat yang memiliki tepat sepasang sisi berhadapan yang sejajar."},
+{n:94,part:4,t:"Simetri",q:"Banyaknya sumbu simetri (simetri lipat) pada bangun persegi adalah ...",opts:["4","2","1","3"],ans:0,ex:"Persegi memiliki 4 sumbu simetri lipat (2 vertikal/horizontal, 2 diagonal)."},
+{n:95,part:4,t:"Bangun Datar",q:"Bangun segiempat yang punya 2 pasang sisi berdekatan sama panjang dan diagonalnya tegak lurus adalah ...",opts:["Layang-layang","Persegi panjang","Jajargenjang","Trapesium"],ans:0,ex:"Layang-layang memiliki 2 pasang sisi berdekatan sama panjang dan diagonalnya tegak lurus."},
+{n:96,part:4,t:"Segitiga",q:"Jumlah ketiga sudut dalam pada bangun segitiga adalah ...",opts:["180\u00B0","360\u00B0","90\u00B0","270\u00B0"],ans:0,ex:"Total besar ketiga sudut dalam pada segitiga apa pun selalu 180\u00B0."},
+{n:97,part:4,t:"Segitiga",q:"Segitiga yang ketiga sisinya memiliki panjang yang sama disebut segitiga ...",opts:["Sama sisi","Sama kaki","Sembarang","Siku-siku"],ans:0,ex:"Segitiga sama sisi memiliki 3 sisi yang sama panjang dan 3 sudut sama besar (60\u00B0)."},
+{n:98,part:4,t:"Segitiga",q:"Segitiga yang salah satu sudutnya berukuran 90\u00B0 dinamakan segitiga ...",opts:["Siku-siku","Lancip","Tumpul","Sama sisi"],ans:0,ex:"Segitiga yang memiliki satu sudut 90\u00B0 disebut segitiga siku-siku."},
+{n:99,part:4,t:"Bangun Datar",q:"Bangun segiempat yang memiliki 2 pasang sisi sejajar dan sudut berhadapan sama besar (bukan 90\u00B0) adalah ...",opts:["Jajargenjang","Persegi","Persegi panjang","Trapesium"],ans:0,ex:"Jajargenjang memiliki 2 pasang sisi sejajar sama panjang dan sudut lancip/tumpul berhadapan sama besar."},
+{n:100,part:4,t:"Segitiga",q:"Segitiga yang hanya memiliki sepasang (2 buah) sisi sama panjang disebut segitiga ...",opts:["Sama kaki","Sama sisi","Sembarang","Garis lurus"],ans:0,ex:"Segitiga sama kaki memiliki tepat 2 sisi (sepasang kaki) yang sama panjang."},
+/* Soal HOTS tambahan (Bab 9: ciri bangun datar, melatih penalaran gabungan) */
+{n:"D1",part:4,extra:true,t:"HOTS",q:"Sebuah bangun segiempat memiliki 4 sisi sama panjang dan 4 sumbu simetri lipat. Bangun tersebut adalah ...",opts:["Persegi","Persegi panjang","Belah ketupat","Trapesium"],ans:0,ex:"Persegi memiliki 4 sisi sama panjang dan 4 sumbu simetri lipat (2 vertikal/horizontal, 2 diagonal)."},
+{n:"D2",part:4,extra:true,t:"HOTS",q:"Sebuah segitiga memiliki dua sisi yang sama panjang, masing-masing 6 cm, dan sisi ketiga 4 cm. Segitiga tersebut adalah segitiga ...",opts:["Sama sisi","Sama kaki","Sembarang","Siku-siku"],ans:1,ex:"Segitiga dengan tepat dua sisi sama panjang (6 cm dan 6 cm) disebut segitiga sama kaki."},
+{n:"D3",part:4,extra:true,t:"HOTS",q:"Berapakah banyak sumbu simetri lipat pada bangun persegi panjang?",opts:["1","2","4","8"],ans:1,ex:"Persegi panjang memiliki 2 sumbu simetri lipat (menghubungkan titik tengah sisi yang berhadapan)."},
+{n:"D4",part:4,extra:true,t:"HOTS",q:"Selisih banyak sisi segi enam beraturan dan segitiga sama sisi, ditambah banyak sisi persegi, adalah banyak sisi bangun ...",opts:["5 sisi (segi lima)","6 sisi (segi enam)","7 sisi (segi tujuh)","8 sisi (segi delapan)"],ans:2,ex:"Segi enam (6) \u2212 segitiga (3) = 3, lalu 3 + persegi (4) = 7 sisi (segi tujuh)."}
+];
+
+/* Diagram SVG untuk soal bergambar (Gambar 1 & 2 Bab 4, Bab 5, Bab 6, Bab 7 & 8) */
+var FIGS={
+ pie8:function(){
+  var s='<svg viewBox="0 0 120 120">',cx=60,cy=60,r=46;
+  for(var i=0;i<8;i++){
+   var a1=(-90+45*i)*Math.PI/180,a2=(-90+45*(i+1))*Math.PI/180;
+   var x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1);
+   var x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2);
+   var fill=(i<3)?'#7cb3e8':'#f2f8fd';
+   s+='<path d="M '+cx+' '+cy+' L '+x1.toFixed(1)+' '+y1.toFixed(1)+' A '+r+' '+r+' 0 0 1 '+x2.toFixed(1)+' '+y2.toFixed(1)+' Z" fill="'+fill+'" stroke="#1971c2" stroke-width="2.5"/>';
+  }
+  return s+'</svg>';
+ },
+ bar6:function(){
+  var s='<svg viewBox="0 0 210 70">';
+  for(var i=0;i<6;i++){
+   var fill=(i<4)?'#7cb3e8':'#f2f8fd';
+   s+='<rect x="'+(15+i*30)+'" y="15" width="30" height="40" fill="'+fill+'" stroke="#1971c2" stroke-width="2.5"/>';
+  }
+  return s+'</svg>';
+ },
+ ruler:function(){
+  var s='<svg viewBox="0 0 210 100">';
+  s+='<rect x="10" y="52" width="180" height="32" rx="4" fill="#ffe08a" stroke="#c9962e" stroke-width="2.5"/>';
+  for(var i=0;i<=7;i++){
+   var x=22+i*20;
+   s+='<line x1="'+x+'" y1="52" x2="'+x+'" y2="63" stroke="#7a4a22" stroke-width="2"/>';
+   s+='<text x="'+x+'" y="79" font-size="11" font-weight="700" fill="#5b3a1a" text-anchor="middle" font-family="Nunito,Arial">'+i+'</text>';
+  }
+  s+='<rect x="22" y="26" width="108" height="14" rx="3" fill="#e03131" stroke="#a01818" stroke-width="2"/>';
+  s+='<path d="M130 26 L142 33 L130 40 Z" fill="#f7d9b8" stroke="#a01818" stroke-width="2"/>';
+  s+='<text x="46" y="23" font-size="10" font-weight="700" fill="#a03018" font-family="Nunito,Arial">Gambar A: Pensil</text>';
+  return s+'</svg>';
+ },
+ scale:function(){
+  var s='<svg viewBox="0 0 170 150">',cx=85,cy=95;
+  s+='<path d="M'+(cx-45)+' '+cy+' A45 45 0 0 1 '+(cx+45)+' '+cy+' Z" fill="#fff" stroke="#1971c2" stroke-width="3"/>';
+  for(var i=0;i<=4;i++){
+   var ang=Math.PI*(1-i/4);
+   var tx=cx+34*Math.cos(ang),ty=cy-34*Math.sin(ang);
+   s+='<circle cx="'+tx.toFixed(1)+'" cy="'+ty.toFixed(1)+'" r="2.5" fill="#3d2c1e"/>';
+   var lx=cx+52*Math.cos(ang),ly=cy-52*Math.sin(ang);
+   s+='<text x="'+lx.toFixed(1)+'" y="'+(ly+4).toFixed(1)+'" font-size="11" font-weight="700" fill="#3d2c1e" text-anchor="middle" font-family="Nunito,Arial">'+i+'</text>';
+  }
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+cx+'" y2="'+(cy-34)+'" stroke="#e03131" stroke-width="3.5" stroke-linecap="round"/>';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="#e03131"/>';
+  s+='<rect x="30" y="112" width="110" height="12" rx="4" fill="#c9d6e2" stroke="#1971c2" stroke-width="2.5"/>';
+  s+='<ellipse cx="85" cy="98" rx="28" ry="14" fill="#51cf66" stroke="#2f7d3b" stroke-width="2.5"/>';
+  s+='<path d="M85 84 q-3 -7 -9 -8 M85 84 q3 -7 9 -8" fill="none" stroke="#2f7d3b" stroke-width="2"/>';
+  s+='<text x="85" y="142" font-size="11" font-weight="700" fill="#a03018" text-anchor="middle" font-family="Nunito,Arial">Gambar B: Timbangan</text>';
+  return s+'</svg>';
+ },
+ patternA:function(){
+  var s='<svg viewBox="0 0 250 60">';
+  var cx=[15,45,75,105,135,165];
+  for(var i=0;i<6;i++){
+   var x=cx[i];
+   if(i%3===0)s+='<circle cx="'+x+'" cy="30" r="11" fill="#1c7ed6"/>';
+   else if(i%3===1)s+='<path d="M'+(x-12)+' 41 L'+x+' 17 L'+(x+12)+' 41 Z" fill="#e03131"/>';
+   else s+='<rect x="'+(x-11)+'" y="19" width="22" height="22" fill="#2f9e44"/>';
+  }
+  s+='<text x="195" y="38" font-size="22" font-weight="800" fill="#3d2c1e" text-anchor="middle" font-family="Baloo 2,Arial">?</text>';
+  return s+'</svg>';
+ },
+ patternB:function(){
+  var s='<svg viewBox="0 0 250 60">';
+  var groups=[{x:25,n:2},{x:75,n:4},{x:130,n:6}];
+  groups.forEach(function(g){
+   for(var i=0;i<g.n;i++){
+    var col=i%2,row=Math.floor(i/2);
+    s+='<circle cx="'+(g.x+col*13)+'" cy="'+(24+row*13)+'" r="3.4" fill="#3d2c1e"/>';
+   }
+  });
+  s+='<line x1="190" y1="30" x2="218" y2="30" stroke="#3d2c1e" stroke-width="3" stroke-linecap="round"/>';
+  s+='<path d="M218 30 L209 25 L209 35 Z" fill="#3d2c1e"/>';
+  s+='<text x="235" y="36" font-size="14" font-weight="800" fill="#3d2c1e" text-anchor="middle" font-family="Nunito,Arial">...</text>';
+  return s+'</svg>';
+ },
+ pentagon:function(){
+  return '<svg viewBox="0 0 120 120">'
+   +'<path d="M60 12 L107.6 46.5 L89.4 102.5 L30.6 102.5 L12.4 46.5 Z" fill="#dbeafe" stroke="#1971c2" stroke-width="3"/>'
+   +'</svg>';
+ },
+ parallel:function(){
+  return '<svg viewBox="0 0 200 70">'
+   +'<line x1="25" y1="22" x2="175" y2="22" stroke="#1971c2" stroke-width="4" stroke-linecap="round"/>'
+   +'<line x1="25" y1="48" x2="175" y2="48" stroke="#1971c2" stroke-width="4" stroke-linecap="round"/>'
+   +'</svg>';
+ },
+ clock3:function(){
+  return '<svg viewBox="0 0 140 140">'
+   +'<circle cx="70" cy="70" r="52" fill="#fff" stroke="#3d2c1e" stroke-width="3.5"/>'
+   +'<text x="70" y="30" font-size="12" font-weight="700" fill="#3d2c1e" text-anchor="middle" font-family="Nunito,Arial">12</text>'
+   +'<text x="114" y="75" font-size="12" font-weight="700" fill="#3d2c1e" text-anchor="middle" font-family="Nunito,Arial">3</text>'
+   +'<text x="70" y="122" font-size="12" font-weight="700" fill="#3d2c1e" text-anchor="middle" font-family="Nunito,Arial">6</text>'
+   +'<text x="26" y="75" font-size="12" font-weight="700" fill="#3d2c1e" text-anchor="middle" font-family="Nunito,Arial">9</text>'
+   +'<line x1="70" y1="70" x2="70" y2="32" stroke="#3d2c1e" stroke-width="4" stroke-linecap="round"/>'
+   +'<line x1="70" y1="70" x2="100" y2="70" stroke="#3d2c1e" stroke-width="4" stroke-linecap="round"/>'
+   +'<rect x="70" y="58" width="12" height="12" fill="none" stroke="#e03131" stroke-width="2"/>'
+   +'<circle cx="70" cy="70" r="3.5" fill="#3d2c1e"/>'
+   +'</svg>';
+ }
+};
+
+/* Ikon SVG */
+var LAD_MINI='<svg class="mini" viewBox="0 0 24 24" fill="none" stroke="#2f7d3b" stroke-width="2.6" stroke-linecap="round"><path d="M8 3v18M16 3v18M8 8h8M8 13h8M8 18h8"/></svg>';
+var SNK_MINI='<svg class="mini" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="3" stroke-linecap="round"><path d="M19 4c-9 0-9 6 0 6c9 0 9 7 0 7H5"/><circle cx="19.5" cy="4" r="2.4" fill="#c0392b" stroke="none"/></svg>';
+var TROPHY_MINI='<svg class="mini" viewBox="0 0 24 24" fill="#d4a017"><path d="M7 2h10v2h4v3a5 5 0 0 1-5 5h-.4a5.5 5.5 0 0 1-2.6 2.5V17h3v3H8v-3h3v-2.5A5.5 5.5 0 0 1 8.4 12H8a5 5 0 0 1-5-5V4h4V2zm-2 4v1a3 3 0 0 0 3 3V6H5zm14 0h-3v4a3 3 0 0 0 3-3V6z"/></svg>';
+var STAR='<svg class="st" viewBox="0 0 24 24" fill="#e8b30f"><path d="M12 2l2.9 6.2 6.8.9-5 4.7 1.3 6.7L12 17.2 6 20.5l1.3-6.7-5-4.7 6.8-.9z"/></svg>';
+var STAR_BADGE='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.2 6.8.9-5 4.7 1.3 6.7L12 17.2 6 20.5l1.3-6.7-5-4.7 6.8-.9z"/></svg>';
+var OK_ICON='<svg class="fi" viewBox="0 0 24 24" fill="none" stroke="#2b8a3e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>';
+var NO_ICON='<svg class="fi" viewBox="0 0 24 24" fill="none" stroke="#c92a2a" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+var RULES_HTML='<ol>'
+ +'<li>Masukkan nama 2 pemain, lalu tekan <b>Mulai Bermain</b>. Keduanya bergiliran melempar dadu; pion berjalan <b>satu kotak demi satu kotak</b>.</li>'
+ +'<li><b>Kotak biasa:</b> berisi soal pilihan ganda Matematika Kelas 3. Soal muncul di kotak tujuan &mdash; pion hanya boleh maju jika dijawab <b>benar</b>. Jika gagal (2 kesempatan), pion <b>tetap di tempat</b>.</li>'
+ +'<li><b>Zona kesulitan:</b> kotak 2&ndash;33 = <b>MUDAH</b> (Bab 1&ndash;2: bilangan cacah &amp; operasi hitung), kotak 34&ndash;66 = <b>SEDANG</b> (Bab 3&ndash;5: faktor/kelipatan, pecahan &amp; satuan), kotak 67&ndash;99 = <b>SULIT</b> (Bab 6&ndash;8: pola, poligon, garis &amp; sudut) &mdash; terlihat dari warna kotaknya.</li>'
+ +'<li><b>Kotak Tangga (hijau) &amp; Kepala Ular (merah):</b> berisi soal <b>HOTS</b> (Bab 9: ciri-ciri bangun datar). Tangga: benar &rarr; <b>naik tangga</b>. Ular: salah &rarr; <b>turun ke ekor</b>; benar &rarr; aman.</li>'
+ +'<li>Jawab dengan menekan pilihan <b>a, b, c, atau d</b> (bisa juga tombol keyboard A&ndash;D atau 1&ndash;4). Beberapa soal hanya punya 2 pilihan &mdash; cukup pilih salah satunya.</li>'
+ +'<li>Harus berhenti <b>tepat di kotak 100</b>. Jika angka dadu lebih, pion memantul mundur. Pemain pertama yang mencapai kotak 100 <b>menang</b>!</li>'
+ +'</ol><div class="tips">Tips tutor: buka <b>Kunci Jawaban</b> untuk melihat seluruh soal per bagian (MUDAH / SEDANG / SULIT / HOTS, lengkap dengan nomor soal di bank soal) beserta pembahasannya. Gunakan tombol <b>Lewati</b> pada kotak soal jika diperlukan.</div>';
+
+/* ================= UTIL ================= */
+function $(s){return document.querySelector(s);}
+var NS='http://www.w3.org/2000/svg';
+function wait(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function ri(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+function svgEl(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function show(el){el.classList.remove('hidden');}
+function hide(el){el.classList.add('hidden');}
+function answerText(q){return 'abcd'[q.ans]+') '+q.opts[q.ans];}
+function partName(p){return['','MUDAH','SEDANG','SULIT','HOTS'][p];}
+
+/* ================= SUARA (Web Audio) ================= */
+var sfx=(function(){
+ var ctx=null,muted=false;
+ function ac(){if(!ctx){try{ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
+  if(ctx&&ctx.state==='suspended')ctx.resume();return ctx;}
+ function t(f,dur,type,vol,when,glide){var c=ac();if(!c||muted)return;
+  var o=c.createOscillator(),g=c.createGain(),t0=c.currentTime+(when||0);
+  o.type=type||'sine';o.frequency.setValueAtTime(f,t0);
+  if(glide)o.frequency.exponentialRampToValueAtTime(glide,t0+dur);
+  g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(vol||.12,t0+.015);
+  g.gain.exponentialRampToValueAtTime(.001,t0+dur);
+  o.connect(g);g.connect(c.destination);o.start(t0);o.stop(t0+dur+.05);}
+ return{
+  toggle:function(){muted=!muted;return muted;},
+  dice:function(){for(var i=0;i<6;i++)t(300+Math.random()*500,.05,'square',.05,i*.07);},
+  step:function(){t(620,.06,'triangle',.09);},
+  good:function(){t(523,.12,'triangle',.14);t(659,.12,'triangle',.14,.1);t(784,.22,'triangle',.14,.2);},
+  bad:function(){t(220,.32,'sawtooth',.1,0,130);},
+  climb:function(){t(300,.55,'sine',.12,0,900);t(400,.5,'sine',.07,.06,1200);},
+  slide:function(){t(720,.75,'sine',.12,0,130);},
+  win:function(){[523,659,784,1047,784,1319].forEach(function(f,i){t(f,.2,'triangle',.14,i*.13);});}
+ };
+})();
+
+/* ================= DOM & STATE ================= */
+var board=$('#board'),grid=$('#grid'),overlay=$('#overlay');
+var turnName=$('#turnName'),btnRoll=$('#btnRoll'),msgEl=$('#msg'),logEl=$('#log');
+var diceEl=$('#dice'),diceVal=$('#diceVal');
+var pcs=[$('#pc0'),$('#pc1')];
+var setupOvl=$('#setupOvl'),qOvl=$('#qOvl'),winOvl=$('#winOvl'),keyOvl=$('#keyOvl'),howOvl=$('#howOvl');
+var qBadge=$('#qBadge'),qTitle=$('#qTitle'),qText=$('#qText'),qFigWrap=$('#qFigWrap'),optsEl=$('#opts');
+var btnSkip=$('#btnSkip'),btnNext=$('#btnNext');
+var qFeedback=$('#qFeedback'),qExplain=$('#qExplain');
+
+var players=[],pawnEls=[],current=0,busy=false,started=false,lastWinner=-1;
+var qMap={},reserveList=[],snakePaths={},cellEls={},qCtx=null;
+
+/* ================= GEOMETRI PAPAN ================= */
+function cellCenter(n){var r=Math.floor((n-1)/10),c=(n-1)%10,col=(r%2)?9-c:c;
+ return{x:col*100+50,y:(9-r)*100+50};}
+function zoneOf(n){return n<=33?'p1':n<=66?'p2':'p3';}
+
+function buildCells(){
+ grid.innerHTML='';cellEls={};
+ var ladS=Object.keys(LADDERS).map(Number);
+ var snkH=Object.keys(SNAKES).map(Number);
+ for(var vr=0;vr<10;vr++){var r=9-vr;
+  for(var c=0;c<10;c++){
+   var n=(r%2===0)?r*10+c+1:r*10+(10-c);
+   var d=document.createElement('div');
+   d.className='cell'+(((r+c)%2)?' alt':'');
+   var inner='<span class="num">'+n+'</span>';
+   if(n===100){d.classList.add('finish','spec');inner+=TROPHY_MINI+'<span class="q">FINIS</span>';}
+   else if(n===1){d.classList.add('start','spec');inner+='<span class="q">MULAI</span>';}
+   else if(ladS.indexOf(n)>=0){d.classList.add('lad','spec');inner+=LAD_MINI+'<span class="q">Tangga HOTS<br>ke '+LADDERS[n]+'</span>';}
+   else if(snkH.indexOf(n)>=0){d.classList.add('snk','spec');inner+=SNK_MINI+'<span class="q">Ular HOTS<br>ke '+SNAKES[n]+'</span>';}
+   else{d.classList.add(zoneOf(n));inner+='<span class="q">'+esc(qMap[n].t)+'</span>';}
+   d.innerHTML=inner;grid.appendChild(d);cellEls[n]=d;
+  }}
+}
+function drawLadder(g,a,b){
+ var A=cellCenter(a),B=cellCenter(b);
+ var dx=B.x-A.x,dy=B.y-A.y,L=Math.hypot(dx,dy),px=-dy/L,py=dx/L,R=11;
+ svgEl('line',{x1:A.x+px*R,y1:A.y+py*R,x2:B.x+px*R,y2:B.y+py*R,'class':'rail'},g);
+ svgEl('line',{x1:A.x-px*R,y1:A.y-py*R,x2:B.x-px*R,y2:B.y-py*R,'class':'rail'},g);
+ var n=Math.max(3,Math.floor(L/34));
+ for(var i=1;i<=n;i++){var t=i/(n+1),cx=A.x+dx*t,cy=A.y+dy*t;
+  svgEl('line',{x1:cx+px*R,y1:cy+py*R,x2:cx-px*R,y2:cy-py*R,'class':'rung'},g);}
+}
+function smoothPath(p){
+ var d='M '+p[0].x+' '+p[0].y;
+ for(var i=1;i<p.length-1;i++){var mx=(p[i].x+p[i+1].x)/2,my=(p[i].y+p[i+1].y)/2;
+  d+=' Q '+p[i].x+' '+p[i].y+' '+mx+' '+my;}
+ d+=' L '+p[p.length-1].x+' '+p[p.length-1].y;return d;}
+function drawSnake(g,head,tail,ci){
+ var H=cellCenter(head),T=cellCenter(tail);
+ var dx=T.x-H.x,dy=T.y-H.y,L=Math.hypot(dx,dy);
+ var ux=dx/L,uy=dy/L,px=-uy,py=ux;
+ var waves=Math.max(1,Math.round(L/220)),amp=Math.min(34,L*.12);
+ var segs=Math.max(8,Math.round(L/60)),pts=[];
+ for(var i=0;i<=segs;i++){var t=i/segs,env=Math.sin(t*Math.PI);
+  var off=amp*Math.sin(t*Math.PI*2*waves)*env;
+  pts.push({x:H.x+dx*t+px*off,y:H.y+dy*t+py*off});}
+ var d=smoothPath(pts),col=SNAKE_COLORS[ci%SNAKE_COLORS.length];
+ svgEl('path',{d:d,fill:'none',stroke:col.d,'stroke-width':16.5,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+ var body=svgEl('path',{d:d,fill:'none',stroke:col.b,'stroke-width':13,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+ svgEl('path',{d:d,fill:'none',stroke:'rgba(255,255,255,.5)','stroke-width':4.5,'stroke-dasharray':'1 21','stroke-linecap':'round'},g);
+ var fx=-ux,fy=-uy,ang=Math.atan2(fy,fx)*180/Math.PI;
+ var cx0=H.x+fx*8,cy0=H.y+fy*8;
+ svgEl('ellipse',{cx:cx0,cy:cy0,rx:16.5,ry:12.5,fill:col.b,stroke:col.d,'stroke-width':2.5,transform:'rotate('+ang+' '+cx0+' '+cy0+')'},g);
+ [1,-1].forEach(function(s){var ex=cx0+px*6.5*s+fx*4,ey=cy0+py*6.5*s+fy*4;
+  svgEl('circle',{cx:ex,cy:ey,r:4,fill:'#fff'},g);
+  svgEl('circle',{cx:ex+fx*1.6,cy:ey+fy*1.6,r:1.9,fill:'#26201a'},g);});
+ var mx=cx0+fx*16,my=cy0+fy*16,tx=cx0+fx*27,ty=cy0+fy*27;
+ svgEl('path',{d:'M '+mx+' '+my+' L '+tx+' '+ty+' M '+tx+' '+ty+' L '+(tx+px*5)+' '+(ty+py*5)+' M '+tx+' '+ty+' L '+(tx-px*5)+' '+(ty-py*5),
+  stroke:'#d6336c','stroke-width':2.4,fill:'none','stroke-linecap':'round'},g);
+ svgEl('circle',{cx:T.x,cy:T.y,r:5.5,fill:col.b,stroke:col.d,'stroke-width':2},g);
+ snakePaths[head]=body;
+}
+function drawOverlay(){
+ overlay.innerHTML='';snakePaths={};
+ var gl=svgEl('g',{},overlay),gs=svgEl('g',{},overlay);
+ var a;for(a in LADDERS)drawLadder(gl,+a,LADDERS[a]);
+ var ci=0,h;for(h in SNAKES){drawSnake(gs,+h,SNAKES[h],ci++);}
+}
+
+/* ============ PENEMPATAN SOAL SESUAI ZONA ============ */
+function buildQuestionMap(){
+ qMap={};reserveList=[];
+ var mudah=shuffle(QUESTIONS.filter(function(q){return q.part===1;}).map(function(q){return Object.assign({},q);}));
+ var sedang=shuffle(QUESTIONS.filter(function(q){return q.part===2;}).map(function(q){return Object.assign({},q);}));
+ var sulit=shuffle(QUESTIONS.filter(function(q){return q.part===3;}).map(function(q){return Object.assign({},q);}));
+ var hots=shuffle(QUESTIONS.filter(function(q){return q.part===4;}).map(function(q){return Object.assign({},q);}));
+ /* 1) Kotak tangga & kepala ular <- Bab 9 (HOTS) */
+ var specials=shuffle(Object.keys(LADDERS).map(Number).concat(Object.keys(SNAKES).map(Number)));
+ specials.forEach(function(b){qMap[b]=hots.pop();});
+ /* 2) Zona: kotak 2-33 MUDAH, 34-66 SEDANG, 67-99 SULIT */
+ var zE=[],zM=[],zH=[];
+ for(var n=2;n<=99;n++){if(!qMap[n]){(n<=33?zE:(n<=66?zM:zH)).push(n);}}
+ /* zona MUDAH: 24 soal Bab 1-2 + 3 soal SEDANG pertama (transisi halus) */
+ zE.forEach(function(b){qMap[b]=mudah.pop()||sedang.pop();});
+ zM.forEach(function(b){qMap[b]=sedang.pop();});
+ zH.forEach(function(b){qMap[b]=sulit.pop();});
+ /* sisa soal menjadi cadangan (ditampilkan di kunci tutor) */
+ while(sedang.length)reserveList.push(sedang.pop());
+ while(sulit.length)reserveList.push(sulit.pop());
+ /* 3) PENGAMAN: pastikan tidak ada kotak kosong (pencegah crash) */
+ var pool=sulit.concat(sedang,mudah,hots).filter(function(q){return q;});
+ for(var m=2;m<=99;m++){if(!qMap[m])qMap[m]=Object.assign({},pick(pool));}
+}
+
+/* ================= UI DASAR ================= */
+function setMsg(t){msgEl.textContent=t;}
+function log(t,pi){var d=document.createElement('div');d.textContent=t;if(pi===0)d.className='lp0';if(pi===1)d.className='lp1';
+ logEl.prepend(d);while(logEl.children.length>40)logEl.lastChild.remove();}
+function clearLog(){logEl.innerHTML='';}
+var pipEls=[];
+(function(){for(var i=0;i<9;i++){var p=document.createElement('span');p.className='pip';diceEl.appendChild(p);pipEls.push(p);}})();
+function setFace(f){var F={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+ pipEls.forEach(function(p,i){p.classList.toggle('on',F[f].indexOf(i)>=0);});}
+
+function updateHUD(){
+ if(!players.length)return;
+ turnName.textContent=players[current].name;
+ turnName.style.color=PCOL[current];
+ players.forEach(function(p,i){
+  pcs[i].classList.toggle('active',i===current);
+  pcs[i].innerHTML='<span class="pdot" style="background:'+PCOL[i]+'"></span>'
+   +'<div><div class="pname">'+esc(p.name)+'</div>'
+   +'<div class="pstat">Kotak: <b>'+p.pos+'</b> &nbsp;\u2022&nbsp; Bintang: <b>'+p.stars+'</b> '+STAR+' &nbsp;\u2022&nbsp; Benar: <b>'+p.correct+'</b> soal</div></div>';
+ });
+ btnRoll.disabled=busy||!started;
+}
+function setPawnXY(i,x,y){var e=pawnEls[i];e.style.left=(x/10)+'%';e.style.top=(y/10)+'%';e.style.transform='translate(-50%,-52%)';}
+function refreshPawns(){
+ document.querySelectorAll('.cell.occ0,.cell.occ1').forEach(function(c){c.classList.remove('occ0','occ1');});
+ players.forEach(function(p,i){
+  var c=cellCenter(p.pos),ox=0,oy=0;
+  if(players[1-i].pos===p.pos){ox=i?15:-15;oy=i?-11:11;}
+  var e=pawnEls[i];
+  e.style.left=(c.x/10)+'%';e.style.top=(c.y/10)+'%';
+  e.style.transform='translate(calc(-50% + '+ox+'px), calc(-50% + '+oy+'px))';
+  if(cellEls[p.pos])cellEls[p.pos].classList.add('occ'+i);
+ });
+}
+
+/* ================= ALUR PERMAINAN ================= */
+function walkSteps(steps){
+ var p=players[current];
+ var pr=Promise.resolve();
+ steps.forEach(function(s){pr=pr.then(function(){p.pos=s;refreshPawns();sfx.step();return wait(330);});});
+ return pr;
+}
+function doRoll(){
+ if(busy||!started)return;
+ busy=true;updateHUD();
+ sfx.dice();
+ var v=ri(1,6);
+ diceEl.classList.add('rolling');
+ var spinPr=Promise.resolve();
+ for(var i=0;i<9;i++){(function(){spinPr=spinPr.then(function(){setFace(ri(1,6));return wait(75);});})();}
+ spinPr.then(function(){
+  diceEl.classList.remove('rolling');setFace(v);diceVal.textContent=v;
+  var p=players[current];
+  var cur=p.pos,dir=1,steps=[];
+  for(var j=0;j<v;j++){if(cur===100)dir=-1;cur+=dir;steps.push(cur);}
+  var dest=steps[steps.length-1];
+  var isL=LADDERS[dest]!==undefined,isS=SNAKES[dest]!==undefined;
+  if(isL||isS){
+   setMsg(p.name+' melempar angka '+v+'. Bergerak satu kotak demi satu kotak...');
+   log(p.name+' melempar dadu: '+v,current);
+   return wait(300).then(function(){return walkSteps(steps);})
+    .then(function(){setMsg(p.name+' berhenti di kotak '+p.pos+'. Jawab soal HOTS-nya!');return wait(250);})
+    .then(function(){openQuestion(dest,null);});
+  }else if(dest===100){
+   setMsg(p.name+' melempar angka '+v+' dan melangkah menuju kotak 100...');
+   log(p.name+' melempar dadu: '+v,current);
+   return wait(300).then(function(){return walkSteps(steps);})
+    .then(function(){return wait(350);}).then(function(){doWin();});
+  }else{
+   setMsg(p.name+' melempar angka '+v+'. Jawab soal kotak '+dest+' dengan benar agar pion boleh maju!');
+   log(p.name+' melempar dadu: '+v+' (tujuan: kotak '+dest+')',current);
+   return wait(600).then(function(){openQuestion(dest,{steps:steps,dest:dest});});
+  }
+ });
+}
+function renderOptions(q){
+ optsEl.innerHTML='';
+ q.opts.forEach(function(o,i){
+  var b=document.createElement('button');
+  b.className='optBtn';b.type='button';
+  b.innerHTML='<span class="key">'+'abcd'[i]+'</span><span>'+esc(o)+'</span>';
+  b.addEventListener('click',function(){pickOption(i);});
+  optsEl.appendChild(b);
+ });
+}
+function openQuestion(sq,moveCtx){
+ var isL=LADDERS[sq]!==undefined,isS=SNAKES[sq]!==undefined;
+ var q=qMap[sq];
+ qCtx={sq:sq,kind:isL?'ladder':isS?'snake':'normal',q:q,attempts:0,correct:false,done:false,moveCtx:moveCtx||null};
+ if(isL){qBadge.className='badge hots';qBadge.innerHTML=STAR_BADGE+' HOTS \u2022 SOAL #'+q.n+' \u2022 KOTAK TANGGA';}
+ else if(isS){qBadge.className='badge hots';qBadge.innerHTML=STAR_BADGE+' HOTS \u2022 SOAL #'+q.n+' \u2022 KEPALA ULAR';}
+ else{qBadge.className='badge '+(q.part===1?'p1':q.part===2?'p2':'p3');
+  qBadge.textContent=partName(q.part)+' \u2022 '+(q.extra?'SOAL TAMBAHAN':'SOAL #'+q.n);}
+ var title='Kotak '+sq;
+ if(isL)title+=' \u2014 Tangga menuju '+LADDERS[sq]+' (HOTS)';
+ else if(isS)title+=' \u2014 Ular menuju '+SNAKES[sq]+' (HOTS)';
+ else if(moveCtx)title+=' \u2014 jawab benar agar pion boleh maju ke sini!';
+ qTitle.textContent=title;
+ qText.textContent=q.q;
+ if(q.fig&&FIGS[q.fig]){qFigWrap.innerHTML=FIGS[q.fig]();show(qFigWrap);}
+ else{qFigWrap.innerHTML='';hide(qFigWrap);}
+ renderOptions(q);
+ qFeedback.className='qFeedback';qFeedback.innerHTML='';
+ qExplain.className='explain';qExplain.innerHTML='';
+ btnNext.classList.add('hidden');btnSkip.classList.remove('hidden');
+ show(qOvl);
+}
+function finishQuestion(ok,feedText){
+ qCtx.done=true;qCtx.correct=ok;
+ Array.prototype.forEach.call(optsEl.children,function(b){b.disabled=true;});
+ qFeedback.className='qFeedback show '+(ok?'good':'bad');
+ qFeedback.innerHTML=(ok?OK_ICON:NO_ICON)+'<span>'+feedText+'</span>';
+ qExplain.innerHTML='<b>Pembahasan:</b> '+esc(qCtx.q.ex);qExplain.classList.add('show');
+ btnSkip.classList.add('hidden');
+ btnNext.classList.remove('hidden');
+}
+function pickOption(i){
+ if(!qCtx||qCtx.done)return;
+ var btns=Array.prototype.slice.call(optsEl.children),b=btns[i];
+ if(!b||b.disabled)return;
+ if(i===qCtx.q.ans){
+  b.classList.add('correct');sfx.good();
+  var feed=(qCtx.kind==='normal'&&qCtx.moveCtx)?'Benar! Pionmu boleh maju!':'Benar! Kerja bagus!';
+  finishQuestion(true,feed);
+ }else{
+  qCtx.attempts++;sfx.bad();
+  b.classList.add('wrong');b.disabled=true;
+  if(qCtx.kind!=='normal'||qCtx.attempts>=2){
+   btns[qCtx.q.ans].classList.add('reveal');
+   var feed='Belum tepat. Jawaban yang benar: <b>'+esc(answerText(qCtx.q))+'</b>';
+   if(qCtx.kind==='normal'&&qCtx.moveCtx)feed='Pion gagal maju. '+feed;
+   finishQuestion(false,feed);
+  }else{
+   qFeedback.className='qFeedback show bad';
+   qFeedback.innerHTML=NO_ICON+'<span>Belum tepat \u2014 pilih jawaban lain!</span>';
+   optsEl.classList.add('shake');setTimeout(function(){optsEl.classList.remove('shake');},600);
+  }
+ }
+}
+function skipQuestion(){
+ if(!qCtx||qCtx.done)return;
+ Array.prototype.forEach.call(optsEl.children,function(x){x.disabled=true;});
+ optsEl.children[qCtx.q.ans].classList.add('reveal');
+ var feed='Soal dilewati tutor. Jawaban: <b>'+esc(answerText(qCtx.q))+'</b>';
+ if(qCtx.kind==='normal'&&qCtx.moveCtx)feed='Pion gagal maju. '+feed;
+ finishQuestion(false,feed);
+}
+function resolveTurn(ctx){
+ var p=players[current],sq=ctx.sq;
+ var pr;
+ if(ctx.kind==='ladder'){
+  if(ctx.correct){
+   p.correct++;p.stars+=2;updateHUD();
+   log(p.name+' menjawab HOTS dengan benar! Naik tangga...',current);
+   pr=climbAnim(sq,LADDERS[sq]).then(function(){
+    p.pos=LADDERS[sq];refreshPawns();sfx.step();
+    log(p.name+' NAIK TANGGA dari '+sq+' ke kotak '+p.pos+'!',current);
+   });
+  }else{log(p.name+' belum berhasil menjawab, peluang naik tangga lepas. Tetap di kotak '+sq+'.',current);pr=Promise.resolve();}
+ }else if(ctx.kind==='snake'){
+  if(ctx.correct){p.correct++;p.stars+=2;log(p.name+' menjawab HOTS dengan benar! Aman dari ular, tidak turun.',current);pr=Promise.resolve();}
+  else{
+   log(p.name+' gagal menjawab... Aduh, ada ular!',current);
+   pr=slideAnim(sq).then(function(){
+    p.pos=SNAKES[sq];refreshPawns();
+    log(p.name+' TURUN dari kotak '+sq+' ke kotak '+p.pos+'.',current);
+   });
+  }
+ }else{
+  if(ctx.correct&&ctx.moveCtx){
+   p.correct++;p.stars++;updateHUD();
+   log(p.name+' menjawab benar! Pion berjalan maju...',current);
+   pr=wait(250).then(function(){return walkSteps(ctx.moveCtx.steps);})
+    .then(function(){log(p.name+' berhasil maju ke kotak '+p.pos+'. +1 bintang.',current);});
+  }else{
+   log(p.name+' gagal menjawab \u2014 pion gagal maju, tetap di kotak '+p.pos+'.',current);pr=Promise.resolve();
+  }
+ }
+ pr.then(function(){
+  updateHUD();
+  if(p.pos===100)return doWin();
+  current=1-current;busy=false;updateHUD();
+  setMsg('Giliran '+players[current].name+' \u2014 lempar dadunya!');
+ });
+}
+function climbAnim(a,b){
+ var A=cellCenter(a),B=cellCenter(b),el=pawnEls[current];
+ el.classList.add('noTrans');sfx.climb();
+ var dx=B.x-A.x,dy=B.y-A.y,L=Math.hypot(dx,dy),px=-dy/L,py=dx/L;
+ var dur=980,t0=performance.now();
+ return new Promise(function(res){(function f(now){
+  var t=Math.min(1,(now-t0)/dur);
+  var bob=Math.sin(t*Math.PI*7)*7;
+  setPawnXY(current,A.x+dx*t+px*bob,A.y+dy*t+py*bob);
+  if(t<1)requestAnimationFrame(f);else{el.classList.remove('noTrans');res();}
+ })(t0);});
+}
+function slideAnim(head){
+ var path=snakePaths[head],el=pawnEls[current];
+ el.classList.add('noTrans');sfx.slide();
+ var len=path.getTotalLength(),dur=Math.min(1600,600+len*1.1),t0=performance.now();
+ return new Promise(function(res){(function f(now){
+  var t=Math.min(1,(now-t0)/dur),e=t*t;
+  var pt=path.getPointAtLength(e*len);
+  setPawnXY(current,pt.x,pt.y);
+  if(t<1)requestAnimationFrame(f);else{el.classList.remove('noTrans');res();}
+ })(t0);});
+}
+
+/* ================= MENANG ================= */
+function doWin(){
+ busy=true;lastWinner=current;updateHUD();
+ var p=players[current];
+ sfx.win();
+ log(p.name+' mencapai kotak 100 \u2014 PEMENANGNYA!',current);
+ setMsg('Permainan selesai. '+p.name+' menang!');
+ $('#winName').textContent=p.name;
+ $('#winStats').innerHTML=players.map(function(pl,i){
+  return '<div class="wrow"><span class="pdot" style="background:'+PCOL[i]+'"></span><b>'+esc(pl.name)+'</b>'
+   +' <span>\u2022 Kotak akhir: <b>'+pl.pos+'</b></span><span>\u2022 Bintang: <b>'+pl.stars+'</b></span>'
+   +' <span>\u2022 Benar: <b>'+pl.correct+'</b> soal</span>'+(i===current?'<span class="winTag">JUARA</span>':'')+'</div>';
+ }).join('');
+ spawnConfetti();show(winOvl);
+}
+function spawnConfetti(){
+ var box=$('#confetti');box.innerHTML='';
+ var cols=['#e8590c','#0ca678','#ffd43b','#d6336c','#1098ad','#2f9e44'];
+ for(var i=0;i<90;i++){var s=document.createElement('i');
+  s.style.left=Math.random()*100+'%';
+  s.style.background=pick(cols);
+  s.style.width=(7+Math.random()*7)+'px';s.style.height=(10+Math.random()*8)+'px';
+  s.style.borderRadius=Math.random()<.4?'50%':'2px';
+  s.style.animationDuration=(2.6+Math.random()*2.6)+'s';
+  s.style.animationDelay=(Math.random()*1.6)+'s';
+  box.appendChild(s);}
+}
+
+/* ================= KUNCI TUTOR ================= */
+function buildKey(){
+ var h='';
+ var zones=[
+  {p:1,name:'MUDAH \u2014 Bab 1 &amp; 2: Bilangan Cacah, Nilai Tempat &amp; Operasi Hitung (Soal 1\u201324)'},
+  {p:2,name:'SEDANG \u2014 Bab 3, 4 &amp; 5: Faktor/Kelipatan/KPK/FPB, Pecahan &amp; Satuan Panjang-Berat (Soal 25\u201357)'},
+  {p:3,name:'SULIT \u2014 Bab 6, 7 &amp; 8: Pola Bilangan &amp; Gambar, Poligon, Titik-Garis-Sudut (Soal 58\u201387)'}
+ ];
+ zones.forEach(function(z){
+  var items=Object.keys(qMap).map(Number).filter(function(b){return qMap[b].part===z.p;}).sort(function(a,b){return a-b;});
+  h+='<details'+(z.p===1?' open':'')+'><summary>'+z.name+' ('+items.length+' kotak)</summary>';
+  items.forEach(function(b){var q=qMap[b];
+   var label=q.extra?' <i>(soal tambahan)</i>':' \u2014 Soal #'+q.n;
+   h+='<div class="kitem"><b>Kotak '+b+'</b>'+label+': '+esc(q.q)
+    +'<br><b>Jawaban: '+esc(answerText(q))+'</b> <i>'+esc(q.ex)+'</i></div>';});
+  h+='</details>';
+ });
+ var hItems=Object.keys(qMap).map(Number).filter(function(b){return qMap[b].part===4;}).sort(function(a,b){return a-b;});
+ h+='<details open><summary>HOTS \u2014 Bab 9: Ciri-Ciri Bangun Datar (Soal 88\u2013100 + tambahan) \u2022 Kotak Tangga &amp; Kepala Ular ('+hItems.length+' kotak)</summary>';
+ hItems.forEach(function(b){var q=qMap[b];
+  var label=q.extra?' <i>(soal tambahan)</i>':' \u2014 Soal #'+q.n;
+  h+='<div class="kitem"><b>Kotak '+b+'</b>'+label+': '+esc(q.q)
+   +'<br><b>Jawaban: '+esc(answerText(q))+'</b> <i>'+esc(q.ex)+'</i></div>';});
+ h+='</details>';
+ if(reserveList.length){
+  h+='<details><summary>Soal cadangan ronde ini ('+reserveList.length+' soal)</summary>';
+  reserveList.forEach(function(q){h+='<div class="kitem"><b>Soal #'+q.n+'</b>: '+esc(q.q)
+   +'<br><b>Jawaban: '+esc(answerText(q))+'</b> <i>'+esc(q.ex)+'</i></div>';});
+  h+='</details>';
+ }
+ $('#keyBody').innerHTML=h;
+}
+
+/* ================= MULAI / ULANG ================= */
+function startGame(){
+ try{
+  var n1=($('#inName1').value||'').trim()||'Pemain 1';
+  var n2=($('#inName2').value||'').trim()||'Pemain 2';
+  players=[{name:n1.slice(0,14),pos:1,stars:0,correct:0},{name:n2.slice(0,14),pos:1,stars:0,correct:0}];
+  current=0;busy=false;started=true;lastWinner=-1;
+  pawnEls.forEach(function(e){e.remove();});pawnEls=[];
+  players.forEach(function(p,i){
+   var e=document.createElement('div');
+   e.className='pawn x'+i;e.textContent=p.name.charAt(0).toUpperCase();
+   board.appendChild(e);pawnEls.push(e);
+  });
+  buildQuestionMap();buildCells();drawOverlay();buildKey();
+  pawnEls.forEach(function(e){e.classList.add('noTrans');});
+  refreshPawns();
+  requestAnimationFrame(function(){requestAnimationFrame(function(){pawnEls.forEach(function(e){e.classList.remove('noTrans');});});});
+  updateHUD();hide(setupOvl);clearLog();
+  log('Permainan dimulai! Semua pion berdiri di kotak 1. Semangat!');
+  setMsg('Giliran '+players[0].name+' \u2014 lempar dadunya!');
+ }catch(err){
+  setMsg('Gagal memulai: '+err.message);
+ }
+}
+function resetGame(){
+ players.forEach(function(p){p.pos=1;p.stars=0;p.correct=0;});
+ current=(lastWinner===1)?0:1; // yang kalah jalan lebih dulu di ronde baru
+ buildQuestionMap();buildCells();drawOverlay();buildKey();
+ pawnEls.forEach(function(e){e.classList.add('noTrans');});
+ refreshPawns();
+ requestAnimationFrame(function(){requestAnimationFrame(function(){pawnEls.forEach(function(e){e.classList.remove('noTrans');});});});
+ busy=false;started=true;clearLog();updateHUD();
+ setMsg('Ronde baru! Giliran '+players[current].name+' \u2014 lempar dadunya!');
+ log('Ronde baru dimulai. '+players[current].name+' jalan pertama.');
+}
+
+/* ================= EVENT ================= */
+btnRoll.addEventListener('click',doRoll);
+ $('#btnAgain').addEventListener('click',function(){hide(winOvl);resetGame();});
+ $('#btnNew').addEventListener('click',function(){hide(winOvl);started=false;busy=false;show(setupOvl);});
+ $('#btnKey').addEventListener('click',function(){show(keyOvl);});
+ $('#btnKeyClose').addEventListener('click',function(){hide(keyOvl);});
+ $('#btnHow').addEventListener('click',function(){show(howOvl);});
+ $('#btnHowClose').addEventListener('click',function(){hide(howOvl);});
+ $('#btnSound').addEventListener('click',function(e){e.target.textContent='Suara: '+(sfx.toggle()?'OFF':'ON');});
+[ $('#inName1'), $('#inName2') ].forEach(function(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter')startGame();});});
+btnSkip.addEventListener('click',skipQuestion);
+btnNext.addEventListener('click',function(){if(!qCtx)return;hide(qOvl);var ctx=qCtx;qCtx=null;resolveTurn(ctx);});
+window.addEventListener('keydown',function(e){
+ if(!qOvl.classList.contains('hidden')&&qCtx&&!qCtx.done){
+  var map={a:0,b:1,c:2,d:3,'1':0,'2':1,'3':2,'4':3};
+  var k=e.key.toLowerCase();
+  if(k in map&&map[k]<qCtx.q.opts.length){e.preventDefault();pickOption(map[k]);return;}
+  if(e.key==='Enter'&&!btnNext.classList.contains('hidden')){e.preventDefault();btnNext.click();}
+  return;
+ }
+ if(e.code==='Space'&&started&&!busy&&!anyOvl()){e.preventDefault();doRoll();}
+});
+function anyOvl(){return[setupOvl,qOvl,winOvl,keyOvl,howOvl].some(function(o){return !o.classList.contains('hidden');});}
+
+/* ================= INISIALISASI ================= */
+ $('#setupRules').innerHTML=RULES_HTML;
+ $('#howBody').innerHTML='<div class="rules">'+RULES_HTML+'</div>';
+buildQuestionMap();buildCells();drawOverlay();setFace(5);diceVal.textContent='\u2013';
+</script>
+</body>
+</html>
