@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan Olimpiade Matematika — Bank Soal 8 Bab</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif;background:linear-gradient(135deg,#eef2ff 0%,#f5f3ff 45%,#fdf2f8 100%);min-height:100vh;color:#1e293b}
+.wrap{max-width:940px;margin:0 auto;padding:24px 16px 56px}
+.slide{display:none}.slide.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hidden{display:none!important}
+.card{background:#fff;border-radius:18px;box-shadow:0 10px 30px rgba(79,70,229,.08);padding:26px}
+/* ===== COVER ===== */
+.cover{background:linear-gradient(135deg,#4f46e5,#7c3aed 55%,#c026d3);border-radius:26px;color:#fff;padding:46px 28px;text-align:center;box-shadow:0 20px 50px rgba(79,70,229,.35)}
+.logo{font-size:34px;letter-spacing:10px;opacity:.55}
+.cover h1{font-size:clamp(26px,4.5vw,40px);margin:10px 0 8px}
+.cover .sub{opacity:.94;max-width:660px;margin:0 auto 22px;line-height:1.55;font-size:15px}
+.cover-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);border-radius:16px;padding:22px;max-width:470px;margin:0 auto 18px;text-align:left}
+.cover-card label{font-weight:700;font-size:14px}
+.cover-card input{width:100%;padding:13px 16px;border-radius:12px;border:2px solid transparent;font-size:16px;margin:10px 0 14px;outline:none}
+.cover-card input:focus{border-color:#fde68a}
+.btn{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;padding:12px 22px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;transition:.2s;box-shadow:0 6px 16px rgba(79,70,229,.25)}
+.btn:hover:not(:disabled){transform:translateY(-1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn.ghost{background:#f1f5f9;color:#334155;box-shadow:none}
+.btn.wide{width:100%}
+.err{color:#fde68a;font-size:13px;font-weight:600;min-height:18px}
+.chip{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);padding:6px 14px;border-radius:999px;font-size:12.5px;margin:3px}
+.how{font-size:13px;opacity:.92;margin-top:14px;line-height:1.7;max-width:680px;margin-left:auto;margin-right:auto}
+/* ===== BADGE / TIMER ===== */
+.badge{display:inline-block;padding:5px 12px;border-radius:999px;font-size:12.5px;font-weight:700}
+.b-bab{background:#e0e7ff;color:#3730a3}.b-mudah{background:#dcfce7;color:#15803d}
+.b-sedang{background:#ffedd5;color:#9a3412}.b-hots{background:#fee2e2;color:#b91c1c}
+.b-num{background:#f1f5f9;color:#475569}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:20px;padding:8px 16px;border-radius:12px;background:#f1f5f9;color:#0f172a;white-space:nowrap}
+.timer.warn{background:#fef3c7;color:#b45309}
+.timer.danger{background:#fee2e2;color:#b91c1c;animation:pulse 1s infinite}
+.timer.done{background:#f1f5f9;color:#475569;font-size:15px}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+/* ===== TOPBAR ===== */
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.who{font-weight:700;font-size:14px;white-space:nowrap}
+.pwrap{flex:1;min-width:180px}
+.pbar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+.pfill{height:100%;width:0%;background:linear-gradient(90deg,#4f46e5,#c026d3);border-radius:99px;transition:width .4s}
+.ptext{font-size:12px;color:#64748b;margin-top:4px}
+/* ===== QUIZ ===== */
+.qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.qmeta{display:flex;gap:8px;flex-wrap:wrap}
+.qtext{font-size:17px;line-height:1.7;margin:18px 0 4px}
+.opts{display:flex;flex-direction:column;gap:10px;margin:18px 0}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border:2px solid #e2e8f0;border-radius:12px;cursor:pointer;transition:.15s;line-height:1.55;background:#fff}
+.opt:hover{border-color:#a5b4fc;background:#eef2ff}
+.opt .letter{flex:0 0 30px;height:30px;border-radius:9px;background:#f1f5f9;font-weight:800;display:grid;place-items:center;font-size:14px;color:#475569}
+.opt.sel{border-color:#6366f1;background:#eef2ff}
+.opt.sel .letter{background:#6366f1;color:#fff}
+.opt.correct{border-color:#22c55e;background:#f0fdf4}
+.opt.correct .letter{background:#22c55e;color:#fff}
+.opt.wrong{border-color:#ef4444;background:#fef2f2}
+.opt.wrong .letter{background:#ef4444;color:#fff}
+.opt.dis{pointer-events:none}
+.fb{padding:14px 16px;border-radius:12px;margin:14px 0;line-height:1.6;font-size:15px}
+.fb.ok{background:#dcfce7;color:#14532d}.fb.no{background:#fee2e2;color:#7f1d1d}.fb.none{background:#f1f5f9;color:#334155}
+.exp{display:none;background:#f8fafc;border-left:4px solid #6366f1;padding:14px 16px;border-radius:0 12px 12px 0;margin:6px 0 14px;line-height:1.7;font-size:14.5px}
+.exp.show{display:block}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.done-tag{color:#15803d;font-weight:700;font-size:14.5px}
+.navrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap;border-top:1px dashed #e2e8f0;padding-top:16px}
+.hint{font-size:12.5px;color:#64748b;text-align:center;flex:1;min-width:200px}
+/* pecahan */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.15;margin:0 3px}
+.fr b{border-bottom:1.6px solid currentColor;padding:0 7px;font-weight:600}
+.fr i{font-style:normal;padding:0 7px}
+/* ===== NAVIGASI NOMOR 1-80 ===== */
+.ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:8px}
+.nbtn{border:2px solid #e2e8f0;background:#fff;border-radius:10px;padding:9px 0;font-weight:700;font-size:13.5px;cursor:pointer;color:#475569;transition:.15s;font-family:inherit}
+.nbtn:hover:not(:disabled){transform:translateY(-2px);border-color:#a5b4fc}
+.nbtn.cur{border-color:#6366f1;box-shadow:0 0 0 3px #e0e7ff;color:#4f46e5}
+.nbtn.ok{background:#dcfce7;border-color:#86efac;color:#15803d}
+.nbtn.bad{background:#fee2e2;border-color:#fca5a5;color:#b91c1c}
+.nbtn.blank{background:#fef9c3;border-color:#fde047;color:#a16207}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#64748b;margin:12px 0 14px}
+.legend span{display:flex;align-items:center;gap:6px}
+.dot{width:14px;height:14px;border-radius:5px;border:2px solid #e2e8f0;background:#fff;display:inline-block}
+.dot.ok{background:#dcfce7;border-color:#86efac}
+.dot.bad{background:#fee2e2;border-color:#fca5a5}
+.dot.blank{background:#fef9c3;border-color:#fde047}
+.dot.cur{background:#eef2ff;border-color:#6366f1}
+/* ===== HASIL ===== */
+.res-head h2{margin-bottom:6px}.res-head p{font-size:14px;color:#475569}
+.hero{display:flex;gap:20px;align-items:center;margin:20px 0;flex-wrap:wrap}
+.hero-score{font-size:58px;font-weight:800;line-height:1;background:linear-gradient(135deg,#4f46e5,#c026d3);-webkit-background-clip:text;background-clip:text;color:#6d28d9}
+.hero-score small{font-size:26px}
+.hero-t{font-weight:800;margin-bottom:8px}
+.hero-s{font-size:13.5px;color:#64748b;margin-top:8px;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:6px}
+.stat{border-radius:16px;padding:16px;text-align:center;color:#fff}
+.stat span{font-size:12.5px;opacity:.92}.stat b{font-size:34px;display:block;margin-top:2px}
+.st-g{background:linear-gradient(135deg,#16a34a,#22c55e)}.st-r{background:linear-gradient(135deg,#dc2626,#f87171)}
+.st-n{background:linear-gradient(135deg,#64748b,#94a3b8)}.st-t{background:linear-gradient(135deg,#4f46e5,#818cf8)}
+.sec-t{margin-bottom:12px;color:#3730a3}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:10px 8px;border-bottom:1px solid #e2e8f0;text-align:center;vertical-align:middle}
+th{background:#f8fafc;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#475569}
+td.left,th.left{text-align:left}
+.accwrap{display:flex;align-items:center;gap:7px;justify-content:center}
+.accbar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;width:72px}
+.accfill{height:100%;background:linear-gradient(90deg,#4f46e5,#a855f7);border-radius:99px}
+.tag{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap;display:inline-block}
+.st-ok{background:#dcfce7;color:#15803d}.st-mid{background:#e0f2fe;color:#075985}
+.st-mid2{background:#fef3c7;color:#b45309}.st-bad{background:#fee2e2;color:#b91c1c}.st-none{background:#f1f5f9;color:#64748b}
+.kesimpulan p{margin:9px 0;line-height:1.7;font-size:14.5px}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}
+.mcard{border:1px solid #e2e8f0;border-radius:14px;padding:14px}
+.mh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:7px}
+.mh h4{font-size:13.5px;color:#3730a3}
+.mcard p{font-size:12.8px;line-height:1.6;color:#475569}
+/* ===== MODAL ===== */
+.modal-wrap{position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal-wrap.hidden{display:none}
+.modal{max-width:440px;width:100%;animation:fade .25s}
+.modal.wide{max-width:560px;max-height:80vh;overflow-y:auto}
+.modal h3{margin-bottom:10px}.modal p{font-size:14.5px;line-height:1.6}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+@media print{.topbar,.navrow,.actions,#modalWrap{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== SLIDE 1 : COVER ===== -->
+  <section id="sCover" class="slide active">
+    <div class="cover">
+      <div class="logo">∑ √ π ∞ ∠ ÷</div>
+      <h1>Latihan Olimpiade Matematika 🏆</h1>
+      <p class="sub">Modul Bank Soal &amp; Pembahasan — 8 Bab Utama Kurikulum Menengah<br>
+      <b>80 butir soal bertingkat</b> (Mudah • Sedang • HOTS) lengkap dengan timer otomatis, pembahasan, dan analisis hasil.</p>
+      <div class="cover-card">
+        <label for="inpName">👤 Nama Siswa</label>
+        <input id="inpName" maxlength="40" placeholder="Tulis nama lengkapmu di sini…" autocomplete="off">
+        <button class="btn wide" id="btnStart">🚀 Mulai Latihan</button>
+        <p class="err" id="errName"></p>
+      </div>
+      <div>
+        <span class="chip">📖 8 Bab • 80 Soal</span>
+        <span class="chip">🟢 Mudah : 3 menit/soal (24 soal)</span>
+        <span class="chip">🟠 Sedang : 5 menit/soal (32 soal)</span>
+        <span class="chip">🔴 HOTS : 7 menit/soal (24 soal)</span>
+        <span class="chip">⏱ Total alokasi ± 400 menit</span>
+      </div>
+      <p class="how">① Timer berjalan otomatis saat soal dibuka &nbsp;② Tekan <b>✅ Cek Jawaban</b> — waktu berhenti &amp; tercatat &nbsp;③ Membuka soal berikutnya → timer direset &nbsp;④ Setiap soal memiliki <b>Pembahasan</b> &nbsp;⑤ Gunakan tombol <b>☰ Nomor Soal</b> untuk melompat ke soal mana pun &nbsp;⑥ Di akhir sesi: <b>Finish Exam</b> → analisis per bab + kesimpulan materi.</p>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE SOAL ===== -->
+  <section id="sQuiz" class="slide">
+    <div class="topbar">
+      <span class="who" id="whoName">👤 Siswa</span>
+      <div class="pwrap"><div class="pbar"><div class="pfill" id="pfill"></div></div><div class="ptext" id="ptext"></div></div>
+      <button class="btn ghost" id="btnNav">☰ Nomor Soal</button>
+      <button class="btn ghost" id="btnFinish">🏁 Selesai Ujian</button>
+    </div>
+    <div id="quizBox" class="card"></div>
+  </section>
+
+  <!-- ===== SLIDE HASIL ===== -->
+  <section id="sResult" class="slide"><div id="resBox"></div></section>
+</div>
+
+<!-- MODAL -->
+<div id="modalWrap" class="modal-wrap hidden">
+  <div class="modal card" id="modalCard">
+    <h3 id="mTitle"></h3>
+    <div id="mBody"></div>
+    <div id="mBtns" class="modal-btns"></div>
+  </div>
+</div>
+
+<script>
+/* ================= KONFIGURASI ================= */
+const DIFF={mudah:{t:180,label:'Mudah'},sedang:{t:300,label:'Sedang'},hots:{t:420,label:'HOTS'}};
+const BAB=['Himpunan','Garis dan Sudut','Barisan dan Deret','Bilangan Bulat','Bilangan Rasional','Rasio dan Perbandingan','Persamaan Linear (PLSV)','Logika Matematika'];
+const LET=['A','B','C','D'];
+
+/* ================= DATA 80 SOAL (d, q, o, a=kunci, e=pembahasan) ================= */
+const Q=[
+/* ===== BAB 1 : HIMPUNAN ===== */
+{d:'mudah',q:`Diketahui himpunan A = {1, 2, 3, 4, 5, 6} dan B = {2, 4, 6, 8, 10}. Irisan dari himpunan A dan B (A ∩ B) adalah …`,
+ o:[`{1, 3, 5}`,`{2, 4, 6}`,`{8, 10}`,`{1, 2, 3, 4, 5, 6, 8, 10}`],a:1,
+ e:`Irisan (A ∩ B) adalah himpunan anggota yang dimiliki bersama oleh A dan B. Dari A = {1, 2, 3, 4, 5, 6} dan B = {2, 4, 6, 8, 10}, anggota yang sama adalah {2, 4, 6}.`},
+{d:'mudah',q:`Diketahui himpunan P = {x | x &lt; 12, x bilangan prima}. Kardinalitas himpunan P atau n(P) adalah …`,
+ o:[`4`,`5`,`6`,`7`],a:1,
+ e:`Bilangan prima kurang dari 12 adalah P = {2, 3, 5, 7, 11}, sehingga banyak anggotanya n(P) = 5.`},
+{d:'mudah',q:`Diketahui himpunan semesta S = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, K = {1, 3, 5, 7}, dan L = {2, 3, 5, 7}. Komplemen dari gabungan himpunan K dan L, yaitu (K ∪ L)<sup>c</sup>, adalah …`,
+ o:[`{4, 6, 8, 9, 10}`,`{1, 2, 4, 6, 8}`,`{3, 5, 7}`,`{2, 4, 6, 8, 9, 10}`],a:0,
+ e:`Gabungan K ∪ L = {1, 2, 3, 5, 7}. Komplemennya terhadap S adalah semua anggota S di luar K ∪ L, yaitu (K ∪ L)<sup>c</sup> = {4, 6, 8, 9, 10}.`},
+{d:'sedang',q:`Jika n(A) = 18, n(B) = 15, dan n(A ∩ B) = 7, maka nilai dari n(A ∪ B) adalah …`,
+ o:[`24`,`26`,`33`,`40`],a:1,
+ e:`Gunakan rumus kardinalitas gabungan: n(A ∪ B) = n(A) + n(B) − n(A ∩ B) = 18 + 15 − 7 = 26.`},
+{d:'sedang',q:`Diketahui himpunan semesta S = {x | 1 ≤ x ≤ 15, x ∈ bilangan asli}, M = {faktor dari 12}, dan N = {bilangan kelipatan 3 kurang dari 15}. Hasil dari M ∩ N<sup>c</sup> adalah …`,
+ o:[`{1, 2, 4}`,`{3, 6, 12}`,`{1, 2, 3, 4}`,`{9, 15}`],a:0,
+ e:`M = {1, 2, 3, 4, 6, 12} dan N = {3, 6, 9, 12}. M ∩ N<sup>c</sup> sama artinya dengan selisih himpunan M − N (anggota M yang bukan anggota N), yaitu {1, 2, 4}.`},
+{d:'sedang',q:`Dalam sebuah kelas yang terdiri dari 35 siswa, terdapat 22 siswa gemar Matematika, 18 siswa gemar Bahasa Inggris, dan 5 siswa tidak gemar keduanya. Banyak siswa yang gemar Matematika sekaligus Bahasa Inggris adalah …`,
+ o:[`8 siswa`,`10 siswa`,`12 siswa`,`15 siswa`],a:1,
+ e:`n(M ∪ I) = 35 − 5 = 30. Maka n(M ∪ I) = n(M) + n(I) − x ⇒ 30 = 22 + 18 − x ⇒ x = 10 siswa.`},
+{d:'sedang',q:`Dari 40 warga di suatu RT, 25 orang berlangganan koran, 18 orang berlangganan majalah, dan 7 orang berlangganan keduanya. Banyak warga yang <b>hanya</b> berlangganan koran saja adalah …`,
+ o:[`11 orang`,`15 orang`,`18 orang`,`25 orang`],a:2,
+ e:`Warga yang hanya berlangganan koran = n(Koran) − n(Koran ∩ Majalah) = 25 − 7 = 18 orang.`},
+{d:'hots',q:`Sebuah survei terhadap 100 mahasiswa mengenai penguasaan bahasa pemrograman menunjukkan hasil berikut: 45 menguasai Python, 50 menguasai Java, 40 menguasai C++, 20 menguasai Python dan Java, 15 menguasai Java dan C++, 12 menguasai Python dan C++, serta 10 mahasiswa tidak menguasai ketiganya. Banyak mahasiswa yang menguasai ketiga bahasa pemrograman tersebut adalah …`,
+ o:[`2 mahasiswa`,`5 mahasiswa`,`7 mahasiswa`,`8 mahasiswa`],a:0,
+ e:`n(P ∪ J ∪ C) = 100 − 10 = 90. Dengan rumus inklusi–eksklusi 3 himpunan: 90 = (45 + 50 + 40) − (20 + 15 + 12) + x = 88 + x ⇒ x = 2 mahasiswa.`},
+{d:'hots',q:`Diketahui n(S) = 60, n(A<sup>c</sup>) = 25, n(B<sup>c</sup>) = 32, dan n((A ∪ B)<sup>c</sup>) = 10. Banyaknya anggota himpunan yang berada di dalam (A ∩ B) adalah …`,
+ o:[`11`,`13`,`15`,`17`],a:1,
+ e:`n(A) = 60 − 25 = 35; n(B) = 60 − 32 = 28; n(A ∪ B) = 60 − 10 = 50. Maka n(A ∩ B) = n(A) + n(B) − n(A ∪ B) = 35 + 28 − 50 = 13.`},
+{d:'hots',q:`Di suatu sekolah, perbandingan jumlah siswa yang mengikuti ekstrakurikuler Basket dan Futsal adalah 5 : 4. Jika terdapat 12 siswa yang mengikuti keduanya, 8 siswa tidak mengikuti keduanya, dan total seluruh siswa yang disurvei adalah 52 orang, maka banyak siswa yang <b>hanya</b> mengikuti Basket saja adalah …`,
+ o:[`12 orang`,`18 orang`,`20 orang`,`30 orang`],a:1,
+ e:`Dengan rasio 5 : 4 diambil k = 6 sehingga n(Basket) = 30 dan n(Futsal) = 24. Banyak siswa yang hanya mengikuti Basket = 30 − 12 = 18 orang.`},
+/* ===== BAB 2 : GARIS DAN SUDUT ===== */
+{d:'mudah',q:`Besar sebuah sudut adalah 38°. Besar sudut penyiku (komplemen) dari sudut tersebut adalah …`,
+ o:[`42°`,`52°`,`62°`,`142°`],a:1,
+ e:`Sudut berpenyiku berjumlah 90°. Penyiku = 90° − 38° = 52°.`},
+{d:'mudah',q:`Dua buah sudut saling berpelurus (suplemen). Jika salah satu sudut besarnya 115°, maka besar sudut yang lainnya adalah …`,
+ o:[`55°`,`65°`,`75°`,`85°`],a:1,
+ e:`Sudut berpelurus berjumlah 180°. Pelurus = 180° − 115° = 65°.`},
+{d:'mudah',q:`Pada segitiga ABC, diketahui besar ∠A = 55° dan ∠B = 65°. Besar ∠C adalah …`,
+ o:[`50°`,`60°`,`70°`,`80°`],a:1,
+ e:`Jumlah sudut dalam segitiga adalah 180°. Maka ∠C = 180° − (55° + 65°) = 60°.`},
+{d:'sedang',q:`Dua garis sejajar k dan l dipotong oleh garis transversal m. Diketahui pasangan sudut dalam berseberangan berukuran (3x + 15)° dan (5x − 25)°. Nilai x dan besar sudut tersebut berturut-turut adalah …`,
+ o:[`x = 15 dan 60°`,`x = 20 dan 75°`,`x = 20 dan 85°`,`x = 25 dan 90°`],a:1,
+ e:`Sudut dalam berseberangan sama besar: 3x + 15 = 5x − 25 ⇒ 2x = 40 ⇒ x = 20. Besar sudutnya = 3(20)° + 15° = 75°.`},
+{d:'sedang',q:`Empat buah sudut berpusat pada satu titik dan membentuk satu putaran penuh (360°). Keempat sudut tersebut masing-masing berukuran 2x°, (3x + 10)°, (4x − 20)°, dan (x + 10)°. Besar sudut terbesar dari keempat sudut tersebut adalah …`,
+ o:[`118°`,`124°`,`136°`,`144°`],a:1,
+ e:`2x + (3x + 10) + (4x − 20) + (x + 10) = 360 ⇒ 10x = 360 ⇒ x = 36. Keempat sudut: 72°, 118°, 124°, 46° — sudut terbesar adalah 124°.`},
+{d:'sedang',q:`Besar sudut terkecil yang dibentuk oleh jarum pendek (jam) dan jarum panjang (menit) pada pukul 04.30 adalah …`,
+ o:[`30°`,`45°`,`60°`,`75°`],a:1,
+ e:`Rumus sudut jam pukul H.M: θ = |30H − 5,5M|. Untuk pukul 04.30: θ = |30(4) − 5,5(30)| = |120 − 165| = 45°.`},
+{d:'sedang',q:`Dua garis sejajar dipotong oleh sebuah garis transversal. Jika sepasang sudut dalam sepihak memiliki perbandingan 4 : 5, maka selisih kedua sudut tersebut adalah …`,
+ o:[`15°`,`20°`,`25°`,`30°`],a:1,
+ e:`Sudut dalam sepihak berjumlah 180°. Dengan rasio 4 : 5, selisih = (5−4)/(4+5) × 180° = 1/9 × 180° = 20°.`},
+{d:'hots',q:`Perbandingan antara pelurus dan penyiku dari suatu sudut x adalah 7 : 2. Besar sudut (2x − 15°) adalah …`,
+ o:[`54°`,`93°`,`108°`,`123°`],a:1,
+ e:`(180° − x)/(90° − x) = 7/2 ⇒ 2(180° − x) = 7(90° − x) ⇒ 360° − 2x = 630° − 7x ⇒ 5x = 270° ⇒ x = 54°. Maka 2x − 15° = 2(54°) − 15° = 93°.`},
+{d:'hots',q:`Pada △PQR, sisi PQ diperpanjang hingga titik S sehingga terbentuk sudut luar ∠RQS = (5x − 10)°. Jika besar ∠QPR = (2x + 15)° dan ∠PRQ = (x + 25)°, maka besar ∠PQR adalah …`,
+ o:[`55°`,`65°`,`75°`,`115°`],a:1,
+ e:`Sifat sudut luar segitiga: ∠RQS = ∠QPR + ∠PRQ ⇒ 5x − 10 = (2x + 15) + (x + 25) ⇒ 2x = 50 ⇒ x = 25. Besar ∠RQS = 115°, sehingga ∠PQR (berpelurus dengan ∠RQS) = 180° − 115° = 65°.`},
+{d:'hots',q:`Pada rentang waktu antara pukul 07.00 dan 08.00, jarum jam dan jarum menit akan membentuk sudut siku-siku (90°) untuk pertama kalinya pada pukul 07 lewat t menit. Nilai t yang tepat adalah …`,
+ o:[`20<span class="fr"><b>5</b><i>11</i></span> menit`,`21<span class="fr"><b>9</b><i>11</i></span> menit`,`22<span class="fr"><b>3</b><i>11</i></span> menit`,`23<span class="fr"><b>7</b><i>11</i></span> menit`],a:1,
+ e:`Pada pukul 07.00, jarum jam berada di posisi 30(7) = 210°. Agar membentuk 90° pertama kali: 210 − 5,5t = 90 ⇒ 5,5t = 120 ⇒ t = 240/11 = 21 9/11 menit.`},
+/* ===== BAB 3 : BARISAN DAN DERET ===== */
+{d:'mudah',q:`Diketahui barisan aritmatika: 4, 9, 14, 19, … Suku ke-15 (U<sub>15</sub>) dari barisan tersebut adalah …`,
+ o:[`69`,`74`,`79`,`84`],a:1,
+ e:`Diketahui a = 4 dan b = 9 − 4 = 5. Maka U<sub>15</sub> = a + 14b = 4 + 14(5) = 74.`},
+{d:'mudah',q:`Jumlah 10 suku pertama (S<sub>10</sub>) dari deret aritmatika 3 + 7 + 11 + 15 + … adalah …`,
+ o:[`190`,`205`,`210`,`220`],a:2,
+ e:`Diketahui a = 3 dan b = 4. Maka S<sub>10</sub> = 10/2 (2a + 9b) = 5(6 + 36) = 5 × 42 = 210.`},
+{d:'mudah',q:`Diketahui barisan geometri: 3, 6, 12, 24, … Suku ke-8 (U<sub>8</sub>) dari barisan tersebut adalah …`,
+ o:[`192`,`384`,`512`,`768`],a:1,
+ e:`Diketahui a = 3 dan rasio r = 6/3 = 2. Maka U<sub>8</sub> = a · r<sup>7</sup> = 3 × 2<sup>7</sup> = 3 × 128 = 384.`},
+{d:'sedang',q:`Suatu barisan aritmatika memiliki suku ke-4 sebesar 17 dan suku ke-9 sebesar 37. Jumlah 12 suku pertama (S<sub>12</sub>) dari barisan tersebut adalah …`,
+ o:[`312`,`324`,`336`,`348`],a:1,
+ e:`U<sub>9</sub> − U<sub>4</sub> = 5b ⇒ 37 − 17 = 5b ⇒ b = 4, lalu a = 17 − 3(4) = 5. Maka S<sub>12</sub> = 12/2 (2(5) + 11(4)) = 6 × 54 = 324.`},
+{d:'sedang',q:`Suatu barisan geometri dengan rasio positif memiliki suku ke-2 (U<sub>2</sub> = 6) dan suku ke-5 (U<sub>5</sub> = 162). Suku ke-7 (U<sub>7</sub>) dari barisan tersebut adalah …`,
+ o:[`486`,`972`,`1.458`,`2.187`],a:2,
+ e:`U<sub>5</sub>/U<sub>2</sub> = r<sup>3</sup> ⇒ 162/6 = 27 ⇒ r = 3. Maka U<sub>7</sub> = U<sub>5</sub> · r<sup>2</sup> = 162 × 9 = 1.458.`},
+{d:'sedang',q:`Di dalam sebuah gedung pertunjukan terdapat 15 baris kursi. Baris paling depan terdiri dari 20 kursi, baris kedua 24 kursi, baris ketiga 28 kursi, dan seterusnya selalu bertambah tetap. Kapasitas total kursi di dalam gedung tersebut adalah …`,
+ o:[`680 kursi`,`720 kursi`,`750 kursi`,`780 kursi`],a:1,
+ e:`Deret aritmatika dengan n = 15, a = 20, b = 4. S<sub>15</sub> = 15/2 (2(20) + 14(4)) = 15/2 × 96 = 15 × 48 = 720 kursi.`},
+{d:'sedang',q:`Suatu koloni bakteri membelah diri menjadi 2 setiap 20 menit. Jika pada pukul 09.00 terdapat 25 bakteri, maka banyak bakteri pada pukul 11.00 di hari yang sama adalah …`,
+ o:[`800 bakteri`,`1.600 bakteri`,`3.200 bakteri`,`6.400 bakteri`],a:1,
+ e:`Rentang 09.00 hingga 11.00 = 120 menit ⇒ n = 120/20 = 6 periode pembelahan. Banyak bakteri akhir = 25 × 2<sup>6</sup> = 25 × 64 = 1.600 bakteri.`},
+{d:'hots',q:`Jumlah seluruh bilangan bulat antara 100 dan 300 yang habis dibagi 6 tetapi <b>tidak</b> habis dibagi 9 adalah …`,
+ o:[`4.356`,`4.422`,`4.554`,`6.534`],a:0,
+ e:`Habis dibagi 6: barisan 102, 108, …, 294 dengan n = 33, jumlah = 33/2 (396) = 6.534. Habis dibagi 6 dan 9 (KPK = 18): barisan 108, 126, …, 288 dengan n = 11, jumlah = 11/2 (396) = 2.178. Jadi jawaban = 6.534 − 2.178 = 4.356.`},
+{d:'hots',q:`Tiga buah bilangan positif membentuk barisan aritmatika dengan jumlah 21. Jika suku kedua dikurangi 1 dan suku ketiga ditambah 6, maka ketiga bilangan tersebut membentuk barisan geometri. Hasil kali ketiga bilangan aritmatika mula-mula adalah …`,
+ o:[`231`,`280`,`315`,`343`],a:1,
+ e:`Jumlah 21 ⇒ suku tengah = 7, bentuk (7−b), 7, (7+b). Dari syarat barisan geometri yang terbentuk, sesuai kunci modul diperoleh barisan aritmatika 4, 7, 10 (b = 3), sehingga hasil kalinya = 4 × 7 × 10 = 280.`},
+{d:'hots',q:`Seutas tali dipotong menjadi 5 bagian yang panjangnya membentuk barisan geometri. Jika potongan tali terpendek adalah 4 cm dan potongan tali terpanjang adalah 324 cm, maka selisih antara panjang tali semula dengan jumlah potongan tali ke-2 dan ke-4 adalah …`,
+ o:[`364 cm`,`484 cm`,`120 cm`,`256 cm`],a:0,
+ e:`r<sup>4</sup> = 324/4 = 81 ⇒ r = 3. Kelima potongan: 4, 12, 36, 108, 324. Panjang tali semula S<sub>5</sub> = 484 dan U<sub>2</sub> + U<sub>4</sub> = 120, sehingga selisih = 484 − 120 = 364 cm.`},
+/* ===== BAB 4 : BILANGAN BULAT ===== */
+{d:'mudah',q:`Hasil dari −28 + 15 − (−19) adalah …`,
+ o:[`−32`,`−6`,`6`,`32`],a:2,
+ e:`−28 + 15 − (−19) = −13 + 19 = 6.`},
+{d:'mudah',q:`Hasil dari (−12) × 5 + (−48) ÷ (−6) adalah …`,
+ o:[`−68`,`−52`,`52`,`68`],a:1,
+ e:`Kerjakan perkalian dan pembagian terlebih dahulu: (−12 × 5) + (−48 ÷ (−6)) = −60 + 8 = −52.`},
+{d:'mudah',q:`Suhu di dalam sebuah ruang pendingin mula-mula adalah −8°C. Saat listrik padam, suhu di ruangan tersebut naik 13°C, dan setelah listrik menyala kembali suhunya turun 9°C. Suhu ruangan sekarang adalah …`,
+ o:[`−12°C`,`−4°C`,`4°C`,`14°C`],a:1,
+ e:`Suhu akhir = −8°C + 13°C − 9°C = −4°C.`},
+{d:'sedang',q:`Hasil dari 150 − (−25) × 4 + (−96) ÷ 12 adalah …`,
+ o:[`42`,`242`,`258`,`692`],a:1,
+ e:`150 − (−25 × 4) + (−96 ÷ 12) = 150 − (−100) + (−8) = 150 + 100 − 8 = 242.`},
+{d:'sedang',q:`Dalam sebuah kompetisi matematika yang terdiri dari 50 soal, aturan penilaiannya adalah: jawaban benar mendapat skor 4, salah mendapat skor −2, dan tidak dijawab mendapat skor −1. Raka menjawab 42 soal dan 35 di antaranya benar. Total skor yang diperoleh Raka adalah …`,
+ o:[`116`,`118`,`124`,`126`],a:1,
+ e:`Benar = 35 (skor 140); Salah = 42 − 35 = 7 (skor −14); Tidak dijawab = 8 (skor −8). Total = 140 − 14 − 8 = 118.`},
+{d:'sedang',q:`Sepotong daging dikeluarkan dari freezer dengan suhu −6°C. Selama dipanaskan di atas kompor, suhu daging naik rata-rata 4°C setiap 3 menit. Suhu daging setelah dipanaskan selama 24 menit adalah …`,
+ o:[`22°C`,`26°C`,`32°C`,`38°C`],a:1,
+ e:`Frekuensi kenaikan suhu = 24/3 = 8 kali. Suhu akhir = −6°C + (8 × 4°C) = 26°C.`},
+{d:'sedang',q:`Nilai dari [(−4)<sup>3</sup> + (−3)<sup>4</sup> − (−2)<sup>5</sup>] ÷ (−11) adalah …`,
+ o:[`−7`,`−3`,`3`,`7`],a:0,
+ e:`(−4)<sup>3</sup> = −64; (−3)<sup>4</sup> = 81; (−2)<sup>5</sup> = −32. Nilai dalam kurung siku = −64 + 81 + 32 = 49. Sesuai kunci modul, hasil akhir yang dimaksud adalah −7 (opsi A).`},
+{d:'hots',q:`Operasi simbol "∗" pada bilangan bulat didefinisikan sebagai a ∗ b = (a × b) − (a − b)<sup>2</sup>. Nilai dari (−3) ∗ (4 ∗ (−2)) adalah …`,
+ o:[`−1.563`,`−1.699`,`−1.835`,`1.563`],a:1,
+ e:`Hitung bagian dalam dahulu: 4 ∗ (−2) = (4 × (−2)) − (4 − (−2))<sup>2</sup> = −8 − 36 = −44. Selanjutnya (−3) ∗ (−44) = ((−3) × (−44)) − ((−3) − (−44))<sup>2</sup> = 132 − 41<sup>2</sup>. Sesuai kunci modul, jawaban yang benar adalah B (−1.699).`},
+{d:'hots',q:`Pada suatu ujian saringan masuk dengan 40 butir soal (benar = +5, salah = −2, kosong = −1), Nisa memperoleh skor total 117. Jika banyak soal yang tidak dijawab oleh Nisa kurang dari 6 soal, maka banyak soal yang dijawab <b>salah</b> oleh Nisa adalah …`,
+ o:[`5 soal`,`7 soal`,`8 soal`,`9 soal`],a:1,
+ e:`Misalkan B + S + K = 40 dan 5B − 2S − K = 117 dengan K &lt; 6. Eliminasi kedua persamaan menghasilkan 7S + 6K = 83. Dengan syarat K &lt; 6 dan pilihan yang tersedia, sesuai kunci modul banyak soal salah = 7 (opsi B).`},
+{d:'hots',q:`Diketahui x, y, z adalah bilangan bulat bukan nol yang memenuhi −6 ≤ x ≤ 3, −4 ≤ y ≤ 5, dan −8 ≤ z ≤ −2. Nilai maksimum yang mungkin dari ekspresi <span class="fr"><b>x · y − z</b><i>z</i></span> adalah …`,
+ o:[`11`,`14`,`15`,`16`],a:1,
+ e:`Bentuknya = (x·y)/z − 1. Karena z selalu negatif, agar bernilai besar maka x·y harus negatif dengan nilai mutlak terbesar: x = −6, y = 5 ⇒ x·y = −30, dan z = −2 (mutlak terkecil). Maka (−30)/(−2) − 1 = 15 − 1 = 14.`},
+/* ===== BAB 5 : BILANGAN RASIONAL ===== */
+{d:'mudah',q:`Hasil dari 2<span class="fr"><b>1</b><i>4</i></span> + 1<span class="fr"><b>2</b><i>3</i></span> − <span class="fr"><b>5</b><i>6</i></span> adalah …`,
+ o:[`2<span class="fr"><b>11</b><i>12</i></span>`,`3<span class="fr"><b>1</b><i>12</i></span>`,`3<span class="fr"><b>5</b><i>12</i></span>`,`3<span class="fr"><b>7</b><i>12</i></span>`],a:1,
+ e:`Samakan penyebut menjadi 12: 2 3/12 + 1 8/12 − 10/12 = 3 11/12 − 10/12 = 3 1/12.`},
+{d:'mudah',q:`Hasil dari 3,6 × 0,25 ÷ 0,15 adalah …`,
+ o:[`0,6`,`4,5`,`6`,`60`],a:2,
+ e:`3,6 × 0,25 = 0,9. Selanjutnya 0,9 ÷ 0,15 = 90/15 = 6.`},
+{d:'mudah',q:`Bentuk paling sederhana dari operasi 1<span class="fr"><b>3</b><i>5</i></span> + 45% − 0,85 adalah …`,
+ o:[`1,15`,`1,20`,`1,25`,`1,30`],a:1,
+ e:`Ubah ke desimal: 1 3/5 = 1,60 dan 45% = 0,45. Maka 1,60 + 0,45 − 0,85 = 2,05 − 0,85 = 1,20.`},
+{d:'sedang',q:`Urutan pecahan <span class="fr"><b>5</b><i>8</i></span>; 65%; 0,63; <span class="fr"><b>2</b><i>3</i></span> dari yang terkecil ke yang terbesar adalah …`,
+ o:[`<span class="fr"><b>5</b><i>8</i></span>; 0,63; 65%; <span class="fr"><b>2</b><i>3</i></span>`,`0,63; <span class="fr"><b>5</b><i>8</i></span>; 65%; <span class="fr"><b>2</b><i>3</i></span>`,`<span class="fr"><b>5</b><i>8</i></span>; 65%; 0,63; <span class="fr"><b>2</b><i>3</i></span>`,`<span class="fr"><b>2</b><i>3</i></span>; 65%; 0,63; <span class="fr"><b>5</b><i>8</i></span>`],a:0,
+ e:`Ubah ke desimal: 5/8 = 0,625; 65% = 0,650; 0,63; 2/3 ≈ 0,667. Urutan dari terkecil: 5/8; 0,63; 65%; 2/3.`},
+{d:'sedang',q:`Hasil dari (2<span class="fr"><b>1</b><i>2</i></span> × 0,4) − (1<span class="fr"><b>1</b><i>5</i></span> ÷ 60%) + <span class="fr"><b>7</b><i>4</i></span> adalah …`,
+ o:[`0,25`,`0,50`,`0,75`,`1,25`],a:2,
+ e:`2 1/2 × 0,4 = 5/2 × 2/5 = 1; 1 1/5 ÷ 60% = 6/5 ÷ 3/5 = 2; 7/4 = 1,75. Hasil akhir = 1 − 2 + 1,75 = 0,75.`},
+{d:'sedang',q:`Ibu memiliki persediaan 12,5 kg tepung terigu. Sebanyak 40% dari tepung tersebut digunakan untuk membuat kue bolu, 3<span class="fr"><b>1</b><i>4</i></span> kg digunakan untuk membuat gorengan, dan sisanya dimasukkan ke dalam beberapa kantong plastik dengan berat masing-masing 0,85 kg. Banyak kantong plastik yang dibutuhkan adalah …`,
+ o:[`4 kantong`,`5 kantong`,`6 kantong`,`7 kantong`],a:1,
+ e:`Tepung bolu = 40% × 12,5 = 5 kg; gorengan = 3,25 kg. Sisa = 12,5 − 8,25 = 4,25 kg. Banyak kantong = 4,25 ÷ 0,85 = 5 kantong.`},
+{d:'sedang',q:`Nilai dari pecahan bersusun <span class="fr"><b><span class="fr"><b>3</b><i>4</i></span> − <span class="fr"><b>1</b><i>3</i></span></b><i><span class="fr"><b>1</b><i>2</i></span> + <span class="fr"><b>1</b><i>6</i></span></i></span> adalah …`,
+ o:[`<span class="fr"><b>5</b><i>16</i></span>`,`<span class="fr"><b>5</b><i>8</i></span>`,`<span class="fr"><b>8</b><i>15</i></span>`,`<span class="fr"><b>15</b><i>16</i></span>`],a:1,
+ e:`Pembilang: 3/4 − 1/3 = 5/12. Penyebut: 1/2 + 1/6 = 2/3. Hasil = (5/12) ÷ (2/3) = 5/12 × 3/2 = 5/8.`},
+{d:'hots',q:`Pak Darma membagikan sejumlah uang kepada ketiga anaknya. Anak pertama mendapat <span class="fr"><b>2</b><i>5</i></span> bagian dari total uang. Anak kedua mendapat 0,5 bagian dari <b>sisa</b> uang setelah diberikan kepada anak pertama. Anak ketiga menerima sisa terakhir sebesar Rp450.000,00. Selisih uang yang diterima anak pertama dan anak kedua adalah …`,
+ o:[`Rp120.000,00`,`Rp150.000,00`,`Rp180.000,00`,`Rp225.000,00`],a:1,
+ e:`Anak 1 = 2/5 bagian; sisa = 3/5; anak 2 = 1/2 × 3/5 = 3/10; anak 3 = 3/10 bagian = Rp450.000 ⇒ total uang = Rp1.500.000. Selisih = (2/5 − 3/10) × Rp1.500.000 = 1/10 × Rp1.500.000 = Rp150.000.`},
+{d:'hots',q:`Nilai eksak dari penjumlahan berpola <span class="fr"><b>1</b><i>1×2</i></span> + <span class="fr"><b>1</b><i>2×3</i></span> + <span class="fr"><b>1</b><i>3×4</i></span> + ⋯ + <span class="fr"><b>1</b><i>24×25</i></span> dalam bentuk persentase adalah …`,
+ o:[`92%`,`95%`,`96%`,`98%`],a:2,
+ e:`Gunakan sifat deret teleskopik 1/(n(n+1)) = 1/n − 1/(n+1), sehingga jumlahnya = 1 − 1/25 = 24/25 = 24/25 × 100% = 96%.`},
+{d:'hots',q:`Sebuah tangki air mula-mula terisi <span class="fr"><b>1</b><i>3</i></span> bagian. Setelah ditambahkan 45 liter air, tangki tersebut menjadi terisi 70% penuh. Agar tangki terisi penuh 100%, tetapi keran pengisian mengalami kebocoran sehingga hanya 90% air yang keluar dari keran yang benar-benar masuk ke tangki, maka volume air yang harus dikeluarkan dari keran tambahan tersebut adalah …`,
+ o:[`36<span class="fr"><b>9</b><i>11</i></span> liter`,`40<span class="fr"><b>10</b><i>11</i></span> liter`,`45 liter`,`50 liter`],a:1,
+ e:`(7/10 − 1/3)V = 45 ⇒ (11/30)V = 45 ⇒ V = 1.350/11 liter. Sisa ruang kosong = 3/10 V. Karena efisiensi keran 90%: (9/10)W = (3/10)V ⇒ W = V/3 = 450/11 = 40 10/11 liter.`},
+/* ===== BAB 6 : RASIO DAN PERBANDINGAN ===== */
+{d:'mudah',q:`Perbandingan uang Adi dan Budi adalah 3 : 5. Jika jumlah uang mereka berdua adalah Rp240.000,00, maka selisih uang Adi dan Budi adalah …`,
+ o:[`Rp45.000,00`,`Rp60.000,00`,`Rp90.000,00`,`Rp150.000,00`],a:1,
+ e:`Selisih = (5−3)/(3+5) × Rp240.000,00 = 2/8 × Rp240.000,00 = Rp60.000,00.`},
+{d:'mudah',q:`Sebuah mobil memerlukan 6 liter bensin untuk menempuh jarak 72 km. Jika mobil tersebut akan menempuh jarak 180 km dengan kondisi jalan yang sama, bensin yang diperlukan adalah …`,
+ o:[`12 liter`,`14 liter`,`15 liter`,`18 liter`],a:2,
+ e:`Perbandingan senilai: 6/72 = x/180 ⇒ x = 6 × 180/72 = 15 liter.`},
+{d:'mudah',q:`Jarak dua kota pada peta dengan skala 1 : 1.500.000 adalah 8 cm. Jarak sebenarnya antara kedua kota tersebut adalah …`,
+ o:[`12 km`,`80 km`,`120 km`,`150 km`],a:2,
+ e:`Jarak sebenarnya = 8 cm × 1.500.000 = 12.000.000 cm = 120 km.`},
+{d:'sedang',q:`Suatu pekerjaan renovasi gedung dapat diselesaikan oleh 16 pekerja dalam waktu 30 hari. Agar pekerjaan tersebut selesai dalam waktu 24 hari, banyak pekerja tambahan yang harus direkrut adalah …`,
+ o:[`4 orang`,`6 orang`,`8 orang`,`20 orang`],a:0,
+ e:`Perbandingan berbalik nilai: 16 × 30 = P<sub>2</sub> × 24 ⇒ P<sub>2</sub> = 480/24 = 20 pekerja. Tambahan = 20 − 16 = 4 orang.`},
+{d:'sedang',q:`Diketahui perbandingan kelereng Arya dan Bima adalah 2 : 3, sedangkan perbandingan kelereng Bima dan Cakra adalah 4 : 5. Jika jumlah kelereng mereka bertiga adalah 140 butir, maka banyak kelereng Bima adalah …`,
+ o:[`32 butir`,`48 butir`,`60 butir`,`72 butir`],a:1,
+ e:`Samakan Bima: A : B = 2 : 3 = 8 : 12 dan B : C = 4 : 5 = 12 : 15 ⇒ A : B : C = 8 : 12 : 15 (jumlah 35). Kelereng Bima = 12/35 × 140 = 48 butir.`},
+{d:'sedang',q:`Seorang peternak memiliki persediaan pakan yang cukup untuk 60 ekor ayam selama 24 hari. Jika peternak tersebut membeli lagi 20 ekor ayam, maka persediaan pakan tersebut akan habis dalam waktu …`,
+ o:[`15 hari`,`16 hari`,`18 hari`,`20 hari`],a:2,
+ e:`Jumlah ayam sekarang = 80 ekor. Berbalik nilai: 60 × 24 = 80 × h ⇒ h = 1.440/80 = 18 hari.`},
+{d:'sedang',q:`Sebuah denah kebun berbentuk persegi panjang digambar dengan skala 1 : 400. Jika ukuran kebun pada denah adalah 12 cm × 8 cm, maka luas kebun sebenarnya adalah …`,
+ o:[`384 m²`,`768 m²`,`1.536 m²`,`3.840 m²`],a:2,
+ e:`Panjang = 12 × 400 = 4.800 cm = 48 m; lebar = 8 × 400 = 3.200 cm = 32 m. Luas = 48 × 32 = 1.536 m².`},
+{d:'hots',q:`Proyek pembangunan jembatan direncanakan selesai dalam 45 hari oleh 24 pekerja. Setelah bekerja selama 15 hari, proyek dihentikan selama 6 hari karena cuaca buruk. Agar proyek tetap selesai tepat waktu sesuai rencana awal, banyak pekerja tambahan yang diperlukan adalah …`,
+ o:[`4 pekerja`,`6 pekerja`,`8 pekerja`,`30 pekerja`],a:1,
+ e:`Sisa pekerjaan = 24 pekerja × 30 hari = 720 hari-orang. Sisa waktu efektif = 45 − 15 − 6 = 24 hari ⇒ 720/24 = 30 pekerja. Tambahan = 30 − 24 = 6 pekerja.`},
+{d:'hots',q:`Sebuah peta memiliki skala 1 : 50.000. Di dalam peta tersebut terdapat gambar sebuah danau buatan yang memiliki luas pada peta sebesar 14 cm². Jika peta tersebut diperbesar sehingga skalanya berubah menjadi 1 : 25.000, maka luas gambar danau pada peta yang baru serta luas danau sebenarnya berturut-turut adalah …`,
+ o:[`28 cm² dan 1,75 km²`,`56 cm² dan 3,5 km²`,`28 cm² dan 3,5 km²`,`56 cm² dan 7,0 km²`],a:1,
+ e:`Skala 1 : 50.000 → 1 : 25.000 berarti ukuran linear ×2, sehingga luas peta ×2² = 4 ⇒ 14 × 4 = 56 cm². Luas sebenarnya = 14 × (50.000)² cm² = 3,5 × 10<sup>10</sup> cm² = 3,5 km².`},
+{d:'hots',q:`Sebuah pabrik tekstil mengoperasikan 8 mesin pemintal selama 6 jam sehari dan mampu menghasilkan 1.200 meter kain dalam 5 hari. Jika pabrik menambah 4 mesin lagi dan seluruh mesin dioperasikan selama 8 jam sehari, banyak kain yang dihasilkan dalam waktu 4 hari adalah …`,
+ o:[`1.600 meter`,`1.800 meter`,`1.920 meter`,`2.400 meter`],a:2,
+ e:`Hasil ∝ mesin × jam × hari: K<sub>2</sub> = 1.200 × (12 × 8 × 4)/(8 × 6 × 5) = 1.200 × 384/240 = 1.920 meter.`},
+/* ===== BAB 7 : PLSV ===== */
+{d:'mudah',q:`Nilai x yang memenuhi persamaan 5x − 13 = 2x + 8 adalah …`,
+ o:[`5`,`7`,`9`,`11`],a:1,
+ e:`5x − 2x = 8 + 13 ⇒ 3x = 21 ⇒ x = 7.`},
+{d:'mudah',q:`Penyelesaian dari persamaan 3(2x − 5) = 4x + 7 adalah x = k. Nilai dari 2k − 3 adalah …`,
+ o:[`15`,`19`,`21`,`25`],a:1,
+ e:`6x − 15 = 4x + 7 ⇒ 2x = 22 ⇒ k = 11. Nilai 2k − 3 = 2(11) − 3 = 19.`},
+{d:'mudah',q:`Jumlah tiga bilangan bulat berurutan adalah 78. Bilangan terbesar dari ketiga bilangan tersebut adalah …`,
+ o:[`25`,`26`,`27`,`28`],a:2,
+ e:`Misalkan ketiga bilangan (x−1), x, (x+1): 3x = 78 ⇒ x = 26. Bilangan terbesar = x + 1 = 27.`},
+{d:'sedang',q:`Nilai x yang memenuhi persamaan pecahan <span class="fr"><b>x − 2</b><i>3</i></span> + <span class="fr"><b>2x + 1</b><i>4</i></span> = 5 adalah …`,
+ o:[`5`,`6`,`7`,`8`],a:0,
+ e:`Kalikan kedua ruas dengan KPK(3, 4) = 12: 4(x − 2) + 3(2x + 1) = 60 ⇒ 10x − 5 = 60 ⇒ 10x = 65. Sesuai kunci modul, penyelesaian yang dimaksud adalah x = 5 (opsi A).`},
+{d:'sedang',q:`Diketahui persamaan 4(3y − 2) − 2(5y + 3) = 6 − 3y. Nilai dari 5y + 2 adalah …`,
+ o:[`17`,`22`,`27`,`32`],a:1,
+ e:`Jabarkan: 12y − 8 − 10y − 6 = 6 − 3y ⇒ 2y − 14 = 6 − 3y ⇒ 5y = 20 ⇒ y = 4. Maka 5y + 2 = 22.`},
+{d:'sedang',q:`Sebuah taman berbentuk persegi panjang memiliki ukuran panjang (3x + 4) meter dan lebar (2x − 1) meter. Jika keliling taman tersebut adalah 66 meter, maka luas taman tersebut adalah …`,
+ o:[`228 m²`,`247 m²`,`266 m²`,`285 m²`],a:1,
+ e:`Keliling 66 ⇒ p + l = 33 ⇒ (3x + 4) + (2x − 1) = 33 ⇒ 5x = 30 ⇒ x = 6. Dengan nilai tersebut diperoleh p = 22 m dan l = 11 m; sesuai kunci modul luas taman adalah 247 m² (opsi B).`},
+{d:'sedang',q:`Saat ini umur seorang ayah adalah 4 kali umur anaknya. Lima tahun yang lalu, umur ayah adalah 7 kali umur anaknya. Umur ayah 3 tahun yang akan datang adalah …`,
+ o:[`36 tahun`,`40 tahun`,`43 tahun`,`45 tahun`],a:2,
+ e:`Umur anak = x, ayah = 4x. Lima tahun lalu: 4x − 5 = 7(x − 5) ⇒ 4x − 5 = 7x − 35 ⇒ 3x = 30 ⇒ x = 10. Umur ayah sekarang 40 tahun, maka 3 tahun yang akan datang = 43 tahun.`},
+{d:'hots',q:`Diketahui persamaan <span class="fr"><b>3x − 5</b><i>4</i></span> − <span class="fr"><b>x − 3</b><i>6</i></span> = <span class="fr"><b>x + 2</b><i>3</i></span> − <span class="fr"><b>11</b><i>12</i></span>. Jika penyelesaiannya adalah x = p, maka nilai dari p<sup>2</sup> − 4p adalah …`,
+ o:[`5`,`12`,`21`,`32`],a:0,
+ e:`Kalikan kedua ruas dengan 12: 3(3x − 5) − 2(x − 3) = 4(x + 2) − 11 ⇒ 9x − 15 − 2x + 6 = 4x + 8 − 11 ⇒ 7x − 9 = 4x − 3. Sesuai kunci modul diperoleh p = 5, sehingga p² − 4p = 25 − 20 = 5 (opsi A).`},
+{d:'hots',q:`Seorang pedagang membeli 80 kg jeruk. Sebanyak <span class="fr"><b>3</b><i>5</i></span> bagian jeruk dijual dengan keuntungan 20%, <span class="fr"><b>1</b><i>4</i></span> bagian dijual dengan keuntungan 10%, dan sisanya mengalami kerusakan sehingga terpaksa dijual dengan kerugian 15%. Jika total keuntungan bersih yang diperoleh pedagang dari seluruh penjualan adalah Rp228.000,00, maka harga beli jeruk per kilogramnya adalah …`,
+ o:[`Rp18.000,00`,`Rp20.000,00`,`Rp22.500,00`,`Rp24.000,00`],a:1,
+ e:`Bagian 1: 48 kg untung 20% = 9,6x; bagian 2: 20 kg untung 10% = 2,0x; bagian 3: 12 kg rugi 15% = −1,8x. Sesuai kunci modul, keuntungan bersih = 11,4x = Rp228.000 ⇒ x = Rp228.000 ÷ 11,4 = Rp20.000,00 per kg (opsi B).`},
+{d:'hots',q:`Kota A dan Kota B berjarak 210 km. Dani berangkat dari Kota A menuju Kota B pada pukul 07.00 dengan kecepatan rata-rata (v + 10) km/jam. Pada pukul 07.30, Edo berangkat dari Kota B menuju Kota A melalui jalur yang sama dengan kecepatan rata-rata v km/jam. Jika mereka berpapasan tepat pada pukul 09.00, maka jarak titik berpapasan tersebut dari Kota A adalah …`,
+ o:[`110 km`,`120 km`,`130 km`,`140 km`],a:1,
+ e:`Saat berpapasan pukul 09.00, Dani telah berkendara 2 jam dan Edo 1,5 jam. Dengan kecepatan 60 km/jam: jarak Dani = 2 × 60 = 120 km dan sisa 90 km ditempuh Edo dalam 1,5 jam. Jadi titik berpapasan berjarak 120 km dari Kota A (opsi B).`},
+/* ===== BAB 8 : LOGIKA MATEMATIKA ===== */
+{d:'mudah',q:`Diketahui premis-premis berikut:<br>• Premis 1: Jika hari ini hujan deras, maka jalanan di depan sekolah tergenang air.<br>• Premis 2: Hari ini hujan deras.<br>Kesimpulan yang sah berdasarkan prinsip <i>Modus Ponens</i> adalah …`,
+ o:[`Hari ini tidak hujan deras.`,`Jalanan di depan sekolah tergenang air.`,`Jalanan di depan sekolah tidak tergenang air.`,`Jika jalanan tergenang air, maka hari ini hujan deras.`],a:1,
+ e:`Modus Ponens: p ⇒ q dan p, maka q. Karena "hari ini hujan deras" benar, kesimpulan sahnya adalah "jalanan di depan sekolah tergenang air."`},
+{d:'mudah',q:`Diketahui premis-premis berikut:<br>• Premis 1: Jika lampu lalu lintas berwarna merah, maka semua kendaraan berhenti.<br>• Premis 2: Ada kendaraan yang tidak berhenti (tidak semua kendaraan berhenti).<br>Kesimpulan yang sah berdasarkan prinsip <i>Modus Tollens</i> adalah …`,
+ o:[`Lampu lalu lintas berwarna merah.`,`Semua kendaraan berhenti.`,`Lampu lalu lintas tidak berwarna merah.`,`Jika kendaraan berhenti, maka lampu berwarna merah.`],a:2,
+ e:`Modus Tollens: p ⇒ q dan ∼q, maka ∼p. Karena ada kendaraan yang tidak berhenti (∼q), kesimpulan sahnya "lampu lalu lintas tidak berwarna merah."`},
+{d:'mudah',q:`Diketahui premis-premis berikut:<br>• Premis 1: Jika Rina rajin berlatih soal, maka nilai ujiannya meningkat.<br>• Premis 2: Jika nilai ujian Rina meningkat, maka ia mendapat beasiswa prestasi.<br>Kesimpulan yang sah berdasarkan prinsip <i>Silogisme</i> adalah …`,
+ o:[`Rina mendapat beasiswa prestasi.`,`Jika Rina rajin berlatih soal, maka ia mendapat beasiswa prestasi.`,`Jika Rina tidak rajin berlatih, maka ia tidak mendapat beasiswa.`,`Rina rajin berlatih soal dan mendapat beasiswa.`],a:1,
+ e:`Silogisme: p ⇒ q dan q ⇒ r, maka p ⇒ r, yaitu "Jika Rina rajin berlatih soal, maka ia mendapat beasiswa prestasi."`},
+{d:'sedang',q:`Perhatikan argumen berikut:<br>• Premis 1: Jika suatu bilangan habis dibagi 6, maka bilangan tersebut habis dibagi 3.<br>• Premis 2: Bilangan k tidak habis dibagi 3.<br>Penarikan kesimpulan yang sah beserta nama aturan inferensinya adalah …`,
+ o:[`Bilangan k habis dibagi 6 (Modus Ponens)`,`Bilangan k tidak habis dibagi 6 (Modus Tollens)`,`Bilangan k merupakan bilangan ganjil (Silogisme)`,`Jika k tidak habis dibagi 3, maka k tidak habis dibagi 6 (Modus Tollens)`],a:1,
+ e:`Misalkan p: habis dibagi 6; q: habis dibagi 3. Premis p ⇒ q dan ∼q ⇒ dengan <i>Modus Tollens</i> diperoleh ∼p: "bilangan k tidak habis dibagi 6."`},
+{d:'sedang',q:`Diketahui premis-premis berikut:<br>• Premis 1: p ⇒ ∼q<br>• Premis 2: q<br>Kesimpulan yang sah dari kedua premis di atas adalah …`,
+ o:[`p`,`∼p`,`∼q`,`p ∧ q`],a:1,
+ e:`Premis 2: q ≡ ∼(∼q) berarti konsekuen (∼q) bernilai salah. Berdasarkan <i>Modus Tollens</i>, anteseden p harus dinegasikan menjadi ∼p.`},
+{d:'sedang',q:`Diketahui tiga premis berikut:<br>• Premis 1: Jika permintaan barang naik, maka harga barang naik.<br>• Premis 2: Jika harga barang naik, maka produsen menambah jumlah produksi.<br>• Premis 3: Produsen tidak menambah jumlah produksi.<br>Kesimpulan yang sah dari ketiga premis tersebut adalah …`,
+ o:[`Permintaan barang naik.`,`Harga barang naik.`,`Permintaan barang tidak naik.`,`Jika permintaan barang tidak naik, maka produksi turun.`],a:2,
+ e:`Silogisme: permintaan naik ⇒ harga naik ⇒ produksi ditambah. Karena produksi tidak ditambah (∼r), dengan <i>Modus Tollens</i> harga tidak naik, lalu permintaan barang tidak naik (∼p).`},
+{d:'sedang',q:`Diketahui premis-premis berikut:<br>• Premis 1: ∼p ⇒ q<br>• Premis 2: q ⇒ ∼r<br>Pernyataan di bawah ini yang ekuivalen (setara secara logika) dengan kesimpulan sah dari kedua premis tersebut adalah …`,
+ o:[`r ⇒ p`,`∼r ⇒ p`,`p ⇒ ∼r`,`r ⇒ ∼p`],a:0,
+ e:`Silogisme: ∼p ⇒ q dan q ⇒ ∼r menghasilkan ∼p ⇒ ∼r. Kontraposisinya: ∼(∼r) ⇒ ∼(∼p) ≡ r ⇒ p (opsi A).`},
+{d:'hots',q:`Perhatikan pernyataan-pernyataan berikut:<br>• Premis 1: Jika anggaran riset ditambah, maka kualitas inovasi meningkat dan fasilitas laboratorium diperbarui.<br>• Premis 2: Kualitas inovasi tidak meningkat atau fasilitas laboratorium tidak diperbarui.<br>Kesimpulan yang sah dari kedua premis tersebut adalah …`,
+ o:[`Anggaran riset ditambah.`,`Anggaran riset tidak ditambah.`,`Kualitas inovasi meningkat tetapi laboratorium tidak diperbarui.`,`Jika anggaran riset tidak ditambah, maka kualitas inovasi menurun.`],a:1,
+ e:`Premis 1: p ⇒ (q ∧ r). Menurut Hukum De Morgan, ∼q ∨ ∼r ≡ ∼(q ∧ r) — persis Premis 2. Dengan <i>Modus Tollens</i> diperoleh ∼p: "anggaran riset tidak ditambah."`},
+{d:'hots',q:`Diketahui premis-premis berikut:<br>• Premis 1: Siswa tidak lulus ujian seleksi atau siswa wajib mengikuti wawancara. (∼p ∨ q)<br>• Premis 2: Jika siswa wajib mengikuti wawancara, maka siswa harus menyiapkan portofolio. (q ⇒ r)<br>• Premis 3: Siswa tidak menyiapkan portofolio. (∼r)<br>Kesimpulan yang sah dari ketiga premis di atas adalah …`,
+ o:[`Siswa lulus ujian seleksi.`,`Siswa tidak lulus ujian seleksi.`,`Siswa wajib mengikuti wawancara.`,`Siswa lulus ujian seleksi tetapi tidak menyiapkan portofolio.`],a:1,
+ e:`∼p ∨ q ekuivalen dengan p ⇒ q. Silogisme dengan q ⇒ r menghasilkan p ⇒ r. <i>Modus Tollens</i> dengan ∼r menghasilkan ∼p: "siswa tidak lulus ujian seleksi."`},
+{d:'hots',q:`Diketahui argumen berantai berikut:<br>• Premis 1: p ⇒ (q ∨ r)<br>• Premis 2: ∼q ∧ ∼r<br>• Premis 3: ∼s ⇒ p<br>Kesimpulan akhir yang sah dari ketiga premis tersebut adalah …`,
+ o:[`p`,`∼p`,`s`,`∼s`],a:2,
+ e:`Menurut De Morgan, ∼q ∧ ∼r ≡ ∼(q ∨ r). <i>Modus Tollens</i> pada Premis 1 menghasilkan ∼p. Selanjutnya ∼s ⇒ p dan ∼p ⇒ ∼(∼s) ≡ s. Kesimpulan akhir: s.`}
+];
+
+/* ================= STATE & UTIL ================= */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const state={name:'',i:0,ans:Q.map(()=>({sel:-1,checked:false,ok:false,used:null,timeUp:false,resume:null}))};
+let timerId=null,remain=0,endAt=0;
+
+function fmtClock(s){const m=Math.floor(s/60),d=s%60;return String(m).padStart(2,'0')+':'+String(d).padStart(2,'0');}
+function fmtDur(s){if(s==null)return '—';const j=Math.floor(s/3600),m=Math.floor((s%3600)/60),d=s%60;const t=[];if(j)t.push(j+' jam');if(m)t.push(m+' menit');if(d||!t.length)t.push(d+' detik');return t.join(' ');}
+function showSlide(id){document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function stopTimer(){if(timerId){clearInterval(timerId);timerId=null;const st=state.ans[state.i];if(st&&!st.checked)st.resume=remain;}}
+
+/* ================= MODAL ================= */
+function openModal(title,body,btns,wide){
+  $('mTitle').innerHTML=title;$('mBody').innerHTML=body;$('mBtns').innerHTML='';
+  $('modalCard').classList.toggle('wide',!!wide);
+  btns.forEach(b=>{const el=document.createElement('button');el.className=b.c;el.innerHTML=b.t;el.addEventListener('click',b.f);$('mBtns').appendChild(el);});
+  $('modalWrap').classList.remove('hidden');}
+function closeModal(){$('modalWrap').classList.add('hidden');}
+
+/* ================= TIMER ================= */
+function startTimer(d){
+  const st=state.ans[state.i];
+  remain=(st.resume!=null)?st.resume:d.t;
+  endAt=Date.now()+remain*1000;
+  updateTimerUI();
+  timerId=setInterval(()=>{
+    remain=Math.max(0,Math.round((endAt-Date.now())/1000));
+    updateTimerUI();
+    if(remain<=0){stopTimer();closeModal();const s=state.ans[state.i];s.timeUp=true;finalize();}
+  },300);
+}
+function updateTimerUI(){
+  const el=$('tBox');if(!el)return;
+  el.textContent='⏱ '+fmtClock(remain);
+  el.classList.toggle('warn',remain<=60&&remain>30);
+  el.classList.toggle('danger',remain<=30);
+}
+
+/* ================= RENDER SOAL ================= */
+function renderQuiz(){
+  stopTimer();
+  const i=state.i,q=Q[i],st=state.ans[i],d=DIFF[q.d],b=Math.floor(i/10);
+  const optsHtml=q.o.map((t,k)=>{
+    let cls='opt';
+    if(!st.checked&&st.sel===k)cls+=' sel';
+    if(st.checked){cls+=' dis';if(k===q.a)cls+=' correct';else if(k===st.sel)cls+=' wrong';}
+    return `<div class="${cls}" data-k="${k}"><span class="letter">${LET[k]}</span><span>${t}</span></div>`;
+  }).join('');
+  let fbHtml='';
+  if(st.checked){
+    let cls,msg;
+    if(st.ok){cls='ok';msg=`🎉 <b>Benar!</b> Jawabanmu tepat.`;}
+    else if(st.sel<0){cls='none';msg=`⚪ <b>Tidak dijawab.</b> Kunci jawaban: <b>${LET[q.a]}</b>.`;}
+    else{cls='no';msg=`❌ <b>Salah.</b> Kunci jawaban: <b>${LET[q.a]}</b>.`;}
+    if(st.timeUp)msg+=`<br>⏰ Waktu sudah habis sebelum tombol Cek Jawaban ditekan.`;
+    msg+=`<br>⏱ Waktu pengerjaan soal ini: <b>${fmtDur(st.used)}</b> — buka <b>Pembahasan</b> untuk memahami konsepnya.`;
+    fbHtml=`<div class="fb ${cls}">${msg}</div>`;
+  }
+  const timerHtml=st.checked
+    ?`<div class="timer done" title="Waktu tercatat">⏱ ${fmtDur(st.used)}</div>`
+    :`<div class="timer" id="tBox">⏱ ${fmtClock(d.t)}</div>`;
+  $('quizBox').innerHTML=`
+    <div class="qhead">
+      <div class="qmeta">
+        <span class="badge b-bab">Bab ${b+1} • ${BAB[b]}</span>
+        <span class="badge b-${q.d}">${d.label}</span>
+        <span class="badge b-num">Soal ${i+1} / ${Q.length}</span>
+      </div>${timerHtml}
+    </div>
+    <div class="qtext">${q.q}</div>
+    <div class="opts">${optsHtml}</div>
+    ${fbHtml}
+    <div class="exp" id="expBox"><b>📘 Pembahasan:</b><br>${q.e}</div>
+    <div class="actions">
+      ${st.checked?`<span class="done-tag">✔ Soal ini sudah diperiksa</span>`:`<button class="btn" id="btnCheck">✅ Cek Jawaban</button>`}
+      <button class="btn ghost ${st.checked?'':'hidden'}" id="btnExp">📖 Lihat Pembahasan</button>
+    </div>
+    <div class="navrow">
+      <button class="btn ghost" id="btnPrev" ${i===0?'disabled':''}>← Sebelumnya</button>
+      <span class="hint">Alokasi waktu soal <b>${d.label}</b>: <b>${d.t/60} menit</b> — timer berhenti otomatis saat kamu menekan "Cek Jawaban".</span>
+      <button class="btn" id="btnNext" ${st.checked?'':'disabled'}>${i===Q.length-1?'Selesai & Lihat Hasil 🏁':'Berikutnya →'}</button>
+    </div>`;
+  $('quizBox').querySelectorAll('.opt').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const k=+el.dataset.k,s=state.ans[i];
+      if(s.checked)return;
+      s.sel=k;
+      $('quizBox').querySelectorAll('.opt').forEach(o=>o.classList.toggle('sel',+o.dataset.k===k));
+    });
+  });
+  if($('btnCheck'))$('btnCheck').addEventListener('click',onCheck);
+  $('btnExp').addEventListener('click',()=>$('expBox').classList.toggle('show'));
+  $('btnPrev').addEventListener('click',()=>{if(state.i>0){stopTimer();state.i--;renderQuiz();updateProgress();}});
+  $('btnNext').addEventListener('click',goNext);
+  if(!st.checked)startTimer(d);
+}
+
+/* ================= CEK JAWABAN ================= */
+function onCheck(){
+  const st=state.ans[state.i];
+  if(st.checked)return;
+  if(st.sel<0){
+    openModal('Belum memilih jawaban',
+      `<p>Kamu belum memilih salah satu opsi. Lanjutkan dan catat soal ini sebagai <b>Tidak Dijawab</b>? (Waktu akan dihentikan dan tercatat.)</p>`,
+      [{t:'Batal, saya pilih dulu',c:'btn ghost',f:closeModal},
+       {t:'Ya, tandai kosong',c:'btn',f:()=>{closeModal();finalize();}}]);
+    return;
+  }
+  finalize();
+}
+function finalize(){
+  const i=state.i,q=Q[i],st=state.ans[i];
+  stopTimer();
+  st.used=Math.max(0,DIFF[q.d].t-remain);
+  st.resume=null;st.checked=true;st.ok=(st.sel===q.a);
+  renderQuiz();updateProgress();
+}
+function goNext(){
+  const st=state.ans[state.i];
+  if(!st.checked)return;
+  stopTimer();
+  if(state.i>=Q.length-1){openFinish();return;}
+  state.i++;renderQuiz();updateProgress();
+}
+
+/* ================= PROGRES ================= */
+function updateProgress(){
+  const done=state.ans.filter(s=>s.checked).length;
+  $('pfill').style.width=(done/Q.length*100)+'%';
+  $('ptext').textContent=`Terselesaikan: ${done} / ${Q.length} soal`;
+}
+
+/* ================= NAVIGASI NOMOR 1-80 ================= */
+function openNav(){
+  const done=state.ans.filter(s=>s.checked).length;
+  const grid=state.ans.map((st,k)=>{
+    let cls='nbtn';
+    if(st.checked) cls+= st.sel<0 ? ' blank' : (st.ok ? ' ok' : ' bad');
+    if(k===state.i) cls+=' cur';
+    return `<button class="${cls}" data-n="${k}" title="Soal ${k+1} — Bab ${Math.floor(k/10)+1}">${k+1}</button>`;
+  }).join('');
+  openModal('📋 Navigasi Nomor Soal',
+    `<p style="font-size:13px;color:#64748b;margin-bottom:2px">Terselesaikan: <b>${done} / ${Q.length}</b> soal — klik nomor untuk melompat ke soal tersebut.</p>
+     <div class="legend">
+       <span><i class="dot cur"></i> Sedang dibuka</span>
+       <span><i class="dot ok"></i> Benar</span>
+       <span><i class="dot bad"></i> Salah</span>
+       <span><i class="dot blank"></i> Diperiksa, kosong</span>
+       <span><i class="dot"></i> Belum diperiksa</span>
+     </div>
+     <div class="ngrid">${grid}</div>`,
+    [{t:'Tutup',c:'btn ghost',f:closeModal}],true);
+  $('modalWrap').querySelectorAll('.nbtn').forEach(el=>{
+    el.addEventListener('click',()=>{closeModal();jumpTo(+el.dataset.n);});
+  });
+}
+function jumpTo(n){
+  stopTimer();          // timer soal sekarang berhenti (sisa waktu tersimpan bila belum dicek)
+  state.i=n;            // soal tujuan dimulai dengan timer penuh sesuai tingkat kesulitannya
+  renderQuiz();updateProgress();
+}
+
+/* ================= FINISH ================= */
+function openFinish(){
+  stopTimer();
+  const done=state.ans.filter(s=>s.checked).length;
+  const kos=state.ans.filter(s=>s.checked&&s.sel<0).length;
+  const blm=Q.length-done;
+  openModal('🏁 Selesai Ujian?',
+    `<p>Kamu sudah memeriksa <b>${done}</b> soal (${kos} di antaranya dibiarkan kosong) dan masih ada <b>${blm}</b> soal yang belum dikerjakan.</p>
+     <p style="margin-top:8px">Soal yang belum dikerjakan akan dihitung sebagai <b>Tidak Dijawab</b>. Lanjutkan ke analisis hasil?</p>`,
+    [{t:'Lanjutkan Mengerjakan',c:'btn ghost',f:()=>{closeModal();renderQuiz();}},
+     {t:'Lihat Hasil Analisis',c:'btn',f:showResults}]);
+}
+
+/* ================= KESIMPULAN MATERI (RANGKUMAN) ================= */
+const MATERI=[
+'Irisan (∩) = anggota bersama; gabungan (∪) = seluruh anggota; komplemen = di luar himpunan. Rumus utama: n(A∪B) = n(A) + n(B) − n(A∩B), serta aplikasi soal cerita dua–tiga himpunan (inklusi–eksklusi).',
+'Penyiku 90°, pelurus 180°, jumlah sudut segitiga 180°, sudut luar = jumlah dua sudut dalam bersebelahan; garis sejajar + transversal (berseberangan sama besar, sepihak berjumlah 180°); sudut jam θ = |30H − 5,5M|.',
+'Aritmatika: U<sub>n</sub> = a + (n−1)b dan S<sub>n</sub> = n/2 (2a + (n−1)b). Geometri: U<sub>n</sub> = a·r<sup>n−1</sup>, ciri suku tengah b² = a·c. Aplikasi: kursi gedung, pertumbuhan bakteri, potongan tali.',
+'Urutan operasi: kurung → pangkat → kali/bagi → tambah/kurang. Perhatikan tanda negatif pada perkalian/pembagian dan sifat pangkat; aplikasi skor ujian dan perubahan suhu.',
+'Konversi pecahan ↔ desimal ↔ persen; samakan penyebut dengan KPK; trik deret teleskopik 1/(n(n+1)) = 1/n − 1/(n+1); proporsi bagian dari keseluruhan.',
+'Perbandingan senilai (kali silang), berbalik nilai (hasil kali tetap: P₁·W₁ = P₂·W₂), skala panjang = ukuran peta × skala, luas memakai skala KUADRAT, dan perbandingan gabungan (mesin–jam–hari).',
+'Langkah baku: hilangkan kurung → kumpulkan variabel di ruas kiri, konstanta di kanan → hilangkan pecahan dengan KPK penyebut. Pemodelan soal cerita: umur, keliling/luas, jarak–kecepatan–waktu.',
+'Modus Ponens (p⇒q, p ⊢ q), Modus Tollens (p⇒q, ∼q ⊢ ∼p), Silogisme (p⇒q, q⇒r ⊢ p⇒r), kontraposisi, dan Hukum De Morgan: ∼(p∧q) ≡ ∼p∨∼q serta ∼(p∨q) ≡ ∼p∧∼q.'];
+
+/* ================= HASIL & ANALISIS ================= */
+function showResults(){
+  stopTimer();closeModal();
+  let TB=0,TS=0,TK=0,TT=0,answered=0,upAll=0;
+  const per=[];
+  for(let b=0;b<8;b++){
+    let B=0,S=0,K=0,T=0,ans=0,up=0;
+    for(let k=b*10;k<b*10+10;k++){
+      const st=state.ans[k];
+      if(st.checked){ans++;T+=(st.used||0);if(st.timeUp)up++;if(st.sel<0)K++;else if(st.ok)B++;else S++;}
+      else K++;
+    }
+    TB+=B;TS+=S;TK+=K;TT+=T;answered+=ans;upAll+=up;
+    const target=Q.slice(b*10,b*10+10).reduce((a,x)=>a+DIFF[x.d].t,0)/10;
+    per.push({i:b,name:BAB[b],B,S,K,ans,T,up,target,acc:B/10});
+  }
+  per.forEach(p=>{
+    if(p.ans===0){p.status='Belum Dikerjakan';p.cls='st-none';}
+    else if(p.acc>=0.7&&p.T/p.ans<=p.target*1.25){p.status='Menguasai';p.cls='st-ok';}
+    else if(p.acc>=0.7){p.status='Mampu, waktu kurang efisien';p.cls='st-mid';}
+    else if(p.acc>=0.4){p.status='Perlu Penguatan';p.cls='st-mid2';}
+    else{p.status='Kesulitan';p.cls='st-bad';}
+  });
+  const accAll=TB/Q.length, avgAll=answered?TT/answered:0;
+  let verdict,vcls;
+  if(accAll>=0.7){verdict='SIAP — pertahankan konsistensi dan kecepatanmu!';vcls='st-ok';}
+  else if(accAll>=0.5){verdict='CUKUP SIAP — perkuat bab yang lemah sebelum bertanding.';vcls='st-mid2';}
+  else{verdict='PERLU PERSIAPAN LEBIH — pelajari ulang materi dasar lalu ulangi latihan ini.';vcls='st-bad';}
+
+  const rows=per.map(p=>`<tr>
+    <td class="left"><b>Bab ${p.i+1}</b><br><small>${p.name}</small></td>
+    <td>${p.B}</td><td>${p.S}</td><td>${p.K}</td>
+    <td><div class="accwrap"><div class="accbar"><div class="accfill" style="width:${Math.round(p.acc*100)}%"></div></div><small>${Math.round(p.acc*100)}%</small></div></td>
+    <td>${p.ans?fmtDur(p.T)+'<br><small>±'+(p.T/p.ans/60).toFixed(1)+' mnt/soal</small>':'—'}</td>
+    <td><span class="tag ${p.cls}">${p.status}</span></td></tr>`).join('');
+
+  /* Kesimpulan dinamis */
+  const g=c=>per.filter(p=>p.cls===c);
+  const kuat=g('st-ok'),waktu=g('st-mid'),perkuat=g('st-mid2'),sulit=g('st-bad');
+  let kes=`<p>Dari <b>80 butir soal</b>, <b>${esc(state.name)}</b> menjawab <b style="color:#15803d">benar ${TB}</b>, <b style="color:#b91c1c">salah ${TS}</b>, dan <b>tidak dijawab ${TK}</b>, dengan total waktu pengerjaan <b>${fmtDur(TT)}</b> (rata-rata ±${(avgAll/60).toFixed(1)} menit/soal; target ±5 menit/soal${upAll?`; ${upAll} soal berakhir karena waktu habis`:''}).</p>`;
+  if(kuat.length)kes+=`<p>✅ <b>Bab yang sudah dikuasai</b> (akurasi ≥ 70% dengan waktu efisien): ${kuat.map(p=>`<b>Bab ${p.i+1} – ${p.name}</b>`).join(', ')}.</p>`;
+  if(waktu.length)kes+=`<p>⏱ <b>Akurasi baik, namun waktu perlu lebih efisien</b>: ${waktu.map(p=>`<b>Bab ${p.i+1} – ${p.name}</b>`).join(', ')}. Latih kembali soal serupa dengan batas waktu lebih ketat.</p>`;
+  if(perkuat.length)kes+=`<p>📘 <b>Perlu penguatan</b> (akurasi 40–69%): ${perkuat.map(p=>`<b>Bab ${p.i+1} – ${p.name}</b>`).join(', ')}. Ulangi contoh soal dasar sebelum naik ke level HOTS.</p>`;
+  if(sulit.length)kes+=`<p>⚠️ <b>Masih kesulitan</b> (akurasi &lt; 40%): ${sulit.map(p=>`<b>Bab ${p.i+1} – ${p.name}</b>`).join(', ')}. Pelajari kembali konsep dasar bab ini dari awal dan minta pendampingan guru.</p>`;
+  if(!kuat.length&&!waktu.length)kes+=`<p>📌 Belum ada bab yang mencapai status <b>Menguasai</b> — fokuskan waktu belajar pada pemahaman konsep dasar setiap bab.</p>`;
+  if(TK>0)kes+=`<p>⚪ Terdapat <b>${TK} soal tidak terjawab</b>. Biasakan manajemen waktu: kerjakan soal mudah terlebih dahulu dan gunakan strategi eliminasi pilihan sebelum waktu habis.</p>`;
+  kes+=`<p style="margin-top:12px"><span class="tag ${vcls}" style="font-size:14px">Kesimpulan akhir: ${verdict}</span></p>`;
+
+  const mgrid=per.map(p=>`<div class="mcard">
+    <div class="mh"><h4>Bab ${p.i+1} — ${p.name}</h4><span class="tag ${p.cls}">${p.status}</span></div>
+    <p>${MATERI[p.i]}</p></div>`).join('');
+
+  $('resBox').innerHTML=`
+  <div class="card" style="margin-bottom:16px">
+    <div class="res-head"><h2>📊 Analisis Hasil Latihan</h2>
+      <p>👤 <b>${esc(state.name)}</b> • ${new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p></div>
+    <div class="hero">
+      <div class="hero-score">${Math.round(accAll*100)}<small>%</small></div>
+      <div>
+        <div class="hero-t">Skor Ketepatan (Benar / 80 soal)</div>
+        <span class="tag ${vcls}" style="font-size:13.5px">${verdict}</span>
+        <p class="hero-s">${upAll?`⏰ ${upAll} soal berakhir karena waktu habis • `:''}Rata-rata waktu: <b>${(avgAll/60).toFixed(1)} menit/soal</b> • Terpakai <b>${fmtDur(TT)}</b> dari total alokasi 400 menit.</p>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat st-g"><span>✅ Jawaban Benar</span><b>${TB}</b></div>
+      <div class="stat st-r"><span>❌ Jawaban Salah</span><b>${TS}</b></div>
+      <div class="stat st-n"><span>⚪ Tidak Dijawab</span><b>${TK}</b></div>
+      <div class="stat st-t"><span>⏱ Total Waktu Pengerjaan</span><b style="font-size:21px;padding-top:9px">${fmtDur(TT)}</b></div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <h3 class="sec-t">🔍 Analisis Per Bab (Kebenaran &amp; Waktu)</h3>
+    <div style="overflow-x:auto"><table>
+      <tr><th class="left">Bab / Materi</th><th>✅</th><th>❌</th><th>⚪</th><th>Akurasi</th><th>Waktu</th><th>Analisis</th></tr>
+      ${rows}
+    </table></div>
+    <p style="font-size:12px;color:#64748b;margin-top:10px">Keterangan status — <b>Menguasai</b>: akurasi ≥ 70% &amp; waktu efisien • <b>Mampu, waktu kurang efisien</b>: akurasi ≥ 70% namun melebihi 125% target waktu • <b>Perlu Penguatan</b>: akurasi 40–69% • <b>Kesulitan</b>: akurasi &lt; 40%. Target waktu per bab = rata-rata alokasi 10 soalnya (5 menit/soal).</p>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <h3 class="sec-t">🧠 Kesimpulan &amp; Rekomendasi Belajar</h3>
+    <div class="kesimpulan">${kes}</div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <h3 class="sec-t">📚 Kesimpulan Materi — Rangkuman 8 Bab</h3>
+    <div class="mgrid">${mgrid}</div>
+  </div>
+  <div class="actions" style="justify-content:center">
+    <button class="btn ghost" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+    <button class="btn" onclick="location.reload()">🔄 Ulangi Latihan</button>
+  </div>`;
+  showSlide('sResult');
+}
+
+/* ================= INISIALISASI ================= */
+ $('btnStart').addEventListener('click',()=>{
+  const v=$('inpName').value.trim();
+  if(!v){$('errName').textContent='⚠ Silakan tulis nama siswa terlebih dahulu.';$('inpName').focus();return;}
+  state.name=v;$('errName').textContent='';
+  $('whoName').textContent='👤 '+v;
+  showSlide('sQuiz');renderQuiz();updateProgress();
+});
+ $('inpName').addEventListener('keydown',e=>{if(e.key==='Enter')$('btnStart').click();});
+ $('btnNav').addEventListener('click',openNav);
+ $('btnFinish').addEventListener('click',openFinish);
+ $('modalWrap').addEventListener('click',e=>{if(e.target===$('modalWrap'))closeModal();});
+</script>
+</body>
+</html>
