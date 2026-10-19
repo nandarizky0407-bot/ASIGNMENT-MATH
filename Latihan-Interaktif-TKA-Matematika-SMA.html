@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latihan Interaktif TKA SMA — Matematika</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --pri:#4338ca;--pri2:#6d28d9;--pri-soft:#eef2ff;--pri-line:#c7d2fe;
+  --ok:#15803d;--ok-soft:#f0fdf4;--ok-line:#bbf7d0;
+  --bad:#dc2626;--bad-soft:#fef2f2;--bad-line:#fecaca;
+  --warn:#b45309;--warn-soft:#fffbeb;--warn-line:#fde68a;
+  --ink:#1e293b;--mut:#64748b;--line:#e2e8f0;--bg:#f1f5f9;
+  --sh:0 10px 30px rgba(30,41,59,.08);
+}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.hidden{display:none!important}
+.screen{display:none;min-height:100vh}
+.screen.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .35s}
+
+/* ===== TOMBOL ===== */
+.btn{border:0;border-radius:12px;padding:11px 18px;font-size:15px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;box-shadow:0 6px 16px rgba(79,70,229,.3)}
+.btn-primary:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(79,70,229,.4)}
+.btn-ghost{background:#fff;color:var(--pri);border:2px solid var(--pri-line)}
+.btn-ghost:not(:disabled):hover{background:var(--pri-soft)}
+.btn-soft{background:var(--pri-soft);color:var(--pri);border:2px solid var(--pri-line)}
+.btn-soft:not(:disabled):hover{background:#e0e7ff}
+.btn-danger{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;box-shadow:0 6px 16px rgba(220,38,38,.25)}
+.btn-danger:not(:disabled):hover{transform:translateY(-1px)}
+.btn-big{width:100%;padding:15px;font-size:17px;border-radius:14px}
+
+/* ===== COVER ===== */
+#screen-cover{background:radial-gradient(1100px 600px at 8% -10%,rgba(199,210,254,.4),transparent),radial-gradient(900px 500px at 108% 110%,rgba(221,214,254,.4),transparent),linear-gradient(135deg,#eef2ff,#f5f3ff 55%,#eff6ff)}
+.cover-inner{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 16px}
+.cover-card{background:#fff;max-width:690px;width:100%;border-radius:24px;box-shadow:var(--sh);padding:40px 42px;text-align:center;border:1px solid #e0e7ff}
+.cover-badge{width:64px;height:64px;margin:0 auto 14px;border-radius:18px;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;font-weight:800;font-size:21px;display:flex;align-items:center;justify-content:center;letter-spacing:1px;box-shadow:0 8px 20px rgba(67,56,202,.35)}
+h1{font-size:25px;line-height:1.4}
+h1 span{background:linear-gradient(90deg,var(--pri),var(--pri2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cover-sub{color:var(--mut);margin-top:8px;font-size:15px}
+.chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:18px 0 4px}
+.chip{background:var(--pri-soft);color:var(--pri);border:1.5px solid var(--pri-line);font-size:13px;font-weight:700;padding:6px 14px;border-radius:99px}
+.cover-form{margin-top:22px;text-align:left}
+.cover-form label{font-weight:700;font-size:14px;display:block;margin-bottom:8px}
+#inp-nama{width:100%;border:2px solid var(--line);border-radius:14px;padding:14px 16px;font-size:16px;font-family:inherit;outline:none;transition:.15s;background:#f8fafc;color:var(--ink)}
+#inp-nama:focus{border-color:var(--pri);background:#fff;box-shadow:0 0 0 4px rgba(199,210,254,.45)}
+.err-msg{color:var(--bad);font-size:13.5px;font-weight:600;margin-top:8px}
+.cover-form .btn-big{margin-top:14px}
+.rules{margin-top:26px;text-align:left;background:#f8fafc;border:1px dashed var(--line);border-radius:14px;padding:18px 20px}
+.rules h3{font-size:13.5px;color:var(--pri);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+.rules ol{margin-left:20px;font-size:14px;color:#334155}
+.rules li{margin:7px 0}
+.src-note{margin-top:16px;font-size:12px;color:var(--mut)}
+
+/* ===== TOPBAR KUIS ===== */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px;flex-wrap:wrap}
+.brand{font-weight:800;color:var(--pri);font-size:15px}
+.student{font-size:13px;color:var(--mut);font-weight:600}
+.top-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.gtimer{display:flex;align-items:center;gap:8px;background:var(--pri-soft);border:2px solid var(--pri-line);color:var(--pri);border-radius:12px;padding:8px 14px;font-weight:800;font-size:18px;font-variant-numeric:tabular-nums}
+
+/* ===== WRAP + NAVIGASI ===== */
+.wrap{max-width:880px;margin:0 auto;padding:20px 16px 60px}
+.navbox{background:#fff;border-radius:18px;box-shadow:var(--sh);padding:16px 18px;margin-bottom:18px;border:1px solid var(--line)}
+.nav-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+.nav-title{font-weight:800;font-size:15px}
+.nav-meta{font-size:12.5px;color:var(--mut);font-weight:700}
+.qnav{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:8px}
+.qbtn{height:44px;border-radius:11px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:14px;color:var(--mut);cursor:pointer;transition:.12s;position:relative;font-family:inherit}
+.qbtn::after{content:'';position:absolute;left:8px;right:8px;bottom:3px;height:3px;border-radius:2px;background:var(--dcol,transparent)}
+.qbtn.d0{--dcol:#3b82f6}.qbtn.d1{--dcol:#8b5cf6}.qbtn.d2{--dcol:#14b8a6}.qbtn.d3{--dcol:#f59e0b}.qbtn.d4{--dcol:#f43f5e}
+.qbtn:hover{border-color:#a5b4fc;color:var(--pri)}
+.qbtn.cur{border-color:var(--pri);color:var(--pri);background:var(--pri-soft);box-shadow:0 0 0 3px rgba(199,210,254,.5)}
+.qbtn.ok{background:var(--ok-soft);border-color:var(--ok-line);color:var(--ok)}
+.qbtn.bad{background:var(--bad-soft);border-color:var(--bad-line);color:var(--bad)}
+.qbtn.part{background:var(--warn-soft);border-color:var(--warn-line);color:var(--warn)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:12px;color:var(--mut);font-weight:600}
+.legend .lg{display:inline-block;width:11px;height:11px;border-radius:4px;margin-right:5px;vertical-align:-1px;border:1.5px solid transparent}
+.lg-cur{background:var(--pri-soft);border-color:var(--pri)}
+.lg-ok{background:var(--ok-soft);border-color:var(--ok-line)}
+.lg-bad{background:var(--bad-soft);border-color:var(--bad-line)}
+.lg-part{background:var(--warn-soft);border-color:var(--warn-line)}
+.lg-none{background:#fff;border-color:var(--line)}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:12px}
+.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--pri),var(--pri2));border-radius:99px;transition:width .4s}
+
+/* ===== KARTU SOAL ===== */
+.qcard{background:#fff;border-radius:20px;box-shadow:var(--sh);padding:26px 28px;border:1px solid var(--line)}
+.q-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.badge{display:inline-flex;align-items:center;font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;border:1px solid transparent}
+.b-no{background:var(--pri);color:#fff}
+.b-type{background:#f1f5f9;color:#475569;border-color:var(--line)}
+.b-dom{background:var(--dc-soft,var(--pri-soft));color:var(--dc,var(--pri))}
+.d0{--dc:#1d4ed8;--dc-soft:#dbeafe}.d1{--dc:#6d28d9;--dc-soft:#ede9fe}.d2{--dc:#0f766e;--dc-soft:#ccfbf1}.d3{--dc:#b45309;--dc-soft:#fef3c7}.d4{--dc:#be123c;--dc-soft:#ffe4e6}
+.b-sub{background:#fff;color:var(--mut);border-color:var(--line);font-weight:600}
+.q-timebox{display:inline-flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 14px;margin-top:14px}
+.q-timebox svg{color:var(--pri);flex:none}
+.q-timebox small{display:block;font-size:10.5px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.q-timebox b{font-size:18px;font-variant-numeric:tabular-nums}
+.q-text{margin-top:16px;font-size:16.5px;line-height:1.75}
+.q-text sup{font-size:.72em}
+
+/* ===== OPSI PG ===== */
+.opts{margin-top:14px}
+.opt{display:flex;align-items:center;gap:12px;border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin:9px 0;cursor:pointer;transition:.13s;background:#fff}
+.opt:hover{border-color:#a5b4fc;background:var(--pri-soft)}
+.opt.sel{border-color:var(--pri);background:var(--pri-soft)}
+.opt.lock{cursor:default;pointer-events:none}
+.opt.hit{border-color:var(--ok-line);background:var(--ok-soft)}
+.opt.miss{border-color:var(--bad-line);background:var(--bad-soft)}
+.opt input{width:18px;height:18px;accent-color:var(--pri);flex:none}
+.opt-letter{font-weight:800;color:var(--pri);min-width:24px}
+.opt-text{flex:1;font-size:15.5px}
+.opt-key{font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;background:var(--ok-soft);color:var(--ok);border:1px solid var(--ok-line);flex:none}
+
+/* ===== PERNYATAAN (B/S & PGK) ===== */
+.st{border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;background:#fff;transition:.15s}
+.st.hit{border-color:var(--ok-line);background:var(--ok-soft)}
+.st.miss{border-color:var(--bad-line);background:var(--bad-soft)}
+.st-top{display:flex;gap:10px;align-items:flex-start}
+.st-no{font-weight:800;color:var(--pri);flex:none}
+.st-t{flex:1;font-size:15.5px}
+.st-t sup{font-size:.72em}
+.st-mark{flex:none;font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;align-self:flex-start;white-space:nowrap}
+.st-mark.ok{background:var(--ok-soft);color:var(--ok);border:1px solid var(--ok-line)}
+.st-mark.bad{background:var(--bad-soft);color:var(--bad);border:1px solid var(--bad-line)}
+.st-ctl{display:flex;gap:18px;margin-top:10px;flex-wrap:wrap}
+.st-ctl label{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-weight:600;color:var(--mut);font-size:14.5px}
+.st-ctl input{accent-color:var(--pri);width:17px;height:17px}
+
+/* ===== UMpan balik & PEMBAHASAN ===== */
+.fb{border-radius:14px;padding:16px 18px;margin-top:18px;font-weight:600;display:flex;gap:12px;align-items:flex-start;animation:fade .3s}
+.fb.ok{background:var(--ok-soft);border:2px solid var(--ok-line);color:var(--ok)}
+.fb.bad{background:var(--bad-soft);border:2px solid var(--bad-line);color:var(--bad)}
+.fb-ico{font-size:22px;line-height:1.2;font-weight:800}
+.fb small{display:block;font-weight:600;opacity:.9;margin-top:3px;color:var(--ink)}
+.pemb{margin-top:16px;background:var(--pri-soft);border:2px solid var(--pri-line);border-radius:14px;padding:18px 20px;animation:fade .3s}
+.pemb h4{color:var(--pri);font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.6px}
+.pemb .p-main{font-size:15px;line-height:1.75}
+.pemb .p-main sup{font-size:.72em}
+.pemb ol{margin:10px 0 0 20px;font-size:14.5px;line-height:1.7}
+.pemb ol li{margin:6px 0}
+.q-actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.q-actions .spacer{flex:1}
+
+/* ===== HASIL ===== */
+.res-hero{background:linear-gradient(135deg,#4338ca,#7c3aed);border-radius:24px;color:#fff;padding:34px 30px;box-shadow:var(--sh);display:flex;gap:28px;align-items:center;flex-wrap:wrap;justify-content:center;text-align:center}
+.ring{width:158px;height:158px;border-radius:50%;background:conic-gradient(#ffffff calc(var(--p)*1%),rgba(255,255,255,.25) 0);display:grid;place-items:center;flex:none}
+.ring>div{width:122px;height:122px;border-radius:50%;background:linear-gradient(135deg,#4338ca,#7c3aed);display:grid;place-items:center;flex-direction:column}
+.ring b{font-size:36px;line-height:1.1;display:block}
+.ring small{font-size:10.5px;opacity:.85;font-weight:800;letter-spacing:1px}
+.res-hero h2{font-size:24px}
+.res-hero .sub{opacity:.92;font-size:14px;margin-top:4px}
+.kat{display:inline-block;margin-top:12px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.55);padding:7px 16px;border-radius:99px;font-weight:800;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:18px 0}
+.stat{background:#fff;border-radius:16px;padding:18px;box-shadow:var(--sh);border:1px solid var(--line);text-align:center}
+.stat b{font-size:30px;display:block;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--mut);font-weight:600}
+.stat.ok b{color:var(--ok)}.stat.bad b{color:var(--bad)}.stat.mut b{color:var(--mut)}.stat.pri b{color:var(--pri)}
+.sect{margin-top:26px}
+.sect>h3{font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.sect>h3::before{content:'';width:5px;height:22px;border-radius:4px;background:linear-gradient(180deg,var(--pri),var(--pri2))}
+.tblwrap{overflow-x:auto;background:#fff;border-radius:16px;box-shadow:var(--sh);border:1px solid var(--line)}
+table.res{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+.res th{background:var(--pri-soft);color:var(--pri);text-align:left;padding:11px 12px;font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+.res td{padding:10px 12px;border-bottom:1px solid var(--line)}
+.res tr:last-child td{border-bottom:0}
+.tag{display:inline-block;font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.tag.ok{background:var(--ok-soft);color:var(--ok);border:1px solid var(--ok-line)}
+.tag.bad{background:var(--bad-soft);color:var(--bad);border:1px solid var(--bad-line)}
+.tag.mut{background:#f8fafc;color:var(--mut);border:1px solid var(--line)}
+.tag.warn{background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn-line)}
+.dom{background:#fff;border-radius:16px;box-shadow:var(--sh);border:1px solid var(--line);padding:16px 18px;margin-bottom:14px}
+.dom-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.dom-top h4{font-size:15.5px}
+.dom-meta{display:flex;gap:8px;flex-wrap:wrap}
+.bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:12px 0 6px}
+.bar i{display:block;height:100%;border-radius:99px;transition:width .6s}
+.bar i.hi{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.bar i.md{background:linear-gradient(90deg,#d97706,#fbbf24)}
+.bar i.lo{background:linear-gradient(90deg,#dc2626,#f87171)}
+.dom-rec{font-size:14px;color:#475569;margin-top:10px;border-top:1px dashed var(--line);padding-top:10px;line-height:1.7}
+.dom-rec b{color:var(--ink)}
+.note{font-size:12.5px;color:var(--mut);margin-top:10px;line-height:1.7}
+.concl{background:#fff;border-radius:16px;box-shadow:var(--sh);border:1px solid var(--line);padding:20px 22px;font-size:15px;line-height:1.85}
+.res-actions{display:flex;gap:12px;margin-top:24px;justify-content:center;flex-wrap:wrap}
+
+@media (max-width:560px){
+  .qcard{padding:18px 16px}
+  .cover-card{padding:28px 20px}
+  h1{font-size:20px}
+  .gtimer{font-size:15px;padding:6px 10px}
+  .qnav{grid-template-columns:repeat(auto-fill,minmax(40px,1fr))}
+  .res-hero{padding:24px 16px}
+  .q-actions .btn{flex:1 1 auto}
+}
+@media print{
+  .no-print,.topbar,.navbox,.q-actions,.res-actions{display:none!important}
+  body{background:#fff}
+  .stat,.dom,.tblwrap,.concl,.res-hero{box-shadow:none}
+  .screen{display:none!important}
+  #screen-results.active{display:block!important}
+  .dom,.stat{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LAYAR 1: COVER ============ -->
+<section id="screen-cover" class="screen active">
+  <div class="cover-inner">
+    <div class="cover-card">
+      <div class="cover-badge">TKA</div>
+      <h1>Latihan Interaktif Persiapan<br><span>TKA SMA — Matematika</span></h1>
+      <p class="cover-sub">Tes Diagnostik Dasar · Fokus: Kemampuan Berhitung Dasar &amp; Pemahaman Soal Cerita Sederhana</p>
+      <div class="chips">
+        <span class="chip">30 Soal</span><span class="chip">5 Materi</span><span class="chip">PG · Benar/Salah · PGK</span><span class="chip">Target 60 Menit</span>
+      </div>
+      <div class="cover-form">
+        <label for="inp-nama">Nama Lengkap Siswa</label>
+        <input id="inp-nama" type="text" placeholder="Tulis nama lengkapmu di sini..." maxlength="40" autocomplete="off">
+        <div id="nama-err" class="err-msg hidden">Nama belum diisi. Tulis nama lengkapmu dulu ya!</div>
+        <button id="btn-start" class="btn btn-primary btn-big">Mulai Tes — Stopwatch Mulai Berjalan</button>
+      </div>
+      <div class="rules">
+        <h3>Cara Mengerjakan</h3>
+        <ol>
+          <li>Stopwatch <b>total</b> mulai berjalan sejak tombol <b>Mulai Tes</b> ditekan.</li>
+          <li>Kerjakan soal, lalu tekan <b>Cek Jawaban</b> — waktu pengerjaan soal itu otomatis tercatat dan tombol <b>Pembahasan</b> terbuka.</li>
+          <li>Sulit? Lewati dulu dengan <b>tombol nomor soal</b> di atas. Waktu soal yang dilewati otomatis <b>terjeda</b>, lalu berjalan lagi saat kamu kembali.</li>
+          <li>Warna nomor soal: <b style="color:var(--ok)">hijau = benar</b>, <b style="color:var(--bad)">merah = salah</b>, <b style="color:var(--warn)">kuning = sudah diisi belum dicek</b>.</li>
+          <li>Tekan <b>Akhiri Tes</b> kapan saja untuk melihat skor, jumlah benar/salah, waktu tiap soal, dan analisis kemampuan per materi.</li>
+        </ol>
+      </div>
+      <p class="src-note">Sumber soal: Tes Diagnostik Dasar Persiapan TKA Matematika SMA (30 butir · Level Dasar).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LAYAR 2: KUIS ============ -->
+<section id="screen-quiz" class="screen">
+  <header class="topbar">
+    <div class="top-left">
+      <div class="brand">TKA · Matematika SMA</div>
+      <div class="student" id="top-nama">—</div>
+    </div>
+    <div class="top-right">
+      <div class="gtimer" title="Stopwatch total sejak Mulai Tes">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span id="gt-elapsed">00:00</span>
+      </div>
+      <button id="btn-end" class="btn btn-danger">Akhiri Tes</button>
+    </div>
+  </header>
+  <div class="wrap">
+    <nav class="navbox">
+      <div class="nav-head">
+        <span class="nav-title">Navigasi Soal — klik nomor untuk pindah / melewati soal</span>
+        <span class="nav-meta" id="nav-progress">Dicek 0/30</span>
+      </div>
+      <div id="qnav" class="qnav"></div>
+      <div class="legend">
+        <span><i class="lg lg-cur"></i>Sedang dikerjakan</span>
+        <span><i class="lg lg-ok"></i>Benar</span>
+        <span><i class="lg lg-bad"></i>Salah</span>
+        <span><i class="lg lg-part"></i>Sudah diisi, belum dicek</span>
+        <span><i class="lg lg-none"></i>Belum diisi</span>
+      </div>
+      <div class="progress"><div id="prog-bar"></div></div>
+    </nav>
+    <main id="qcard" class="qcard"></main>
+  </div>
+</section>
+
+<!-- ============ LAYAR 3: HASIL ============ -->
+<section id="screen-results" class="screen">
+  <div class="wrap" id="results-box"></div>
+</section>
+
+<script>
+'use strict';
+const DOMAINS = ['Bilangan', 'Aljabar', 'Geometri & Pengukuran', 'Data & Peluang', 'Trigonometri'];
+const TYPE_LABEL = { pg: 'Pilihan Ganda', bs: 'Benar / Salah', pgk: 'PG Kompleks' };
+
+const QUESTIONS = [
+{ no: 1, dom: 0, type: 'pg', sub: 'Bilangan Berpangkat',
+  text: 'Hasil perhitungan dari operasi bilangan berpangkat 2<sup>4</sup> + 3<sup>2</sup> &minus; 5<sup>0</sup> adalah ....',
+  opts: ['19', '20', '24', '25', '26'], ans: 2,
+  pemb: 'Hitung nilai masing-masing pangkat terlebih dahulu: 2<sup>4</sup> = 2 &times; 2 &times; 2 &times; 2 = 16; 3<sup>2</sup> = 3 &times; 3 = 9; dan setiap bilangan tak nol yang berpangkat nol hasilnya 1, jadi 5<sup>0</sup> = 1. Maka 16 + 9 &minus; 1 = <b>24</b> (C).' },
+
+{ no: 2, dom: 0, type: 'pg', sub: 'Pecahan Soal Cerita',
+  text: 'Ibu membeli 40 buah jeruk. Sebanyak 1/4 bagian dari jeruk tersebut diberikan kepada tetangga, dan 2/5 bagian dari jumlah jeruk awal disimpan di dalam kulkas. Banyak jeruk yang tersisa di meja makan adalah ....',
+  opts: ['10 buah', '12 buah', '14 buah', '16 buah', '26 buah'], ans: 2,
+  pemb: 'Jeruk awal = 40 buah. Diberikan ke tetangga = 1/4 &times; 40 = 10 buah. Disimpan di kulkas = 2/5 &times; 40 = 16 buah. Sisa jeruk di meja makan = 40 &minus; 10 &minus; 16 = <b>14 buah</b> (C).' },
+
+{ no: 3, dom: 0, type: 'pg', sub: 'Operasi Bilangan Real (Suhu)',
+  text: 'Suhu udara di dalam lemari pendingin awalnya adalah &minus;4&deg;C. Ketika listrik padam selama 3 jam, suhu di dalam lemari pendingin tersebut naik sebesar 3&deg;C setiap jamnya. Suhu lemari pendingin setelah listrik padam 3 jam adalah ....',
+  opts: ['&minus;13&deg;C', '&minus;1&deg;C', '2&deg;C', '5&deg;C', '9&deg;C'], ans: 3,
+  pemb: 'Suhu awal = &minus;4&deg;C. Kenaikan suhu selama 3 jam = 3 &times; 3&deg;C = 9&deg;C. Suhu akhir = &minus;4&deg;C + 9&deg;C = <b>5&deg;C</b> (D).' },
+
+{ no: 4, dom: 0, type: 'bs', sub: 'Bilangan Asli & Operasi Hitung',
+  text: 'Perhatikan sifat-sifat bilangan asli dan operasi hitung dasar berikut. Berilah tanda pada kolom <b>Benar</b> atau <b>Salah</b> untuk setiap pernyataan!',
+  st: [
+    { t: 'Penjumlahan dua bilangan ganjil selalu menghasilkan bilangan genap.', ok: true, exp: 'Contoh: 3 + 5 = 8. Ganjil + ganjil selalu menghasilkan bilangan genap.' },
+    { t: 'Bilangan 15 merupakan bilangan prima karena hanya bisa dibagi oleh angka ganjil.', ok: false, exp: '15 bukan bilangan prima karena selain habis dibagi 1 dan 15, juga habis dibagi 3 dan 5.' },
+    { t: 'Hasil dari operasi hitung campuran 20 &minus; 4 &times; 3 adalah 48.', ok: false, exp: 'Perkalian dikerjakan lebih dulu: 20 &minus; (4 &times; 3) = 20 &minus; 12 = 8, bukan 48.' }
+  ],
+  pemb: '(1) <b>Benar</b> &mdash; jumlah dua bilangan ganjil selalu genap. (2) <b>Salah</b> &mdash; 15 habis dibagi 3 dan 5, jadi bukan prima. (3) <b>Salah</b> &mdash; hasil yang benar adalah 8.' },
+
+{ no: 5, dom: 0, type: 'bs', sub: 'Pecahan, Desimal & Persen',
+  text: 'Sebuah toko buku memberikan potongan harga (diskon) untuk beberapa perlengkapan sekolah. Tentukan nilai kebenaran (<b>Benar</b> atau <b>Salah</b>) dari setiap pernyataan berikut!',
+  st: [
+    { t: 'Pecahan 3/4 jika diubah ke dalam bentuk desimal nilainya sama dengan 0,75.', ok: true, exp: '3/4 = 75/100 = 0,75.' },
+    { t: 'Nilai 25% dari uang sebesar Rp80.000,00 adalah Rp20.000,00.', ok: true, exp: '25% &times; Rp80.000 = (1/4) &times; Rp80.000 = Rp20.000,00.' },
+    { t: 'Jika harga sebuah tas Rp100.000,00 mendapat diskon 15%, maka pembeli harus membayar Rp95.000,00.', ok: false, exp: 'Diskon 15% = Rp15.000,00, sehingga harga bayar = Rp100.000 &minus; Rp15.000 = Rp85.000,00.' }
+  ],
+  pemb: '(1) <b>Benar</b> &mdash; 3/4 = 0,75. (2) <b>Benar</b> &mdash; 25% &times; Rp80.000 = Rp20.000,00. (3) <b>Salah</b> &mdash; harga bayar seharusnya Rp85.000,00.' },
+
+{ no: 6, dom: 0, type: 'pgk', sub: 'Bilangan Berpangkat & Akar',
+  text: 'Perhatikan beberapa operasi bilangan berpangkat dan bentuk akar sederhana di bawah ini. Manakah pernyataan perhitungan yang bernilai <b>BENAR</b>? Pilihlah semua jawaban yang benar!',
+  st: [
+    { t: 'Nilai dari 5<sup>2</sup> + 5<sup>1</sup> adalah 30.', ok: true, exp: '5<sup>2</sup> + 5<sup>1</sup> = 25 + 5 = 30.' },
+    { t: 'Hasil perkalian pangkat 2<sup>3</sup> &times; 2<sup>2</sup> sama dengan 2<sup>5</sup> atau 32.', ok: true, exp: '2<sup>3</sup> &times; 2<sup>2</sup> = 8 &times; 4 = 32 = 2<sup>5</sup>.' },
+    { t: 'Nilai dari &radic;81 + &radic;16 adalah 13.', ok: true, exp: '&radic;81 + &radic;16 = 9 + 4 = 13.' },
+    { t: 'Nilai dari 10<sup>3</sup> adalah 30.', ok: false, exp: '10<sup>3</sup> = 10 &times; 10 &times; 10 = 1.000, bukan 10 &times; 3 = 30.' }
+  ],
+  pemb: '(1) <b>Benar</b>: 25 + 5 = 30. (2) <b>Benar</b>: 8 &times; 4 = 32. (3) <b>Benar</b>: 9 + 4 = 13. (4) <b>Salah</b>: 10<sup>3</sup> = 1.000.' },
+
+{ no: 7, dom: 1, type: 'pg', sub: 'Persamaan Linear Satu Variabel',
+  text: 'Rina membeli 3 buah buku tulis yang harganya sama dan 1 buah pulpen seharga Rp4.000,00. Jika total uang yang harus dibayar Rina di kasir adalah Rp19.000,00, maka harga 1 buah buku tulis adalah ....',
+  opts: ['Rp4.500,00', 'Rp5.000,00', 'Rp5.500,00', 'Rp6.000,00', 'Rp6.500,00'], ans: 1,
+  pemb: 'Misalkan harga 1 buku tulis = x. Maka 3x + 4.000 = 19.000, sehingga 3x = 15.000 dan x = <b>Rp5.000,00</b> (B).' },
+
+{ no: 8, dom: 1, type: 'pg', sub: 'Nilai Fungsi Linear',
+  text: 'Diketahui sebuah rumus fungsi f(x) = 3x &minus; 5. Jika nilai x = 4 dimasukkan ke dalam fungsi tersebut, maka nilai dari f(4) adalah ....',
+  opts: ['2', '7', '12', '17', '29'], ans: 1,
+  pemb: 'Substitusikan x = 4 ke rumus: f(4) = 3(4) &minus; 5 = 12 &minus; 5 = <b>7</b> (B).' },
+
+{ no: 9, dom: 1, type: 'pg', sub: 'Barisan Aritmetika Sederhana',
+  text: 'Seorang siswa menabung uang secara rutin setiap minggu. Pada minggu ke-1 ia menabung Rp10.000,00, minggu ke-2 sebesar Rp15.000,00, minggu ke-3 sebesar Rp20.000,00, dan seterusnya selalu bertambah Rp5.000,00 setiap minggu. Besar uang yang ditabung siswa tersebut pada minggu ke-6 adalah ....',
+  opts: ['Rp25.000,00', 'Rp30.000,00', 'Rp35.000,00', 'Rp40.000,00', 'Rp45.000,00'], ans: 2,
+  pemb: 'Tabungan awal a = Rp10.000,00 dan beda b = Rp5.000,00. Dengan rumus U6 = a + 5b = 10.000 + 5(5.000) = <b>Rp35.000,00</b> (C). Urutannya: 10.000, 15.000, 20.000, 25.000, 30.000, 35.000.' },
+
+{ no: 10, dom: 1, type: 'bs', sub: 'Pertidaksamaan Linear Satu Variabel',
+  text: 'Sebuah jembatan penyeberangan memiliki rambu batas muatan maksimal 100 kg. Andi yang memiliki berat badan 60 kg ingin menyeberangi jembatan sambil membawa 2 kotak barang yang beratnya sama (masing-masing kotak beratnya x kg). Tentukan kebenaran pernyataan berikut!',
+  st: [
+    { t: 'Kalimat matematika untuk syarat aman jembatan adalah 60 + 2x &le; 100.', ok: true, exp: 'Berat Andi ditambah 2 kotak tidak boleh melebihi 100 kg: 60 + 2x &le; 100.' },
+    { t: 'Berat maksimal 1 kotak barang (x) agar tidak melebihi batas adalah 20 kg.', ok: true, exp: '2x &le; 100 &minus; 60 &rArr; 2x &le; 40 &rArr; x &le; 20 kg.' },
+    { t: 'Jika setiap kotak beratnya 25 kg, Andi tetap aman melewati jembatan tersebut.', ok: false, exp: 'Total beban = 60 + 2(25) = 110 kg &gt; 100 kg, sehingga tidak aman.' }
+  ],
+  pemb: '(1) <b>Benar</b> &mdash; 60 + 2x &le; 100. (2) <b>Benar</b> &mdash; x &le; 20 kg. (3) <b>Salah</b> &mdash; total beban 110 kg melebihi batas.' },
+
+{ no: 11, dom: 1, type: 'pgk', sub: 'Barisan & Deret Bilangan',
+  text: 'Diketahui sebuah barisan bilangan yang berpola teratur: 3, 7, 11, 15, .... Pilihlah semua pernyataan yang <b>BENAR</b> mengenai barisan tersebut!',
+  st: [
+    { t: 'Selisih (beda) antar suku yang berdekatan pada barisan tersebut adalah 4.', ok: true, exp: '7 &minus; 3 = 11 &minus; 7 = 15 &minus; 11 = 4.' },
+    { t: 'Suku ke-5 (angka berikutnya setelah 15) adalah 19.', ok: true, exp: '15 + 4 = 19.' },
+    { t: 'Suku ke-6 dari barisan tersebut adalah 24.', ok: false, exp: 'Suku ke-6 = 19 + 4 = 23, bukan 24.' },
+    { t: 'Jumlah empat suku pertama (3 + 7 + 11 + 15) adalah 36.', ok: true, exp: '3 + 7 + 11 + 15 = 36.' }
+  ],
+  pemb: '(1) <b>Benar</b>: beda = 4. (2) <b>Benar</b>: U5 = 19. (3) <b>Salah</b>: U6 = 23. (4) <b>Benar</b>: jumlahnya 36.' },
+
+{ no: 12, dom: 1, type: 'pgk', sub: 'Fungsi (Tarif Taksi)',
+  text: 'Tarif sebuah taksi terdiri dari biaya buka pintu sebesar Rp10.000,00 ditambah biaya perjalanan Rp5.000,00 untuk setiap kilometer jarak yang ditempuh. Jika jarak tempuh adalah x km, pilihlah semua pernyataan yang <b>BENAR</b>!',
+  st: [
+    { t: 'Rumus total biaya taksi untuk x km adalah B(x) = 5.000x + 10.000.', ok: true, exp: 'Biaya tetap Rp10.000,00 ditambah Rp5.000,00 per km: B(x) = 5.000x + 10.000.' },
+    { t: 'Jika penumpang menempuh jarak 2 km, biaya yang harus dibayar adalah Rp20.000,00.', ok: true, exp: 'B(2) = 5.000(2) + 10.000 = Rp20.000,00.' },
+    { t: 'Jika penumpang menempuh jarak 6 km, biaya yang harus dibayar adalah Rp40.000,00.', ok: true, exp: 'B(6) = 5.000(6) + 10.000 = Rp40.000,00.' },
+    { t: 'Dengan uang Rp35.000,00, penumpang dapat menempuh jarak sejauh 7 km.', ok: false, exp: '5.000x + 10.000 = 35.000 &rArr; 5.000x = 25.000 &rArr; x = 5 km, bukan 7 km.' }
+  ],
+  pemb: '(1) <b>Benar</b>: B(x) = 5.000x + 10.000. (2) <b>Benar</b>: Rp20.000,00. (3) <b>Benar</b>: Rp40.000,00. (4) <b>Salah</b>: jarak maksimal 5 km.' },
+
+{ no: 13, dom: 2, type: 'pg', sub: 'Keliling & Luas Bangun Datar',
+  text: 'Sebuah kebun sayur berbentuk persegi panjang ABCD memiliki ukuran panjang 12 meter dan lebar 8 meter (lihat sketsa: sisi AB = 8 m, sisi BC = 12 m). Jika sekeliling kebun tersebut akan dipasang pagar kawat 1 lapis, maka panjang kawat yang dibutuhkan (keliling kebun) adalah ....',
+  opts: ['20 meter', '32 meter', '40 meter', '48 meter', '96 meter'], ans: 2,
+  pemb: 'Keliling persegi panjang K = 2 &times; (panjang + lebar) = 2 &times; (12 + 8) = 2 &times; 20 = <b>40 meter</b> (C).' },
+
+{ no: 14, dom: 2, type: 'pg', sub: 'Jarak Antar Objek (Pythagoras)',
+  text: 'Budi berjalan kaki dari tiang bendera ke arah Timur sejauh 3 meter, kemudian berbelok tegak lurus ke arah Utara sejauh 4 meter menuju pintu kelas. Jarak lurus terpendek dari tiang bendera langsung ke pintu kelas adalah ....',
+  opts: ['5 meter', '6 meter', '7 meter', '12 meter', '25 meter'], ans: 0,
+  pemb: 'Kedua lintasan membentuk sisi siku-siku segitiga. Jarak lurus terpendek adalah sisi miring: c = &radic;(3<sup>2</sup> + 4<sup>2</sup>) = &radic;(9 + 16) = &radic;25 = <b>5 meter</b> (A).' },
+
+{ no: 15, dom: 2, type: 'pg', sub: 'Volume Bangun Ruang Balok',
+  text: 'Sebuah bak mandi berbentuk balok memiliki ukuran bagian dalam: panjang 10 dm, lebar 5 dm, dan tinggi 6 dm. Jika bak mandi tersebut diisi air hingga penuh, maka volume air di dalam bak adalah .... (Ingat: 1 dm<sup>3</sup> = 1 liter)',
+  opts: ['21 liter', '150 liter', '210 liter', '280 liter', '300 liter'], ans: 4,
+  pemb: 'V = p &times; l &times; t = 10 &times; 5 &times; 6 = 300 dm<sup>3</sup> = <b>300 liter</b> (E).' },
+{ no: 16, dom: 2, type: 'bs', sub: 'Unsur & Jarak pada Kubus',
+  text: 'Sebuah kotak kayu berbentuk kubus ABCD.EFGH memiliki panjang rusuk 5 cm. Tentukan nilai kebenaran (<b>Benar</b> atau <b>Salah</b>) dari setiap pernyataan berikut!',
+  st: [
+    { t: 'Jarak antara titik sudut A dan titik sudut B adalah 5 cm.', ok: true, exp: 'AB adalah rusuk kubus, sehingga jaraknya sama dengan panjang rusuk = 5 cm.' },
+    { t: 'Luas satu sisi alas kubus (persegi ABCD) adalah 25 cm<sup>2</sup>.', ok: true, exp: 'Luas persegi = 5 &times; 5 = 25 cm<sup>2</sup>.' },
+    { t: 'Jumlah panjang seluruh rusuk kubus tersebut (12 rusuk) adalah 50 cm.', ok: false, exp: 'Total panjang rusuk = 12 &times; 5 = 60 cm, bukan 50 cm.' }
+  ],
+  pemb: '(1) <b>Benar</b> &mdash; AB adalah rusuk (5 cm). (2) <b>Benar</b> &mdash; luas alas 25 cm<sup>2</sup>. (3) <b>Salah</b> &mdash; total panjang rusuk 60 cm.' },
+
+{ no: 17, dom: 2, type: 'pgk', sub: 'Segitiga Siku-siku',
+  text: 'Sebuah papan reklame berbentuk segitiga siku-siku memiliki panjang alas 6 meter, tinggi 8 meter, dan sisi miring 10 meter. Pilihlah semua pernyataan yang <b>BENAR</b>!',
+  st: [
+    { t: 'Luas papan reklame tersebut (&frac12; &times; alas &times; tinggi) adalah 24 m<sup>2</sup>.', ok: true, exp: 'Luas = &frac12; &times; 6 &times; 8 = 24 m<sup>2</sup>.' },
+    { t: 'Keliling papan reklame tersebut adalah 24 meter.', ok: true, exp: 'Keliling = 6 + 8 + 10 = 24 meter.' },
+    { t: 'Sisi terpanjang pada papan reklame tersebut berukuran 8 meter.', ok: false, exp: 'Sisi terpanjang adalah sisi miring, yaitu 10 meter.' },
+    { t: 'Kuadrat sisi miring (10<sup>2</sup>) sama dengan jumlah kuadrat alas dan tingginya (6<sup>2</sup> + 8<sup>2</sup>).', ok: true, exp: '10<sup>2</sup> = 100 dan 6<sup>2</sup> + 8<sup>2</sup> = 36 + 64 = 100 (Teorema Pythagoras).' }
+  ],
+  pemb: '(1) <b>Benar</b>: 24 m<sup>2</sup>. (2) <b>Benar</b>: 24 meter. (3) <b>Salah</b>: sisi terpanjang 10 m. (4) <b>Benar</b>: berlaku Teorema Pythagoras.' },
+
+{ no: 18, dom: 2, type: 'pgk', sub: 'Lingkaran & Tabung Sederhana',
+  text: 'Sebuah kaleng susu berbentuk tabung memiliki jari-jari alas r = 7 cm dan tinggi t = 10 cm (gunakan nilai &pi; = 22/7). Pilihlah semua pernyataan yang <b>BENAR</b>!',
+  st: [
+    { t: 'Panjang diameter alas kaleng tersebut adalah 14 cm.', ok: true, exp: 'd = 2r = 2 &times; 7 = 14 cm.' },
+    { t: 'Keliling lingkaran alas kaleng (2 &times; &pi; &times; r) adalah 44 cm.', ok: true, exp: 'K = 2 &times; (22/7) &times; 7 = 44 cm.' },
+    { t: 'Luas lingkaran alas kaleng (&pi; &times; r<sup>2</sup>) adalah 154 cm<sup>2</sup>.', ok: true, exp: 'L = (22/7) &times; 7 &times; 7 = 154 cm<sup>2</sup>.' },
+    { t: 'Volume kaleng susu tersebut (Luas alas &times; tinggi) adalah 1.540 cm<sup>3</sup>.', ok: true, exp: 'V = 154 &times; 10 = 1.540 cm<sup>3</sup>.' }
+  ],
+  pemb: 'Semua pernyataan <b>Benar</b>: d = 14 cm; K = 44 cm; L = 154 cm<sup>2</sup>; V = 1.540 cm<sup>3</sup>.' },
+
+{ no: 19, dom: 3, type: 'pg', sub: 'Rata-rata Hitung (Mean)',
+  text: 'Nilai ulangan harian matematika Dinda sebanyak 5 kali berturut-turut adalah: 70, 80, 75, 85, dan 90. Nilai rata-rata (mean) ulangan matematika Dinda adalah ....',
+  opts: ['75', '78', '80', '82', '85'], ans: 2,
+  pemb: 'Rata-rata = (70 + 80 + 75 + 85 + 90) / 5 = 400 / 5 = <b>80</b> (C).' },
+
+{ no: 20, dom: 3, type: 'pg', sub: 'Modus & Median Data Tunggal',
+  text: 'Data ukuran sepatu dari 7 orang pemain futsal adalah sebagai berikut: 39, 41, 40, 40, 42, 38, 40. Nilai modus (ukuran yang paling sering muncul) dari data tersebut adalah ....',
+  opts: ['38', '39', '40', '41', '42'], ans: 2,
+  pemb: 'Modus adalah nilai yang paling sering muncul. Ukuran 40 muncul 3 kali, sedangkan ukuran lain masing-masing hanya 1 kali, sehingga modus = <b>40</b> (C).' },
+
+{ no: 21, dom: 3, type: 'pg', sub: 'Peluang Kejadian Sederhana',
+  text: 'Di dalam sebuah kotak terdapat 4 bola berwarna merah, 5 bola berwarna biru, dan 1 bola berwarna kuning. Jika diambil 1 bola secara acak dari dalam kotak, peluang terambilnya bola berwarna merah adalah ....',
+  opts: ['1/10', '2/5', '1/2', '3/5', '4/9'], ans: 1,
+  pemb: 'n(M) = 4 dan n(S) = 4 + 5 + 1 = 10. P(M) = n(M)/n(S) = 4/10 = <b>2/5</b> (B).' },
+
+{ no: 22, dom: 3, type: 'bs', sub: 'Membaca Tabel Penyajian Data',
+  text: 'Tabel hasil panen buah di Kebun Makmur mencatat: Apel = 25 kg, Jeruk = 40 kg, Mangga = 35 kg, dan Pepaya = 20 kg. Tentukan nilai kebenaran (<b>Benar</b> atau <b>Salah</b>) dari setiap pernyataan berikut!',
+  st: [
+    { t: 'Total seluruh hasil panen keempat jenis buah tersebut adalah 120 kg.', ok: true, exp: '25 + 40 + 35 + 20 = 120 kg.' },
+    { t: 'Selisih berat panen antara buah Jeruk dan Apel adalah 15 kg.', ok: true, exp: '40 &minus; 25 = 15 kg.' },
+    { t: 'Rata-rata berat panen per jenis buah adalah 35 kg.', ok: false, exp: 'Rata-rata = 120 / 4 = 30 kg, bukan 35 kg.' }
+  ],
+  pemb: '(1) <b>Benar</b> &mdash; total 120 kg. (2) <b>Benar</b> &mdash; selisih 15 kg. (3) <b>Salah</b> &mdash; rata-rata 30 kg.' },
+
+{ no: 23, dom: 3, type: 'bs', sub: 'Peluang Pelemparan Dadu',
+  text: 'Sebuah dadu bersisi enam (bermata 1, 2, 3, 4, 5, dan 6) dilempar sebanyak satu kali. Evaluasi kebenaran pernyataan berikut!',
+  st: [
+    { t: 'Banyak seluruh kemungkinan mata dadu yang dapat muncul (ruang sampel) adalah 6.', ok: true, exp: 'Ruang sampel = {1, 2, 3, 4, 5, 6}, banyaknya 6.' },
+    { t: 'Peluang munculnya mata dadu bilangan genap {2, 4, 6} adalah 3/6 atau 1/2.', ok: true, exp: 'Ada 3 mata genap dari 6 kemungkinan, jadi P = 3/6 = 1/2.' },
+    { t: 'Peluang munculnya mata dadu yang lebih besar dari 4 adalah 1/6.', ok: false, exp: 'Mata dadu &gt; 4 ada 2, yaitu {5, 6}, sehingga P = 2/6 = 1/3.' }
+  ],
+  pemb: '(1) <b>Benar</b> &mdash; ruang sampel 6. (2) <b>Benar</b> &mdash; P(genap) = 1/2. (3) <b>Salah</b> &mdash; P(&gt;4) = 1/3.' },
+
+{ no: 24, dom: 3, type: 'pgk', sub: 'Kombinasi & Pencacahan Sederhana',
+  text: 'Dari 4 siswa berprestasi (Andi, Budi, Cici, dan Dedi) akan dipilih beberapa perwakilan untuk lomba cerdas cermat. Pilihlah semua pernyataan yang <b>BENAR</b>!',
+  st: [
+    { t: 'Banyak cara memilih 2 orang siswa dari 4 siswa tanpa memperhatikan urutan (C(4, 2)) adalah 6 cara.', ok: true, exp: 'C(4,2) = (4 &times; 3) / (2 &times; 1) = 6 cara (AB, AC, AD, BC, BD, CD).' },
+    { t: 'Banyak cara memilih 1 orang siswa saja dari 4 siswa tersebut adalah 4 cara.', ok: true, exp: 'Ada 4 pilihan orang.' },
+    { t: 'Jika seseorang memiliki 3 baju dan 2 celana, maka banyak pasangan pakaian yang bisa dipakai adalah 3 &times; 2 = 6 pasang.', ok: true, exp: 'Aturan perkalian (kaidah pencacahan): 3 &times; 2 = 6 pasang.' },
+    { t: 'Nilai dari 3! (tiga faktorial, yaitu 3 &times; 2 &times; 1) adalah 9.', ok: false, exp: '3! = 3 &times; 2 &times; 1 = 6, bukan 9.' }
+  ],
+  pemb: '(1) <b>Benar</b>: 6 cara. (2) <b>Benar</b>: 4 cara. (3) <b>Benar</b>: 6 pasang. (4) <b>Salah</b>: 3! = 6.' },
+
+{ no: 25, dom: 4, type: 'pg', sub: 'Definisi Perbandingan Sinus',
+  text: 'Diketahui segitiga ABC siku-siku di titik B. Panjang sisi di depan sudut A (sisi BC) adalah 3 cm, sisi di samping sudut A (sisi AB) adalah 4 cm, dan sisi miring (AC) adalah 5 cm. Nilai dari sin A (depan per miring) adalah ....',
+  opts: ['3/5', '4/5', '3/4', '4/3', '5/3'], ans: 0,
+  pemb: 'sin A = depan / miring = BC / AC = <b>3/5</b> (A).' },
+
+{ no: 26, dom: 4, type: 'pg', sub: 'Penerapan Tangen Sederhana',
+  text: 'Seorang siswa berdiri di titik P yang berjarak 10 meter dari kaki sebuah tiang lampu (Q). Ia melihat puncak tiang lampu (R) dengan sudut kemiringan (elevasi) sebesar 45&deg; sehingga terbentuk segitiga siku-siku PQR. Jika diketahui nilai tan 45&deg; = 1, maka tinggi tiang lampu (h) adalah ....',
+  opts: ['5 meter', '8 meter', '10 meter', '15 meter', '20 meter'], ans: 2,
+  pemb: 'tan 45&deg; = depan / samping = h / 10. Karena tan 45&deg; = 1, maka 1 = h/10, sehingga h = 1 &times; 10 = <b>10 meter</b> (C).' },
+
+{ no: 27, dom: 4, type: 'pg', sub: 'Sudut Istimewa Trigonometri',
+  text: 'Diketahui nilai trigonometri sudut istimewa: sin 30&deg; = 1/2 dan cos 60&deg; = 1/2. Hasil penjumlahan dari sin 30&deg; + cos 60&deg; adalah ....',
+  opts: ['0', '1/4', '1/2', '1', '2'], ans: 3,
+  pemb: 'Substitusikan langsung: sin 30&deg; + cos 60&deg; = 1/2 + 1/2 = <b>1</b> (D).' },
+
+{ no: 28, dom: 4, type: 'bs', sub: 'Perbandingan Sisi Segitiga Siku-siku',
+  text: 'Sebuah segitiga siku-siku memiliki sisi depan sudut &theta; sepanjang 6 cm, sisi samping sudut &theta; sepanjang 8 cm, dan sisi miring sepanjang 10 cm. Tentukan kebenaran pernyataan berikut!',
+  st: [
+    { t: 'Nilai dari sin &theta; (sisi depan dibagi sisi miring) adalah 6/10 atau 3/5.', ok: true, exp: 'sin &theta; = depan / miring = 6/10 = 3/5.' },
+    { t: 'Nilai dari cos &theta; (sisi samping dibagi sisi miring) adalah 8/10 atau 4/5.', ok: true, exp: 'cos &theta; = samping / miring = 8/10 = 4/5.' },
+    { t: 'Nilai dari tan &theta; (sisi depan dibagi sisi samping) adalah 8/6 atau 4/3.', ok: false, exp: 'tan &theta; = depan / samping = 6/8 = 3/4, bukan 4/3.' }
+  ],
+  pemb: '(1) <b>Benar</b> &mdash; sin &theta; = 3/5. (2) <b>Benar</b> &mdash; cos &theta; = 4/5. (3) <b>Salah</b> &mdash; tan &theta; = 3/4.' },
+
+{ no: 29, dom: 4, type: 'pgk', sub: 'Operasi Sudut Istimewa',
+  text: 'Dengan mengingat nilai sudut istimewa (sin 0&deg; = 0, sin 30&deg; = 1/2, sin 90&deg; = 1, cos 0&deg; = 1, dan tan 45&deg; = 1), pilihlah semua pernyataan di bawah ini yang bernilai <b>BENAR</b>!',
+  st: [
+    { t: 'Nilai dari sin 90&deg; + cos 0&deg; adalah 2.', ok: true, exp: '1 + 1 = 2.' },
+    { t: 'Nilai dari 2 &times; sin 30&deg; adalah 1.', ok: true, exp: '2 &times; (1/2) = 1.' },
+    { t: 'Nilai dari tan 45&deg; &minus; sin 0&deg; adalah 1.', ok: true, exp: '1 &minus; 0 = 1.' },
+    { t: 'Nilai dari cos 60&deg; sama dengan 0.', ok: false, exp: 'cos 60&deg; = 1/2; yang bernilai 0 adalah cos 90&deg;.' }
+  ],
+  pemb: '(1) <b>Benar</b>: 2. (2) <b>Benar</b>: 1. (3) <b>Benar</b>: 1. (4) <b>Salah</b>: cos 60&deg; = 1/2.' },
+
+{ no: 30, dom: 4, type: 'pgk', sub: 'Tangga Bersandar pada Dinding',
+  text: 'Sebuah tangga yang panjangnya 10 meter disandarkan pada tembok vertikal dan membentuk sudut 60&deg; terhadap lantai mendatar. Diketahui cos 60&deg; = 1/2 dan sin 60&deg; = &frac12;&radic;3. Pilihlah semua pernyataan yang <b>BENAR</b>!',
+  st: [
+    { t: 'Sisi miring pada permasalahan segitiga tersebut adalah panjang tangga, yaitu 10 meter.', ok: true, exp: 'Tangga yang bersandar menjadi sisi miring (hipotenusa) segitiga.' },
+    { t: 'Jarak ujung bawah tangga ke tembok (10 &times; cos 60&deg;) adalah 5 meter.', ok: true, exp: '10 &times; (1/2) = 5 meter.' },
+    { t: 'Tinggi tembok yang dicapai ujung atas tangga (10 &times; sin 60&deg;) adalah 5&radic;3 meter.', ok: true, exp: '10 &times; &frac12;&radic;3 = 5&radic;3 meter.' },
+    { t: 'Besar sudut yang dibentuk antara tangga dan tembok atas adalah 30&deg;.', ok: true, exp: 'Jumlah sudut segitiga 180&deg;, sehingga sudut atas = 180&deg; &minus; 90&deg; &minus; 60&deg; = 30&deg;.' }
+  ],
+  pemb: 'Semua pernyataan <b>Benar</b>: sisi miring 10 m; jarak ke tembok 5 m; tinggi 5&radic;3 m; sudut atas 30&deg;.' }
+];
+/* ==================== STATE & UTIL ==================== */
+let S = null;          // state utama
+let tickIv = null;     // interval timer
+const $ = s => document.querySelector(s);
+function el(t, c, h) { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; }
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function fmtT(sec) {
+  sec = Math.max(0, Math.floor(sec));
+  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), d = sec % 60, p = n => String(n).padStart(2, '0');
+  return h > 0 ? h + ':' + p(m) + ':' + p(d) : p(m) + ':' + p(d);
+}
+const CLOCK = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+function dateStr() { const d = new Date(); return d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
+
+/* ==================== MULAI TES ==================== */
+$('#btn-start').addEventListener('click', startQuiz);
+$('#inp-nama').addEventListener('keydown', e => { if (e.key === 'Enter') startQuiz(); });
+$('#btn-end').addEventListener('click', askEnd);
+
+function startQuiz() {
+  const name = $('#inp-nama').value.trim();
+  if (!name) {
+    $('#nama-err').classList.remove('hidden');
+    const inp = $('#inp-nama');
+    inp.classList.add('shake'); setTimeout(() => inp.classList.remove('shake'), 500);
+    inp.focus();
+    return;
+  }
+  $('#nama-err').classList.add('hidden');
+  S = {
+    name: name, current: 0, start: Date.now(), last: Date.now(), ended: false, total: 0,
+    ans: QUESTIONS.map(() => ({ sel: null, checked: false, result: null, time: 0, rec: null }))
+  };
+  $('#top-nama').textContent = 'Siswa: ' + name;
+  buildNav();
+  $('#screen-cover').classList.remove('active');
+  $('#screen-quiz').classList.add('active');
+  renderQ(0);
+  tickIv = setInterval(tick, 250);
+  window.scrollTo(0, 0);
+}
+
+/* ==================== STOPWATCH ==================== */
+function tick() {
+  const now = Date.now();
+  const dt = (now - S.last) / 1000;
+  S.last = now;
+  if (!S.ended) {
+    const a = S.ans[S.current];
+    if (a && !a.checked) {
+      a.time += dt;                                   // waktu hanya menumpuk di soal yang sedang terbuka
+      const chip = document.getElementById('q-time');
+      if (chip) chip.textContent = fmtT(a.time);
+    }
+  }
+  $('#gt-elapsed').textContent = fmtT((now - S.start) / 1000);
+}
+
+/* ==================== NAVIGASI NOMOR SOAL ==================== */
+function buildNav() {
+  const n = $('#qnav'); n.innerHTML = '';
+  QUESTIONS.forEach((q, i) => {
+    const b = el('button', 'qbtn d' + q.dom, String(q.no));
+    b.id = 'qbtn-' + i;
+    b.title = 'Soal ' + q.no + ' — ' + DOMAINS[q.dom];
+    b.addEventListener('click', () => goTo(i));
+    n.appendChild(b);
+  });
+  refreshNav();
+}
+function refreshNav() {
+  QUESTIONS.forEach((q, i) => {
+    const b = document.getElementById('qbtn-' + i), a = S.ans[i];
+    b.className = 'qbtn d' + q.dom;
+    if (i === S.current) b.classList.add('cur');
+    if (a.checked) b.classList.add(a.result ? 'ok' : 'bad');
+    else if (hasAnyAnswer(q, a)) b.classList.add('part');
+  });
+  const done = S.ans.filter(a => a.checked).length;
+  const filled = S.ans.filter((a, i) => hasAnyAnswer(QUESTIONS[i], a)).length;
+  $('#nav-progress').textContent = 'Dicek ' + done + '/30 · Terisi ' + filled + '/30';
+  $('#prog-bar').style.width = (done / QUESTIONS.length * 100) + '%';
+}
+function hasAnyAnswer(q, a) {
+  if (a.sel == null) return false;
+  if (q.type === 'pg') return true;
+  if (q.type === 'bs') return a.sel.some(x => x != null);
+  return a.sel.some(Boolean);
+}
+function goTo(i) {
+  if (!S || S.ended) return;
+  S.current = i;
+  renderQ(i);
+  refreshNav();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ==================== RENDER SOAL ==================== */
+function renderQ(i) {
+  const q = QUESTIONS[i], a = S.ans[i], c = $('#qcard');
+  if (!a.sel && q.type !== 'pg') a.sel = q.type === 'bs' ? Array(q.st.length).fill(null) : Array(q.st.length).fill(false);
+  c.innerHTML = '';
+
+  const head = el('div', 'q-head');
+  head.appendChild(el('span', 'badge b-no', 'Soal ' + q.no));
+  head.appendChild(el('span', 'badge b-type', TYPE_LABEL[q.type]));
+  head.appendChild(el('span', 'badge b-dom d' + q.dom, DOMAINS[q.dom]));
+  head.appendChild(el('span', 'badge b-sub', q.sub));
+  c.appendChild(head);
+
+  const tb = el('div', 'q-timebox');
+  tb.innerHTML = CLOCK + '<div><small>' + (a.checked ? 'Waktu pengerjaan (tercatat)' : 'Waktu di soal ini (jalan/paus otomatis)') + '</small><b id="q-time">' + fmtT(a.checked ? a.rec : a.time) + '</b></div>';
+  c.appendChild(tb);
+
+  c.appendChild(el('p', 'q-text', q.text));
+
+  if (q.type === 'pg') {
+    const box = el('div', 'opts');
+    const letters = ['A', 'B', 'C', 'D', 'E'];
+    q.opts.forEach((o, idx) => {
+      const row = el('label', 'opt');
+      if (a.checked) {
+        row.classList.add('lock');
+        if (idx === q.ans) row.classList.add('hit');
+        else if (a.sel === idx) row.classList.add('miss');
+      } else if (a.sel === idx) row.classList.add('sel');
+      row.innerHTML = '<input type="radio" name="pg' + i + '" value="' + idx + '"' + (a.sel === idx ? ' checked' : '') + (a.checked ? ' disabled' : '') + '>'
+        + '<span class="opt-letter">' + letters[idx] + '.</span>'
+        + '<span class="opt-text">' + o + '</span>'
+        + (a.checked && idx === q.ans ? '<span class="opt-key">Kunci</span>' : '');
+      row.querySelector('input').addEventListener('change', () => { a.sel = idx; refreshNav(); });
+      box.appendChild(row);
+    });
+    c.appendChild(box);
+  } else {
+    const box = el('div', 'opts');
+    q.st.forEach((s, j) => {
+      const row = el('div', 'st');
+      let itemOk = null;
+      if (a.checked) {
+        itemOk = (q.type === 'bs') ? (a.sel[j] === (s.ok ? 'B' : 'S')) : (a.sel[j] === s.ok);
+        row.classList.add(itemOk ? 'hit' : 'miss');
+      }
+      const top = el('div', 'st-top');
+      top.innerHTML = '<span class="st-no">(' + (j + 1) + ')</span><span class="st-t">' + s.t + '</span>';
+      row.appendChild(top);
+      if (a.checked) {
+        const cls = itemOk ? 'ok' : 'bad';
+        let mk;
+        if (q.type === 'bs') mk = itemOk ? '✓ Benar' : '✗ Kunci: ' + (s.ok ? 'Benar' : 'Salah');
+        else mk = itemOk ? '✓ Benar' : (s.ok ? '✗ Kunci: Dipilih' : '✗ Kunci: Tidak Dipilih');
+        top.appendChild(el('span', 'st-mark ' + cls, mk));
+      } else {
+        const ctl = el('div', 'st-ctl');
+        if (q.type === 'bs') {
+          ['B', 'S'].forEach(v => {
+            const l = el('label');
+            l.innerHTML = '<input type="radio" name="bs' + i + '_' + j + '" value="' + v + '"' + (a.sel[j] === v ? ' checked' : '') + '>' + (v === 'B' ? 'Benar' : 'Salah');
+            l.querySelector('input').addEventListener('change', () => { a.sel[j] = v; refreshNav(); });
+            ctl.appendChild(l);
+          });
+        } else {
+          const l = el('label');
+          l.innerHTML = '<input type="checkbox" id="pgk' + i + '_' + j + '"' + (a.sel[j] ? ' checked' : '') + '> Tandai jika pernyataan BENAR';
+          l.querySelector('input').addEventListener('change', ev => { a.sel[j] = ev.target.checked; refreshNav(); });
+          ctl.appendChild(l);
+        }
+        row.appendChild(ctl);
+      }
+      box.appendChild(row);
+    });
+    c.appendChild(box);
+  }
+
+  const fb = el('div', 'fb hidden'); fb.id = 'fb'; c.appendChild(fb);
+  const pw = el('div', 'pemb hidden'); pw.id = 'pemb'; c.appendChild(pw);
+
+  const act = el('div', 'q-actions');
+  const prev = el('button', 'btn btn-ghost');
+  if (i > 0) { prev.textContent = '◀ Sebelumnya'; prev.addEventListener('click', () => goTo(i - 1)); }
+  else { prev.disabled = true; prev.textContent = '◀'; }
+  act.appendChild(prev);
+
+  const chk = el('button', 'btn btn-primary', a.checked ? 'Sudah Dicek ✓' : 'Cek Jawaban');
+  if (a.checked) chk.disabled = true; else chk.addEventListener('click', checkAns);
+  act.appendChild(chk);
+
+  const pb = el('button', 'btn btn-soft', 'Lihat Pembahasan');
+  if (!a.checked) pb.disabled = true;
+  pb.addEventListener('click', () => {
+    const p = $('#pemb');
+    p.classList.toggle('hidden');
+    pb.textContent = p.classList.contains('hidden') ? 'Lihat Pembahasan' : 'Sembunyikan Pembahasan';
+  });
+  act.appendChild(pb);
+
+  act.appendChild(el('span', 'spacer'));
+  if (i < QUESTIONS.length - 1) {
+    const nx = el('button', 'btn btn-ghost', 'Berikutnya ▶');
+    nx.addEventListener('click', () => goTo(i + 1));
+    act.appendChild(nx);
+  } else {
+    const fin = el('button', 'btn btn-danger', 'Akhiri Tes & Lihat Hasil');
+    fin.addEventListener('click', askEnd);
+    act.appendChild(fin);
+  }
+  c.appendChild(act);
+
+  if (a.checked) { showFb(q, a); fillPemb(q); }
+}
+
+/* ==================== CEK JAWABAN ==================== */
+function checkAns() {
+  const i = S.current, q = QUESTIONS[i], a = S.ans[i];
+  if (a.checked) return;
+  if (q.type === 'pg') {
+    const r = document.querySelector('input[name="pg' + i + '"]:checked');
+    if (!r) { alert('Pilih salah satu opsi jawaban dulu ya!'); return; }
+    a.sel = parseInt(r.value, 10);
+    a.result = (a.sel === q.ans);
+  } else {
+    const n = q.st.length;
+    a.sel = q.type === 'bs' ? Array(n).fill(null) : Array(n).fill(false);
+    let filled = true;
+    q.st.forEach((s, j) => {
+      if (q.type === 'bs') {
+        const r = document.querySelector('input[name="bs' + i + '_' + j + '"]:checked');
+        if (r) a.sel[j] = r.value; else filled = false;
+      } else {
+        a.sel[j] = document.getElementById('pgk' + i + '_' + j).checked;
+      }
+    });
+    if (q.type === 'bs' && !filled) { alert('Lengkapi pilihan Benar/Salah untuk semua pernyataan dulu ya!'); return; }
+    if (q.type === 'pgk' && !a.sel.some(Boolean)) { alert('Tandai minimal satu pernyataan yang menurutmu BENAR!'); return; }
+    a.result = q.st.every((s, j) => (q.type === 'bs') ? (a.sel[j] === (s.ok ? 'B' : 'S')) : (a.sel[j] === s.ok));
+  }
+  a.checked = true;
+  a.rec = a.time;               // catat waktu pengerjaan soal ini saat tombol cek ditekan
+  renderQ(i);
+  refreshNav();
+}
+
+function showFb(q, a) {
+  const fb = $('#fb');
+  fb.classList.remove('hidden', 'ok', 'bad');
+  fb.classList.add(a.result ? 'ok' : 'bad');
+  fb.innerHTML = '<span class="fb-ico">' + (a.result ? '✓' : '✗') + '</span><div>'
+    + (a.result ? '<b>Bagus! Jawabanmu benar.</b>' : '<b>Jawabanmu belum tepat.</b> Pelajari pembahasan di bawah, lalu lanjutkan ke soal berikutnya.')
+    + '<small>Waktu pengerjaan soal ini: <b>' + fmtT(a.rec) + '</b>'
+    + (a.result ? '' : ' · soal ini ditandai merah, kamu boleh melewatinya dulu lewat tombol nomor') + '</small></div>';
+}
+
+function fillPemb(q) {
+  const p = $('#pemb');
+  let h = '<h4>Pembahasan — ' + q.sub + '</h4><div class="p-main">' + q.pemb + '</div>';
+  if (q.st) h += '<ol>' + q.st.map(s => '<li>' + s.exp + '</li>').join('') + '</ol>';
+  p.innerHTML = h;
+}
+
+/* ==================== AKHIRI TES ==================== */
+function askEnd() {
+  if (!S || S.ended) return;
+  const un = QUESTIONS.length - S.ans.filter(a => a.checked).length;
+  const msg = un > 0
+    ? 'Masih ada ' + un + ' soal yang belum dicek jawabannya.\nSoal yang belum dicek akan dihitung sebagai TIDAK TERJAWAB.\n\nYakin ingin mengakhiri tes dan melihat hasil?'
+    : 'Semua soal sudah dicek.\n\nYakin ingin mengakhiri tes dan melihat hasil?';
+  if (confirm(msg)) finishTest();
+}
+function finishTest() {
+  S.ended = true;
+  S.total = (Date.now() - S.start) / 1000;
+  clearInterval(tickIv);
+  renderResults();
+  $('#screen-quiz').classList.remove('active');
+  $('#screen-results').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ==================== ANALISIS & HASIL ==================== */
+function katNilai(b) {
+  if (b >= 26) return { label: 'Fondasi Sangat Kuat', desc: 'Berhitung dasar dan pemahaman soal cerita sudah sangat baik — siap naik ke latihan soal TKA tingkat menengah.', tindak: 'Tindak lanjut: lanjutkan ke paket soal tingkat menengah dan HOTS, serta soal cerita multi-langkah.' };
+  if (b >= 20) return { label: 'Fondasi Cukup Baik', desc: 'Konsep dasar sudah terbentuk; perlu sedikit penguatan ketelitian berhitung pada topik yang masih salah sebelum lanjut ke soal HOTS.', tindak: 'Tindak lanjut: ulangi soal yang salah beserta pembahasannya, lalu kerjakan variasi soal pada topik yang sama.' };
+  if (b >= 13) return { label: 'Perlu Bimbingan Dasar', desc: 'Pemahaman konsep dasar masih berfluktuasi; perlu pendampingan dalam mengubah kalimat soal cerita menjadi kalimat matematika.', tindak: 'Tindak lanjut: latih kembali cara mengubah soal cerita menjadi model matematika (aljabar/pecahan dasar) dengan bimbingan guru.' };
+  return { label: 'Remedial Berhitung', desc: 'Kemampuan berhitung dasar masih perlu penguatan intensif sebelum mengikuti latihan lanjutan.', tindak: 'Tindak lanjut: pendampingan intensif operasi bilangan bulat, pecahan, rumus bangun datar, dan konsep perbandingan dasar.' };
+}
+function kecepatanKomen(avg) {
+  if (avg == null) return 'Belum ada data waktu yang cukup untuk menilai kecepatan pengerjaan.';
+  if (avg <= 120) return 'Kecepatan pengerjaan sudah bagus (rata-rata ≤ 2 menit per soal), sesuai target 30 soal dalam 60 menit. Pertahankan ritme ini.';
+  if (avg <= 180) return 'Kecepatan pengerjaan cukup (rata-rata 2–3 menit per soal), sedikit di atas target 2 menit per soal. Latih soal serupa dengan pengaturan waktu agar lebih terbiasa.';
+  return 'Kecepatan pengerjaan masih lambat (rata-rata lebih dari 3 menit per soal). Fokuskan latihan berikutnya pada peningkatan kecepatan berhitung dan hafalan rumus dasar.';
+}
+function domVerdict(acc, av, allKosong) {
+  if (allKosong) return { mLab: 'Belum Dikerjakan', rec: 'Materi ini belum dikerjakan atau belum dicek. Kerjakan soal-soalnya agar analisis menjadi lebih akurat.' };
+  const mLab = acc >= 0.8 ? 'Menguasai' : (acc >= 0.5 ? 'Cukup' : 'Perlu Remedial');
+  let rec;
+  if (acc >= 0.8 && av != null && av <= 120) rec = 'Konsep dikuasai dan pengerjaan cepat. Pertahankan, lalu naikkan tantangan dengan soal tingkat menengah pada materi ini.';
+  else if (acc >= 0.8) rec = 'Konsep sudah dipahami, tetapi waktu pengerjaan masih dapat dipangkas. Beri latihan soal serupa dengan target ±2 menit per soal.';
+  else if (acc >= 0.5) rec = 'Pemahaman belum stabil. Pelajari ulang pembahasan pada soal yang salah, lalu kerjakan soal latihan tambahan untuk materi ini.';
+  else rec = 'Perlu remedial konsep. Pelajari kembali rumus dan konsep dasar materi ini secara bertahap dengan pendampingan.';
+  return { mLab: mLab, rec: rec };
+}
+
+function renderResults() {
+  const n = QUESTIONS.length;
+  const benar = S.ans.filter(a => a.checked && a.result).length;
+  const salah = S.ans.filter(a => a.checked && !a.result).length;
+  const kosong = n - benar - salah;
+  const nilai = Math.round(benar / n * 100);
+  const times = S.ans.map((a, i) => a.checked ? a.rec : a.time);
+  const spent = times.filter(t => t > 0);
+  const avg = spent.length ? spent.reduce((x, y) => x + y, 0) / spent.length : null;
+  const kat = katNilai(benar);
+
+  let h = '';
+  h += '<div class="res-hero">'
+    + '<div class="ring" style="--p:' + nilai + '"><div><b>' + nilai + '</b><small>NILAI</small></div></div>'
+    + '<div><h2>Hasil Tes Diagnostik</h2>'
+    + '<div class="sub">' + esc(S.name) + ' · ' + dateStr() + '</div>'
+    + '<div class="sub">Total waktu pengerjaan: <b>' + fmtT(S.total) + '</b></div>'
+    + '<div class="kat">' + kat.label + '</div>'
+    + '<div class="sub" style="margin-top:10px;max-width:420px">' + kat.desc + '</div>'
+    + '</div></div>';
+
+  h += '<div class="stats">'
+    + '<div class="stat ok"><b>' + benar + '</b><span>Soal Benar</span></div>'
+    + '<div class="stat bad"><b>' + salah + '</b><span>Soal Salah</span></div>'
+    + '<div class="stat mut"><b>' + kosong + '</b><span>Tidak Terjawab</span></div>'
+    + '<div class="stat pri"><b>' + (avg != null ? fmtT(avg) : '—') + '</b><span>Rata-rata Waktu / Soal</span></div>'
+    + '</div>';
+
+  h += '<div class="sect"><h3>Rincian per Soal</h3><div class="tblwrap"><table class="res"><thead><tr>'
+    + '<th>No</th><th>Materi</th><th>Bentuk Soal</th><th>Status</th><th>Waktu Pengerjaan</th>'
+    + '</tr></thead><tbody>';
+  QUESTIONS.forEach((q, i) => {
+    const a = S.ans[i];
+    let st, cls;
+    if (a.checked) { cls = a.result ? 'ok' : 'bad'; st = a.result ? 'Benar' : 'Salah'; }
+    else { cls = 'mut'; st = 'Tidak Dijawab'; }
+    let w;
+    if (a.checked) w = fmtT(a.rec);
+    else if (a.time > 0) w = fmtT(a.time) + ' <span style="color:var(--mut);font-size:11px">(belum dicek)</span>';
+    else w = '—';
+    h += '<tr><td><b>' + q.no + '</b></td><td>' + DOMAINS[q.dom] + '</td><td>' + TYPE_LABEL[q.type] + '</td>'
+      + '<td><span class="tag ' + cls + '">' + st + '</span></td><td>' + w + '</td></tr>';
+  });
+  h += '</tbody></table></div>'
+    + '<p class="note">Keterangan: soal dihitung <b>Benar/Salah</b> setelah tombol <b>Cek Jawaban</b> ditekan. Waktu pengerjaan = durasi aktif di soal tersebut (otomatis terjeda saat soal dilewati dan berjalan lagi saat dikembali). Soal yang dipilih tetapi tidak pernah dicek dihitung <b>Tidak Terjawab</b>.</p></div>';
+
+  h += '<div class="sect"><h3>Analisis Kemampuan per Materi</h3>';
+  let strongest = null, weakest = null;
+  DOMAINS.forEach((dn, d) => {
+    const idxs = QUESTIONS.map((q, i) => ({ q: q, i: i })).filter(o => o.q.dom === d);
+    const tot = idxs.length;
+    const b = idxs.filter(o => S.ans[o.i].checked && S.ans[o.i].result).length;
+    const kos = idxs.filter(o => !S.ans[o.i].checked).length;
+    const acc = b / tot;
+    const tts = idxs.map(o => S.ans[o.i].checked ? S.ans[o.i].rec : S.ans[o.i].time).filter(t => t > 0);
+    const av = tts.length ? tts.reduce((x, y) => x + y, 0) / tts.length : null;
+    const v = domVerdict(acc, av, kos === tot);
+    if (strongest === null || acc > strongest.acc || (acc === strongest.acc && b > strongest.b)) strongest = { d: d, acc: acc, b: b };
+    if (weakest === null || acc < weakest.acc) weakest = { d: d, acc: acc, b: b };
+    const barCls = acc >= 0.8 ? 'hi' : (acc >= 0.5 ? 'md' : 'lo');
+    const mCls = acc >= 0.8 ? 'ok' : (acc >= 0.5 ? 'warn' : 'bad');
+    const sTag = av == null ? '<span class="tag mut">Belum ada data waktu</span>'
+      : (av <= 120 ? '<span class="tag ok">Cepat</span>' : (av <= 180 ? '<span class="tag warn">Sedang</span>' : '<span class="tag bad">Lambat</span>'));
+    h += '<div class="dom"><div class="dom-top"><h4>' + dn + '</h4><div class="dom-meta">'
+      + '<span class="tag ' + mCls + '">' + v.mLab + ' (' + b + '/' + tot + ')</span>' + sTag + '</div></div>'
+      + '<div class="bar"><i class="' + barCls + '" style="width:' + Math.round(acc * 100) + '%"></i></div>'
+      + '<div class="dom-meta" style="margin-top:6px">'
+      + '<span class="tag mut">Ketepatan ' + Math.round(acc * 100) + '%</span>'
+      + '<span class="tag mut">Rata-rata ' + (av != null ? fmtT(av) : '—') + ' / soal</span>'
+      + (kos > 0 ? '<span class="tag warn">' + kos + ' soal belum dicek</span>' : '')
+      + '</div>'
+      + '<div class="dom-rec"><b>Rekomendasi:</b> ' + v.rec + '</div></div>';
+  });
+  h += '</div>';
+
+  const stg = strongest ? DOMAINS[strongest.d] : '—';
+  const wk = weakest ? DOMAINS[weakest.d] : '—';
+  h += '<div class="sect"><h3>Kesimpulan &amp; Rekomendasi Belajar</h3><div class="concl">'
+    + '<p><b>' + esc(S.name) + '</b> menyelesaikan tes dengan nilai <b>' + nilai + '</b> (kategori: <b>' + kat.label + '</b>). Dari ' + n + ' soal, terjawab benar <b>' + benar + '</b> soal, salah <b>' + salah + '</b> soal, dan tidak terjawab <b>' + kosong + '</b> soal, dengan total waktu <b>' + fmtT(S.total) + '</b> atau rata-rata ' + (avg != null ? '<b>' + fmtT(avg) + '</b>' : '—') + ' per soal (target ideal ±2 menit per soal).</p>'
+    + '<p style="margin-top:8px">Materi dengan penguasaan terbaik adalah <b>' + stg + '</b>, sedangkan materi yang paling perlu diperkuat adalah <b>' + wk + '</b>. ' + kat.tindak + '</p>'
+    + '<p style="margin-top:8px">' + kecepatanKomen(avg) + '</p>'
+    + '</div></div>';
+
+  h += '<div class="res-actions no-print">'
+    + '<button class="btn btn-primary" onclick="window.print()">Cetak Hasil</button>'
+    + '<button class="btn btn-ghost" onclick="location.reload()">Ulangi Tes</button>'
+    + '</div>';
+
+  $('#results-box').innerHTML = h;
+}
+
+/* ==================== PENGAMAN ==================== */
+window.addEventListener('beforeunload', e => {
+  if (S && !S.ended) { e.preventDefault(); e.returnValue = ''; }
+});
+</script>
+</body>
+</html>
