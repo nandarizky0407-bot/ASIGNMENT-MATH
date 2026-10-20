@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan Olimpiade Matematika — Media Interaktif</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif;background:#eef1f9;color:#16204a;line-height:1.55;min-height:100vh}
+button{font-family:inherit;cursor:pointer}
+input{font-family:inherit}
+button:focus-visible{outline:3px solid #fbbf24;outline-offset:2px}
+.screen{display:none}
+.screen.active{display:block}
+.shake{animation:shake .35s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+/* ============ COVER ============ */
+#screen-cover{position:relative;overflow:hidden;background:linear-gradient(140deg,#312e81 0%,#4338ca 45%,#6d28d9 100%);padding:46px 16px 64px;min-height:100vh}
+.cover-deco{position:absolute;inset:0;pointer-events:none}
+.sym{position:absolute;font-family:Georgia,'Times New Roman',serif;color:rgba(255,255,255,.08);font-weight:700;line-height:1;user-select:none}
+.s1{top:6%;left:4%;font-size:110px;transform:rotate(-12deg)}
+.s2{top:11%;right:6%;font-size:92px;transform:rotate(10deg)}
+.s3{bottom:9%;left:8%;font-size:100px;transform:rotate(8deg)}
+.s4{bottom:15%;right:9%;font-size:82px;transform:rotate(-8deg)}
+.s5{top:46%;left:2%;font-size:70px}
+.s6{top:56%;right:3%;font-size:86px;transform:rotate(14deg)}
+.s7{top:2%;left:44%;font-size:60px;transform:rotate(6deg)}
+.s8{bottom:2%;left:46%;font-size:66px;transform:rotate(-6deg)}
+.cover-wrap{position:relative;max-width:1060px;margin:0 auto;z-index:1}
+.cover-card{background:#fff;border-radius:24px;box-shadow:0 24px 60px rgba(23,20,80,.35);padding:32px 34px 28px;max-width:640px;margin:0 auto}
+.badge-top{display:inline-block;background:#eef2ff;color:#4338ca;font-weight:700;font-size:12.5px;letter-spacing:.6px;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:14px;border:1px solid #dfe4ff}
+h1{font-size:clamp(26px,4.6vw,38px);line-height:1.15;color:#16204a;letter-spacing:-.5px}
+h1 span{background:linear-gradient(120deg,#4338ca,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#5b6b8c;margin:10px 0 22px;font-size:15px}
+.lbl{display:block;font-weight:600;font-size:13.5px;color:#37406b;margin-bottom:6px}
+#inpNama{width:100%;padding:13px 16px;border:2px solid #dfe4f7;border-radius:14px;font-size:16px;outline:none;transition:border-color .15s, box-shadow .15s}
+#inpNama:focus{border-color:#4338ca;box-shadow:0 0 0 4px rgba(67,56,202,.12)}
+#inpNama.shake{border-color:#dc2626}
+.tutor-box{margin-top:18px;background:#f7f8ff;border:1px dashed #c3cbf5;border-radius:16px;padding:16px 18px}
+.tutor-head{font-weight:700;font-size:14px;color:#3730a3;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{border:1.5px solid #cdd5f6;background:#fff;color:#3b4577;font-weight:600;font-size:13px;padding:7px 13px;border-radius:999px;transition:.15s}
+.chip:hover{border-color:#4338ca;color:#4338ca}
+.chip.active{background:#4338ca;border-color:#4338ca;color:#fff}
+.custom-row{display:flex;align-items:center;gap:10px;font-size:13.5px;color:#5b6b8c;flex-wrap:wrap}
+#inpWaktu{width:96px;padding:9px 12px;border:2px solid #dfe4f7;border-radius:10px;font-size:15px;font-weight:700;color:#16204a;outline:none}
+#inpWaktu:focus{border-color:#4338ca}
+.hint{font-size:12.5px;color:#7a86ad;margin-top:10px;line-height:1.55}
+.err{color:#dc2626;font-size:13.5px;font-weight:600;margin-top:10px}
+.pick-title{color:#fff;font-size:21px;margin:36px 4px 16px;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.25)}
+.grid-bab{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.bab-card{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;background:rgba(255,255,255,.97);border:none;border-radius:18px;padding:18px;box-shadow:0 10px 26px rgba(23,20,80,.18);transition:.18s}
+.bab-card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(23,20,80,.3)}
+.bab-no{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#4338ca,#7c3aed);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:6px}
+.bab-judul{font-weight:700;font-size:15.5px;color:#1c2452}
+.bab-meta{font-size:12.5px;color:#7a86ad}
+.bab-all{outline:3px solid rgba(251,191,36,.55)}
+.bab-all .bab-no{background:linear-gradient(135deg,#f59e0b,#f97316)}
+
+/* ============ QUIZ ============ */
+#screen-quiz{background:#eef1f9;min-height:100vh}
+.quiz-top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid #e3e9f4;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 18px;flex-wrap:wrap}
+.qt-name{font-weight:800;font-size:15px;color:#1c2452}
+.qt-bab{font-size:12.5px;color:#7a86ad}
+.qt-right{display:flex;align-items:center;gap:10px}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:18px;color:#3730a3;background:#eef2ff;border:1.5px solid #dfe4ff;padding:7px 14px;border-radius:12px;min-width:108px;text-align:center;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.timer.danger{color:#b91c1c;background:#fef2f2;border-color:#fecaca;animation:pulse 1s infinite}
+.timer.free{color:#b45309;background:#fffbeb;border-color:#fde68a}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.btn{border:none;border-radius:13px;padding:12px 22px;font-size:15px;font-weight:700;transition:.15s}
+.btn-primary{background:linear-gradient(120deg,#4338ca,#6d28d9);color:#fff;box-shadow:0 8px 20px rgba(67,56,202,.3)}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-ghost{background:#fff;border:1.5px solid #d5dcf3;color:#3b4577}
+.btn-ghost:hover{border-color:#4338ca;color:#4338ca}
+.btn-danger-ghost{background:#fff;border:1.5px solid #fecaca;color:#dc2626;font-weight:700;border-radius:12px;padding:9px 16px;font-size:13.5px}
+.btn-danger-ghost:hover{background:#fef2f2}
+.btn-danger{background:#dc2626;color:#fff;border:none;border-radius:13px;padding:12px 22px;font-weight:700;font-size:15px}
+.progress{height:5px;background:#e3e9f4}
+#qProg{height:100%;width:0;background:linear-gradient(90deg,#4338ca,#a855f7);transition:width .3s}
+.quiz-main{max-width:840px;margin:0 auto;padding:26px 16px 60px}
+.q-card{background:#fff;border-radius:22px;box-shadow:0 14px 40px rgba(23,20,80,.1);padding:26px 28px 28px}
+.q-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.q-num{background:#16204a;color:#fff;font-weight:700;font-size:12.5px;padding:6px 12px;border-radius:999px}
+.q-type{background:#eef2ff;color:#4338ca;font-weight:700;font-size:12px;padding:6px 12px;border-radius:999px;border:1px solid #dfe4ff}
+.q-text{font-size:17px;color:#1c2452;margin-bottom:20px;line-height:1.65}
+.q-text b{color:#111c3a}
+.ans-input{width:100%;padding:14px 16px;border:2px solid #dfe4f7;border-radius:14px;font-size:17px;font-weight:600;outline:none;transition:.15s}
+.ans-input:focus{border-color:#4338ca;box-shadow:0 0 0 4px rgba(67,56,202,.1)}
+.ans-input:disabled{background:#f6f7fb;color:#3b4577}
+.ans-input.shake{border-color:#dc2626}
+.opt-list{display:grid;gap:10px}
+.opt{display:flex;align-items:flex-start;gap:12px;text-align:left;background:#f8f9ff;border:2px solid #e4e8fa;border-radius:14px;padding:13px 15px;font-size:15.5px;color:#24305e;transition:.15s}
+.opt:hover:not(:disabled){border-color:#a5b0f0}
+.opt.picked{border-color:#4338ca;background:#eef2ff}
+.opt.right{border-color:#16a34a;background:#f0fdf4}
+.opt.wrong{border-color:#dc2626;background:#fef2f2}
+.opt:disabled{cursor:default}
+.opt-letter{flex:none;width:28px;height:28px;border-radius:9px;background:#fff;border:1.5px solid #d5dcf3;font-weight:800;font-size:13.5px;display:flex;align-items:center;justify-content:center;color:#4338ca}
+.opt.right .opt-letter{background:#16a34a;border-color:#16a34a;color:#fff}
+.opt.wrong .opt-letter{background:#dc2626;border-color:#dc2626;color:#fff}
+.q-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;align-items:center}
+.warn-inline{width:100%;color:#dc2626;font-size:13.5px;font-weight:600}
+.q-feedback{margin-top:22px;display:none}
+.q-feedback.show{display:block;animation:fadeUp .3s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}}
+.fb-head{font-size:17px;font-weight:800;padding:12px 16px;border-radius:14px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.q-feedback.benar .fb-head{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.q-feedback.salah .fb-head{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.q-feedback.kosong .fb-head{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+.fb-mark{font-size:20px;font-weight:900}
+.fb-kunci,.fb-jawabanmu{margin-top:12px;font-size:14.5px;color:#37406b;background:#f7f8ff;border:1px solid #e4e8fa;border-radius:12px;padding:11px 14px}
+.fb-jawabanmu{background:#fef2f2;border-color:#fecaca;color:#7f1d1d}
+.fb-time{color:#7a86ad;font-weight:600;font-size:13px}
+.fb-timeup{font-size:12.5px;font-weight:700;color:#b45309}
+.fb-bah{margin-top:12px;background:linear-gradient(180deg,#fbfaff,#f5f4ff);border:1px solid #e4e0fa;border-radius:14px;padding:15px 17px}
+.fb-bah-title{font-weight:800;color:#5b21b6;font-size:13px;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}
+.fb-bah-body{font-size:15px;color:#2a3358;line-height:1.7}
+.trans{text-align:center;padding:26px 8px}
+.trans-title{font-size:21px;font-weight:800;color:#1c2452;margin-bottom:16px}
+.trans-stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.ts{padding:8px 16px;border-radius:999px;font-weight:700;font-size:14px}
+.ts.ok{background:#f0fdf4;color:#15803d}
+.ts.bad{background:#fef2f2;color:#dc2626}
+.ts.emp{background:#fffbeb;color:#b45309}
+.trans-next{color:#5b6b8c;font-size:15px}
+
+/* ============ HASIL ============ */
+#screen-result{background:#eef1f9;min-height:100vh;padding:34px 16px 60px}
+.res-wrap{max-width:940px;margin:0 auto}
+.res-hero{background:linear-gradient(135deg,#312e81,#4338ca 55%,#6d28d9);border-radius:24px;color:#fff;padding:28px 30px;box-shadow:0 20px 50px rgba(23,20,80,.3);display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.res-title{font-size:13px;letter-spacing:1px;text-transform:uppercase;opacity:.85;font-weight:700}
+.res-name{font-size:26px;font-weight:800;margin:4px 0 2px}
+.res-sub{opacity:.85;font-size:13.5px}
+.ring{--p:0;width:118px;height:118px;border-radius:50%;background:conic-gradient(#fbbf24 calc(var(--p)*1%),rgba(255,255,255,.18) 0);display:flex;align-items:center;justify-content:center;margin-left:auto;flex:none}
+.ring-in{width:92px;height:92px;border-radius:50%;background:rgba(23,20,80,.55);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-val{font-size:22px;font-weight:800}
+.ring-lbl{font-size:10.5px;opacity:.8;letter-spacing:.5px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:18px 0}
+.stat{background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 8px 22px rgba(23,20,80,.08)}
+.stat .v{font-size:22px;font-weight:800}
+.stat .l{font-size:12px;color:#7a86ad;font-weight:600}
+.stat.ok .v{color:#15803d}
+.stat.bad .v{color:#dc2626}
+.stat.emp .v{color:#b45309}
+.res-table-wrap{background:#fff;border-radius:20px;box-shadow:0 12px 30px rgba(23,20,80,.09);padding:8px 6px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:660px}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#7a86ad;text-align:left;padding:12px 14px;border-bottom:2px solid #eef1f9;white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid #f1f4fb;color:#24305e;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:center;font-variant-numeric:tabular-nums}
+.bab-cell b{display:block;font-size:14.5px;color:#1c2452}
+.bar{height:5px;width:130px;background:#eef1f9;border-radius:99px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#16a34a,#4ade80);border-radius:99px}
+tr.total-row td{background:#f7f8ff;font-weight:800;color:#1c2452;border-top:2px solid #e4e8fa}
+.res-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.res-note{margin-top:14px;font-size:12.5px;color:#7a86ad}
+
+/* ============ MODAL ============ */
+.modal-ov{position:fixed;inset:0;background:rgba(15,20,50,.55);display:flex;align-items:center;justify-content:center;z-index:99;padding:16px}
+.modal-ov[hidden]{display:none!important}
+.modal{background:#fff;border-radius:20px;max-width:430px;width:100%;padding:26px;box-shadow:0 30px 70px rgba(0,0,0,.35);animation:fadeUp .25s}
+.modal h3{font-size:19px;color:#1c2452;margin-bottom:8px}
+.modal p{font-size:14.5px;color:#5b6b8c;margin-bottom:20px}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+
+@media(max-width:620px){
+  .cover-card{padding:24px 20px}
+  .q-card{padding:20px 16px 22px}
+  .quiz-top{padding:10px 12px}
+  .qt-name{font-size:13.5px}
+  .timer{min-width:88px;font-size:16px;padding:6px 10px}
+  .btn{padding:11px 16px;font-size:14px}
+  .res-hero{flex-direction:column;align-items:flex-start}
+  .ring{margin-left:0}
+}
+@media print{
+  body{background:#fff}
+  #screen-cover,#screen-quiz,.modal-ov,.no-print{display:none!important}
+  #screen-result{display:block!important;padding:0}
+  .res-wrap{max-width:100%}
+  .res-hero,.res-table-wrap{box-shadow:none}
+  .res-hero{border-radius:0}
+  .res-hero,.ring,.stat{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LAYAR COVER ============ -->
+<section id="screen-cover" class="screen active">
+  <div class="cover-deco" aria-hidden="true">
+    <span class="sym s1">π</span><span class="sym s2">∑</span><span class="sym s3">√</span>
+    <span class="sym s4">Δ</span><span class="sym s5">∞</span><span class="sym s6">∫</span>
+    <span class="sym s7">≈</span><span class="sym s8">÷</span>
+  </div>
+  <div class="cover-wrap">
+    <div class="cover-card">
+      <span class="badge-top">Persiapan Final Olimpiade</span>
+      <h1>Latihan Olimpiade <span>Matematika</span></h1>
+      <p class="lead">Media latihan interaktif — 8 bab, 80 soal isian singkat &amp; pilihan ganda, lengkap dengan kunci jawaban, pembahasan, dan timer per soal.</p>
+      <label class="lbl" for="inpNama">Nama Siswa</label>
+      <input id="inpNama" type="text" placeholder="Tulis nama lengkapmu di sini..." maxlength="40" autocomplete="off">
+      <div class="tutor-box">
+        <div class="tutor-head">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.2 1.9"></path></svg>
+          Pengaturan Tutor — Waktu per Soal
+        </div>
+        <div class="preset-row">
+          <button class="chip" data-t="30" type="button">30 dtk</button>
+          <button class="chip" data-t="60" type="button">60 dtk</button>
+          <button class="chip" data-t="90" type="button">90 dtk</button>
+          <button class="chip active" data-t="120" type="button">120 dtk</button>
+          <button class="chip" data-t="180" type="button">180 dtk</button>
+          <button class="chip" data-t="300" type="button">300 dtk</button>
+          <button class="chip" data-t="0" type="button">Tanpa Batas</button>
+        </div>
+        <div class="custom-row">
+          <label for="inpWaktu">Atur sendiri:</label>
+          <input id="inpWaktu" type="number" min="0" max="3600" step="5" value="120" inputmode="numeric">
+          <span>detik per soal</span>
+        </div>
+        <p class="hint">Hitungan mundur berjalan pada setiap soal dan otomatis berhenti saat siswa menekan tombol "Cek Jawaban". Isi 0 untuk berlatih tanpa batas waktu.</p>
+      </div>
+      <div class="err" id="errNama"></div>
+    </div>
+    <h2 class="pick-title">Pilih Bab Latihan</h2>
+    <div class="grid-bab" id="gridBab"></div>
+  </div>
+</section>
+
+<!-- ============ LAYAR LATIHAN ============ -->
+<section id="screen-quiz" class="screen">
+  <header class="quiz-top no-print">
+    <div class="qt-left">
+      <div class="qt-name" id="qName">—</div>
+      <div class="qt-bab" id="qBab">—</div>
+    </div>
+    <div class="qt-right">
+      <div class="timer" id="qTimerBox">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.2 1.9"></path></svg>
+        <span id="qTimer">--:--</span>
+      </div>
+      <button class="btn-danger-ghost" id="btnEnd" type="button">Akhiri Latihan</button>
+    </div>
+  </header>
+  <div class="progress"><div id="qProg"></div></div>
+  <main class="quiz-main">
+    <div class="q-card">
+      <div class="q-meta"><span class="q-num" id="qNum"></span><span class="q-type" id="qType"></span></div>
+      <div class="q-text" id="qText"></div>
+      <div class="q-answer" id="qAnswer"></div>
+      <div class="q-actions" id="qActions"></div>
+      <div class="q-feedback" id="qFeedback"></div>
+    </div>
+  </main>
+</section>
+
+<!-- ============ LAYAR HASIL ============ -->
+<section id="screen-result" class="screen">
+  <div class="res-wrap">
+    <div class="res-hero" id="resHead"></div>
+    <div class="stat-grid">
+      <div class="stat ok"><div class="v" id="stB">0</div><div class="l">Jawaban Benar</div></div>
+      <div class="stat bad"><div class="v" id="stS">0</div><div class="l">Jawaban Salah</div></div>
+      <div class="stat emp"><div class="v" id="stK">0</div><div class="l">Tidak Dijawab</div></div>
+      <div class="stat"><div class="v" id="stT">00:00</div><div class="l">Total Waktu</div></div>
+      <div class="stat"><div class="v" id="stR">00:00</div><div class="l">Rata-rata per Soal</div></div>
+    </div>
+    <div class="res-table-wrap">
+      <table>
+        <thead><tr><th>Bab</th><th class="num">Benar</th><th class="num">Salah</th><th class="num">Tidak Dijawab</th><th class="num">Total Waktu</th><th class="num">Rata-rata / Soal</th></tr></thead>
+        <tbody id="resRows"></tbody>
+      </table>
+    </div>
+    <div class="res-actions no-print">
+      <button class="btn btn-primary" id="btnAgain" type="button">Latihan Lagi</button>
+      <button class="btn btn-ghost" id="btnPrint" type="button">Cetak Hasil</button>
+    </div>
+    <p class="res-note no-print">Gunakan tombol "Cetak Hasil" untuk menyimpan rekap latihan sebagai dokumen laporan.</p>
+  </div>
+</section>
+
+<!-- ============ MODAL AKHIRI ============ -->
+<div class="modal-ov" id="modalEnd" hidden>
+  <div class="modal">
+    <h3>Akhiri latihan sekarang?</h3>
+    <p>Soal yang belum dikerjakan akan dihitung sebagai <b>tidak dijawab</b>, lalu hasil latihan langsung ditampilkan.</p>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" id="mNo" type="button">Lanjutkan Latihan</button>
+      <button class="btn btn-danger" id="mYes" type="button">Ya, Akhiri Latihan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+/* ================== BANK SOAL ================== */
+const BANK=[
+{id:'bulat',no:1,judul:'Bilangan Bulat',topik:'Operasi Hitung Bilangan Bulat',bentuk:'isian',questions:[
+ {q:'Hasil dari operasi hitung campuran bilangan bulat berikut adalah ...<br><b>−45 + 120 ÷ (−5) × 8 − (−65)</b>',
+  kind:'num',ans:[-172],kunci:'−172',
+  bah:'Kerjakan pembagian dan perkalian dari kiri terlebih dahulu.<br>120 ÷ (−5) = −24, kemudian −24 × 8 = −192.<br>Ekspresi menjadi: −45 + (−192) − (−65) = −45 − 192 + 65 = <b>−172</b>.'},
+ {q:'Suhu di dalam lemari pendingin sebelum dihidupkan adalah 28°C. Setelah dihidupkan, suhunya turun 4°C setiap 5 menit. Jika lemari pendingin dihidupkan selama 35 menit, suhu akhir di dalamnya adalah ... °C',
+  kind:'num',ans:[0],kunci:'0°C',
+  bah:'Banyak penurunan suhu = 35 ÷ 5 = 7 kali.<br>Total penurunan = 7 × 4 = 28°C.<br>Suhu akhir = 28 − 28 = <b>0°C</b>.'},
+ {q:'Dalam sebuah kompetisi matematika, jawaban benar diberi skor 4, jawaban salah diberi skor −2, dan tidak dijawab diberi skor −1. Dari 50 soal, seorang peserta menjawab benar 38 soal dan salah 7 soal. Total skor yang diperoleh peserta tersebut adalah ...',
+  kind:'num',ans:[133],kunci:'133',
+  bah:'Skor benar = 38 × 4 = 152.<br>Skor salah = 7 × (−2) = −14.<br>Tidak dijawab = 50 − 38 − 7 = 5 soal → 5 × (−1) = −5.<br>Total skor = 152 + (−14) + (−5) = <b>133</b>.'},
+ {q:'Sebuah kapal selam berada di kedalaman 120 meter di bawah permukaan laut. Kapal tersebut bergerak naik sejauh 45 meter, kemudian turun lagi sejauh 70 meter, dan terakhir naik sejauh 30 meter. Posisi akhir kapal selam tersebut adalah ... meter di bawah permukaan laut.',
+  kind:'num',ans:[115,-115],kunci:'115 meter di bawah permukaan laut',
+  bah:'Tuliskan posisi sebagai bilangan bulat: awal = −120.<br>−120 + 45 = −75 → −75 − 70 = −145 → −145 + 30 = −115.<br>Jadi posisi akhir kapal <b>115 meter</b> di bawah permukaan laut.'},
+ {q:'Hitunglah nilai dari ekspresi aljabar bilangan bulat berikut:<br><b>[−15 × (8 + (−12))] ÷ [(−6) − (−2)] + 35</b>',
+  kind:'num',ans:[20],kunci:'20',
+  bah:'Kurung dalam: 8 + (−12) = −4 → −15 × (−4) = 60.<br>Penyebut: (−6) − (−2) = −6 + 2 = −4.<br>60 ÷ (−4) = −15, lalu −15 + 35 = <b>20</b>.'},
+ {q:'Pak Budi memiliki utang di koperasi sebesar Rp2.500.000. Ia mendapat bonus dan membayar utangnya sebesar Rp1.800.000. Karena suatu keperluan, ia meminjam lagi Rp950.000. Sisa utang Pak Budi sekarang adalah Rp...',
+  kind:'num',ans:[1650000],kunci:'Rp1.650.000',
+  bah:'Anggap utang bernilai negatif: −2.500.000 + 1.800.000 = −700.000.<br>Meminjam lagi: −700.000 − 950.000 = −1.650.000.<br>Jadi sisa utang Pak Budi <b>Rp1.650.000</b>.'},
+ {q:'Jika a = −5, b = 8, dan c = −3, tentukan nilai dari ekspresi:<br><b>(a² − b) × c + 2ab</b>',
+  kind:'num',ans:[-131],kunci:'−131',
+  bah:'a² = (−5)² = 25, sehingga (a² − b) = 25 − 8 = 17.<br>17 × c = 17 × (−3) = −51.<br>2ab = 2 × (−5) × 8 = −80.<br>Total = −51 + (−80) = <b>−131</b>.'},
+ {q:'Sebuah lift gedung parkir berada di lantai 3. Lift tersebut turun 5 lantai, kemudian naik 8 lantai, turun lagi 11 lantai, dan terakhir naik 6 lantai. Lift sekarang berada di lantai ...',
+  kind:'num',ans:[1],kunci:'Lantai 1',
+  bah:'Posisi lift = 3 − 5 + 8 − 11 + 6 = <b>1</b>.<br>Jadi lift sekarang berada di lantai 1.'},
+ {q:'Suhu di kota A adalah −12°C, sedangkan suhu di kota B adalah 18°C. Perbedaan suhu antara kota B dan kota A adalah ... °C',
+  kind:'num',ans:[30],kunci:'30°C',
+  bah:'Perbedaan = suhu tertinggi − suhu terendah.<br>18 − (−12) = 18 + 12 = <b>30°C</b>.'},
+ {q:'Tentukan jumlah 10 suku pertama dari pola berikut (penjumlahan berganti tanda sampai suku ke-10):<br><b>−3 + 6 − 9 + 12 − 15 + ...</b>',
+  kind:'num',ans:[15],kunci:'15',
+  bah:'Sepuluh suku pertama: −3, 6, −9, 12, −15, 18, −21, 24, −27, 30.<br>Pasangkan dua suku berdekatan: (−3+6) + (−9+12) + (−15+18) + (−21+24) + (−27+30).<br>Setiap pasangan bernilai 3 dan ada 5 pasangan → 5 × 3 = <b>15</b>.'}
+]},
+{id:'rasional',no:2,judul:'Bilangan Rasional',topik:'Pecahan, Desimal, & Persen',bentuk:'isian',questions:[
+ {q:'Tentukan pecahan paling sederhana yang senilai dengan pecahan <b>72/108</b>!',
+  kind:'num',ans:[2/3],kunci:'2/3',ph:'contoh: 2/3',
+  bah:'FPB dari 72 dan 108 adalah 36.<br>72 ÷ 36 = 2 dan 108 ÷ 36 = 3.<br>Jadi bentuk paling sederhananya adalah <b>2/3</b>.'},
+ {q:'Ubahlah pecahan campuran <b>3 3/4</b> ke dalam bentuk desimal dan bentuk persen!',
+  kind:'text',ans:['3,75dan375%','3.75dan375%','375%dan3,75','375%dan3.75','3,75dan375','3.75dan375'],kunci:'3,75 dan 375%',ph:'contoh: 3,75 dan 375%',
+  bah:'3 3/4 = 3 + 3/4 = 3 + 0,75 = <b>3,75</b> (bentuk desimal).<br>Dalam bentuk persen: 3,75 × 100% = <b>375%</b>.'},
+ {q:'Hasil dari <b>2 1/3 + 1 3/4 − 1 5/6</b> = ... (dalam bentuk pecahan paling sederhana)',
+  kind:'num',ans:[2.25],kunci:'2 1/4 (atau 9/4)',ph:'contoh: 2 1/4',
+  bah:'Samakan penyebut dengan KPK 12: 2 4/12 + 1 9/12 − 1 10/12.<br>Bagian bulat: 2 + 1 − 1 = 2. Bagian pecahan: (4 + 9 − 10)/12 = 3/12 = 1/4.<br>Hasil akhir = <b>2 1/4</b> (= 9/4).'},
+ {q:'Hasil dari <b>3,75 × 4/5 ÷ 0,5</b> adalah ...',
+  kind:'num',ans:[6],kunci:'6',
+  bah:'3,75 = 15/4, sehingga 15/4 × 4/5 = 3.<br>3 ÷ 0,5 = 3 × 2 = <b>6</b>.'},
+ {q:'Urutkan bilangan rasional berikut dari yang terkecil ke yang terbesar:<br><b>0,65 ; 3/4 ; 68% ; 5/8</b>',
+  kind:'seq',ans:[0.625,0.65,0.68,0.75],kunci:'5/8 &lt; 0,65 &lt; 68% &lt; 3/4',ph:'contoh: 5/8 < 0,65 < 68% < 3/4',
+  bah:'Ubah semua ke bentuk desimal: 0,65 | 3/4 = 0,75 | 68% = 0,68 | 5/8 = 0,625.<br>Urutan dari terkecil: 0,625 &lt; 0,65 &lt; 0,68 &lt; 0,75.<br>Jadi urutannya <b>5/8 ; 0,65 ; 68% ; 3/4</b>.'},
+ {q:'Ibu memiliki persediaan beras sebanyak 4 1/2 kg, kemudian membeli lagi 2,75 kg. Jika beras tersebut dimasak sebanyak 3 1/4 kg, sisa beras Ibu sekarang adalah ... kg',
+  kind:'num',ans:[4],kunci:'4 kg',
+  bah:'4 1/2 = 4,5 dan 3 1/4 = 3,25.<br>4,5 + 2,75 − 3,25 = 7,25 − 3,25 = <b>4 kg</b>.'},
+ {q:'Sebuah toko pakaian memberikan diskon 25% untuk sebuah jaket dengan harga awal Rp240.000. Saat pembayaran, kasir memberikan tambahan diskon 10% dari harga setelah diskon pertama. Harga akhir jaket tersebut adalah Rp...',
+  kind:'num',ans:[162000],kunci:'Rp162.000',
+  bah:'Diskon pertama = 25% × 240.000 = 60.000 → harga menjadi 180.000.<br>Diskon kedua = 10% × 180.000 = 18.000.<br>Harga akhir = 180.000 − 18.000 = <b>Rp162.000</b>.'},
+ {q:'Tentukan nilai dari operasi hitung campuran berikut (dalam bentuk desimal):<br><b>(3/4 + 0,5) × 20% ÷ 1/2</b>',
+  kind:'num',ans:[0.5],kunci:'0,5',
+  bah:'3/4 + 0,5 = 0,75 + 0,5 = 1,25.<br>1,25 × 20% = 1,25 × 0,2 = 0,25.<br>0,25 ÷ 1/2 = 0,25 × 2 = <b>0,5</b>.'},
+ {q:'Pak Andi membagikan tanah warisan kepada tiga anaknya. Anak pertama mendapat 3/8 bagian, anak kedua mendapat 35% bagian, dan sisanya diberikan kepada anak ketiga. Bagian tanah anak ketiga adalah ... (pecahan biasa paling sederhana)',
+  kind:'num',ans:[11/40],kunci:'11/40 bagian',ph:'contoh: 11/40',
+  bah:'3/8 = 0,375 = 37,5%.<br>Total bagian dua anak pertama = 37,5% + 35% = 72,5%.<br>Sisa anak ketiga = 100% − 72,5% = 27,5% = 27,5/100 = <b>11/40</b> bagian.'},
+ {q:'Sebuah tangki air berisi 2/3 dari kapasitas penuhnya. Ketika ditambah 150 liter air, tangki menjadi 5/6 penuh. Kapasitas total tangki air tersebut adalah ... liter',
+  kind:'num',ans:[900],kunci:'900 liter',
+  bah:'Selisih bagian = 5/6 − 2/3 = 5/6 − 4/6 = 1/6.<br>1/6 bagian = 150 liter.<br>Kapasitas total = 150 × 6 = <b>900 liter</b>.'}
+]},
+{id:'plsv',no:3,judul:'Persamaan Linear Satu Variabel',topik:'PLSV — Operasi Aljabar & Soal Cerita',bentuk:'isian',questions:[
+ {q:'Tentukan nilai x yang memenuhi persamaan linear berikut:<br><b>5x − 7 = 3x + 9</b>',
+  kind:'num',ans:[8],kunci:'x = 8',ph:'contoh: 8',
+  bah:'Pindahkan suku x ke kiri dan konstanta ke kanan:<br>5x − 3x = 9 + 7 → 2x = 16 → x = <b>8</b>.'},
+ {q:'Selesaikan persamaan aljabar berikut untuk mencari nilai y:<br><b>3(y − 2) + 4 = 2(y + 5)</b>',
+  kind:'num',ans:[12],kunci:'y = 12',ph:'contoh: 12',
+  bah:'Jabarkan kurung: 3y − 6 + 4 = 2y + 10 → 3y − 2 = 2y + 10.<br>3y − 2y = 10 + 2 → y = <b>12</b>.'},
+ {q:'Tentukan himpunan penyelesaian dari persamaan pecahan berikut:<br><b>x/2 + x/3 = 10</b>',
+  kind:'num',ans:[12],kunci:'x = 12',ph:'contoh: 12',
+  bah:'Kalikan kedua ruas dengan KPK 6: 3x + 2x = 60.<br>5x = 60 → x = <b>12</b>.'},
+ {q:'Jumlah tiga bilangan ganjil berurutan adalah 51. Nilai bilangan yang paling besar di antara ketiganya adalah ...',
+  kind:'num',ans:[19],kunci:'19',
+  bah:'Misalkan bilangannya n, (n + 2), dan (n + 4).<br>n + (n + 2) + (n + 4) = 51 → 3n + 6 = 51 → 3n = 45 → n = 15.<br>Bilangan terbesar = 15 + 4 = <b>19</b>.'},
+ {q:'Umur Budi sekarang adalah 3 kali umur Andi. Enam tahun yang akan datang, jumlah umur keduanya adalah 44 tahun. Umur Andi sekarang adalah ... tahun',
+  kind:'num',ans:[8],kunci:'8 tahun',
+  bah:'Misal umur Andi = x, maka umur Budi = 3x.<br>Enam tahun lagi: (x + 6) + (3x + 6) = 44 → 4x + 12 = 44 → 4x = 32 → x = <b>8</b> tahun.'},
+ {q:'Tentukan nilai z dari persamaan pecahan aljabar berikut:<br><b>(2z + 1)/3 = (z − 2)/2 + 2</b>',
+  kind:'num',ans:[4],kunci:'z = 4',ph:'contoh: 4',
+  bah:'Kalikan kedua ruas dengan 6: 2(2z + 1) = 3(z − 2) + 12.<br>4z + 2 = 3z − 6 + 12 → 4z + 2 = 3z + 6.<br>4z − 3z = 6 − 2 → z = <b>4</b>.'},
+ {q:'Sebuah kolam renang berbentuk persegi panjang memiliki keliling 60 meter. Jika panjang kolam (2x + 4) meter dan lebarnya (x + 2) meter, nilai x adalah ...',
+  kind:'num',ans:[8],kunci:'x = 8',
+  bah:'K = 2 × (panjang + lebar) → 60 = 2 × ((2x + 4) + (x + 2)).<br>30 = 3x + 6 → 3x = 24 → x = <b>8</b>.'},
+ {q:'Pak Hasan membagikan sejumlah uang kepada 4 orang anaknya. Anak pertama mendapat setengahnya, anak kedua seperempatnya, anak ketiga seperenamnya, dan anak keempat mendapat sisa sebesar Rp20.000. Total uang yang dibagikan Pak Hasan adalah Rp...',
+  kind:'num',ans:[240000],kunci:'Rp240.000',
+  bah:'Misal total uang = U.<br>U/2 + U/4 + U/6 + 20.000 = U → (6U + 3U + 2U)/12 + 20.000 = U.<br>11U/12 + 20.000 = U → U/12 = 20.000 → U = <b>Rp240.000</b>.'},
+ {q:'Tentukan penyelesaian dari persamaan berikut:<br><b>4(2a − 3) − 2(a + 5) = 3(a + 2)</b>',
+  kind:'num',ans:[28/3],kunci:'a = 28/3 = 9 1/3 (≈ 9,33)',ph:'boleh tulis 28/3 atau 9,33',
+  bah:'Jabarkan kurung: 8a − 12 − 2a − 10 = 3a + 6 → 6a − 22 = 3a + 6.<br>6a − 3a = 6 + 22 → 3a = 28 → a = <b>28/3</b> = 9 1/3 ≈ 9,33.'},
+ {q:'Harga 3 buah buku tulis dan 2 buah pensil adalah Rp19.000. Jika harga sebuah buku tulis Rp1.000 lebih mahal daripada harga sebuah pensil, harga sebuah buku tulis adalah Rp...',
+  kind:'num',ans:[4200],kunci:'Rp4.200',
+  bah:'Misal harga pensil = p, maka harga buku = p + 1.000.<br>3(p + 1.000) + 2p = 19.000 → 3p + 3.000 + 2p = 19.000 → 5p = 16.000 → p = 3.200.<br>Harga buku = 3.200 + 1.000 = <b>Rp4.200</b>.'}
+]},
+{id:'rasio',no:4,judul:'Perbandingan & Proporsi',topik:'Rasio, Skala, Senilai & Berbalik Nilai',bentuk:'isian',questions:[
+ {q:'Perbandingan umur Ayah, Ibu, dan Anak adalah 7 : 6 : 2. Jika selisih umur Ayah dan Ibu adalah 5 tahun, jumlah umur ketiganya saat ini adalah ... tahun',
+  kind:'num',ans:[75],kunci:'75 tahun',
+  bah:'Selisih rasio Ayah dan Ibu = 7 − 6 = 1 bagian → 1 bagian = 5 tahun.<br>Total bagian = 7 + 6 + 2 = 15.<br>Jumlah umur = 15 × 5 = <b>75 tahun</b>.'},
+ {q:'Sebuah peta digambar dengan skala 1 : 400.000. Jarak pada peta antara kota P dan kota Q adalah 12 cm. Jika sebuah mobil menempuh jarak tersebut dengan kecepatan rata-rata 60 km/jam, waktu yang diperlukan mobil tersebut adalah ... (isikan dalam menit)',
+  kind:'num',ans:[48,0.8],kunci:'48 menit (atau 0,8 jam)',
+  bah:'Jarak sebenarnya = 12 × 400.000 = 4.800.000 cm = 48 km.<br>Waktu = 48 ÷ 60 = 0,8 jam = <b>48 menit</b>.'},
+ {q:'Untuk menjamu 30 orang tamu, seorang katering memerlukan 4,5 kg beras. Jika tamu yang datang mendadak bertambah menjadi 50 orang, beras tambahan yang harus disiapkan adalah ... kg',
+  kind:'num',ans:[3],kunci:'3 kg',
+  bah:'Perbandingan senilai: beras untuk 50 orang = (50/30) × 4,5 = 7,5 kg.<br>Beras tambahan = 7,5 − 4,5 = <b>3 kg</b>.'},
+ {q:'Sebuah proyek pembangunan jembatan direncanakan selesai dalam 30 hari oleh 24 orang pekerja. Setelah dikerjakan 10 hari, pekerjaan terhenti 4 hari karena cuaca buruk. Agar proyek selesai tepat waktu sesuai rencana awal, tambahan pekerja yang diperlukan adalah ... orang',
+  kind:'num',ans:[6],kunci:'6 orang',
+  bah:'Sisa pekerjaan = 24 × (30 − 10) = 480 orang-hari.<br>Sisa waktu efektif = 30 − 10 − 4 = 16 hari.<br>Pekerja dibutuhkan = 480 ÷ 16 = 30 orang → tambahan = 30 − 24 = <b>6 orang</b>.'},
+ {q:'Denah lantai sebuah gedung berbentuk persegi panjang digambar dengan skala 1 : 250. Jika panjang denah 16 cm dan lebarnya 10 cm, luas sebenarnya gedung tersebut adalah ... m²',
+  kind:'num',ans:[1000],kunci:'1.000 m²',
+  bah:'Panjang sebenarnya = 16 × 250 = 4.000 cm = 40 m.<br>Lebar sebenarnya = 10 × 250 = 2.500 cm = 25 m.<br>Luas = 40 × 25 = <b>1.000 m²</b>.'},
+ {q:'Rasio uang tabungan Andi dan Boni adalah 3 : 5, dan rasio uang Boni dan Coki adalah 4 : 7. Jika jumlah tabungan mereka bertiga adalah Rp1.507.500, besar tabungan Boni adalah Rp...',
+  kind:'num',ans:[450000],kunci:'Rp450.000',
+  bah:'Samakan bagian Boni: A : B = 3 : 5 = 12 : 20 dan B : C = 4 : 7 = 20 : 35.<br>A : B : C = 12 : 20 : 35 → total 67 bagian.<br>1 bagian = 1.507.500 ÷ 67 = 22.500.<br>Boni = 20 × 22.500 = <b>Rp450.000</b>.'},
+ {q:'Sebuah mobil memerlukan 8 liter bensin untuk menempuh jarak 96 km. Jika bensin yang tersisa di tangki 12,5 liter dan mobil harus menempuh sisa perjalanan 180 km lagi, kekurangan bensin yang dibutuhkan adalah ... liter',
+  kind:'num',ans:[2.5],kunci:'2,5 liter',
+  bah:'Konsumsi bensin = 96 ÷ 8 = 12 km/liter.<br>Bensin untuk 180 km = 180 ÷ 12 = 15 liter.<br>Kekurangan = 15 − 12,5 = <b>2,5 liter</b>.'},
+ {q:'Dua roda gigi yang saling bersinggungan memiliki jumlah gigi masing-masing 24 dan 40. Jika roda gigi yang lebih kecil berputar 100 putaran per menit (rpm), kecepatan putar roda gigi yang lebih besar adalah ... rpm',
+  kind:'num',ans:[60],kunci:'60 rpm',
+  bah:'Roda bersinggungan merupakan perbandingan berbalik nilai: N<sub>1</sub> × D<sub>1</sub> = N<sub>2</sub> × D<sub>2</sub>.<br>24 × 100 = 40 × N<sub>2</sub> → N<sub>2</sub> = 2.400 ÷ 40 = <b>60 rpm</b>.'},
+ {q:'Sebuah peta berskala 1 : 500.000 menampilkan lahan berbentuk segitiga dengan alas 8 cm dan tinggi 5 cm pada peta. Luas sebenarnya lahan tersebut adalah ... km²',
+  kind:'num',ans:[500],kunci:'500 km²',
+  bah:'1 cm pada peta = 5 km sebenarnya.<br>Alas = 8 × 5 = 40 km dan tinggi = 5 × 5 = 25 km.<br>Luas = 1/2 × 40 × 25 = <b>500 km²</b>.'},
+ {q:'Peternakan ayam memiliki persediaan pakan yang cukup untuk 150 ekor ayam selama 20 hari. Jika setelah 5 hari peternak menjual 30 ekor ayam, sisa persediaan pakan akan habis terpakai dalam ... hari (untuk ayam yang tersisa)',
+  kind:'num',ans:[18.75],kunci:'18,75 hari',
+  bah:'Sisa pakan = 150 × (20 − 5) = 2.250 ayam-hari.<br>Ayam tersisa = 150 − 30 = 120 ekor.<br>Lama pakan habis = 2.250 ÷ 120 = <b>18,75 hari</b>.'}
+]},
+{id:'himpunan',no:5,judul:'Himpunan Dasar',topik:'Irisan, Gabungan, Komplemen & Soal Cerita',bentuk:'isian',questions:[
+ {q:'Diketahui himpunan semesta S = {1, 2, 3, ..., 10}, A = {2, 3, 5, 7}, dan B = {1, 3, 5, 7, 9}. Tentukan hasil dari A ∩ B!',
+  kind:'set',ans:['3,5,7'],kunci:'{3, 5, 7}',ph:'contoh: {3, 5, 7}',
+  bah:'Irisan berarti anggota yang sama pada A dan B.<br>Anggota yang sama: 3, 5, dan 7.<br>Jadi A ∩ B = <b>{3, 5, 7}</b>.'},
+ {q:'Dari himpunan P = {a, b, c, d} dan Q = {c, d, e, f}, tentukan hasil dari operasi gabungan P ∪ Q!',
+  kind:'set',ans:['a,b,c,d,e,f'],kunci:'{a, b, c, d, e, f}',
+  bah:'Gabungan menggabungkan seluruh anggota P dan Q tanpa menulis anggota yang sama dua kali.<br>Jadi P ∪ Q = <b>{a, b, c, d, e, f}</b>.'},
+ {q:'Diketahui S = {1, 2, 3, ..., 10} dan K = {2, 4, 6, 8, 10}. Tentukan komplemen dari himpunan K, yaitu K<sup>c</sup>!',
+  kind:'set',ans:['1,3,5,7,9'],kunci:'{1, 3, 5, 7, 9}',
+  bah:'Komplemen K adalah seluruh anggota S yang tidak termasuk K.<br>Bilangan ganjil dalam S: 1, 3, 5, 7, 9.<br>Jadi K<sup>c</sup> = <b>{1, 3, 5, 7, 9}</b>.'},
+ {q:'Jika n(S) = 40, n(A) = 22, n(B) = 18, dan n(A ∩ B) = 8, tentukan jumlah anggota yang tidak termasuk di A maupun B, yaitu n((A ∪ B)<sup>c</sup>)!',
+  kind:'num',ans:[8],kunci:'8',
+  bah:'n(A ∪ B) = n(A) + n(B) − n(A ∩ B) = 22 + 18 − 8 = 32.<br>Yang di luar A dan B = 40 − 32 = <b>8</b>.'},
+ {q:'Dalam sebuah kelas terdapat 30 siswa gemar Matematika, 25 siswa gemar Fisika, dan 10 siswa gemar keduanya. Jumlah siswa yang hanya gemar Matematika saja adalah ... siswa',
+  kind:'num',ans:[20],kunci:'20 siswa',
+  bah:'Hanya Matematika = gemar Matematika − gemar keduanya.<br>30 − 10 = <b>20 siswa</b>.'},
+ {q:'Diketahui X = {faktor dari 12} dan Y = {kelipatan 2 yang kurang dari 12}. Tentukan hasil dari X − Y (selisih himpunan)!',
+  kind:'set',ans:['1,3'],kunci:'{1, 3}',
+  bah:'X = {1, 2, 3, 4, 6, 12} dan Y = {2, 4, 6, 8, 10}.<br>X − Y berarti anggota X yang tidak ada di Y, yaitu <b>{1, 3}</b>.'},
+ {q:'Jika A = {x | 1 ≤ x &lt; 6, x bilangan bulat} dan B = {x | 3 &lt; x ≤ 8, x bilangan ganjil}, tentukan A ∩ B!',
+  kind:'set',ans:['5'],kunci:'{5}',
+  bah:'A = {1, 2, 3, 4, 5} dan B = {5, 7}.<br>Anggota yang sama hanya 5.<br>Jadi A ∩ B = <b>{5}</b>.'},
+ {q:'Dari 50 orang warga, 35 orang suka minum teh, 25 orang suka minum kopi, dan 5 orang tidak suka keduanya. Banyak warga yang suka kedua-duanya adalah ... orang',
+  kind:'num',ans:[15],kunci:'15 orang',
+  bah:'Suka minimal satu minuman = 50 − 5 = 45.<br>Keduanya = (35 + 25) − 45 = 60 − 45 = <b>15 orang</b>.'},
+ {q:'Tentukan banyaknya himpunan bagian dari P, jika P = {huruf pembentuk kata "HIMPUNAN" yang berbeda}!',
+  kind:'num',ans:[128],kunci:'128',
+  bah:'Huruf berbeda pembentuk kata "HIMPUNAN": H, I, M, P, U, N, A → n(P) = 7.<br>Banyak himpunan bagian = 2<sup>7</sup> = <b>128</b>.'},
+ {q:'Diketahui A ⊂ B. Jika n(A) = 12 dan n(B) = 20, banyaknya anggota hasil operasi irisan A ∩ B adalah ...',
+  kind:'num',ans:[12],kunci:'12',
+  bah:'Karena A himpunan bagian dari B, seluruh anggota A pasti ada di B.<br>Maka A ∩ B = A, sehingga n(A ∩ B) = <b>12</b>.'}
+]},
+{id:'garis',no:6,judul:'Garis & Sudut',topik:'Transversal, Berpenyiku, Berpelurus & Segitiga',bentuk:'isian',questions:[
+ {q:'Dua buah sudut saling berpenyiku (berkomplemen). Jika besar sudut pertama (3x + 10)° dan besar sudut kedua (2x + 20)°, berapakah nilai x?',
+  kind:'num',ans:[12],kunci:'x = 12',
+  bah:'Sudut berpenyiku berjumlah 90°.<br>(3x + 10) + (2x + 20) = 90 → 5x + 30 = 90 → 5x = 60 → x = <b>12</b>.'},
+ {q:'Dua buah sudut saling berpelurus (suplemen). Jika sudut A besarnya (5x − 5)° dan sudut B besarnya (3x + 25)°, berapakah besar sudut A?',
+  kind:'num',ans:[95],kunci:'95°',
+  bah:'Sudut berpelurus berjumlah 180°.<br>(5x − 5) + (3x + 25) = 180 → 8x + 20 = 180 → 8x = 160 → x = 20.<br>Besar sudut A = 5(20) − 5 = <b>95°</b>.'},
+ {q:'Dua buah garis sejajar dipotong oleh sebuah garis transversal. Jika salah satu sudut luar sepihak besarnya (4x + 10)° dan sudut luar sepihak lainnya (2x + 50)°, tentukan nilai x!',
+  kind:'num',ans:[20],kunci:'x = 20',
+  bah:'Jumlah sudut luar sepihak = 180°.<br>(4x + 10) + (2x + 50) = 180 → 6x + 60 = 180 → 6x = 120 → x = <b>20</b>.'},
+ {q:'Pada sebuah segitiga, besar ketiga sudutnya berturut-turut (2x)°, (3x + 16)°, dan (4x + 20)°. Berapakah besar sudut terkecil dari segitiga tersebut?',
+  kind:'num',ans:[32],kunci:'32°',
+  bah:'Jumlah sudut segitiga = 180°.<br>2x + (3x + 16) + (4x + 20) = 180 → 9x + 36 = 180 → 9x = 144 → x = 16.<br>Sudut terkecil = 2x = 2(16) = <b>32°</b> (sudut lainnya 64° dan 84°).'},
+ {q:'Sebuah segitiga ABC memiliki sudut luar pada titik C sebesar (7x − 10)°. Kedua sudut dalam yang tidak bersisian dengan sudut luar tersebut masing-masing (3x + 5)° dan (2x + 25)°. Tentukan nilai x!',
+  kind:'num',ans:[20],kunci:'x = 20',
+  bah:'Sudut luar = jumlah dua sudut dalam yang tidak bersisian.<br>(3x + 5) + (2x + 25) = 7x − 10 → 5x + 30 = 7x − 10 → 2x = 40 → x = <b>20</b>.'},
+ {q:'Dua garis sejajar g dan h dipotong oleh garis transversal t. Jika sudut dalam sepihak besarnya (3x − 10)° dan (2x + 30)°, tentukan besar sudut dalam sepihak yang terkecil!',
+  kind:'num',ans:[86],kunci:'86°',
+  bah:'Jumlah sudut dalam sepihak = 180°.<br>(3x − 10) + (2x + 30) = 180 → 5x + 20 = 180 → x = 32.<br>Kedua sudut: 3(32) − 10 = 86° dan 2(32) + 30 = 94°.<br>Terkecil = <b>86°</b>.'},
+ {q:'Diketahui sudut P dan sudut Q saling bertolak belakang. Jika besar sudut P = (5x − 20)° dan sudut Q = (3x + 40)°, berapakah besar sudut P?',
+  kind:'num',ans:[130],kunci:'130°',
+  bah:'Sudut bertolak belakang besarnya sama.<br>5x − 20 = 3x + 40 → 2x = 60 → x = 30.<br>Sudut P = 5(30) − 20 = <b>130°</b>.'},
+ {q:'Dalam segitiga PQR, perbandingan besar sudut P : Q : R adalah 2 : 3 : 4. Berapakah besar sudut Q?',
+  kind:'num',ans:[60],kunci:'60°',
+  bah:'Total bagian = 2 + 3 + 4 = 9 (setara 180°).<br>Sudut Q = (3/9) × 180° = <b>60°</b>.'},
+ {q:'Dua garis berpotongan membentuk empat sudut di titik pusatnya. Salah satu sudutnya besarnya (6x + 12)°. Jika sudut yang bertetangga dengannya adalah sudut berpelurus dan besarnya (3x + 15)°, tentukan nilai x!',
+  kind:'num',ans:[17],kunci:'x = 17',
+  bah:'Sudut yang bertetangga saling berpelurus (jumlah 180°).<br>(6x + 12) + (3x + 15) = 180 → 9x + 27 = 180 → 9x = 153 → x = <b>17</b>.'},
+ {q:'Sebuah garis lurus dibagi menjadi tiga sudut yang saling berdampingan, yaitu (x + 10)°, (2x + 20)°, dan (3x + 30)°. Berapakah besar sudut yang paling besar di antara ketiganya?',
+  kind:'num',ans:[90],kunci:'90°',
+  bah:'Jumlah sudut pada garis lurus = 180°.<br>(x + 10) + (2x + 20) + (3x + 30) = 180 → 6x + 60 = 180 → 6x = 120 → x = 20.<br>Ketiga sudut: 30°, 60°, 90° → yang terbesar <b>90°</b>.'}
+]},
+{id:'pola',no:7,judul:'Pola Bilangan',topik:'Barisan Aritmatika, Geometri, Bertingkat & Deret',bentuk:'isian',questions:[
+ {q:'Tentukan suku ke-25 dari barisan aritmatika berikut:<br><b>5, 9, 13, 17, 21, ...</b>',
+  kind:'num',ans:[101],kunci:'101',
+  bah:'a = 5 dan beda b = 4.<br>U<sub>25</sub> = a + (25 − 1)b = 5 + 24 × 4 = 5 + 96 = <b>101</b>.'},
+ {q:'Jumlah 20 suku pertama dari deret aritmatika <b>3 + 7 + 11 + 15 + ...</b> adalah ...',
+  kind:'num',ans:[820],kunci:'820',
+  bah:'a = 3, b = 4, n = 20.<br>S<sub>20</sub> = 20/2 × (2 × 3 + 19 × 4) = 10 × (6 + 76) = 10 × 82 = <b>820</b>.'},
+ {q:'Tentukan dua suku berikutnya dari barisan loncat-loncat berikut:<br><b>1, 3, 5, 5, 9, 7, 13, 9, ...</b>',
+  kind:'pair',ans:[17,11],kunci:'17 dan 11',ph:'contoh: 17, 11',
+  bah:'Suku pada posisi ganjil (1, 5, 9, 13, ...) bertambah 4 → berikutnya 13 + 4 = <b>17</b>.<br>Suku pada posisi genap (3, 5, 7, 9, ...) bertambah 2 → berikutnya 9 + 2 = <b>11</b>.'},
+ {q:'Perhatikan barisan bertingkat dua berikut: <b>2, 5, 10, 17, 26, ...</b> Nilai suku ke-10 barisan tersebut adalah ...',
+  kind:'num',ans:[101],kunci:'101',
+  bah:'Beda tingkat 1: 3, 5, 7, 9 → beda tingkat 2 tetap 2.<br>Rumus suku ke-n: U<sub>n</sub> = n² + 1 (cek: U<sub>1</sub> = 2, U<sub>2</sub> = 5, U<sub>3</sub> = 10).<br>U<sub>10</sub> = 10² + 1 = <b>101</b>.'},
+ {q:'Tentukan suku ke-7 dari barisan geometri berikut:<br><b>3, 6, 12, 24, 48, ...</b>',
+  kind:'num',ans:[192],kunci:'192',
+  bah:'a = 3 dan rasio r = 2.<br>U<sub>7</sub> = a × r<sup>6</sup> = 3 × 2<sup>6</sup> = 3 × 64 = <b>192</b>.'},
+ {q:'Dalam suatu barisan aritmatika, diketahui suku ke-4 adalah 14 dan suku ke-9 adalah 34. Tentukan suku ke-15 dari barisan tersebut!',
+  kind:'num',ans:[58],kunci:'58',
+  bah:'a + 3b = 14 dan a + 8b = 34.<br>Eliminasi: 5b = 20 → b = 4, lalu a = 2.<br>U<sub>15</sub> = 2 + 14 × 4 = <b>58</b>.'},
+ {q:'Tentukan suku ke-8 dari barisan geometri jika diketahui suku ke-3 adalah 8 dan suku ke-6 adalah 64.',
+  kind:'num',ans:[256],kunci:'256',
+  bah:'ar² = 8 dan ar<sup>5</sup> = 64 → r³ = 64/8 = 8 → r = 2.<br>a(2)² = 8 → a = 2.<br>U<sub>8</sub> = 2 × 2<sup>7</sup> = 2 × 128 = <b>256</b>.'},
+ {q:'Tentukan dua suku berikutnya dari barisan bilangan berpola khusus berikut:<br><b>2, 3, 5, 8, 12, 17, ...</b>',
+  kind:'pair',ans:[23,30],kunci:'23 dan 30',ph:'contoh: 23, 30',
+  bah:'Beda antar suku: +1, +2, +3, +4, +5 (bertingkat).<br>Suku berikutnya: 17 + 6 = <b>23</b>, lalu 23 + 7 = <b>30</b>.'},
+ {q:'Sebuah bola tenis dijatuhkan dari ketinggian 12 meter dan memantul kembali dengan ketinggian 3/4 dari ketinggian sebelumnya. Tentukan panjang seluruh lintasan gerak bola tersebut sampai berhenti!',
+  kind:'num',ans:[84],kunci:'84 meter',
+  bah:'Lintasan turun (deret geometri tak hingga): S = 12/(1 − 3/4) = 12/(1/4) = 48 m.<br>Total lintasan naik = 48 × 3/4 = 36 m.<br>Seluruh lintasan = 48 + 36 = <b>84 meter</b>.'},
+ {q:'Suatu gedung pertunjukan memiliki 15 baris kursi. Baris pertama berisi 20 kursi, baris kedua 24 kursi, baris ketiga 28 kursi, dan seterusnya bertambah tetap. Berapa total seluruh kursi di gedung tersebut?',
+  kind:'num',ans:[720],kunci:'720 kursi',
+  bah:'Deret aritmatika: a = 20, b = 4, n = 15.<br>S<sub>15</sub> = 15/2 × (2 × 20 + 14 × 4) = 7,5 × (40 + 56) = 7,5 × 96 = <b>720 kursi</b>.'}
+]},
+{id:'logika',no:8,judul:'Soal Logika',topik:'Modus Ponens, Tollens, Silogisme & Argumen',bentuk:'pg',questions:[
+ {q:'Diketahui premis-premis:<br>1) Jika inflasi naik, maka harga bahan pokok meningkat.<br>2) Harga bahan pokok tidak meningkat.<br><b>Kesimpulan yang sah dari premis tersebut adalah ...</b>',
+  options:['Inflasi naik','Inflasi tidak naik','Harga bahan pokok naik','Inflasi dan harga tetap'],correct:1,kunci:'B. Inflasi tidak naik',
+  bah:'Ini penerapan <b>Modus Tollens</b>: dari p → q dan ~q, disimpulkan ~p.<br>Karena harga bahan pokok tidak meningkat (~q), maka inflasi tidak naik (~p).'},
+ {q:'Diketahui premis-premis:<br>1) Jika cuaca cerah, maka penerbangan pesawat tepat waktu.<br>2) Jika penerbangan pesawat tepat waktu, maka penumpang merasa puas.<br><b>Kesimpulan yang sah menggunakan prinsip silogisme adalah ...</b>',
+  options:['Jika cuaca tidak cerah, penumpang tidak puas','Jika penumpang puas, cuaca pasti cerah','Jika cuaca cerah, maka penumpang merasa puas','Cuaca cerah dan penumpang merasa puas'],correct:2,kunci:'C. Jika cuaca cerah, maka penumpang merasa puas',
+  bah:'<b>Silogisme</b> merangkai dua implikasi: p → q dan q → r, sehingga diperoleh p → r.<br>Maka: jika cuaca cerah, maka penumpang merasa puas.'},
+ {q:'Diketahui premis-premis:<br>1) Jika siswa rajin belajar, maka ia lulus ujian nasional.<br>2) Siswa tersebut lulus ujian nasional.<br><b>Apakah kesimpulan "Siswa tersebut rajin belajar" sah secara logika?</b>',
+  options:['Sah menggunakan Modus Ponens','Sah menggunakan Modus Tollens','Sah menggunakan Silogisme','Tidak sah (Fallacy / Kesalahan Konvers)'],correct:3,kunci:'D. Tidak sah (Fallacy / Kesalahan Konvers)',
+  bah:'Menyimpulkan anteseden (p) dari konsekuen (q) merupakan kesalahan logika bernama <b>Affirming the Consequent</b>.<br>Dari p → q dan q benar, tidak dapat dipastikan p benar.'},
+ {q:'Diketahui premis-premis bertingkat:<br>1) ~p → q &nbsp;&nbsp;&nbsp; 2) q → r &nbsp;&nbsp;&nbsp; 3) ~r<br><b>Tentukan kesimpulan akhir yang paling sederhana untuk nilai p!</b>',
+  options:['~p benar','p bernilai benar','r bernilai salah','Tidak dapat disimpulkan'],correct:1,kunci:'B. p bernilai benar',
+  bah:'Dari (1) dan (2) dengan silogisme: ~p → r.<br>Kontraposisinya: ~r → p.<br>Karena ~r benar (premis 3), maka <b>p bernilai benar</b>.'},
+ {q:'Diketahui premis dalam bentuk narasi:<br>1) Jika perusahaan untung, maka karyawan mendapat bonus.<br>2) Jika karyawan mendapat bonus, maka tingkat produktivitas meningkat.<br>3) Tingkat produktivitas tidak meningkat.<br><b>Kesimpulan yang sah adalah ...</b>',
+  options:['Perusahaan untung','Perusahaan tidak untung','Karyawan mendapat bonus','Produktivitas tetap'],correct:1,kunci:'B. Perusahaan tidak untung',
+  bah:'Rantai implikasi: untung → bonus → produktivitas meningkat.<br>Karena produktivitas tidak meningkat, dengan <b>Modus Tollens bertingkat</b> diperoleh: perusahaan tidak untung.'},
+ {q:'Perhatikan argumen berikut:<br>1) p ∨ q &nbsp;&nbsp;&nbsp; 2) ~p<br><b>Kesimpulan yang sah berdasarkan aturan Silogisme Disyungtif adalah ...</b>',
+  options:['p','~q','q','p ∧ q'],correct:2,kunci:'C. q',
+  bah:'<b>Silogisme disyungtif</b>: jika p ∨ q bernilai benar dan p salah, maka q pasti benar.'},
+ {q:'Diketahui premis-premis:<br>1) Jika Budi rajin menabung, maka ia bisa membeli laptop baru.<br>2) Budi tidak bisa membeli laptop baru atau ia pergi berlibur ke Bali.<br>3) Budi tidak pergi berlibur ke Bali.<br><b>Tentukan kesimpulan akhir yang sah!</b>',
+  options:['Budi rajin menabung','Budi tidak rajin menabung','Budi membeli laptop baru','Budi berlibur ke Bali'],correct:1,kunci:'B. Budi tidak rajin menabung',
+  bah:'Dari (2) dan (3) dengan silogisme disyungtif: Budi tidak bisa membeli laptop baru.<br>Dari (1) dengan <b>Modus Tollens</b>: Budi tidak rajin menabung.'},
+ {q:'Perhatikan argumen berikut:<br>1) Jika hari hujan, maka jalanan basah.<br>2) Jalanan basah. Oleh karena itu, hari hujan.<br><b>Apakah argumen tersebut sah atau tidak sah? Sebutkan nama kesalahan logikanya jika tidak sah!</b>',
+  options:['Sah (Modus Ponens)','Tidak sah (Affirming the Consequent)','Tidak sah (Denying the Antecedent)','Sah (Silogisme)'],correct:1,kunci:'B. Tidak sah (Affirming the Consequent)',
+  bah:'Argumen tersebut menyimpulkan hujan (anteseden) dari jalan yang basah (konsekuen).<br>Itu kesalahan <b>Affirming the Consequent</b> — jalanan basah bisa disebabkan hal lain.'},
+ {q:'Diketahui premis majemuk:<br>1) p → q &nbsp;&nbsp;&nbsp; 2) r → s &nbsp;&nbsp;&nbsp; 3) ~q ∨ ~s<br><b>Tentukan kesimpulan yang sah untuk menghubungkan p dan r!</b>',
+  options:['p ∧ r','~(p ∧ r) atau ~p ∨ ~r','p → r','r → p'],correct:1,kunci:'B. ~(p ∧ r) atau ~p ∨ ~r',
+  bah:'Dari p → q dengan kontraposisi: ~q → ~p. Dari r → s: ~s → ~r.<br>Karena ~q ∨ ~s, maka ~p ∨ ~r, yang ekuivalen dengan <b>~(p ∧ r)</b>.'},
+ {q:'Sistem keamanan menggunakan aturan:<br>1) Sandi valid → sistem terbuka.<br>2) Sistem tidak terbuka ∨ alarm berbunyi.<br>3) Alarm tidak berbunyi.<br><b>Kesimpulan tentang sandi adalah ...</b>',
+  options:['Sandi valid','Sistem terbuka','Sandi tidak valid','Alarm berbunyi'],correct:2,kunci:'C. Sandi tidak valid',
+  bah:'Dari (2) dan (3) dengan silogisme disyungtif: sistem tidak terbuka.<br>Dari (1) dengan <b>Modus Tollens</b>: sandi tidak valid.'}
+]}
+];
+/* ================== UTIL ================== */
+const $=s=>document.querySelector(s);
+function el(t,c,h){const e=document.createElement(t);if(c)e.className=c;if(h!==undefined)e.innerHTML=h;return e;}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function fmtTime(s){s=Math.max(0,Math.round(s));const m=Math.floor(s/60),d=s%60;return String(m).padStart(2,'0')+':'+String(d).padStart(2,'0');}
+
+/* ================== PARSER JAWABAN ISIAN ================== */
+function parseCore(s){
+  s=s.trim(); if(!s)return NaN;
+  let m=s.match(/^(-?\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+  if(m){const w=Number(m[1]);return w+Math.sign(w||1)*Number(m[2])/Number(m[3]);}
+  m=s.match(/^(-?\d+)\s*\/\s*(\d+)$/); if(m)return Number(m[1])/Number(m[2]);
+  m=s.match(/^-?\d{1,3}(?:\.\d{3})+$/); if(m)return Number(s.replace(/\./g,''));
+  m=s.match(/^(-?\d+),(\d+)$/); if(m)return Number(m[1]+'.'+m[2]);
+  const v=Number(s.replace(/\s+/g,''));
+  return Number.isFinite(v)?v:NaN;
+}
+function parseValue(raw){
+  if(raw===null||raw===undefined)return NaN;
+  let s=String(raw).toLowerCase().trim(); if(!s)return NaN;
+  s=s.replace(/[−–—]/g,'-');
+  s=s.replace(/¼/g,' 1/4').replace(/½/g,' 1/2').replace(/¾/g,' 3/4')
+     .replace(/⅓/g,' 1/3').replace(/⅔/g,' 2/3').replace(/⅕/g,' 1/5').replace(/⅖/g,' 2/5')
+     .replace(/⅗/g,' 3/5').replace(/⅘/g,' 4/5').replace(/⅙/g,' 1/6').replace(/⅚/g,' 5/6')
+     .replace(/⅛/g,' 1/8').replace(/⅜/g,' 3/8').replace(/⅝/g,' 5/8').replace(/⅞/g,' 7/8');
+  s=s.replace(/\brp\.?\s*/g,' ');
+  s=s.replace(/persen/g,'%');
+  s=s.replace(/(\d)\s*(km²|km2|m²|m2|km|cm|mm|kg|kilometer|kilogram|liter|meter|menit|jam|hari|minggu|orang|ekor|kursi|tahun|siswa|warga|ayam|buah|biji|putaran|rpm|detik|dtk|derajat|celcius|bagian|lembar|unit)/g,'$1 ');
+  s=s.replace(/°/g,' ');
+  s=s.replace(/[a-z]+\s*=/g,' ');
+  s=s.replace(/[=]/g,' ');
+  s=s.replace(/[a-z]+/g,' ');
+  s=s.replace(/\s+/g,' ').trim();
+  if(!s)return NaN;
+  if(s.indexOf('%')>-1){const inner=s.replace(/%/g,'').trim();const v=parseCore(inner);return Number.isFinite(v)?v/100:NaN;}
+  return parseCore(s);
+}
+function normText(raw){
+  let s=String(raw||'').toLowerCase().trim();
+  s=s.replace(/persen/g,'%');
+  s=s.replace(/\s+/g,'');
+  s=s.replace(/[&;=\/]/g,'dan');
+  return s;
+}
+function normSet(raw){
+  let s=String(raw||'').toLowerCase().trim();
+  s=s.replace(/\bdan\b/g,',');
+  s=s.replace(/[{}()\[\]<>=]/g,' ');
+  s=s.replace(/[;\s]+/g,',');
+  s=s.replace(/,+/g,',').replace(/^,+|,+$/g,'');
+  if(!s)return '';
+  const toks=s.split(',').map(t=>t.trim()).filter(Boolean);
+  const allNum=toks.length>0&&toks.every(t=>/^-?\d+$/.test(t));
+  if(allNum)toks.sort(function(a,b){return Number(a)-Number(b);}); else toks.sort();
+  return toks.join(',');
+}
+function parseSeq(raw){
+  let s=String(raw||'').toLowerCase().trim(); if(!s)return null;
+  s=s.replace(/[−–—]/g,'-');
+  s=s.replace(/,(?=\s)/g,'|');
+  let parts=s.split(/[;<>|]+/).map(t=>t.trim()).filter(Boolean);
+  if(parts.length<2)parts=s.split(/\s+/).filter(Boolean);
+  const vals=parts.map(parseValue);
+  if(!vals.length||vals.some(v=>!Number.isFinite(v)))return null;
+  return vals;
+}
+function parsePair(raw){
+  let s=String(raw||'').toLowerCase().trim(); if(!s)return null;
+  s=s.replace(/[−–—]/g,'-').replace(/\bdan\b/g,',');
+  const parts=s.split(/[,;\s<>|]+/).map(t=>t.trim()).filter(Boolean);
+  if(parts.length!==2)return null;
+  const vals=parts.map(parseValue);
+  if(vals.some(v=>!Number.isFinite(v)))return null;
+  return vals;
+}
+function eq(a,b){
+  if(!Number.isFinite(a)||!Number.isFinite(b))return false;
+  const d=Math.abs(a-b);
+  return d<=0.0051||(b!==0&&d<=Math.abs(b)*1e-9);
+}
+function judge(q,raw){
+  if(q.kind==='pg'||Array.isArray(q.options))return raw===q.correct;
+  if(q.kind==='num'){const v=parseValue(raw);return q.ans.some(t=>eq(v,t));}
+  if(q.kind==='set')return normSet(raw)===q.ans[0];
+  if(q.kind==='text')return q.ans.indexOf(normText(raw))>-1;
+  if(q.kind==='seq'){const a=parseSeq(raw);return !!a&&a.length===q.ans.length&&q.ans.every((t,i)=>eq(a[i],t));}
+  if(q.kind==='pair'){const a=parsePair(raw);return !!a&&eq(a[0],q.ans[0])&&eq(a[1],q.ans[1]);}
+  return false;
+}
+
+/* ================== STATE ================== */
+let S=null,TMR=null,T0=Date.now(),LIMIT=0,checked=false,selOpt=-1,inTrans=false;
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(function(e){e.classList.remove('active');});
+  document.querySelector(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ================== COVER ================== */
+function renderCover(){
+  const g=$('#gridBab');g.innerHTML='';
+  const all=el('button','bab-card bab-all','<span class="bab-no">★</span><span class="bab-judul">Latihan Semua Bab</span><span class="bab-meta">80 Soal • Isian Singkat + Pilihan Ganda</span>');
+  all.onclick=function(){tryStart(BANK.map(function(b){return b.id;}));};
+  g.appendChild(all);
+  BANK.forEach(function(b){
+    const c=el('button','bab-card','<span class="bab-no">'+b.no+'</span><span class="bab-judul">'+b.judul+'</span><span class="bab-meta">10 Soal • '+(b.bentuk==='pg'?'Pilihan Ganda':'Isian Singkat')+'</span>');
+    c.onclick=function(){tryStart([b.id]);};
+    g.appendChild(c);
+  });
+}
+function tryStart(ids){
+  const name=$('#inpNama').value.trim();
+  const err=$('#errNama');
+  if(!name){
+    err.textContent='Isi dulu nama siswa di kolom atas ya.';
+    $('#inpNama').classList.add('shake');
+    setTimeout(function(){$('#inpNama').classList.remove('shake');},400);
+    $('#inpNama').focus();return;
+  }
+  err.textContent='';
+  let w=parseInt($('#inpWaktu').value,10);
+  if(isNaN(w))w=120;
+  w=Math.max(0,Math.min(3600,w));
+  startSession(name,w,ids);
+}
+function startSession(name,time,ids){
+  const tasks=[];
+  ids.forEach(function(cid){
+    const ch=BANK.find(function(b){return b.id===cid;});
+    ch.questions.forEach(function(q,qi){tasks.push({ch:ch,q:q,qi:qi});});
+  });
+  S={name:name,time:time,ids:ids,tasks:tasks,idx:0,rec:tasks.map(function(){return{st:null,t:0};})};
+  $('#qName').textContent=name;
+  checked=false;inTrans=false;
+  showScreen('#screen-quiz');
+  renderQ();
+}
+
+/* ================== TIMER ================== */
+function elapsed(){return (Date.now()-T0)/1000;}
+function stopTimerInt(){if(TMR){clearInterval(TMR);TMR=null;}}
+function recordTime(){
+  let t=(LIMIT>0)?Math.min(LIMIT,elapsed()):elapsed();
+  return Math.round(t*10)/10;
+}
+function startTimer(){
+  stopTimerInt();
+  LIMIT=S.time;T0=Date.now();
+  const box=$('#qTimerBox');
+  box.className='timer'+(LIMIT===0?' free':'');
+  updateTimerDisp();
+  TMR=setInterval(function(){
+    if(LIMIT>0&&elapsed()>=LIMIT){onTimeUp();return;}
+    updateTimerDisp();
+  },250);
+}
+function updateTimerDisp(){
+  const box=$('#qTimerBox'),disp=$('#qTimer');
+  if(!box||!disp)return;
+  let s;
+  if(LIMIT>0){s=Math.max(0,Math.ceil(LIMIT-elapsed()));box.classList.toggle('danger',s<=10&&s>0);}
+  else{s=Math.floor(elapsed());}
+  disp.textContent=fmtTime(s);
+}
+
+/* ================== RENDER SOAL ================== */
+function curTask(){return S.tasks[S.idx];}
+function renderQ(){
+  checked=false;selOpt=-1;inTrans=false;
+  const t=curTask(),ch=t.ch;
+  $('#qBab').textContent='Bab '+ch.no+' • '+ch.judul+' — '+ch.topik;
+  $('#qNum').textContent='Soal '+(t.qi+1)+' dari '+ch.questions.length;
+  $('#qType').textContent=ch.bentuk==='pg'?'Pilihan Ganda':'Isian Singkat';
+  $('#qText').innerHTML=t.q.q;
+  $('#qProg').style.width=(S.idx/S.tasks.length*100)+'%';
+  const fb=$('#qFeedback');fb.innerHTML='';fb.className='q-feedback';
+  const ans=$('#qAnswer');ans.innerHTML='';
+  if(ch.bentuk==='pg'){
+    const list=el('div','opt-list');
+    t.q.options.forEach(function(o,i){
+      const b=el('button','opt','<span class="opt-letter">'+'ABCD'[i]+'</span><span class="opt-text">'+o+'</span>');
+      b.onclick=function(){
+        if(checked)return;
+        selOpt=i;
+        list.querySelectorAll('.opt').forEach(function(x,j){x.classList.toggle('picked',j===i);});
+        const w=$('#warnInline');if(w)w.remove();
+        const bc=$('#btnCheck');if(bc)bc.focus();
+      };
+      list.appendChild(b);
+    });
+    ans.appendChild(list);
+  }else{
+    const inp=el('input','ans-input');
+    inp.id='inpJawab';inp.type='text';inp.autocomplete='off';inp.maxLength='80';
+    inp.placeholder=t.q.ph||'Ketik jawabanmu di sini...';
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();onCheck();}});
+    inp.addEventListener('input',function(){
+      const w=$('#warnInline');if(w)w.remove();
+      inp.classList.remove('shake');
+    });
+    ans.appendChild(inp);
+  }
+  const act=$('#qActions');act.innerHTML='';
+  const bc=el('button','btn btn-primary','Cek Jawaban');bc.id='btnCheck';bc.onclick=onCheck;
+  const bs=el('button','btn btn-ghost','Lewati Soal');bs.id='btnSkip';bs.onclick=onSkip;
+  act.appendChild(bc);act.appendChild(bs);
+  startTimer();
+  if(ch.bentuk!=='pg')setTimeout(function(){const i=$('#inpJawab');if(i)i.focus();},60);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ================== AKSI JAWAB ================== */
+function warnAnswer(msg){
+  const t=curTask();
+  if(t.ch.bentuk!=='pg'){
+    const inp=$('#inpJawab');
+    if(inp){inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');inp.focus();}
+  }
+  let w=$('#warnInline');
+  if(!w){w=el('div','warn-inline');w.id='warnInline';$('#qActions').appendChild(w);}
+  w.textContent=msg;
+}
+function onCheck(){
+  if(checked||!S)return;
+  const t=curTask();
+  let raw=null;
+  if(t.ch.bentuk==='pg'){
+    if(selOpt<0){warnAnswer('Pilih salah satu jawaban (A/B/C/D) terlebih dahulu.');return;}
+    raw=selOpt;
+  }else{
+    const inp=$('#inpJawab');
+    if(!inp.value.trim()){warnAnswer('Isi jawabanmu dulu, atau tekan tombol "Lewati Soal".');return;}
+    raw=inp.value;
+  }
+  stopTimerInt();
+  const time=recordTime();
+  const ok=judge(t.q,raw);
+  S.rec[S.idx]={st:ok?'benar':'salah',t:time};
+  checked=true;
+  showFeedback(ok?'benar':'salah',time,(t.ch.bentuk==='pg')?null:raw,false);
+  lockAfterCheck(t,ok);
+}
+function onSkip(){
+  if(checked||!S)return;
+  stopTimerInt();
+  const time=recordTime();
+  S.rec[S.idx]={st:'kosong',t:time};
+  checked=true;
+  showFeedback('kosong',time,null,false);
+  lockAfterCheck(curTask(),false);
+}
+function onTimeUp(){
+  if(checked||!S)return;
+  stopTimerInt();
+  const t=curTask();
+  let st='kosong',raw=null;
+  if(t.ch.bentuk==='pg'){
+    if(selOpt>=0){st=judge(t.q,selOpt)?'benar':'salah';raw=selOpt;}
+  }else{
+    const inp=$('#inpJawab');
+    if(inp&&inp.value.trim()){st=judge(t.q,inp.value)?'benar':'salah';raw=inp.value;}
+  }
+  const time=LIMIT>0?LIMIT:recordTime();
+  S.rec[S.idx]={st:st,t:time};
+  checked=true;
+  showFeedback(st,time,(t.ch.bentuk==='pg'||st==='kosong')?null:raw,true);
+  lockAfterCheck(t,st==='benar');
+}
+function lockAfterCheck(t,ok){
+  const act=$('#qActions');act.innerHTML='';
+  const isLast=S.idx===S.tasks.length-1;
+  const nxt=isLast?null:S.tasks[S.idx+1].ch;
+  let label='Soal Berikutnya';
+  if(isLast)label='Lihat Hasil Latihan';
+  else if(nxt.id!==t.ch.id)label='Lanjut ke Bab '+nxt.no+': '+nxt.judul;
+  const bn=el('button','btn btn-primary',label+' →');
+  bn.id='btnNext';
+  bn.onclick=onNext;
+  act.appendChild(bn);
+  bn.focus();
+  if(t.ch.bentuk==='pg'){
+    document.querySelectorAll('#qAnswer .opt').forEach(function(o,i){
+      o.disabled=true;
+      if(i===t.q.correct)o.classList.add('right');
+      else if(i===selOpt&&!ok)o.classList.add('wrong');
+    });
+  }else{
+    const inp=$('#inpJawab');if(inp)inp.disabled=true;
+  }
+}
+function showFeedback(st,time,raw,timeUp){
+  const t=curTask();
+  const fb=$('#qFeedback');
+  fb.className='q-feedback show '+st;
+  const head=st==='benar'?'Jawaban Benar!':(st==='salah'?'Jawaban Belum Tepat':'Tidak Dijawab');
+  const mark=st==='benar'?'✓':(st==='salah'?'✗':'–');
+  let html='<div class="fb-head"><span class="fb-mark">'+mark+'</span>'+head+(timeUp?' <span class="fb-timeup">— waktu habis</span>':'')+'</div>';
+  html+='<div class="fb-kunci">Kunci: <b>'+t.q.kunci+'</b><span class="fb-time"> • waktu pengerjaan: '+fmtTime(time)+'</span></div>';
+  if(st==='salah'&&raw!==null&&raw!==undefined&&t.ch.bentuk!=='pg'){
+    html+='<div class="fb-jawabanmu">Jawabanmu: <b>'+esc(String(raw))+'</b></div>';
+  }
+  html+='<div class="fb-bah"><div class="fb-bah-title">Pembahasan</div><div class="fb-bah-body">'+t.q.bah+'</div></div>';
+  fb.innerHTML=html;
+}
+
+/* ================== NAVIGASI ================== */
+function onNext(){
+  if(!checked)return;
+  const prevCh=curTask().ch;
+  S.idx++;
+  if(S.idx>=S.tasks.length){finish();return;}
+  const nextCh=curTask().ch;
+  if(nextCh.id!==prevCh.id)renderTransition(prevCh,nextCh);
+  else renderQ();
+}
+function renderTransition(done,next){
+  inTrans=true;checked=true;
+  stopTimerInt();
+  const st=statsForCh(done);
+  $('#qBab').textContent='Bab '+done.no+' • '+done.judul;
+  $('#qNum').textContent='Bab Selesai';
+  $('#qType').textContent='Rekap Bab';
+  $('#qText').innerHTML='<div class="trans"><div class="trans-title">Bab '+done.no+' — '+esc(done.judul)+' selesai!</div>'
+    +'<div class="trans-stats"><span class="ts ok">Benar: '+st.benar+'</span><span class="ts bad">Salah: '+st.salah+'</span><span class="ts emp">Tidak Dijawab: '+st.kosong+'</span></div>'
+    +'<div class="trans-next">Bab berikutnya: <b>Bab '+next.no+' — '+esc(next.judul)+'</b></div></div>';
+  $('#qAnswer').innerHTML='';
+  const fb=$('#qFeedback');fb.innerHTML='';fb.className='q-feedback';
+  const act=$('#qActions');act.innerHTML='';
+  const b=el('button','btn btn-primary','Mulai Bab '+next.no+' →');
+  b.onclick=function(){renderQ();};
+  act.appendChild(b);b.focus();
+  $('#qProg').style.width=(S.idx/S.tasks.length*100)+'%';
+  T0=Date.now();LIMIT=0;
+  const box=$('#qTimerBox');box.className='timer';
+  $('#qTimer').textContent='--:--';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ================== HASIL ================== */
+function statsForCh(ch){
+  let benar=0,salah=0,kosong=0,tot=0,n=0;
+  S.tasks.forEach(function(t,i){
+    if(t.ch.id!==ch.id)return;
+    const r=S.rec[i];n++;
+    if(r.st==='benar')benar++;else if(r.st==='salah')salah++;else kosong++;
+    tot+=(r.t||0);
+  });
+  return {benar:benar,salah:salah,kosong:kosong,tot:tot,n:n,avg:n?tot/n:0};
+}
+function finish(){
+  stopTimerInt();
+  S.rec.forEach(function(r){if(!r.st)r.st='kosong';});
+  renderResults();
+  showScreen('#screen-result');
+}
+function renderResults(){
+  const rows=S.ids.map(function(id){const ch=BANK.find(function(b){return b.id===id;});const st=statsForCh(ch);return {ch:ch,benar:st.benar,salah:st.salah,kosong:st.kosong,tot:st.tot,avg:st.avg,n:st.n};});
+  const T=rows.reduce(function(a,r){a.benar+=r.benar;a.salah+=r.salah;a.kosong+=r.kosong;a.tot+=r.tot;a.n+=r.n;return a;},{benar:0,salah:0,kosong:0,tot:0,n:0});
+  const skor=T.n?Math.round(T.benar/T.n*1000)/10:0;
+  const tgl=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+  $('#resHead').innerHTML='<div><div class="res-title">Hasil Latihan</div><div class="res-name">'+esc(S.name)+'</div>'
+    +'<div class="res-sub">'+S.ids.length+' bab • '+T.n+' soal • selesai '+tgl+'</div></div>'
+    +'<div class="ring" style="--p:'+skor+'"><div class="ring-in"><div class="ring-val">'+skor+'%</div><div class="ring-lbl">SKOR</div></div></div>';
+  $('#stB').textContent=T.benar;
+  $('#stS').textContent=T.salah;
+  $('#stK').textContent=T.kosong;
+  $('#stT').textContent=fmtTime(T.tot);
+  $('#stR').textContent=T.n?fmtTime(T.tot/T.n):'–';
+  let trs='';
+  rows.forEach(function(r){
+    const pct=r.n?Math.round(r.benar/r.n*100):0;
+    trs+='<tr><td class="bab-cell"><b>Bab '+r.ch.no+' — '+r.ch.judul+'</b><div class="bar"><i style="width:'+pct+'%"></i></div></td>'
+      +'<td class="num" style="color:#15803d;font-weight:700">'+r.benar+'</td>'
+      +'<td class="num" style="color:#dc2626;font-weight:700">'+r.salah+'</td>'
+      +'<td class="num" style="color:#b45309;font-weight:700">'+r.kosong+'</td>'
+      +'<td class="num">'+fmtTime(r.tot)+'</td>'
+      +'<td class="num">'+(r.n?fmtTime(r.avg):'–')+'</td></tr>';
+  });
+  trs+='<tr class="total-row"><td>TOTAL</td><td class="num">'+T.benar+'</td><td class="num">'+T.salah+'</td><td class="num">'+T.kosong+'</td><td class="num">'+fmtTime(T.tot)+'</td><td class="num">'+(T.n?fmtTime(T.tot/T.n):'–')+'</td></tr>';
+  $('#resRows').innerHTML=trs;
+}
+
+/* ================== MODAL & TOMBOL GLOBAL ================== */
+function openModal(){$('#modalEnd').hidden=false;}
+function closeModal(){$('#modalEnd').hidden=true;}
+$('#btnEnd').addEventListener('click',function(){if(S)openModal();});
+$('#mNo').addEventListener('click',closeModal);
+$('#modalEnd').addEventListener('click',function(e){if(e.target===this)closeModal();});
+$('#mYes').addEventListener('click',function(){
+  closeModal();
+  if(S&&S.idx<S.tasks.length&&!S.rec[S.idx].st){
+    if(inTrans){S.rec[S.idx]={st:'kosong',t:0};}
+    else{stopTimerInt();S.rec[S.idx]={st:'kosong',t:recordTime()};}
+  }
+  finish();
+});
+$('#btnAgain').addEventListener('click',function(){S=null;showScreen('#screen-cover');});
+$('#btnPrint').addEventListener('click',function(){window.print();});
+
+/* ================== PENGATURAN TIMER ================== */
+document.querySelectorAll('.chip').forEach(function(c){
+  c.addEventListener('click',function(){
+    document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('active');});
+    c.classList.add('active');
+    $('#inpWaktu').value=c.dataset.t;
+  });
+});
+$('#inpWaktu').addEventListener('input',function(){
+  const v=$('#inpWaktu').value;
+  document.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('active',x.dataset.t===v);});
+});
+
+/* ================== INIT ================== */
+renderCover();
+</script>
+</body>
+</html>
