@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnostik Awal • Pertemuan 3 — Bilangan, Pangkat &amp; Akar | Kelas XI</title>
+<style>
+:root{
+  --bg:#eef1f8; --ink:#1e2a3b; --muted:#5b6b82; --card:#ffffff; --line:#e3e9f4;
+  --indigo:#4f46e5; --indigo-d:#3730a3; --sky:#0ea5e9; --teal:#0d9488; --amber:#f59e0b;
+  --rose:#e11d48; --green:#10b981; --violet:#7c3aed; --orange:#ea580c;
+  --r:16px; --sh:0 10px 30px rgba(30,42,80,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+button{font-family:inherit}
+.mv{font-family:Georgia,'Times New Roman',serif;font-style:italic}
+
+/* ---------- Topbar / Progress / Navbar ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;height:58px;background:rgba(255,255,255,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 18px;z-index:60}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14.5px;white-space:nowrap}
+.brand .logo{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--indigo),var(--sky));color:#fff;display:grid;place-items:center;font-size:17px;font-weight:800}
+.brand small{display:block;font-weight:600;color:var(--muted);font-size:10.5px;letter-spacing:.6px}
+.ow{margin-left:auto;display:flex;align-items:center;gap:8px}
+.ow .lbl{font-size:10.5px;font-weight:800;letter-spacing:1.4px;color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.ochip{display:inline-flex;align-items:center;gap:6px;background:#f4f6fc;border:1px solid var(--line);padding:3px 10px 3px 4px;border-radius:999px;font-size:12.3px;font-weight:700}
+.ochip .av{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:10px;font-weight:800}
+.ochip .pos{width:17px;height:17px;border-radius:50%;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:9.5px;color:var(--muted);font-weight:800}
+#orderChips{display:flex;gap:7px;flex-wrap:wrap}
+.btn-mini{padding:7px 13px;font-size:12.5px;border-radius:10px;background:linear-gradient(135deg,var(--indigo),var(--violet));color:#fff;border:none;cursor:pointer;font-weight:700;display:inline-flex;gap:6px;align-items:center;transition:.15s;white-space:nowrap}
+.btn-mini:hover{filter:brightness(1.1)}
+#slideCounter{font-size:12.5px;font-weight:800;color:var(--muted);background:#fff;border:1px solid var(--line);padding:5px 11px;border-radius:999px;white-space:nowrap}
+.progress{position:fixed;top:58px;left:0;right:0;height:4px;background:#e6eaf4;z-index:60}
+#progFill{height:100%;width:0;background:linear-gradient(90deg,var(--indigo),var(--sky),var(--violet));transition:width .4s;border-radius:0 99px 99px 0}
+.deck{position:fixed;top:62px;bottom:62px;left:0;right:0}
+.slide{position:absolute;inset:0;padding:20px 26px;opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .45s,transform .45s,visibility .45s;overflow:hidden}
+.slide.active{opacity:1;visibility:visible;transform:none}
+.sscroll{height:100%;overflow-y:auto;scrollbar-width:thin}
+.sscroll::-webkit-scrollbar{width:9px}
+.sscroll::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:9px}
+.sscroll::-webkit-scrollbar-track{background:transparent}
+.swrap{max-width:1150px;margin:0 auto;padding-bottom:14px}
+.navbar{position:fixed;bottom:0;left:0;right:0;height:62px;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px;z-index:60}
+.navbtn{display:inline-flex;align-items:center;gap:8px;background:#f1f5f9;border:1px solid var(--line);color:#334155;font-weight:700;font-size:13.5px;padding:9px 16px;border-radius:12px;cursor:pointer;transition:.15s}
+.navbtn:hover{background:#e2e8f0}
+.navbtn:disabled{opacity:.4;cursor:not-allowed}
+.navbtn.primary{background:linear-gradient(135deg,var(--indigo),var(--violet));color:#fff;border:none}
+.navbtn.primary:disabled{filter:grayscale(1)}
+.dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;max-width:52vw}
+.dot{width:9px;height:9px;border-radius:50%;background:#c7cfdd;cursor:pointer;transition:.2s;border:none;padding:0}
+.dot:hover{background:var(--sky)}
+.dot.seen{background:#a5b4fc}
+.dot.on{background:var(--indigo);transform:scale(1.3)}
+#toast{position:fixed;left:50%;bottom:74px;transform:translateX(-50%) translateY(16px);background:#111827;color:#fff;padding:11px 20px;border-radius:13px;font-size:13.8px;font-weight:600;opacity:0;pointer-events:none;transition:.3s;z-index:99;box-shadow:0 14px 34px rgba(0,0,0,.3);max-width:80vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%)}
+
+/* ---------- Tipografi slide ---------- */
+.h-slide{font-size:27px;font-weight:800;letter-spacing:-.2px}
+.kicker{font-size:11.5px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase;color:var(--indigo);margin-bottom:6px}
+.sub{color:var(--muted);font-size:14.5px;margin-top:5px;max-width:900px;line-height:1.55}
+.shead{margin-bottom:16px}
+.accent-bar{width:56px;height:5px;border-radius:99px;background:linear-gradient(90deg,var(--indigo),var(--sky));margin-top:10px}
+
+/* ---------- Komponen umum ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:18px 20px}
+.card h3{font-size:17px;margin-bottom:8px}
+.card p{font-size:13.8px;line-height:1.62;color:#3c4d66}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid23{display:grid;grid-template-columns:1.12fr .88fr;gap:16px;align-items:start}
+.strip{margin-top:16px;background:linear-gradient(90deg,#eef2ff,#f0f9ff);border:1px solid #dbe4ff;border-radius:14px;padding:13px 18px;font-size:14px;line-height:1.6;display:flex;gap:10px;align-items:flex-start}
+.strip b{color:var(--indigo-d)}
+.btn{border:none;cursor:pointer;font-weight:700;border-radius:12px;padding:11px 20px;font-size:14.5px;transition:.18s;display:inline-flex;align-items:center;gap:8px}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--indigo);color:#fff;box-shadow:0 6px 16px rgba(79,70,229,.35)}
+.btn-primary:hover{background:var(--indigo-d)}
+.btn-ghost{background:#f1f5f9;color:#334155}
+.btn-ghost:hover{background:#e2e8f0}
+.btn-success{background:var(--green);color:#fff}
+.btn-success:hover{background:#059669}
+.btn-light{background:#fff;color:var(--indigo-d);font-size:16px;padding:13px 26px;border-radius:14px;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn-lg{font-size:15.5px;padding:13px 24px}
+.badge{display:inline-block;padding:4px 11px;border-radius:999px;font-size:11.5px;font-weight:800;letter-spacing:.4px}
+.lvl-mudah{background:#d1fae5;color:#065f46}
+.lvl-sedang{background:#fef3c7;color:#92400e}
+.lvl-sulit{background:#ffedd5;color:#9a3412}
+.lvl-hots{background:#fce7f3;color:#9d174d}
+.av.st1{background:var(--indigo)}.av.st2{background:var(--sky)}.av.st3{background:var(--amber)}
+
+/* ---------- Notasi matematika ---------- */
+.math{font-family:Georgia,'Times New Roman',serif;font-size:16.5px}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.12;margin:0 3px;transform:translateY(-1px)}
+.fr b{font-weight:600;padding:0 5px 1px;border-bottom:1.5px solid currentColor}
+.fr i{font-style:normal;padding-top:1px}
+.rd{border-top:1.6px solid currentColor;padding:0 2px}
+sup{font-size:.72em}
+.steps{margin:8px 0 0 2px;list-style:none;display:flex;flex-direction:column;gap:7px}
+.steps li{display:flex;gap:9px;font-size:14.2px;line-height:1.55}
+.steps .sn{width:22px;height:22px;border-radius:8px;background:#eef2ff;color:var(--indigo-d);font-size:12px;font-weight:800;display:grid;place-items:center;flex:none;margin-top:1px}
+.ex{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:10px 13px;font-size:14.5px;margin-top:10px;line-height:1.6}
+.ex .lbl{font-size:10.5px;font-weight:800;letter-spacing:1.4px;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:5px}
+
+/* ---------- Daftar definisi (jenis bilangan) ---------- */
+.dlist{display:flex;flex-direction:column;gap:9px}
+.ditem{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:13px;padding:10px 13px}
+.ditem .dotc{width:13px;height:13px;border-radius:4px;margin-top:3px;flex:none}
+.ditem b{font-size:14.3px}
+.ditem p{font-size:12.8px;color:var(--muted);line-height:1.5;margin-top:2px}
+.ditem .exm{display:inline-block;font-size:12.3px;color:var(--ink);background:#f1f5f9;border-radius:8px;padding:1px 8px;font-weight:700;margin-top:4px}
+.venn{width:100%;height:auto;display:block}
+
+/* ---------- Tabel sifat ---------- */
+table.sifat{width:100%;border-collapse:collapse;font-size:13.8px}
+.sifat th{background:#f1f5f9;text-align:left;padding:8px 12px;font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:#475569}
+.sifat td{padding:8px 12px;border-top:1px solid var(--line);vertical-align:top;line-height:1.5}
+.sifat td.m{font-family:Georgia,'Times New Roman',serif;font-size:15px;white-space:nowrap}
+.sifat td.c{color:var(--muted);font-size:13px}
+
+/* ---------- Alur konversi rasional ---------- */
+.conv{display:flex;align-items:stretch;margin:14px 0;gap:0}
+.cnode{flex:1;background:#fff;border:2px solid;border-radius:16px;padding:14px 10px;text-align:center;box-shadow:var(--sh)}
+.cnode h4{font-size:16.5px}
+.cnode p{font-size:12.3px;color:var(--muted);margin-top:5px;line-height:1.5}
+.carrow{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;min-width:150px;padding:0 8px}
+.carrow .a{font-size:20px;color:var(--indigo);font-weight:800;line-height:1}
+.carrow .exs{font-size:11.3px;background:#eef2ff;border-radius:8px;padding:3px 9px;color:var(--indigo-d);font-weight:700;text-align:center;line-height:1.45}
+</style>
+<style>
+/* ---------- Cover ---------- */
+.cover{background:
+ radial-gradient(900px 500px at 85% -10%, rgba(14,165,233,.35), transparent 60%),
+ radial-gradient(700px 500px at -10% 110%, rgba(124,58,237,.4), transparent 60%),
+ linear-gradient(135deg,#312e81,#4f46e5 55%,#2563eb)}
+.cov{min-height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#fff;gap:13px;padding:14px}
+.cov-badge{letter-spacing:3px;font-size:12px;font-weight:800;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.32);padding:7px 16px;border-radius:999px;backdrop-filter:blur(4px)}
+.cov h1{font-size:42px;line-height:1.16;font-weight:800;max-width:920px;letter-spacing:-.5px}
+.cov h1 span{color:#fde68a}
+.cov-sub{color:#e0e7ff;max-width:780px;font-size:16px;line-height:1.6}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);padding:6px 14px;border-radius:999px;font-size:12.8px;font-weight:700}
+.name-card{margin-top:16px;background:#fff;color:var(--ink);border-radius:22px;box-shadow:0 24px 60px rgba(0,0,0,.28);padding:22px 26px;width:min(740px,96%)}
+.name-card h3{font-size:18px}
+.nrow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 16px}
+.nfield{display:flex;align-items:center;gap:9px;border:2px solid var(--line);border-radius:13px;padding:8px 11px;background:#f8fafc;cursor:text;transition:.15s}
+.nfield:focus-within{border-color:var(--indigo);background:#fff;box-shadow:0 0 0 4px rgba(79,70,229,.12)}
+.nfield .av{width:30px;height:30px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+.nfield input{border:none;outline:none;background:transparent;font-size:14.3px;width:100%;font-weight:600;color:var(--ink)}
+
+/* ---------- Apersepsi ---------- */
+.why .ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:20px;margin-bottom:10px;color:#fff;font-weight:800}
+.why p{font-size:13.5px;color:#3c4d66;line-height:1.62}
+.map-row{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 14px;margin-bottom:8px}
+.map-row .chip-m{background:#eef2ff;color:var(--indigo-d);font-weight:800;font-size:12.3px;border-radius:9px;padding:5px 10px;white-space:nowrap;flex:none}
+.map-row .arr{color:var(--sky);font-weight:800;font-size:16px}
+.map-row p{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* ---------- Tujuan ---------- */
+.obj{display:flex;gap:13px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--sh);margin-bottom:10px}
+.obj .on{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--indigo),var(--sky));color:#fff;font-weight:800;display:grid;place-items:center;flex:none;font-size:15px}
+.obj b{font-size:15px}
+.obj p{font-size:13.4px;color:var(--muted);line-height:1.58;margin-top:3px}
+
+/* ---------- Kuis ---------- */
+.quiz-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.quiz-meta{display:flex;gap:8px;align-items:center}
+.qcount{font-size:13px;font-weight:800;color:var(--muted);background:#fff;border:1px solid var(--line);padding:6px 13px;border-radius:999px;white-space:nowrap}
+.quiz-grid{display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start}
+.turn-banner{display:flex;align-items:center;gap:11px;background:linear-gradient(90deg,#eef2ff,#f0f9ff);border:1px solid #d9e2ff;padding:10px 14px;border-radius:13px;margin-bottom:12px;font-size:14.5px;flex-wrap:wrap}
+.turn-banner .av{width:34px;height:34px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
+.turn-banner .who{font-weight:800}
+.turn-banner .pos{margin-left:auto;font-size:12px;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:7px}
+.question-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:16.5px;line-height:1.7;box-shadow:var(--sh);margin-bottom:12px}
+.opts{display:grid;gap:9px;margin-bottom:12px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;padding:12px 15px;border:2px solid var(--line);border-radius:13px;background:#fff;cursor:pointer;font-size:15px;transition:.15s;line-height:1.55;width:100%}
+.opt:hover{border-color:#b6c3f2;background:#f8faff}
+.opt .ol{width:30px;height:30px;border-radius:9px;background:#f1f5f9;display:grid;place-items:center;font-weight:800;flex:none;font-size:13.5px;color:#475569}
+.opt.sel{border-color:var(--indigo);background:#eef2ff}
+.opt.sel .ol{background:var(--indigo);color:#fff}
+.opt.correct{border-color:var(--green);background:#ecfdf5}
+.opt.correct .ol{background:var(--green);color:#fff}
+.opt.wrong{border-color:var(--rose);background:#fff1f2}
+.opt.wrong .ol{background:var(--rose);color:#fff}
+.opt:disabled{cursor:default}
+.feedback{padding:12px 16px;border-radius:13px;font-weight:600;display:none;font-size:14.5px;line-height:1.55;margin-bottom:12px}
+.feedback.ok{display:block;background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
+.feedback.no{display:block;background:#fff1f2;border:1px solid #fecdd3;color:#9f1239}
+.exp-panel{background:#f0f9ff;border:1px solid #bae6fd;border-left:5px solid var(--sky);border-radius:13px;padding:13px 16px;display:none;margin-bottom:12px;font-size:14.5px;line-height:1.7}
+.exp-panel.open{display:block;animation:fadeIn .3s}
+.exp-panel .et{font-weight:800;color:#0369a1;font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:6px}
+.quiz-actions{display:flex;gap:10px;flex-wrap:wrap}
+.score-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:16px}
+.score-card h4{font-size:12.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.srow{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:12px;background:#f8fafc;margin-bottom:8px}
+.srow .av{width:30px;height:30px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:800;font-size:12.5px;flex:none}
+.srow .snm{font-weight:700;font-size:13.8px;flex:1}
+.srow .sc{font-weight:800;font-size:14px;background:#eef2ff;color:var(--indigo-d);border-radius:9px;padding:3px 10px}
+.hint{font-size:12px;color:var(--muted);line-height:1.55;margin-top:6px}
+.quiz-done{display:none;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);padding:26px;text-align:center}
+.quiz-done.show{display:block;animation:fadeIn .4s}
+.qd-title{font-size:22px;font-weight:800;margin-bottom:4px}
+.qd-sub{color:var(--muted);font-size:14px;margin-bottom:16px;line-height:1.55}
+.qd-grid{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+.qd-card{border:1px solid var(--line);border-radius:14px;padding:14px 20px;background:#f8fafc;min-width:150px}
+.qd-card .av{width:38px;height:38px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:800;margin:0 auto 8px}
+.qd-card .v{font-size:20px;font-weight:800;color:var(--indigo-d)}
+.qd-card .l{font-size:12px;color:var(--muted);font-weight:600;margin-top:2px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---------- Kartu Soal ---------- */
+.pods{display:flex;gap:14px;justify-content:center;margin:4px 0 16px;flex-wrap:wrap}
+.pod{background:#fff;border:2px dashed var(--line);border-radius:15px;padding:10px 20px;text-align:center;min-width:170px;transition:.2s}
+.pod .pl{font-size:10.5px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted)}
+.pod .pn{font-weight:800;font-size:15px;margin-top:4px;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+.pod .av{width:26px;height:26px;border-radius:50%;color:#fff;display:grid;place-items:center;font-size:11.5px;font-weight:800}
+.pod.now{border:2px solid var(--amber);background:#fffbeb;box-shadow:0 8px 22px rgba(245,158,11,.25);transform:translateY(-2px)}
+.cardgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;max-width:860px;margin:0 auto 16px}
+.qcard{height:88px;border-radius:16px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;display:grid;place-items:center;font-size:26px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(79,70,229,.3);transition:.2s;position:relative;border:none}
+.qcard:hover{transform:translateY(-4px) scale(1.02)}
+.qcard.active{outline:4px solid #fbbf24;animation:pulse 1.4s infinite}
+.qcard.solved{background:linear-gradient(135deg,#10b981,#047857);cursor:default;font-size:30px}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.55)}50%{box-shadow:0 0 0 12px rgba(251,191,36,0)}}
+.card-arena{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);padding:18px 20px;max-width:860px;margin:0 auto}
+.rules{max-width:860px;margin:14px auto 0;font-size:13.3px;color:#7a5b16;line-height:1.6;background:#fffbeb;border:1px solid #fde68a;border-radius:13px;padding:12px 16px}
+.rules b{color:#92400e}
+
+/* ---------- Hasil ---------- */
+.res-wrap{max-width:920px;margin:0 auto}
+table.res{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--sh)}
+.res th{background:linear-gradient(90deg,#4f46e5,#0ea5e9);color:#fff;padding:12px 14px;font-size:12px;letter-spacing:1px;text-transform:uppercase;text-align:left}
+.res td{padding:12px 14px;border-bottom:1px solid var(--line);font-size:14.3px;background:#fff;vertical-align:middle}
+.res tr:last-child td{border-bottom:none}
+.res .num{font-weight:800;color:var(--indigo-d);text-align:center}
+.stcell{display:flex;align-items:center;gap:10px;font-weight:700;flex-wrap:wrap}
+.stcell .av{width:30px;height:30px;border-radius:50%;color:#fff;display:grid;place-items:center;font-size:12.5px;font-weight:800;flex:none}
+.posnum{font-size:11px;color:var(--muted);background:#f1f5f9;border-radius:8px;padding:2px 7px;font-weight:800}
+.bar{height:9px;background:#e8edf6;border-radius:99px;overflow:hidden;min-width:90px}
+.bar i{display:block;height:100%;border-radius:99px;transition:width .6s}
+.total-big{font-weight:800;font-size:16px}
+.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.verdict{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--sh)}
+.verdict .vt{font-weight:800;font-size:13.8px;margin-bottom:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.verdict p{font-size:12.7px;color:var(--muted);line-height:1.55}
+
+/* ---------- Refleksi ---------- */
+.ref-grid{display:grid;grid-template-columns:1fr 1.25fr;gap:16px;align-items:start}
+.rq{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px 15px;margin-bottom:10px}
+.rq .rn{width:26px;height:26px;border-radius:9px;background:#eef2ff;color:var(--indigo-d);font-weight:800;font-size:13px;display:grid;place-items:center;flex:none}
+.rq p{font-size:14.2px;line-height:1.55}
+table.rtab{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--sh)}
+.rtab th{background:#f1f5f9;padding:10px 12px;font-size:11.5px;text-transform:uppercase;letter-spacing:1px;color:#475569;text-align:left}
+.rtab td{padding:10px 12px;border-top:1px solid var(--line);font-size:13.6px}
+.chip-r{border:none;border-radius:999px;padding:5px 13px;font-size:12px;font-weight:700;cursor:pointer;background:#e8edf6;color:#475569;transition:.15s}
+.chip-r.ok{background:#d1fae5;color:#065f46}
+.chip-r.mid{background:#fef3c7;color:#92400e}
+.chip-r.low{background:#fee2e2;color:#9f1239}
+
+/* ---------- Thank You ---------- */
+.ty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;background:
+ radial-gradient(800px 460px at 15% 0%, rgba(251,191,36,.28), transparent 60%),
+ radial-gradient(800px 500px at 90% 100%, rgba(14,165,233,.35), transparent 60%),
+ linear-gradient(135deg,#1e1b4b,#4f46e5 60%,#7c3aed)}
+.ty h1{font-size:52px;font-weight:800;letter-spacing:-1px}
+.ty .tys{font-size:16.5px;color:#e0e7ff;max-width:680px;margin-top:12px;line-height:1.65}
+.ty-stats{margin-top:24px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.tstat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:16px;padding:14px 24px;backdrop-filter:blur(4px)}
+.tstat .v{font-size:24px;font-weight:800}
+.tstat .l{font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;color:#c7d2fe;font-weight:700;margin-top:3px}
+
+/* ---------- Responsif ---------- */
+@media(max-width:980px){
+ .grid2,.grid3,.grid23,.quiz-grid,.ref-grid,.verdicts,.nrow{grid-template-columns:1fr}
+ .conv{flex-direction:column;gap:8px}
+ .carrow{min-width:0;flex-direction:row;justify-content:flex-start}
+ .ow{display:none}
+ .dots{max-width:40vw}
+ .slide{padding:14px}
+ .cov h1{font-size:29px}
+ .ty h1{font-size:34px}
+ .h-slide{font-size:22px}
+ .cardgrid{gap:8px}
+ .qcard{height:64px;font-size:19px}
+}
+@media(max-width:640px){
+ .cardgrid{grid-template-columns:repeat(3,1fr)}
+ .navbar{padding:0 10px}
+ .navbtn{padding:8px 10px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><div class="logo">&Sigma;</div><div>Diagnostik Awal • Pertemuan 3<small>Matematika Kelas XI SMA</small></div></div>
+  <div class="ow">
+    <span class="lbl">Urutan Menjawab</span>
+    <div id="orderChips"></div>
+    <button class="btn-mini" title="Acak urutan siswa untuk menentukan giliran menjawab" onclick="shuffleOrder()">&#8635; Acak Urutan</button>
+  </div>
+  <div id="slideCounter">1 / 16</div>
+</div>
+<div class="progress"><div id="progFill"></div></div>
+
+<div class="deck" id="deck">
+<!-- ============ SLIDE 1 : PEMBUKA ============ -->
+<section class="slide cover active" data-title="Pembuka">
+  <div class="sscroll"><div class="cov">
+    <div class="cov-badge">DIAGNOSTIK AWAL &nbsp;•&nbsp; PERTEMUAN 3</div>
+    <h1>Bilangan, Operasi Hitung, <span>Pangkat &amp; Akar</span></h1>
+    <p class="cov-sub">Sesi interaktif untuk mengukur dan menguatkan fondasi numerasi kalian sebelum melangkah ke materi SMA yang lebih berat. Jawab secara bergantian, bantu temanmu, dan buka sebanyak mungkin kartu soal!</p>
+    <div class="chips">
+      <span class="chip">Bilangan Bulat</span>
+      <span class="chip">Bilangan Rasional</span>
+      <span class="chip">Pecahan • Desimal • Persen</span>
+      <span class="chip">Eksponen</span>
+      <span class="chip">Bentuk Akar</span>
+    </div>
+    <div class="name-card">
+      <h3>Selamat datang! Siapa saja penjelajah bilangan hari ini?</h3>
+      <p style="color:var(--muted);font-size:13.3px;margin-top:4px;line-height:1.5">Tulis nama ketiga siswa di bawah, lalu klik tombol mulai. Nama kalian dipakai untuk menentukan giliran menjawab pada setiap latihan, dan urutannya bisa diacak kapan saja lewat tombol <b>&#8635; Acak Urutan</b> di pojok kanan atas.</p>
+      <div class="nrow">
+        <label class="nfield"><span class="av st1">1</span><input id="nm1" placeholder="Nama Siswa 1" autocomplete="off"></label>
+        <label class="nfield"><span class="av st2">2</span><input id="nm2" placeholder="Nama Siswa 2" autocomplete="off"></label>
+        <label class="nfield"><span class="av st3">3</span><input id="nm3" placeholder="Nama Siswa 3" autocomplete="off"></label>
+      </div>
+      <button class="btn btn-light" onclick="startPres()">Mulai Diagnostik &nbsp;&rarr;</button>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ SLIDE 2 : APERSEPSI ============ -->
+<section class="slide" data-title="Apersepsi">
+  <div class="sscroll"><div class="swrap">
+    <div class="shead">
+      <div class="kicker">Apersepsi</div>
+      <h2 class="h-slide">Mengapa Materi Ini Harus Dikuasai Lebih Dulu?</h2>
+      <div class="accent-bar"></div>
+    </div>
+    <div class="grid3">
+      <div class="card why">
+        <div class="ic" style="background:var(--indigo)">&Sigma;</div>
+        <h3>Fondasi Segala Materi SMA</h3>
+        <p>Setiap bab di SMA — dari fungsi, persamaan kuadrat, trigonometri, hingga limit dan integral — pada akhirnya bermuara pada operasi bilangan. Konsep sebagus apa pun akan berakhir salah jika perhitungan dasarnya keliru. Menguasai operasi bilangan bulat, bilangan rasional, pangkat, dan akar berarti membangun fondasi yang membuat semua bab berikutnya terasa jauh lebih ringan.</p>
+      </div>
+      <div class="card why">
+        <div class="ic" style="background:var(--sky)">&radic;</div>
+        <h3>Melatih Penalaran Matematika</h3>
+        <p>Sifat-sifat operasi (komutatif, asosiatif, distributif), aturan tanda, dan sifat eksponen-akar melatihmu berpikir deduktif: bergerak dari aturan menuju kesimpulan yang pasti. Pola pikir inilah yang dituntut pada soal HOTS, olimpiade, hingga UTBK — yang menguji penalaran, bukan sekadar hafalan rumus.</p>
+      </div>
+      <div class="card why">
+        <div class="ic" style="background:var(--amber)">%</div>
+        <h3>Alat Analisis Dunia Nyata</h3>
+        <p>Pecahan, desimal, dan persen hidup dalam diskon belanja, bunga bank, statistik, dan hasil eksperimen fisika. Pangkat dan akar muncul pada pertumbuhan bakteri, skala Richter gempa, jarak pandang di laut, hingga luas dan volume bangun ruang. Matematika ini bekerja setiap hari, sering kali tanpa kita sadari.</p>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <h3>Peta Kaitan dengan Materi SMA Lainnya</h3>
+        <div style="margin-top:10px">
+          <div class="map-row"><span class="chip-m">Eksponen &amp; Logaritma (XI)</span><span class="arr">&rarr;</span><p>sifat pangkat dan bentuk akar dipakai langsung di seluruh bab ini.</p></div>
+          <div class="map-row"><span class="chip-m">Barisan &amp; Deret (XI)</span><span class="arr">&rarr;</span><p>menentukan rasio dan suku ke-n bergantung pada operasi pecahan dan pangkat.</p></div>
+          <div class="map-row"><span class="chip-m">Fungsi Kuadrat &amp; Polinomial</span><span class="arr">&rarr;</span><p>substitusi nilai dan manipulasi aljabar menuntut kecepatan operasi bilangan.</p></div>
+          <div class="map-row"><span class="chip-m">Trigonometri (X&ndash;XI)</span><span class="arr">&rarr;</span><p>nilai seperti <span class="mv">&radic;3/2</span> dan <span class="mv">2&radic;2</span> menuntut keterampilan menyederhanakan &amp; merasionalkan akar.</p></div>
+          <div class="map-row"><span class="chip-m">Sistem Persamaan Linear</span><span class="arr">&rarr;</span><p>eliminasi&ndash;substitusi melibatkan operasi pecahan dan bilangan bulat bertanda.</p></div>
+          <div class="map-row"><span class="chip-m">Limit &amp; Turunan (XII)</span><span class="arr">&rarr;</span><p>teknik merasionalkan penyebut menjadi kunci membuka limit bentuk 0/0.</p></div>
+          <div class="map-row" style="margin-bottom:0"><span class="chip-m">Statistika &amp; Peluang</span><span class="arr">&rarr;</span><p>frekuensi relatif, rata-rata, dan peluang penuh pecahan, desimal, dan persen.</p></div>
+        </div>
+      </div>
+      <div class="card" style="background:linear-gradient(160deg,#eef2ff,#fff)">
+        <h3>Ibarat Membangun Menara</h3>
+        <p>Materi SMA itu ibarat menara bertingkat: <b>bilangan adalah fondasinya</b>. Sedikit saja fondasinya goyah — misalnya keliru aturan tanda atau salah menyederhanakan bentuk akar — seluruh lantai di atasnya ikut miring. Karena itu, sebelum naik ke eksponen-logaritma dan trigonometri, hari ini kita rapatkan dulu fondasinya.</p>
+        <p style="margin-top:10px">Ingat juga: sesi ini <b>bukan ujian</b>, melainkan <b>pemetaan kemampuan</b>. Jawab dengan jujur, dan anggap setiap jawaban salah adalah petunjuk tentang bagian mana yang perlu kamu perkuat. Kesalahan adalah bagian paling berguna dari belajar!</p>
+      </div>
+    </div>
+    <div class="strip"><b>Kesimpulan apersepsi:</b>&nbsp;makin cekatan kamu dalam operasi bilangan, makin cepat pula kamu menyelesaikan seluruh bab matematika berikutnya.</div>
+  </div></div>
+</section>
+
+<!-- ============ SLIDE 3 : TUJUAN ============ -->
+<section class="slide" data-title="Tujuan Pembelajaran">
+  <div class="sscroll"><div class="swrap">
+    <div class="shead">
+      <div class="kicker">Tujuan Pembelajaran</div>
+      <h2 class="h-slide">Setelah Sesi Ini, Kalian Mampu&hellip;</h2>
+      <div class="accent-bar"></div>
+    </div>
+    <div class="obj"><div class="on">1</div><div><b>Mengidentifikasi himpunan bilangan</b><p>Menjelaskan ciri bilangan asli, cacah, bulat, rasional, irasional, riil, dan imajiner, lalu menempatkan anggota-anggotanya pada diagram Venn dengan tepat.</p></div></div>
+    <div class="obj"><div class="on">2</div><div><b>Mengoperasikan bilangan bulat</b><p>Menerapkan aturan tanda dan urutan operasi (kurung &rarr; pangkat &rarr; kali/bagi &rarr; tambah/kurang) pada penjumlahan, pengurangan, perkalian, dan pembagian bilangan bulat.</p></div></div>
+    <div class="obj"><div class="on">3</div><div><b>Mengonversi &amp; mengoperasikan bilangan rasional</b><p>Mengubah pecahan &#8646; desimal &#8646; persen, serta menjumlah, mengurang, mengali, dan membagi pecahan biasa maupun pecahan campuran.</p></div></div>
+    <div class="obj"><div class="on">4</div><div><b>Menyederhanakan bentuk eksponen</b><p>Menerapkan delapan sifat eksponen untuk menyederhanakan bentuk aljabar yang memuat pangkat.</p></div></div>
+    <div class="obj"><div class="on">5</div><div><b>Menyederhanakan &amp; merasionalkan bentuk akar</b><p>Mengubah <span class="mv">&radic;50</span> menjadi <span class="mv">5&radic;2</span>, merasionalkan penyebut, dan menyelesaikan operasi hitung pada bentuk akar.</p></div></div>
+    <div class="strip"><b>Alur sesi:</b>&nbsp;Materi &rarr; 3 rangkaian latihan bergantian (3 &times; 15 soal) &rarr; Kartu Soal 1&ndash;10 (kiri&ndash;tengah&ndash;kanan) &rarr; Hasil latihan, kesimpulan &amp; refleksi.</div>
+  </div></div>
+</section>
+<!-- ============ SLIDE 4 : JENIS BILANGAN ============ -->
+<section class="slide" data-title="Jenis Bilangan">
+  <div class="sscroll"><div class="swrap">
+    <div class="shead">
+      <div class="kicker">Materi 1</div>
+      <h2 class="h-slide">Mengenal Jenis-Jenis Bilangan</h2>
+      <div class="accent-bar"></div>
+    </div>
+    <div class="grid23">
+      <div class="card">
+        <h3 style="text-align:center;margin-bottom:10px">Diagram Venn Himpunan Bilangan</h3>
+        <svg class="venn" viewBox="0 0 760 440" role="img" aria-label="Diagram Venn jenis bilangan">
+          <rect x="8" y="8" width="744" height="424" rx="26" fill="#ffffff" stroke="#7c3aed" stroke-width="2.5"/>
+          <text x="380" y="34" text-anchor="middle" font-size="15" font-weight="800" fill="#7c3aed">BILANGAN KOMPLEKS (C)</text>
+          <rect x="26" y="50" width="436" height="366" rx="60" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+          <text x="46" y="74" font-size="14" font-weight="800" fill="#0369a1">BILANGAN RIIL (R)</text>
+          <text x="322" y="76" font-size="13.5" font-weight="700" fill="#be123c">Bilangan Irasional</text>
+          <text x="322" y="96" font-size="13.5" fill="#be123c">&#8730;2 , &#8730;3 , &#8730;5 , &#960;</text>
+          <rect x="490" y="50" width="244" height="366" rx="60" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+          <text x="612" y="76" text-anchor="middle" font-size="13.5" font-weight="800" fill="#6b21a8">BILANGAN IMAJINER</text>
+          <text x="612" y="106" text-anchor="middle" font-size="14" fill="#6b21a8">i = &#8730;&minus;1</text>
+          <text x="612" y="132" text-anchor="middle" font-size="13.5" fill="#7e22ce">i , 2i , &minus;3i , 7i</text>
+          <text x="612" y="158" text-anchor="middle" font-size="12" fill="#9333ea">bentuk bi</text>
+          <text x="612" y="178" text-anchor="middle" font-size="11.5" fill="#a855f7">(b riil, b &#8800; 0)</text>
+          <circle cx="240" cy="276" r="130" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+          <text x="240" y="170" text-anchor="middle" font-size="13" font-weight="800" fill="#3730a3">BILANGAN RASIONAL (Q)</text>
+          <text x="146" y="200" font-size="12.5" fill="#4338ca">3/4 , 0,25 , &minus;7/2</text>
+          <circle cx="240" cy="302" r="88" fill="#c7d2fe" stroke="#4f46e5" stroke-width="1.5"/>
+          <text x="240" y="240" text-anchor="middle" font-size="12.5" font-weight="800" fill="#312e81">BULAT (Z)</text>
+          <text x="172" y="268" font-size="12.5" fill="#1e1b4b">&minus;1 , &minus;2 , &minus;3</text>
+          <circle cx="240" cy="330" r="56" fill="#a5b4fc" stroke="#4338ca" stroke-width="1.5"/>
+          <text x="240" y="298" text-anchor="middle" font-size="12" font-weight="800" fill="#1e1b4b">CACAH</text>
+          <text x="200" y="322" font-size="12.5" fill="#111827">0</text>
+          <circle cx="240" cy="340" r="34" fill="#818cf8" stroke="#3730a3" stroke-width="1.5"/>
+          <text x="240" y="338" text-anchor="middle" font-size="11" font-weight="800" fill="#ffffff">ASLI (N)</text>
+          <text x="240" y="354" text-anchor="middle" font-size="11" fill="#ffffff">1, 2, 3, &#8230;</text>
+        </svg>
+      </div>
+      <div class="dlist">
+        <div class="ditem"><span class="dotc" style="background:#818cf8"></span><div><b>Bilangan Asli (N)</b><p>Bilangan untuk menghitung sesuatu, dimulai dari 1. Anggota pertama dari semua jenis bilangan.</p><span class="exm">1, 2, 3, 4, &#8230;</span></div></div>
+        <div class="ditem"><span class="dotc" style="background:#a5b4fc"></span><div><b>Bilangan Cacah</b><p>Bilangan asli <b>ditambah nol</b>. Nol melengkapi sistem hitung kita.</p><span class="exm">0, 1, 2, 3, &#8230;</span></div></div>
+        <div class="ditem"><span class="dotc" style="background:#c7d2fe"></span><div><b>Bilangan Bulat (Z)</b><p>Bilangan cacah <b>ditambah bilangan negatif</b> (lawan dari asli).</p><span class="exm">&hellip;, &minus;2, &minus;1, 0, 1, 2, &hellip;</span></div></div>
+        <div class="ditem"><span class="dotc" style="background:#4f46e5"></span><div><b>Bilangan Rasional (Q)</b><p>Dapat ditulis <span class="mv">a/b</span> dengan a, b bulat dan b &ne; 0. Desimalnya selalu berujung atau berulang.</p><span class="exm">1/2 , &minus;3/4 , 0,25 , 0,333&#8230;</span></div></div>
+        <div class="ditem"><span class="dotc" style="background:#e11d48"></span><div><b>Bilangan Irasional</b><p>Tidak dapat ditulis sebagai <span class="mv">a/b</span>; desimalnya tak berujung dan tak berulang. Tinggal di dalam R tetapi di luar Q.</p><span class="exm">&radic;2 , &radic;3 , &pi;</span></div></div>
+        <div class="ditem"><span class="dotc" style="background:#0ea5e9"></span><div><b>Bilangan Riil (R)</b><p>Gabungan bilangan rasional dan irasional — seluruh titik pada garis bilangan.</p><span class="exm">Q &cup; irasional</span></div></div>
+        <div class="ditem" style="margin-bottom:0"><span class="dotc" style="background:#7c3aed"></span><div><b>Bilangan Imajiner</b><p>Berakar dari <span class="mv">i = &radic;&minus;1</span>, ditulis <span class="mv">bi</span>. Riil + imajiner membentuk bilangan kompleks (C).</p><span class="exm">2i , &minus;5i , 7i</span></div></div>
+      </div>
+    </div>
+    <div class="strip"><b>Ingat:</b>&nbsp;setiap lingkaran &ldquo;menaungi&rdquo; lingkaran di dalamnya: N &sub; Cacah &sub; Z &sub; Q &sub; R &sub; C. Contoh letak: 7 (asli &rarr; juga bulat, cacah, rasional, riil); &minus;4 (bulat, bukan asli); <span class="mv">&radic;2</span> (riil, tetapi bukan rasional); <span class="mv">3i</span> (imajiner, di luar riil).</div>
+  </div></div>
+</section>
+
+<!-- ============ SLIDE 5 : OPERASI BILANGAN BULAT ============ -->
+<section class="slide" data-title="Operasi Bilangan Bulat">
+  <div class="sscroll"><div class="swrap">
+    <div class="shead">
+      <div class="kicker">Materi 2</div>
+      <h2 class="h-slide">Operasi Hitung Bilangan Bulat</h2>
+      <div class="accent-bar"></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="color:var(--indigo)">Penjumlahan (+)</h3>
+        <ul class="steps">
+          <li><span class="sn">1</span><span><b>Sejenis tanda:</b> jumlahkan nilai mutlaknya, tandanya tetap.<br><span class="math">(&minus;4) + (&minus;3) = &minus;7 &nbsp;;&nbsp; 5 + 6 = 11</span></span></li>
+          <li><span class="sn">2</span><span><b>Beda tanda:</b> kurangkan nilai mutlaknya, ikuti tanda bilangan dengan nilai mutlak terbesar.<br><span class="math">(&minus;9) + 4 = &minus;5 &nbsp;;&nbsp; 12 + (&minus;7) = 5</span></span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--sky)">Pengurangan (&minus;)</h3>
+        <p><b>Mengurang sama dengan menambah lawannya:</b> <span class="math mv">a &minus; b = a + (&minus;b)</span></p>
+        <div class="ex"><span class="lbl">Contoh</span>
+          <span class="math">7 &minus; (&minus;5) = 7 + 5 = 12</span><br>
+          <span class="math">&minus;6 &minus; 3 = &minus;6 + (&minus;3) = &minus;9</span><br>
+          <span class="math">4 &minus; 10 = &minus;6</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--teal)">Perkalian (&times;)</h3>
+        <ul class="steps">
+          <li><span class="sn">1</span><span><b>Sejenis tanda &rarr; positif:</b> <span class="math">(&minus;6) &times; (&minus;4) = 24</span></span></li>
+          <li><span class="sn">2</span><span><b>Beda tanda &rarr; negatif:</b> <span class="math">(&minus;6) &times; 4 = &minus;24</span></span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--orange)">Pembagian (&divide;)</h3>
+        <p>Aturan tanda <b>sama dengan perkalian</b>.</p>
+        <div class="ex"><span class="lbl">Contoh</span>
+          <span class="math">(&minus;20) &divide; (&minus;4) = 5</span><br>
+          <span class="math">(&minus;20) &divide; 4 = &minus;5</span><br>
+          <span class="math">0 &divide; 7 = 0</span> &nbsp;(nol dibagi bilangan bukan nol; pembagian oleh nol tidak terdefinisi)
+        </div>
+      </div>
+    </div>
+    <div class="strip"><b>Urutan operasi:</b>&nbsp;Kurung &rarr; Pangkat &rarr; Kali/Bagi (dari kiri) &rarr; Tambah/Kurang (dari kiri). Contoh: <span class="math">24 &divide; (&minus;4) + (&minus;3) &times; 2 = &minus;6 + (&minus;6) = &minus;12</span>.</div>
+  </div></div>
+</section>
+
+<!-- ============ SLIDE 6 : LATIHAN 1 ============ -->
+<section class="slide" id="slide-l1" data-title="Latihan 1 — Bilangan Bulat">
+  <div class="sscroll"><div class="swrap"><div id="quiz-l1"></div></div></div>
+</section>
+
+<!-- ============ SLIDE 7 : BILANGAN RASIONAL ============ -->
+<section class="slide" data-title="Bilangan Rasional">
+  <div class="sscroll"><div class="swrap">
+    <div class="shead">
+      <div class="kicker">Materi 3</div>
+      <h2 class="h-slide">Konversi &amp; Operasi Bilangan Rasional</h2>
+      <div class="accent-bar"></div>
+    </div>
+    <div class="card">
+      <h3>Satu bilangan, tiga &ldquo;kostum&rdquo;</h3>
+      <p>Bilangan rasional dapat dinyatakan sebagai <span class="mv">a/b</span> (a, b bulat, b &ne; 0). Desimalnya selalu <b>berujung</b> (<span class="math">3/8 = 0,375</span>) atau <b>berulang</b> (<span class="math">1/3 = 0,333&hellip;</span>). Desimal berulang pun bisa dikembalikan menjadi pecahan: <span class="math">0,777&hellip; = 7/9</span>.</p>
+      <div class="conv">
+        <div class="cnode" style="border-color:var(--indigo)"><h4 style="color:var(--indigo)">PECAHAN</h4><p><span class="math">3/4 , &minus;5/2 , 1&frac34;</span><br>bentuk paling murni: <span class="mv">a/b</span></p></div>
+        <div class="carrow"><span class="a">&#8646;</span><span class="exs">bagi: 3 &divide; 4 = 0,75</span><span class="exs">0,75 = 75/100 = 3/4</span></div>
+        <div class="cnode" style="border-color:var(--sky)"><h4 style="color:var(--sky)">DESIMAL</h4><p><span class="math">0,75 ; 0,333&hellip;</span><br>memakai tanda koma &amp; nilai tempat</p></div>
+        <div class="carrow"><span class="a">&#8646;</span><span class="exs">&times; 100: 0,45 &rarr; 45%</span><span class="exs">&divide; 100: 45% &rarr; 0,45</span></div>
+        <div class="cnode" style="border-color:var(--amber)"><h4 style="color:var(--orange)">PERSEN</h4><p><span class="math">75% ; 33,3&hellip;%</span><br>per seratus — cocok untuk perbandingan</p></div>
+      </div>
+      <div class="strip" style="margin-top:6px"><b>Langsung pecahan &#8646; persen:</b>&nbsp;<span class="math">3/5 = 3 &times; 20/100 = 60%</span> dan <span class="math">40% = 40/100 = 2/5</span>.</div>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="card">
+        <h3 style="color:var(--teal)">Penjumlahan &amp; Pengurangan</h3>
+        <p><b>Samakan penyebut</b> terlebih dahulu dengan KPK kedua penyebut, baru jumlahkan/kurangkan pembilangnya.</p>
+        <div class="ex"><span class="lbl">Contoh</span><span class="math">2/3 + 1/4 = 8/12 + 3/12 = 11/12</span></div>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--violet)">Perkalian</h3>
+        <p>Kalikan <b>pembilang &times; pembilang</b> dan <b>penyebut &times; penyebut</b>, lalu sederhanakan dengan FPB.</p>
+        <div class="ex"><span class="lbl">Contoh</span><span class="math">2/3 &times; 9/10 = 18/30 = 3/5</span></div>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--orange)">Pembagian</h3>
+        <p><b>Bolak-balikkan</b> pecahan pembagi, lalu kalikan (membagi = mengali dengan kebalikan).</p>
+        <div class="ex"><span class="lbl">Contoh</span><span class="math">3/5 &divide; 9/10 = 3/5 &times; 10/9 = 30/45 = 2/3</span></div>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--rose)">Pecahan Campuran</h3>
+        <p>Bentuk campuran seperti <span class="math">1&frac34;</span> adalah &ldquo;bulat + sisa&rdquo;. Untuk mengoperasikan, <b>ubah dulu ke pecahan biasa</b>.</p>
+        <div class="ex"><span class="lbl">Contoh</span><span class="math">7/4 = 1&frac34;</span> &nbsp;;&nbsp; <span class="math">1&frac12; + 2&#8532; = 3/2 + 8/3 = 9/6 + 16/6 = 25/6 = 4&#8531;</span></div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ SLIDE 8 : LATIHAN 2 ============ -->
+<section class="slide" id="slide-l2" data-title="Latihan 2 — Bilangan Rasional">
+  <div class="sscroll"><div class="swrap"><div id="quiz-l2"></div></div></div>
+</section>
+<!-- ============ SLIDE 9 : EKSPONEN ============ -->
+<section class="slide" data-title="Eksponen">
+  <div class="sscroll"><div class="swrap">
+    <div class="shead">
+      <div class="kicker">Materi 4a</div>
+      <h2 class="h-slide">Eksponen: Definisi &amp; Sifat-Sifatnya</h2>
+      <div class="accent-bar"></div>
+    </div>
+    <div class="grid23">
+      <div class="card">
+        <h3>Apa itu eksponen?</h3>
+        <p>Eksponen (pangkat) adalah <b>perkalian berulang yang dipersingkat</b>. Pada <span class="math mv">a<sup>n</sup></span>, huruf <span class="mv">a</span> disebut <b>basis</b> dan <span class="mv">n</span> disebut <b>eksponen</b>.</p>
+        <div class="ex"><span class="lbl">Contoh</span><span class="math">2<sup>5</sup> = 2 &times; 2 &times; 2 &times; 2 &times; 2 = 32</span> &nbsp;;&nbsp; <span class="math">(&minus;3)<sup>2</sup> = 9</span> &nbsp;;&nbsp; <span class="math">(&minus;3)<sup>3</sup> = &minus;27</span></div>
+        <div class="ex" style="background:#fff7ed;border-color:#fdba74"><span class="lbl" style="color:#9a3412">Dua kasus spesial</span>
+          <span class="math"><b>a<sup>0</sup> = 1</b></span> untuk setiap <span class="mv">a &ne; 0</span> &nbsp;&mdash;&nbsp; <span class="math">9<sup>0</sup> = 1</span><br>
+          <span class="math"><b>a<sup>&minus;n</sup> = 1/a<sup>n</sup></b></span> &nbsp;&mdash;&nbsp; <span class="math">5<sup>&minus;2</sup> = 1/25</span>. Pangkat negatif <b>bukan</b> berarti hasilnya negatif!
+        </div>
+      </div>
+      <div class="card">
+        <h3>Delapan Sifat Eksponen</h3>
+        <table class="sifat">
+          <tr><th>#</th><th>Rumus</th><th>Contoh</th></tr>
+          <tr><td>1</td><td class="m">a<sup>m</sup> &middot; a<sup>n</sup> = a<sup>m+n</sup></td><td class="c">2<sup>3</sup> &middot; 2<sup>4</sup> = 2<sup>7</sup> = 128</td></tr>
+          <tr><td>2</td><td class="m">a<sup>m</sup> : a<sup>n</sup> = a<sup>m&minus;n</sup></td><td class="c">2<sup>6</sup> : 2<sup>2</sup> = 2<sup>4</sup> = 16</td></tr>
+          <tr><td>3</td><td class="m">(a<sup>m</sup>)<sup>n</sup> = a<sup>m&middot;n</sup></td><td class="c">(3<sup>2</sup>)<sup>3</sup> = 3<sup>6</sup> = 729</td></tr>
+          <tr><td>4</td><td class="m">(ab)<sup>n</sup> = a<sup>n</sup>b<sup>n</sup></td><td class="c">(2x)<sup>3</sup> = 8x<sup>3</sup></td></tr>
+          <tr><td>5</td><td class="m">(a/b)<sup>n</sup> = a<sup>n</sup>/b<sup>n</sup></td><td class="c">(x/3)<sup>2</sup> = x<sup>2</sup>/9</td></tr>
+          <tr><td>6</td><td class="m">a<sup>0</sup> = 1</td><td class="c">9<sup>0</sup> = 1</td></tr>
+          <tr><td>7</td><td class="m">a<sup>&minus;n</sup> = 1/a<sup>n</sup></td><td class="c">5<sup>&minus;2</sup> = 1/25</td></tr>
+          <tr><td>8</td><td class="m">a<sup>m/n</sup> = <sup>n</sup>&radic;a<sup>m</sup></td><td class="c">8<sup>2/3</sup> = <sup>3</sup>&radic;8<sup>2</sup> = 4</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="card">
+        <h3>Contoh Penyederhanaan 1</h3>
+        <p>Sederhanakan: <span class="math"><b>(x<sup>3</sup>)<sup>2</sup> &middot; x<sup>4</sup> : x<sup>5</sup></b></span></p>
+        <ul class="steps">
+          <li><span class="sn">1</span><span>Selesaikan pangkat-pangkat: <span class="math">(x<sup>3</sup>)<sup>2</sup> = x<sup>6</sup></span> (sifat 3).</span></li>
+          <li><span class="sn">2</span><span>Jumlahkan pangkat saat dikali: <span class="math">x<sup>6</sup> &middot; x<sup>4</sup> = x<sup>10</sup></span> (sifat 1).</span></li>
+          <li><span class="sn">3</span><span>Kurangkan pangkat saat dibagi: <span class="math">x<sup>10</sup> : x<sup>5</sup> = <b>x<sup>5</sup></b></span> (sifat 2).</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Contoh Penyederhanaan 2</h3>
+        <p>Sederhanakan: <span class="math"><b>(2a<sup>2</sup>b)<sup>3</sup> : (4a<sup>3</sup>b<sup>2</sup>)</b></span></p>
+        <ul class="steps">
+          <li><span class="sn">1</span><span>Pangkatkan tiap faktor: <span class="math">(2a<sup>2</sup>b)<sup>3</sup> = 8a<sup>6</sup>b<sup>3</sup></span> (sifat 4 &amp; 3).</span></li>
+          <li><span class="sn">2</span><span>Bagi koefisien dan kurangkan pangkat: <span class="math">8 : 4 = 2</span>, <span class="math">a<sup>6&minus;3</sup> = a<sup>3</sup></span>, <span class="math">b<sup>3&minus;2</sup> = b</span> (sifat 2).</span></li>
+          <li><span class="sn">3</span><span>Hasil akhir: <b class="math">2a<sup>3</sup>b</b>.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ SLIDE 10 : BENTUK AKAR ============ -->
+<section class="slide" data-title="Bentuk Akar">
+  <div class="sscroll"><div class="swrap">
+    <div class="shead">
+      <div class="kicker">Materi 4b</div>
+      <h2 class="h-slide">Bentuk Akar: Menyederhanakan, Merasionalkan &amp; Mengoperasikan</h2>
+      <div class="accent-bar"></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="color:var(--indigo)">Pangkat &amp; Akar</h3>
+        <p>Akar adalah <b>kebalikan dari pangkat</b>: <span class="math mv"><sup>n</sup>&radic;a = a<sup>1/n</sup></span> dan <span class="math mv">(&radic;a)<sup>2</sup> = a</span> untuk <span class="mv">a &ge; 0</span>.</p>
+        <div class="ex"><span class="lbl">Contoh</span><span class="math">&radic;49 = 7</span> &nbsp;;&nbsp; <span class="math"><sup>3</sup>&radic;27 = 3</span> &nbsp;;&nbsp; <span class="math">&radic;25 = 25<sup>1/2</sup> = 5</span></div>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--sky)">Sifat-Sifat Akar</h3>
+        <p>Untuk <span class="mv">a &ge; 0, b &ge; 0</span> berlaku:</p>
+        <ul class="steps">
+          <li><span class="sn">1</span><span class="math">&radic;(a &times; b) = &radic;a &times; &radic;b</span> &nbsp;&rarr;&nbsp; <span class="math">&radic;9 &times; &radic;4 = &radic;36 = 6</span></li>
+          <li><span class="sn">2</span><span class="math">&radic;(a/b) = &radic;a / &radic;b</span> &nbsp;&rarr;&nbsp; <span class="math">&radic;64 / &radic;4 = &radic;16 = 4</span></li>
+          <li><span class="sn">3</span><span class="math"><sup>n</sup>&radic;a<sup>m</sup> = a<sup>m/n</sup></span> &nbsp;&rarr;&nbsp; <span class="math"><sup>3</sup>&radic;5<sup>6</sup> = 5<sup>2</sup> = 25</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--teal)">Menyederhanakan Bentuk Akar</h3>
+        <p>Pisahkan <b>faktor kuadrat sempurna terbesar</b> dari dalam akar, lalu keluarkan akarnya.</p>
+        <div class="ex"><span class="lbl">Contoh inti</span>
+          <span class="math">&radic;50 = &radic;(25 &times; 2) = &radic;25 &times; &radic;2 = <b>5&radic;2</b></span>
+        </div>
+        <div class="ex"><span class="lbl">Contoh lain</span>
+          <span class="math">&radic;72 = &radic;(36 &times; 2) = 6&radic;2</span> &nbsp;;&nbsp; <span class="math">&radic;98 = &radic;(49 &times; 2) = 7&radic;2</span> &nbsp;;&nbsp; <span class="math">&radic;27 = 3&radic;3</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--rose)">Merasionalkan Penyebut</h3>
+        <p>Menghilangkan bentuk akar dari penyebut dengan mengalikan bentuk <b>sekawan</b>.</p>
+        <div class="ex"><span class="lbl">Penyebut satu suku</span>
+          <span class="math">6/&radic;3 = 6&radic;3 / (&radic;3 &times; &radic;3) = 6&radic;3/3 = <b>2&radic;3</b></span>
+        </div>
+        <div class="ex"><span class="lbl">Penyebut dua suku (pakai sekawan)</span>
+          <span class="math">4/(&radic;7 &minus; 3) &times; (&radic;7 + 3)/(&radic;7 + 3) = 4(&radic;7 + 3)/(7 &minus; 9) = 4(&radic;7 + 3)/(&minus;2) = <b>&minus;2(&radic;7 + 3)</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3 style="color:var(--orange)">Operasi Hitung pada Bentuk Akar</h3>
+      <div class="grid2" style="margin-top:8px">
+        <div>
+          <p><b>Penjumlahan/pengurangan:</b> hanya boleh langsung jika <b>sejenis</b> (radikalnya sama). Jika belum sejenis, sederhanakan dulu!</p>
+          <div class="ex"><span class="lbl">Contoh</span>
+            <span class="math">2&radic;3 + 5&radic;3 = 7&radic;3</span> (sejenis)<br>
+            <span class="math">&radic;8 + &radic;2 = 2&radic;2 + &radic;2 = 3&radic;2</span> (disederhanakan dulu)
+          </div>
+        </div>
+        <div>
+          <p><b>Perkalian/pembagian:</b> radikal boleh langsung digabung, lalu sederhanakan hasilnya.</p>
+          <div class="ex"><span class="lbl">Contoh</span>
+            <span class="math">&radic;3 &times; &radic;6 = &radic;18 = &radic;(9 &times; 2) = 3&radic;2</span><br>
+            <span class="math">&radic;60 : &radic;5 = &radic;12 = 2&radic;3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ SLIDE 11 : LATIHAN 3 ============ -->
+<section class="slide" id="slide-l3" data-title="Latihan 3 — Eksponen & Akar">
+  <div class="sscroll"><div class="swrap"><div id="quiz-l3"></div></div></div>
+</section>
+<!-- ============ SLIDE 12 : KARTU SOAL ============ -->
+<section class="slide" id="slide-kartu" data-title="Kartu Soal 1–10">
+  <div class="sscroll"><div class="swrap"><div id="cardsGame"></div></div></div>
+</section>
+
+<!-- ============ SLIDE 13 : HASIL ============ -->
+<section class="slide" id="slide-hasil" data-title="Hasil Latihan">
+  <div class="sscroll"><div class="swrap">
+    <div class="shead">
+      <div class="kicker">Evaluasi</div>
+      <h2 class="h-slide">Hasil Latihan Siswa</h2>
+      <div class="accent-bar"></div>
+      <p class="sub">Rekapitulasi jawaban benar dari ketiga latihan dan kartu soal. Maksimal per siswa: 5 poin tiap latihan + 10 poin kartu soal = <b>25 poin</b>.</p>
+    </div>
+    <div id="resultBox" class="res-wrap"></div>
+  </div></div>
+</section>
+
+<!-- ============ SLIDE 14 : KESIMPULAN ============ -->
+<section class="slide" data-title="Kesimpulan">
+  <div class="sscroll"><div class="swrap">
+    <div class="shead">
+      <div class="kicker">Penutup Materi</div>
+      <h2 class="h-slide">Kesimpulan Hari Ini</h2>
+      <div class="accent-bar"></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="color:var(--sky)">1 &mdash; Peta Bilangan</h3>
+        <p>N &sub; Cacah &sub; Z &sub; Q &sub; R, dan bersama bilangan imajiner membentuk C. Mengetahui &ldquo;alamat&rdquo; sebuah bilangan membantu memilih cara yang tepat untuk mengoperasikannya — misalnya <span class="mv">&radic;2</span> tak boleh diperlakukan seperti pecahan biasa.</p>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--indigo)">2 &mdash; Operasi Bilangan Bulat</h3>
+        <p>Aturan tanda adalah kunci: sejenis &rarr; positif, beda &rarr; negatif (pada kali dan bagi). Mengurang = menambah lawan. Selalu patuhi urutan operasi: kurung &rarr; pangkat &rarr; kali/bagi &rarr; tambah/kurang.</p>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--teal)">3 &mdash; Bilangan Rasional</h3>
+        <p>Pecahan, desimal, dan persen adalah tiga &ldquo;kostum&rdquo; untuk bilangan yang sama — pilih kostum yang paling memudahkan soal. Samakan penyebut saat menambah, bolak-balikkan saat membagi, dan sederhanakan hasilnya selalu.</p>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--rose)">4 &mdash; Eksponen &amp; Akar</h3>
+        <p>Delapan sifat eksponen merapikan hitungan panjang menjadi satu langkah. Akar adalah pangkat pecahan: sederhanakan lewat kuadrat sempurna (<span class="mv">&radic;50 = 5&radic;2</span>), rasionalkan dengan sekawan, dan gabungkan hanya akar yang sejenis.</p>
+      </div>
+    </div>
+    <div class="strip"><b>Formula kunci untuk diingat:</b>&nbsp;
+      <span class="math">a<sup>m</sup>&middot;a<sup>n</sup> = a<sup>m+n</sup></span> &nbsp;•&nbsp; <span class="math">a<sup>0</sup> = 1</span> &nbsp;•&nbsp; <span class="math">a<sup>&minus;n</sup> = 1/a<sup>n</sup></span> &nbsp;•&nbsp; <span class="math">&radic;(a&middot;b) = &radic;a&middot;&radic;b</span> &nbsp;•&nbsp; <span class="math">&radic;50 = 5&radic;2</span> &nbsp;•&nbsp; <span class="math">a/b : c/d = a/b &times; d/c</span>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ SLIDE 15 : REFLEKSI ============ -->
+<section class="slide" data-title="Refleksi">
+  <div class="sscroll"><div class="swrap">
+    <div class="shead">
+      <div class="kicker">Refleksi</div>
+      <h2 class="h-slide">Ceritakan Perjalanan Belajarmu Hari Ini</h2>
+      <div class="accent-bar"></div>
+    </div>
+    <div class="ref-grid">
+      <div>
+        <div class="rq"><span class="rn">1</span><p><b>Materi mana yang paling mudah</b> menurutmu, dan mengapa?</p></div>
+        <div class="rq"><span class="rn">2</span><p><b>Bagian mana yang masih membuatmu ragu</b> — aturan tanda, konversi pecahan&ndash;desimal&ndash;persen, atau sifat eksponen dan akar?</p></div>
+        <div class="rq"><span class="rn">3</span><p><b>Apa satu langkah kecil</b> yang akan kamu lakukan untuk memperkuatnya sebelum pertemuan berikutnya?</p></div>
+        <div class="strip" style="margin-top:10px"><b>Untuk guru:</b>&nbsp;arkan refleksi tiap siswa di tabel kanan sebagai bahan tindak lanjut pertemuan 4.</div>
+      </div>
+      <div class="card">
+        <h3>Peta Penguasaan per Siswa</h3>
+        <p style="margin-bottom:10px">Klik kotak status untuk berganti: <span class="chip-r ok" style="cursor:default">Paham</span> &rarr; <span class="chip-r mid" style="cursor:default">Kurang Paham</span> &rarr; <span class="chip-r low" style="cursor:default">Belum Paham</span></p>
+        <table class="rtab">
+          <thead><tr><th>Siswa</th><th>Bilangan Bulat</th><th>Bilangan Rasional</th><th>Eksponen &amp; Akar</th></tr></thead>
+          <tbody id="refBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ SLIDE 16 : THANK YOU ============ -->
+<section class="slide ty" id="slide-ty" data-title="Thank You">
+  <div>
+    <h1>Thank You for Today!</h1>
+    <p class="tys">Terima kasih sudah berjuang menjawab bergantian, memilih kartu soal, dan tak menyerah pada jawaban yang salah. Fondasi bilangan kalian hari ini lebih kuat dari kemarin. Sampai jumpa di pertemuan 4 — <b>eksponen &amp; logaritma</b> menanti!</p>
+    <div class="ty-stats" id="tyStats"></div>
+  </div>
+</section>
+
+</div><!-- /deck -->
+
+<nav class="navbar">
+  <button class="navbtn" id="btnPrev" onclick="nav(-1)">&larr; Sebelumnya</button>
+  <div class="dots" id="dots"></div>
+  <button class="navbtn primary" id="btnNext" onclick="nav(1)">Berikutnya &rarr;</button>
+</nav>
+<div id="toast"></div>
+<script>
+/* ================== DATA SOAL ================== */
+const LEVELS={'Mudah':'lvl-mudah','Sedang':'lvl-sedang','Sulit':'lvl-sulit','HOTS':'lvl-hots'};
+const fr=(n,d)=>`<span class='fr'><b>${n}</b><i>${d}</i></span>`;
+const rt=s=>`&#8730;<span class='rd'>${s}</span>`;
+
+const DATA={
+l1:{
+ title:"Latihan 1 — Operasi Hitung Bilangan Bulat",
+ desc:"15 soal pilihan ganda: 5 mudah, 5 sedang, 3 sulit, 2 HOTS. Soal dijawab bergantian mengikuti urutan siswa di pojok kanan atas — soal 1 untuk urutan 1, soal 2 untuk urutan 2, dan seterusnya.",
+ qs:[
+ {q:"Hasil dari (−7) + 12 adalah …",o:["−5","5","19","−19"],a:1,lv:"Mudah",
+  e:"Beda tanda → selisih nilai mutlak: 12 − 7 = 5, lalu ikuti tanda bilangan dengan nilai mutlak lebih besar, yaitu 12 (positif). Jadi (−7) + 12 = 5."},
+ {q:"Hasil dari 8 − 15 adalah …",o:["−7","7","23","−23"],a:0,lv:"Mudah",
+  e:"Ubah menjadi penjumlahan: 8 − 15 = 8 + (−15). Beda tanda → selisih: 15 − 8 = 7; hasilnya mengikuti tanda 15 (negatif) → −7."},
+ {q:"Hasil dari (−4) × 6 adalah …",o:["24","10","−10","−24"],a:3,lv:"Mudah",
+  e:"Beda tanda pada perkalian menghasilkan negatif: 4 × 6 = 24 → hasilnya −24."},
+ {q:"Hasil dari (−36) ÷ (−9) adalah …",o:["−4","−5","4","5"],a:2,lv:"Mudah",
+  e:"Negatif ÷ negatif = positif: 36 ÷ 9 = 4. Aturan tanda pembagian sama dengan perkalian."},
+ {q:"Suhu di puncak gunung mula-mula −5 °C. Siang hari suhu naik 12 °C. Suhu sekarang adalah …",o:["7 °C","−7 °C","17 °C","−17 °C"],a:0,lv:"Mudah",
+  e:"Naik berarti ditambah: −5 + 12. Beda tanda → selisih 12 − 5 = 7, ikut tanda 12 (positif) → 7 °C."},
+ {q:"Hasil dari (−3)<sup>2</sup> − (−2)<sup>3</sup> adalah …",o:["1","17","−17","5"],a:1,lv:"Sedang",
+  e:"Kerjakan pangkat dulu: (−3)² = 9 dan (−2)³ = −8. Lalu 9 − (−8) = 9 + 8 = 17."},
+ {q:"Hasil dari −6 + 4 × (−3) adalah …",o:["−6","−30","−18","6"],a:2,lv:"Sedang",
+  e:"Kali/bagi dulu: 4 × (−3) = −12. Baru tambah/kurang: −6 + (−12) = −18."},
+ {q:"Hasil dari 24 ÷ (−4) + (−3) × 2 adalah …",o:["−12","0","−9","12"],a:0,lv:"Sedang",
+  e:"24 ÷ (−4) = −6 dan (−3) × 2 = −6. Lalu −6 + (−6) = −12."},
+ {q:"Hasil dari (−12) ÷ [2 × (−3)] adalah …",o:["−2","18","2","−18"],a:2,lv:"Sedang",
+  e:"Kurung dulu: 2 × (−3) = −6. Lalu (−12) ÷ (−6) = 2 (negatif ÷ negatif = positif)."},
+ {q:"Hasil dari 5 − [−3 − (−8)] adalah …",o:["16","0","−10","10"],a:1,lv:"Sedang",
+  e:"Dalam kurung: −3 − (−8) = −3 + 8 = 5. Lalu 5 − 5 = 0."},
+ {q:"Hasil dari (−2)<sup>3</sup> × (−3)<sup>2</sup> adalah …",o:["72","36","−36","−72"],a:3,lv:"Sulit",
+  e:"(−2)³ = −8 (pangkat ganjil tetap negatif); (−3)² = 9 (pangkat genap jadi positif). Maka (−8) × 9 = −72."},
+ {q:"Jika a = −3 dan b = 4, nilai dari 2a<sup>2</sup> − 3b adalah …",o:["−30","30","−6","6"],a:3,lv:"Sulit",
+  e:"Substitusi: 2(−3)² − 3(4) = 2 × 9 − 12 = 18 − 12 = 6. Hati-hati: (−3)² = 9, bukan −9."},
+ {q:"Hasil dari [(−8) + (−4)] ÷ (−2)<sup>2</sup> adalah …",o:["−3","3","−6","6"],a:0,lv:"Sulit",
+  e:"Kurung: (−8) + (−4) = −12. Pangkat: (−2)² = 4. Bagi: −12 ÷ 4 = −3."},
+ {q:"Hasil dari (−1) + (−1)<sup>2</sup> + (−1)<sup>3</sup> + … + (−1)<sup>2025</sup> adalah …",o:["−1","0","1","2.025"],a:0,lv:"HOTS",
+  e:"(−1) pangkat ganjil = −1, pangkat genap = +1. Dari 1 sampai 2025 ada 1013 suku ganjil (masing-masing −1) dan 1012 suku genap (masing-masing +1). Jumlah = −1013 + 1012 = −1."},
+ {q:"Diketahui x bilangan bulat negatif dengan x<sup>2</sup> < 20. Nilai x terkecil yang memenuhi adalah …",o:["−1","−5","−4","−19"],a:2,lv:"HOTS",
+  e:"x² < 20 berarti −4,47… < x < 4,47…, sehingga x bulat negatif yang memenuhi: −4, −3, −2, −1. Yang terkecil: −4 (cek: (−4)² = 16 < 20, sedangkan (−5)² = 25 > 20)."}
+ ]},
+l2:{
+ title:"Latihan 2 — Bilangan Rasional: Pecahan, Desimal & Persen",
+ desc:"15 soal pilihan ganda tentang konversi dan operasi bilangan rasional — dari bentuk dasar hingga soal cerita HOTS. Tetap dijawab bergantian sesuai urutan siswa.",
+ qs:[
+ {q:`Bentuk desimal dari ${fr(3,8)} adalah …`,o:["0,375","0,83","2,67","3,8"],a:0,lv:"Mudah",
+  e:"3 ÷ 8 = 0,375 (bagi pembilang dengan penyebut)."},
+ {q:"Bentuk paling sederhana dari pecahan 0,6 adalah …",o:[fr(6,10),fr(3,5),fr(2,3),fr(1,6)],a:1,lv:"Mudah",
+  e:"0,6 = 6/10 → sederhanakan dengan FPB 2 → 3/5."},
+ {q:"Bentuk pecahan paling sederhana dari 45% adalah …",o:[fr(4,9),fr(9,10),fr(9,20),fr(1,2)],a:2,lv:"Mudah",
+  e:"45% = 45/100 → sederhanakan dengan FPB 5 → 9/20."},
+ {q:"Bentuk persen dari 0,35 adalah …",o:["3,5%","0,35%","35%","350%"],a:2,lv:"Mudah",
+  e:"Ubah ke persen dengan mengalikan 100: 0,35 × 100% = 35%."},
+ {q:`Hasil dari ${fr(2,5)} + ${fr(1,5)} adalah …`,o:[fr(3,10),fr(2,5),fr(1,1),fr(3,5)],a:3,lv:"Mudah",
+  e:"Penyebut sama, jumlahkan pembilangnya: (2 + 1)/5 = 3/5."},
+ {q:`Pecahan campuran dari ${fr(11,4)} adalah …`,o:[`1${fr(3,4)}`,`2${fr(3,4)}`,`2${fr(1,4)}`,`3${fr(1,4)}`],a:1,lv:"Sedang",
+  e:"11 ÷ 4 = 2 sisa 3 → bagian bulat 2, sisanya 3/4 → 2¾."},
+ {q:`Hasil dari ${fr(2,3)} + ${fr(1,4)} adalah …`,o:[fr(3,7),fr(2,12),fr(11,12),fr(5,6)],a:2,lv:"Sedang",
+  e:"Samakan penyebut dengan KPK(3, 4) = 12: 8/12 + 3/12 = 11/12."},
+ {q:`Hasil dari ${fr(3,4)} − ${fr(2,5)} adalah …`,o:[fr(1,20),fr(7,20),fr(1,5),fr(13,20)],a:1,lv:"Sedang",
+  e:"KPK(4, 5) = 20: 15/20 − 8/20 = 7/20."},
+ {q:`Hasil dari ${fr(2,3)} × ${fr(9,10)} adalah …`,o:[fr(3,5),fr(18,13),fr(5,3),fr(2,5)],a:0,lv:"Sedang",
+  e:"Kalikan langsung: (2 × 9)/(3 × 10) = 18/30, lalu sederhanakan dengan FPB 6 → 3/5."},
+ {q:`Hasil dari ${fr(3,5)} ÷ ${fr(9,10)} adalah …`,o:[fr(27,50),fr(2,3),fr(3,2),fr(1,3)],a:1,lv:"Sedang",
+  e:"Bagi = kali kebalikan: 3/5 × 10/9 = 30/45 → sederhanakan dengan FPB 15 → 2/3."},
+ {q:"Urutan naik (dari terkecil) dari 0,55 ; 3/5 ; 58% ; dan 0,5 adalah …",o:["0,5 ; 0,55 ; 58% ; 3/5","0,55 ; 0,5 ; 3/5 ; 58%","0,5 ; 58% ; 0,55 ; 3/5","3/5 ; 58% ; 0,55 ; 0,5"],a:0,lv:"Sedang",
+  e:"Samakan bentuk ke desimal: 3/5 = 0,6 dan 58% = 0,58. Urutan naik: 0,5 < 0,55 < 0,58 < 0,6 → 0,5 ; 0,55 ; 58% ; 3/5."},
+ {q:`Hasil dari 1${fr(1,2)} + 2${fr(2,3)} adalah …`,o:[`3${fr(5,6)}`,`4${fr(1,6)}`,`4${fr(1,4)}`,`3${fr(1,3)}`],a:1,lv:"Sulit",
+  e:"Ubah ke pecahan biasa: 3/2 + 8/3. KPK 6 → 9/6 + 16/6 = 25/6 = 4⅙."},
+ {q:"Sebuah jaket berharga Rp120.000 dijual dengan diskon 25%. Harga yang harus dibayar adalah …",o:["Rp95.000","Rp85.000","Rp90.000","Rp30.000"],a:2,lv:"Sulit",
+  e:"Diskon = 25% × 120.000 = 30.000. Bayar = 120.000 − 30.000 = Rp90.000."},
+ {q:"Hasil dari (0,5 + 1/4) × 40% adalah …",o:["0,45","0,03","3","0,3"],a:3,lv:"Sulit",
+  e:"0,5 + 0,25 = 0,75; 40% = 0,4. Maka 0,75 × 0,4 = 0,3."},
+ {q:"Nilai dari 1 − 0,777… (angka 7 berulang terus) adalah …",o:[fr(2,9),fr(3,9),fr(1,3),fr(2,7)],a:0,lv:"HOTS",
+  e:"Misal x = 0,777…, maka 10x = 7,777…. 10x − x = 7 → 9x = 7 → x = 7/9. Jadi 1 − x = 1 − 7/9 = 2/9."}
+ ]}
+,l3:{
+ title:"Latihan 3 — Eksponen & Bentuk Akar",
+ desc:"15 soal pilihan ganda seputar sifat eksponen, penyederhanaan bentuk akar, rasionalisasi penyebut, dan operasi hitung akar. Lanjutkan giliran menjawab bergantian!",
+ qs:[
+ {q:"Hasil dari 2<sup>3</sup> × 2<sup>4</sup> adalah …",o:["128","256","64","2.048"],a:0,lv:"Mudah",
+  e:"Sifat 1 (pangkat dijumlah): 2³ × 2⁴ = 2³⁺⁴ = 2⁷ = 128."},
+ {q:"Bentuk sederhana dari a<sup>5</sup> × a<sup>3</sup> adalah …",o:["a¹⁵","a⁸","a²","2a⁸"],a:1,lv:"Mudah",
+  e:"Basis sama dikalikan → pangkat dijumlah: a⁵ × a³ = a⁵⁺³ = a⁸."},
+ {q:"Nilai dari 5<sup>0</sup> + 3<sup>0</sup> adalah …",o:["0","1","2","8"],a:2,lv:"Mudah",
+  e:"Sifat pangkat nol: a⁰ = 1 untuk a ≠ 0. Jadi 1 + 1 = 2."},
+ {q:"Hasil dari √36 + √16 adalah …",o:["10","√52","14","8"],a:0,lv:"Mudah",
+  e:"√36 = 6 dan √16 = 4 → 6 + 4 = 10. (Awas jebakan: √36 + √16 ≠ √52!)"},
+ {q:"Bentuk sederhana dari (x<sup>3</sup>)<sup>2</sup> × x<sup>4</sup> adalah …",o:["x⁹","x¹⁰","x²⁴","x⁵"],a:1,lv:"Sedang",
+  e:"Sifat 3 lalu sifat 1: (x³)² = x⁶ → x⁶ × x⁴ = x⁶⁺⁴ = x¹⁰."},
+ {q:"Nilai dari 2<sup>−3</sup> adalah …",o:["−8","−6",fr(1,8),"6"],a:2,lv:"Sedang",
+  e:"Pangkat negatif = kebalikan: 2⁻³ = 1/2³ = 1/8. Hasilnya tetap positif!"},
+ {q:"Bentuk sederhana dari (2a<sup>2</sup>b)<sup>3</sup> adalah …",o:["6a⁶b³","8a⁵b³","8a⁶b³","2a⁶b³"],a:2,lv:"Sedang",
+  e:"Pangkatkan tiap faktor: 2³ = 8, (a²)³ = a⁶, b³ → 8a⁶b³."},
+ {q:`Bentuk paling sederhana dari ${rt(50)} adalah …`,o:["2√5","5√2","25√2","10√5"],a:1,lv:"Sedang",
+  e:"Ambil faktor kuadrat sempurna terbesar: 50 = 25 × 2 → √50 = √25 × √2 = 5√2."},
+ {q:"Hasil dari 3√5 × 2√10 adalah …",o:["30√5","30√2","5√15","6√15"],a:1,lv:"Sedang",
+  e:"Kalikan koefisien dan radikal: 3 × 2 = 6 dan √5 × √10 = √50 = √(25 × 2) = 5√2 → 6 × 5√2 = 30√2."},
+ {q:`Bentuk rasional dari 6/${rt(3)} adalah …`,o:["2√3","6√3","3√2",fr("√3","2")],a:0,lv:"Sulit",
+  e:"Kalikan √3/√3: 6√3/(√3 × √3) = 6√3/3 = 2√3. Penyebut kini bebas dari akar."},
+ {q:"Hasil dari 4√27 − √75 + √12 adalah …",o:["3√3","6√3","9√3","11√3"],a:2,lv:"Sulit",
+  e:"Sederhanakan dulu: 4√27 = 4 × 3√3 = 12√3; √75 = 5√3; √12 = 2√3. Maka 12√3 − 5√3 + 2√3 = 9√3."},
+ {q:"Nilai dari 27<sup>2/3</sup> adalah …",o:["3","6","9","18"],a:2,lv:"Sulit",
+  e:"27^(2/3) = (27^(1/3))² = (∛27)² = 3² = 9."},
+ {q:`Bentuk rasional dari 4/(${rt(7)} − 3) adalah …`,o:["2(√7 + 3)","−2(√7 − 3)","4(√7 − 3)","−2(√7 + 3)"],a:3,lv:"Sulit",
+  e:"Kalikan sekawan (√7 + 3): 4(√7 + 3)/((√7 − 3)(√7 + 3)) = 4(√7 + 3)/(7 − 9) = 4(√7 + 3)/(−2) = −2(√7 + 3) = −2√7 − 6."},
+ {q:"Jika 2<sup>x</sup> = 3 dan 2<sup>y</sup> = 5, maka nilai dari 2<sup>2x+y</sup> adalah …",o:["30","45","75","11"],a:1,lv:"HOTS",
+  e:"2^(2x+y) = 2^(2x) × 2^y = (2^x)² × 2^y = 3² × 5 = 45."},
+ {q:`Hasil dari ${rt("6 + 4√2")} adalah …`,o:["2 − √2","1 + 2√2","2 + √2","4 + 2√2"],a:2,lv:"HOTS",
+  e:"Cari bentuk yang kuadratnya tepat 6 + 4√2. Coba (2 + √2)² = 4 + 4√2 + 2 = 6 + 4√2 ✓. Jadi √(6 + 4√2) = 2 + √2."}
+ ]},
+kartu:{
+ title:"Kartu Soal — Mix Semua Materi",
+ qs:[
+ {q:"Hasil dari (−5) × 8 + (−4) adalah …",o:["−44","−36","44","36"],a:0,lv:"Mudah",
+  e:"Kali dulu: (−5) × 8 = −40. Lalu −40 + (−4) = −44."},
+ {q:`Bentuk paling sederhana dari ${fr(18,24)} adalah …`,o:[fr(2,3),fr(3,4),fr(5,6),fr(4,5)],a:1,lv:"Mudah",
+  e:"FPB(18, 24) = 6 → (18 ÷ 6)/(24 ÷ 6) = 3/4."},
+ {q:`Hasil dari 0,25 + ${fr(1,2)} − 25% adalah …`,o:["1",fr(1,2),fr(3,4),fr(1,4)],a:1,lv:"Sedang",
+  e:"Samakan ke desimal: 0,25 + 0,50 − 0,25 = 0,50 = 1/2."},
+ {q:`Hasil dari √144 + 3<sup>−1</sup> adalah …`,o:[`12${fr(1,3)}`,"36","12","13"],a:0,lv:"Sedang",
+  e:"√144 = 12 dan 3⁻¹ = 1/3 → 12 + 1/3 = 12⅓ (= 37/3)."},
+ {q:`Bentuk paling sederhana dari ${rt(75)} adalah …`,o:["3√5","5√3","25√3","15√5"],a:1,lv:"Sedang",
+  e:"75 = 25 × 3 → √75 = √25 × √3 = 5√3."},
+ {q:"Hasil dari (2<sup>3</sup>)<sup>2</sup> × 2<sup>−4</sup> adalah …",o:["2","4","8","16"],a:1,lv:"Sedang",
+  e:"(2³)² = 2⁶ (sifat pangkat-pangkat), lalu 2⁶ × 2⁻⁴ = 2⁶⁻⁴ = 2² = 4."},
+ {q:"Urutan naik dari 2/3 ; 0,67 ; dan 66% adalah …",o:["66% ; 2/3 ; 0,67","2/3 ; 66% ; 0,67","0,67 ; 66% ; 2/3","66% ; 0,67 ; 2/3"],a:0,lv:"Sulit",
+  e:"Ubah semua ke desimal: 2/3 = 0,666… dan 66% = 0,66. Urutan naik: 0,66 < 0,666… < 0,67 → 66% ; 2/3 ; 0,67."},
+ {q:`Bentuk rasional paling sederhana dari 5/${rt(5)} adalah …`,o:["5√5","1/√5","√5","√10"],a:2,lv:"Sedang",
+  e:"Kalikan √5/√5: 5√5/(√5 × √5) = 5√5/5 = √5. (Cara lain: 5 = √25 → √25/√5 = √5.)"},
+ {q:"Suhu ruang pendingin mula-mula −3 °C. Setelah dinyalakan, suhu turun 7 °C. Suhu sekarang adalah …",o:["4 °C","−4 °C","−10 °C","10 °C"],a:2,lv:"Mudah",
+  e:"Turun berarti dikurang: −3 − 7 = −10 °C."},
+ {q:"Jika 3<sup>x</sup> = 81, maka nilai dari √x adalah …",o:["2","4","9","16"],a:0,lv:"HOTS",
+  e:"81 = 3⁴ → x = 4. Maka √x = √4 = 2."}
+ ]}
+};
+
+/* ================== STATE & HELPER ================== */
+const $=(s,c)=>(c||document).querySelector(s);
+const $$=(s,c)=>Array.from((c||document).querySelectorAll(s));
+const SLIDES=$$('#deck .slide');
+const TOTAL=SLIDES.length;
+const AVC=['st1','st2','st3'];
+const BARS=['#4f46e5','#0ea5e9','#f59e0b'];
+const state={
+  slide:0,
+  names:['Siswa 1','Siswa 2','Siswa 3'],
+  order:[0,1,2],
+  scores:[{l1:0,l2:0,l3:0,kartu:0},{l1:0,l2:0,l3:0,kartu:0},{l1:0,l2:0,l3:0,kartu:0}],
+  attempts:[0,0,0],
+  refleksi:[[null,null,null],[null,null,null],[null,null,null]]
+};
+const quizState={};
+const card={turn:0,picked:-1,sel:-1,checked:false,solved:Array(10).fill(false)};
+const av=i=>AVC[i]||'st1';
+const initials=n=>{const w=n.trim().split(/\s+/);return ((w[0]||'S')[0]+(w[1]?w[1][0]:'')).toUpperCase()};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2800)}
+
+/* ================== NAVIGASI SLIDE ================== */
+const TITLES=SLIDES.map(s=>s.dataset.title||'');
+function buildDots(){
+  const d=$('#dots');d.innerHTML='';
+  SLIDES.forEach((s,i)=>{const b=document.createElement('button');b.className='dot';b.title=(i+1)+'. '+TITLES[i];b.onclick=()=>goTo(i);d.appendChild(b)});
+}
+function goTo(n){
+  n=Math.max(0,Math.min(TOTAL-1,n));
+  SLIDES[state.slide].classList.remove('active');
+  state.slide=n;
+  SLIDES[n].classList.add('active');
+  $('#slideCounter').textContent=(n+1)+' / '+TOTAL;
+  $('#progFill').style.width=(((n+1)/TOTAL)*100)+'%';
+  $$('#dots .dot').forEach((b,i)=>{b.classList.toggle('on',i===n);b.classList.toggle('seen',i<n)});
+  const sc=$('.sscroll',SLIDES[n]);if(sc)sc.scrollTop=0;
+  $('#btnPrev').disabled=(n===0);
+  $('#btnNext').disabled=(n===TOTAL-1);
+  if(SLIDES[n].id==='slide-hasil')renderResults();
+  if(SLIDES[n].id==='slide-ty')renderTY();
+}
+function nav(d){goTo(state.slide+d)}
+document.addEventListener('keydown',e=>{
+  const t=e.target.tagName;
+  if(t==='INPUT'||t==='TEXTAREA')return;
+  if(e.key==='ArrowRight'||e.key==='PageDown')nav(1);
+  if(e.key==='ArrowLeft'||e.key==='PageUp')nav(-1);
+});
+
+/* ================== NAMA SISWA & URUTAN ================== */
+function startPres(){
+  ['nm1','nm2','nm3'].forEach((id,i)=>{const v=$('#'+id).value.trim();if(v)state.names[i]=v});
+  refreshNames();
+  toast('Selamat datang, '+state.names.join(' • ')+'! Urutan menjawab: '+state.order.map(s=>state.names[s]).join(' → '));
+  goTo(1);
+}
+function refreshNames(){
+  renderChips();
+  Object.keys(quizState).forEach(k=>{const st=quizState[k];if(st&&!st.checked&&$('#q-'+k+'-turn'))renderQuizQ(k)});
+  renderCardUI();
+  if(card.picked>=0)renderCardArena();
+  buildRefleksi();
+}
+function shuffleOrder(){
+  const old=state.order.join('');
+  const o=state.order.slice();
+  do{for(let i=o.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[o[i],o[j]]=[o[j],o[i]]}}while(o.join('')===old);
+  state.order=o;
+  refreshNames();
+  toast('Urutan menjawab baru: '+state.order.map((s,i)=>(i+1)+'. '+state.names[s]).join('  |  '));
+}
+function renderChips(){
+  $('#orderChips').innerHTML=state.order.map((si,pos)=>`<span class='ochip'><span class='pos'>${pos+1}</span><span class='av ${av(si)}'>${initials(state.names[si])}</span>${state.names[si]}</span>`).join('');
+}
+
+/* ================== MESIN KUIS ================== */
+function buildQuiz(key,mountId){
+  const D=DATA[key];
+  $('#'+mountId).innerHTML=`
+   <div class='quiz-head'>
+    <div><h2 class='h-slide'>${D.title}</h2><p class='sub'>${D.desc}</p><div class='accent-bar'></div></div>
+    <div class='quiz-meta'><span class='qcount' id='q-${key}-cnt'></span></div>
+   </div>
+   <div class='quiz-grid' id='q-${key}-grid'>
+    <div>
+     <div class='turn-banner' id='q-${key}-turn'></div>
+     <div class='question-card' id='q-${key}-q'></div>
+     <div class='opts' id='q-${key}-opts'></div>
+     <div class='feedback' id='q-${key}-fb'></div>
+     <div class='exp-panel' id='q-${key}-exp'><div class='et'>Pembahasan</div><div id='q-${key}-expbody'></div></div>
+     <div class='quiz-actions'>
+      <button class='btn btn-primary' id='q-${key}-cek' onclick="quizCheck('${key}')">Cek Jawaban</button>
+      <button class='btn btn-ghost' id='q-${key}-expbtn' onclick="toggleExp('${key}')" style="display:none">Sembunyikan Pembahasan</button>
+      <button class='btn btn-success' id='q-${key}-next' onclick="quizNext('${key}')" style="display:none">Soal Berikutnya →</button>
+     </div>
+    </div>
+    <aside class='score-card'>
+     <h4>Papan Skor Sesi Ini</h4>
+     <div id='q-${key}-scores'></div>
+     <p class='hint'>Soal dijawab <b>bergantian</b> mengikuti urutan di pojok kanan atas. Klik salah satu pilihan, lalu tekan <b>Cek Jawaban</b>. Salah bukan akhir — baca pembahasannya!</p>
+    </aside>
+   </div>
+   <div class='quiz-done' id='q-${key}-done'></div>`;
+  quizState[key]={i:0,sel:-1,checked:false};
+  renderQuizQ(key);
+}
+function renderQuizQ(key){
+  const st=quizState[key],q=DATA[key].qs[st.i],sIdx=state.order[st.i%3];
+  $('#q-'+key+'-cnt').textContent='Soal '+(st.i+1)+' dari '+DATA[key].qs.length;
+  $('#q-'+key+'-turn').innerHTML=`<span class='av ${av(sIdx)}'>${initials(state.names[sIdx])}</span><span>Giliran menjawab: <span class='who'>${state.names[sIdx]}</span></span><span class='pos'>Level: <span class='badge ${LEVELS[q.lv]}'>${q.lv}</span></span>`;
+  $('#q-'+key+'-q').innerHTML=q.q;
+  $('#q-'+key+'-opts').innerHTML=q.o.map((o,n)=>`<button class='opt' id='q-${key}-o${n}' onclick="quizSel('${key}',${n})"><span class='ol'>${'ABCD'[n]}</span><span>${o}</span></button>`).join('');
+  $('#q-'+key+'-fb').className='feedback';$('#q-'+key+'-fb').innerHTML='';
+  $('#q-'+key+'-exp').classList.remove('open');
+  $('#q-'+key+'-expbody').innerHTML=q.e;
+  $('#q-'+key+'-cek').style.display='';$('#q-'+key+'-cek').disabled=true;
+  $('#q-'+key+'-expbtn').style.display='none';
+  $('#q-'+key+'-next').style.display='none';
+  renderQuizScores(key);
+}
+function quizSel(key,n){
+  const st=quizState[key];
+  if(st.checked)return;
+  st.sel=n;
+  $$('#q-'+key+'-opts .opt').forEach((b,i)=>b.classList.toggle('sel',i===n));
+  $('#q-'+key+'-cek').disabled=false;
+}
+function quizCheck(key){
+  const st=quizState[key];
+  if(st.sel<0||st.checked)return;
+  st.checked=true;
+  const q=DATA[key].qs[st.i],sIdx=state.order[st.i%3],ok=st.sel===q.a;
+  if(ok)state.scores[sIdx][key]++;
+  $$('#q-'+key+'-opts .opt').forEach((b,i)=>{b.disabled=true;if(i===q.a)b.classList.add('correct');else if(i===st.sel)b.classList.add('wrong')});
+  const fb=$('#q-'+key+'-fb');
+  if(ok){fb.className='feedback ok';fb.innerHTML='Benar! Hebat, '+state.names[sIdx]+' — +1 poin.'}
+  else{fb.className='feedback no';fb.innerHTML='Kurang tepat. Jawaban yang benar: <b>'+'ABCD'[q.a]+'</b>. Tetap semangat, '+state.names[sIdx]+'!'}
+  $('#q-'+key+'-cek').style.display='none';
+  const eb=$('#q-'+key+'-expbtn');eb.style.display='';eb.textContent='Sembunyikan Pembahasan';
+  $('#q-'+key+'-exp').classList.add('open');
+  const nb=$('#q-'+key+'-next');
+  nb.style.display='';nb.innerHTML=(st.i===DATA[key].qs.length-1)?'Lihat Ringkasan →':'Soal Berikutnya →';
+  renderQuizScores(key);
+}
+function toggleExp(key){
+  const p=$('#q-'+key+'-exp');
+  p.classList.toggle('open');
+  $('#q-'+key+'-expbtn').textContent=p.classList.contains('open')?'Sembunyikan Pembahasan':'Lihat Pembahasan';
+}
+function quizNext(key){
+  const st=quizState[key];
+  if(st.i===DATA[key].qs.length-1){showQuizDone(key);return}
+  st.i++;st.sel=-1;st.checked=false;
+  renderQuizQ(key);
+}
+function renderQuizScores(key){
+  $('#q-'+key+'-scores').innerHTML=state.order.map((si,pos)=>`<div class='srow'><span class='av ${av(si)}'>${initials(state.names[si])}</span><span class='snm'>${state.names[si]}</span><span class='sc'>&#10003; ${state.scores[si][key]}</span></div>`).join('');
+}
+function showQuizDone(key){
+  $('#q-'+key+'-grid').style.display='none';
+  const rows=state.order.map(si=>`<div class='qd-card'><span class='av ${av(si)}'>${initials(state.names[si])}</span><div class='v'>${state.scores[si][key]}/5</div><div class='l'>${state.names[si]}</div></div>`).join('');
+  const tot=state.names.reduce((a,_,i)=>a+state.scores[i][key],0);
+  const msg=tot>=11?'Luar biasa — pemahaman kalian kokoh!':tot>=7?'Bagus! Beberapa bagian perlu diperkuat — baca ulang pembahasannya.':'Tidak apa-apa — justru ini petanya! Catat bagian yang sulit, pelajari pembahasan, dan latih kembali.';
+  const nextLabel=key==='l3'?'Kartu Soal 1–10':'Materi Berikutnya';
+  $('#q-'+key+'-done').innerHTML=`<div class='qd-title'>Latihan selesai!</div><div class='qd-sub'>Total jawaban benar kelas: ${tot} dari ${DATA[key].qs.length} soal.</div><div class='qd-grid'>${rows}</div><p class='qd-sub' style='max-width:600px;margin:0 auto 18px'>${msg}</p><button class='btn btn-primary btn-lg' onclick="goTo(state.slide+1)">Lanjut ke ${nextLabel} →</button>`;
+  $('#q-'+key+'-done').classList.add('show');
+}
+
+/* ================== KARTU SOAL 1-10 ================== */
+function buildCards(){
+  $('#cardsGame').innerHTML=`
+   <div class='quiz-head'>
+    <div><h2 class='h-slide'>Kartu Soal 1–10 — Campuran Semua Materi</h2><p class='sub'>Posisi <b>kiri = urutan 1</b>, <b>tengah = urutan 2</b>, <b>kanan = urutan 3</b>. Pada giliranmu, pilih satu kartu, jawab, lalu tekan <b>Cek Jawaban</b>. Benar → kartu terbuka dan giliran pindah ke siswa berikutnya. Belum benar → kamu boleh menjawab kembali sampai tepat!</p><div class='accent-bar'></div></div>
+   </div>
+   <div class='pods' id='cardPods'></div>
+   <div class='cardgrid' id='cardGrid'></div>
+   <div class='card-arena' id='cardArena' style='display:none'>
+    <div style='display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px'>
+      <span class='badge' id='c-lvl'></span><span class='qcount' id='c-no'></span>
+    </div>
+    <div class='turn-banner' id='c-turn'></div>
+    <div class='question-card' id='c-q'></div>
+    <div class='opts' id='c-opts'></div>
+    <div class='feedback' id='c-fb'></div>
+    <div class='exp-panel' id='c-exp'><div class='et'>Pembahasan</div><div id='c-expbody'></div></div>
+    <div class='quiz-actions'>
+     <button class='btn btn-primary' id='c-cek' onclick='cardCheck()'>Cek Jawaban</button>
+     <button class='btn btn-ghost' id='c-expbtn' onclick='toggleCardExp()' style='display:none'>Sembunyikan Pembahasan</button>
+     <button class='btn btn-success' id='c-retry' onclick='cardRetry()' style='display:none'>Jawab Lagi</button>
+     <button class='btn btn-primary' id='c-go' onclick='cardAfterCorrect()' style='display:none'>Siswa Berikutnya Pilih Kartu →</button>
+    </div>
+   </div>
+   <div class='quiz-done' id='cards-done'></div>
+   <div class='rules'><b>Aturan main:</b> klik kartu pada giliranmu → pilih jawaban → Cek Jawaban. Kartu yang terbuka berwarna hijau dan bernilai 1 poin. Gunakan tombol <b>&#8635; Acak Urutan</b> di pojok kanan atas jika ingin mengacak posisi kiri&ndash;tengah&ndash;kanan. Selesaikan seluruh 10 kartu bersama-sama!</div>`;
+  renderCardUI();
+}
+function renderCardUI(){
+  $('#cardPods').innerHTML=['Kiri','Tengah','Kanan'].map((p,i)=>{
+    const si=state.order[i];
+    return `<div class='pod ${card.turn===i?'now':''}'><div class='pl'>Posisi ${p}</div><div class='pn'><span class='av ${av(si)}'>${initials(state.names[si])}</span>${state.names[si]}</div></div>`;
+  }).join('');
+  $('#cardGrid').innerHTML=DATA.kartu.qs.map((q,i)=>`<button class='qcard ${card.solved[i]?'solved':''} ${card.picked===i?'active':''}' onclick='pickCard(${i})'>${card.solved[i]?'&#10003;':(i+1)}</button>`).join('');
+}
+function cardTurnStudent(){return state.order[card.turn]}
+function pickCard(i){
+  if(card.solved[i])return;
+  if(card.picked>=0){toast('Selesaikan dulu Kartu No. '+(card.picked+1)+' — kamu boleh menjawab kembali sampai benar!');return}
+  card.picked=i;card.sel=-1;card.checked=false;
+  renderCardUI();renderCardArena();
+  const ar=$('#cardArena');
+  ar.style.display='block';
+  ar.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function renderCardArena(){
+  const i=card.picked;
+  if(i<0){$('#cardArena').style.display='none';return}
+  const q=DATA.kartu.qs[i],sIdx=cardTurnStudent();
+  $('#c-lvl').className='badge '+(LEVELS[q.lv]||'');$('#c-lvl').textContent=q.lv;
+  $('#c-no').textContent='Kartu No. '+(i+1);
+  $('#c-turn').innerHTML=`<span class='av ${av(sIdx)}'>${initials(state.names[sIdx])}</span><span>Giliran: <span class='who'>${state.names[sIdx]}</span> — pilih jawaban untuk kartu ini</span>`;
+  $('#c-q').innerHTML=q.q;
+  $('#c-opts').innerHTML=q.o.map((o,n)=>`<button class='opt' id='c-o${n}' onclick='cardSel(${n})'><span class='ol'>${'ABCD'[n]}</span><span>${o}</span></button>`).join('');
+  $('#c-fb').className='feedback';$('#c-fb').innerHTML='';
+  $('#c-exp').classList.remove('open');$('#c-expbody').innerHTML=q.e;
+  $('#c-cek').style.display='';$('#c-cek').disabled=true;
+  $('#c-expbtn').style.display='none';
+  $('#c-retry').style.display='none';
+  $('#c-go').style.display='none';
+}
+function cardSel(n){
+  if(card.checked)return;
+  card.sel=n;
+  $$('#c-opts .opt').forEach((b,i)=>b.classList.toggle('sel',i===n));
+  $('#c-cek').disabled=false;
+}
+function cardCheck(){
+  if(card.sel<0||card.checked)return;
+  card.checked=true;
+  const i=card.picked,q=DATA.kartu.qs[i],sIdx=cardTurnStudent(),ok=card.sel===q.a;
+  state.attempts[sIdx]++;
+  $$('#c-opts .opt').forEach((b,n)=>{b.disabled=true;if(n===q.a)b.classList.add('correct');else if(n===card.sel)b.classList.add('wrong')});
+  const fb=$('#c-fb');
+  if(ok){
+    state.scores[sIdx].kartu++;
+    card.solved[i]=true;
+    fb.className='feedback ok';
+    fb.innerHTML='Benar! Kartu No. '+(i+1)+' berhasil dibuka oleh '+state.names[sIdx]+'.';
+  }else{
+    fb.className='feedback no';
+    fb.innerHTML='Belum tepat, '+state.names[sIdx]+'. Tenang — kamu boleh menjawab kembali sampai menemukan hasil yang tepat!';
+  }
+  $('#c-cek').style.display='none';
+  const eb=$('#c-expbtn');eb.style.display='';eb.textContent='Sembunyikan Pembahasan';
+  $('#c-exp').classList.add('open');
+  if(ok){
+    $('#c-go').style.display='';
+    const left=card.solved.filter(s=>!s).length;
+    $('#c-go').innerHTML=left===0?'Lihat Ringkasan Kartu →':'Siswa Berikutnya Pilih Kartu →';
+    renderCardUI();
+  }else{
+    $('#c-retry').style.display='';
+  }
+}
+function toggleCardExp(){
+  const p=$('#c-exp');
+  p.classList.toggle('open');
+  $('#c-expbtn').textContent=p.classList.contains('open')?'Sembunyikan Pembahasan':'Lihat Pembahasan';
+}
+function cardRetry(){
+  card.checked=false;card.sel=-1;
+  $$('#c-opts .opt').forEach(b=>{b.disabled=false;b.classList.remove('sel','correct','wrong')});
+  $('#c-fb').className='feedback';$('#c-fb').innerHTML='';
+  $('#c-cek').style.display='';$('#c-cek').disabled=true;
+  $('#c-retry').style.display='none';
+  $('#c-expbtn').style.display='none';
+  $('#c-exp').classList.remove('open');
+  toast('Kesempatan lagi, '+state.names[cardTurnStudent()]+' — baca sekali lagi pertanyaannya!');
+}
+function cardAfterCorrect(){
+  const left=card.solved.filter(s=>!s).length;
+  if(left===0){showCardsDone();return}
+  card.turn=(card.turn+1)%3;
+  card.picked=-1;card.sel=-1;card.checked=false;
+  $('#cardArena').style.display='none';
+  renderCardUI();
+  toast('Giliran '+state.names[cardTurnStudent()]+' — silakan pilih kartu!');
+}
+function showCardsDone(){
+  $('#cardArena').style.display='none';
+  const rows=state.order.map(si=>`<div class='qd-card'><span class='av ${av(si)}'>${initials(state.names[si])}</span><div class='v'>${state.scores[si].kartu} poin</div><div class='l'>${state.names[si]} • ${state.attempts[si]} percobaan</div></div>`).join('');
+  $('#cards-done').innerHTML=`<div class='qd-title'>Semua kartu terbuka!</div><div class='qd-sub'>Kerja sama yang luar biasa — 10 kartu selesai diperangi bersama. Berikut rekapnya:</div><div class='qd-grid'>${rows}</div><button class='btn btn-primary btn-lg' onclick="goTo(state.slide+1)">Lihat Hasil Latihan →</button>`;
+  $('#cards-done').classList.add('show');
+  $('#cards-done').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+/* ================== HASIL ================== */
+function renderResults(){
+  const tot=i=>state.scores[i].l1+state.scores[i].l2+state.scores[i].l3+state.scores[i].kartu;
+  const MAXP=25;
+  const rows=state.order.map((si,pos)=>{
+    const t=tot(si),p=Math.round(t/MAXP*100);
+    return `<tr>
+      <td><div class='stcell'><span class='av ${av(si)}'>${initials(state.names[si])}</span>${state.names[si]}<span class='posnum'>urutan #${pos+1}</span></div></td>
+      <td class='num'>${state.scores[si].l1}/5</td>
+      <td class='num'>${state.scores[si].l2}/5</td>
+      <td class='num'>${state.scores[si].l3}/5</td>
+      <td class='num'>${state.scores[si].kartu}/10</td>
+      <td style='min-width:150px'><div class='bar'><i style='width:${p}%;background:${BARS[si]}'></i></div></td>
+      <td class='num total-big'>${t}</td></tr>`;
+  }).join('');
+  const verdict=t=>t>=20?'Luar biasa! Fondasimu kokoh — siap melaju ke eksponen & logaritma.':t>=14?'Bagus! Perkuat bagian yang masih goyah dengan latihan rutin.':t>=8?'Cukup baik. Ulangi pembahasan soal yang salah, lalu coba latihan serupa.':t>0?'Awal yang baik — catat bab yang sulit dan berlatihlah sedikit setiap hari.':'Belum ada poin tercatat — kerjakan latihan dan kartu soal terlebih dahulu.';
+  $('#resultBox').innerHTML=`<table class='res'>
+   <thead><tr><th>Siswa</th><th>Latihan 1</th><th>Latihan 2</th><th>Latihan 3</th><th>Kartu Soal</th><th>Proporsi Poin</th><th>Total</th></tr></thead>
+   <tbody>${rows}</tbody></table>
+   <div class='verdicts'>${state.order.map(si=>`<div class='verdict'><div class='vt'><span class='av ${av(si)}' style='width:24px;height:24px;font-size:10.5px;border-radius:7px;display:inline-grid;place-items:center;color:#fff'>${initials(state.names[si])}</span>${state.names[si]} — ${tot(si)} poin</div><p>${verdict(tot(si))}</p></div>`).join('')}</div>`;
+}
+
+/* ================== REFLEKSI ================== */
+const RSTAT=['Paham','Kurang Paham','Belum Paham'];
+const RCLS=['ok','mid','low'];
+const RTOP=['Bilangan Bulat','Bilangan Rasional','Eksponen & Akar'];
+function buildRefleksi(){
+  $('#refBody').innerHTML=state.order.map((si,pos)=>`<tr>
+    <td><div class='stcell'><span class='av ${av(si)}'>${initials(state.names[si])}</span>${state.names[si]}<span class='posnum'>#${pos+1}</span></div></td>
+    ${RTOP.map((t,ti)=>`<td><button class='chip-r ${state.refleksi[si][ti]!==null?RCLS[state.refleksi[si][ti]]:''}' onclick='cycleRef(${si},${ti})'>${state.refleksi[si][ti]!==null?RSTAT[state.refleksi[si][ti]]:'— pilih —'}</button></td>`).join('')}
+  </tr>`).join('');
+}
+function cycleRef(s,t){state.refleksi[s][t]=(state.refleksi[s][t]+1)%3;buildRefleksi()}
+
+/* ================== THANK YOU ================== */
+function renderTY(){
+  const tot=state.names.reduce((a,_,i)=>a+state.scores[i].l1+state.scores[i].l2+state.scores[i].l3+state.scores[i].kartu,0);
+  const att=state.attempts.reduce((a,b)=>a+b,0);
+  $('#tyStats').innerHTML=`<div class='tstat'><div class='v'>${tot}</div><div class='l'>Total Poin Kelas (maks 55)</div></div><div class='tstat'><div class='v'>${card.solved.filter(Boolean).length}/10</div><div class='l'>Kartu Terbuka</div></div><div class='tstat'><div class='v'>${att}</div><div class='l'>Percobaan Kartu</div></div>`;
+}
+
+/* ================== INISIALISASI ================== */
+buildDots();
+buildQuiz('l1','quiz-l1');
+buildQuiz('l2','quiz-l2');
+buildQuiz('l3','quiz-l3');
+buildCards();
+buildRefleksi();
+renderChips();
+goTo(0);
+['nm1','nm2','nm3'].forEach(id=>$('#'+id).addEventListener('keydown',e=>{if(e.key==='Enter')startPres()}));
+</script>
+</body>
+</html>
