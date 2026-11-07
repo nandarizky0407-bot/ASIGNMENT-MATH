@@ -1,0 +1,3464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan Olimpiade Matematika — Kelas IV SD (Media Interaktif)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif;background:#eef1f9;color:#16204a;line-height:1.55;min-height:100vh}
+button{font-family:inherit;cursor:pointer}
+input{font-family:inherit}
+button:focus-visible{outline:3px solid #fbbf24;outline-offset:2px}
+.screen{display:none}
+.screen.active{display:block}
+.shake{animation:shake .35s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+/* ============ COVER ============ */
+#screen-cover{position:relative;overflow:hidden;background:linear-gradient(140deg,#312e81 0%,#4338ca 45%,#6d28d9 100%);padding:46px 16px 64px;min-height:100vh}
+.cover-deco{position:absolute;inset:0;pointer-events:none}
+.sym{position:absolute;font-family:Georgia,'Times New Roman',serif;color:rgba(255,255,255,.08);font-weight:700;line-height:1;user-select:none}
+.s1{top:6%;left:4%;font-size:110px;transform:rotate(-12deg)}
+.s2{top:11%;right:6%;font-size:92px;transform:rotate(10deg)}
+.s3{bottom:9%;left:8%;font-size:100px;transform:rotate(8deg)}
+.s4{bottom:15%;right:9%;font-size:82px;transform:rotate(-8deg)}
+.s5{top:46%;left:2%;font-size:70px}
+.s6{top:56%;right:3%;font-size:86px;transform:rotate(14deg)}
+.s7{top:2%;left:44%;font-size:60px;transform:rotate(6deg)}
+.s8{bottom:2%;left:46%;font-size:66px;transform:rotate(-6deg)}
+.cover-wrap{position:relative;max-width:1060px;margin:0 auto;z-index:1}
+.cover-card{background:#fff;border-radius:24px;box-shadow:0 24px 60px rgba(23,20,80,.35);padding:32px 34px 28px;max-width:640px;margin:0 auto}
+.badge-top{display:inline-block;background:#eef2ff;color:#4338ca;font-weight:700;font-size:12.5px;letter-spacing:.6px;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:14px;border:1px solid #dfe4ff}
+h1{font-size:clamp(26px,4.6vw,38px);line-height:1.15;color:#16204a;letter-spacing:-.5px}
+h1 span{background:linear-gradient(120deg,#4338ca,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#5b6b8c;margin:10px 0 22px;font-size:15px}
+.lbl{display:block;font-weight:600;font-size:13.5px;color:#37406b;margin-bottom:6px}
+#inpNama{width:100%;padding:13px 16px;border:2px solid #dfe4f7;border-radius:14px;font-size:16px;outline:none;transition:border-color .15s, box-shadow .15s}
+#inpNama:focus{border-color:#4338ca;box-shadow:0 0 0 4px rgba(67,56,202,.12)}
+#inpNama.shake{border-color:#dc2626}
+.tutor-box{margin-top:18px;background:#f7f8ff;border:1px dashed #c3cbf5;border-radius:16px;padding:16px 18px}
+.tutor-head{font-weight:700;font-size:14px;color:#3730a3;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{border:1.5px solid #cdd5f6;background:#fff;color:#3b4577;font-weight:600;font-size:13px;padding:7px 13px;border-radius:999px;transition:.15s}
+.chip:hover{border-color:#4338ca;color:#4338ca}
+.chip.active{background:#4338ca;border-color:#4338ca;color:#fff}
+.custom-row{display:flex;align-items:center;gap:10px;font-size:13.5px;color:#5b6b8c;flex-wrap:wrap}
+#inpWaktu{width:96px;padding:9px 12px;border:2px solid #dfe4f7;border-radius:10px;font-size:15px;font-weight:700;color:#16204a;outline:none}
+#inpWaktu:focus{border-color:#4338ca}
+.hint{font-size:12.5px;color:#7a86ad;margin-top:10px;line-height:1.55}
+.err{color:#dc2626;font-size:13.5px;font-weight:600;margin-top:10px}
+.pick-title{color:#fff;font-size:21px;margin:36px 4px 16px;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.25)}
+.grid-bab{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.bab-card{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;background:rgba(255,255,255,.97);border:none;border-radius:18px;padding:18px;box-shadow:0 10px 26px rgba(23,20,80,.18);transition:.18s}
+.bab-card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(23,20,80,.3)}
+.bab-no{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#4338ca,#7c3aed);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:6px}
+.bab-judul{font-weight:700;font-size:15.5px;color:#1c2452}
+.bab-meta{font-size:12.5px;color:#7a86ad}
+.bab-all{outline:3px solid rgba(251,191,36,.55)}
+.bab-all .bab-no{background:linear-gradient(135deg,#f59e0b,#f97316)}
+
+/* ============ QUIZ ============ */
+#screen-quiz{background:#eef1f9;min-height:100vh}
+.quiz-top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid #e3e9f4;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 18px;flex-wrap:wrap}
+.qt-name{font-weight:800;font-size:15px;color:#1c2452}
+.qt-bab{font-size:12.5px;color:#7a86ad}
+.qt-right{display:flex;align-items:center;gap:10px}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:18px;color:#3730a3;background:#eef2ff;border:1.5px solid #dfe4ff;padding:7px 14px;border-radius:12px;min-width:108px;text-align:center;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.timer.danger{color:#b91c1c;background:#fef2f2;border-color:#fecaca;animation:pulse 1s infinite}
+.timer.free{color:#b45309;background:#fffbeb;border-color:#fde68a}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.btn{border:none;border-radius:13px;padding:12px 22px;font-size:15px;font-weight:700;transition:.15s}
+.btn-primary{background:linear-gradient(120deg,#4338ca,#6d28d9);color:#fff;box-shadow:0 8px 20px rgba(67,56,202,.3)}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-ghost{background:#fff;border:1.5px solid #d5dcf3;color:#3b4577}
+.btn-ghost:hover{border-color:#4338ca;color:#4338ca}
+.btn-danger-ghost{background:#fff;border:1.5px solid #fecaca;color:#dc2626;font-weight:700;border-radius:12px;padding:9px 16px;font-size:13.5px}
+.btn-danger-ghost:hover{background:#fef2f2}
+.btn-danger{background:#dc2626;color:#fff;border:none;border-radius:13px;padding:12px 22px;font-weight:700;font-size:15px}
+.progress{height:5px;background:#e3e9f4}
+#qProg{height:100%;width:0;background:linear-gradient(90deg,#4338ca,#a855f7);transition:width .3s}
+.quiz-main{max-width:840px;margin:0 auto;padding:26px 16px 60px}
+.q-card{background:#fff;border-radius:22px;box-shadow:0 14px 40px rgba(23,20,80,.1);padding:26px 28px 28px}
+.q-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.q-num{background:#16204a;color:#fff;font-weight:700;font-size:12.5px;padding:6px 12px;border-radius:999px}
+.q-type{background:#eef2ff;color:#4338ca;font-weight:700;font-size:12px;padding:6px 12px;border-radius:999px;border:1px solid #dfe4ff}
+.q-text{font-size:17px;color:#1c2452;margin-bottom:20px;line-height:1.65}
+.q-text b{color:#111c3a}
+.ans-input{width:100%;padding:14px 16px;border:2px solid #dfe4f7;border-radius:14px;font-size:17px;font-weight:600;outline:none;transition:.15s}
+.ans-input:focus{border-color:#4338ca;box-shadow:0 0 0 4px rgba(67,56,202,.1)}
+.ans-input:disabled{background:#f6f7fb;color:#3b4577}
+.ans-input.shake{border-color:#dc2626}
+.opt-list{display:grid;gap:10px}
+.opt{display:flex;align-items:flex-start;gap:12px;text-align:left;background:#f8f9ff;border:2px solid #e4e8fa;border-radius:14px;padding:13px 15px;font-size:15.5px;color:#24305e;transition:.15s}
+.opt:hover:not(:disabled){border-color:#a5b0f0}
+.opt.picked{border-color:#4338ca;background:#eef2ff}
+.opt.right{border-color:#16a34a;background:#f0fdf4}
+.opt.wrong{border-color:#dc2626;background:#fef2f2}
+.opt:disabled{cursor:default}
+.opt-letter{flex:none;width:28px;height:28px;border-radius:9px;background:#fff;border:1.5px solid #d5dcf3;font-weight:800;font-size:13.5px;display:flex;align-items:center;justify-content:center;color:#4338ca}
+.opt.right .opt-letter{background:#16a34a;border-color:#16a34a;color:#fff}
+.opt.wrong .opt-letter{background:#dc2626;border-color:#dc2626;color:#fff}
+.q-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;align-items:center}
+.warn-inline{width:100%;color:#dc2626;font-size:13.5px;font-weight:600}
+.q-feedback{margin-top:22px;display:none}
+.q-feedback.show{display:block;animation:fadeUp .3s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}}
+.fb-head{font-size:17px;font-weight:800;padding:12px 16px;border-radius:14px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.q-feedback.benar .fb-head{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.q-feedback.salah .fb-head{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.q-feedback.kosong .fb-head{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+.fb-mark{font-size:20px;font-weight:900}
+.fb-kunci,.fb-jawabanmu{margin-top:12px;font-size:14.5px;color:#37406b;background:#f7f8ff;border:1px solid #e4e8fa;border-radius:12px;padding:11px 14px}
+.fb-jawabanmu{background:#fef2f2;border-color:#fecaca;color:#7f1d1d}
+.fb-time{color:#7a86ad;font-weight:600;font-size:13px}
+.fb-timeup{font-size:12.5px;font-weight:700;color:#b45309}
+.fb-bah{margin-top:12px;background:linear-gradient(180deg,#fbfaff,#f5f4ff);border:1px solid #e4e0fa;border-radius:14px;padding:15px 17px}
+.fb-bah-title{font-weight:800;color:#5b21b6;font-size:13px;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}
+.fb-bah-body{font-size:15px;color:#2a3358;line-height:1.7}
+.trans{text-align:center;padding:26px 8px}
+.trans-title{font-size:21px;font-weight:800;color:#1c2452;margin-bottom:16px}
+.trans-stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.ts{padding:8px 16px;border-radius:999px;font-weight:700;font-size:14px}
+.ts.ok{background:#f0fdf4;color:#15803d}
+.ts.bad{background:#fef2f2;color:#dc2626}
+.ts.emp{background:#fffbeb;color:#b45309}
+.trans-next{color:#5b6b8c;font-size:15px}
+
+/* ============ HASIL ============ */
+#screen-result{background:#eef1f9;min-height:100vh;padding:34px 16px 60px}
+.res-wrap{max-width:940px;margin:0 auto}
+.res-hero{background:linear-gradient(135deg,#312e81,#4338ca 55%,#6d28d9);border-radius:24px;color:#fff;padding:28px 30px;box-shadow:0 20px 50px rgba(23,20,80,.3);display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.res-title{font-size:13px;letter-spacing:1px;text-transform:uppercase;opacity:.85;font-weight:700}
+.res-name{font-size:26px;font-weight:800;margin:4px 0 2px}
+.res-sub{opacity:.85;font-size:13.5px}
+.ring{--p:0;width:118px;height:118px;border-radius:50%;background:conic-gradient(#fbbf24 calc(var(--p)*1%),rgba(255,255,255,.18) 0);display:flex;align-items:center;justify-content:center;margin-left:auto;flex:none}
+.ring-in{width:92px;height:92px;border-radius:50%;background:rgba(23,20,80,.55);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-val{font-size:22px;font-weight:800}
+.ring-lbl{font-size:10.5px;opacity:.8;letter-spacing:.5px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:18px 0}
+.stat{background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 8px 22px rgba(23,20,80,.08)}
+.stat .v{font-size:22px;font-weight:800}
+.stat .l{font-size:12px;color:#7a86ad;font-weight:600}
+.stat.ok .v{color:#15803d}
+.stat.bad .v{color:#dc2626}
+.stat.emp .v{color:#b45309}
+.res-table-wrap{background:#fff;border-radius:20px;box-shadow:0 12px 30px rgba(23,20,80,.09);padding:8px 6px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:660px}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#7a86ad;text-align:left;padding:12px 14px;border-bottom:2px solid #eef1f9;white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid #f1f4fb;color:#24305e;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:center;font-variant-numeric:tabular-nums}
+.bab-cell b{display:block;font-size:14.5px;color:#1c2452}
+.bar{height:5px;width:130px;background:#eef1f9;border-radius:99px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#16a34a,#4ade80);border-radius:99px}
+tr.total-row td{background:#f7f8ff;font-weight:800;color:#1c2452;border-top:2px solid #e4e8fa}
+.res-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.res-note{margin-top:14px;font-size:12.5px;color:#7a86ad}
+
+/* ============ MODAL ============ */
+.modal-ov{position:fixed;inset:0;background:rgba(15,20,50,.55);display:flex;align-items:center;justify-content:center;z-index:99;padding:16px}
+.modal-ov[hidden]{display:none!important}
+.modal{background:#fff;border-radius:20px;max-width:430px;width:100%;padding:26px;box-shadow:0 30px 70px rgba(0,0,0,.35);animation:fadeUp .25s}
+.modal h3{font-size:19px;color:#1c2452;margin-bottom:8px}
+.modal p{font-size:14.5px;color:#5b6b8c;margin-bottom:20px}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+
+@media(max-width:620px){
+  .cover-card{padding:24px 20px}
+  .q-card{padding:20px 16px 22px}
+  .quiz-top{padding:10px 12px}
+  .qt-name{font-size:13.5px}
+  .timer{min-width:88px;font-size:16px;padding:6px 10px}
+  .btn{padding:11px 16px;font-size:14px}
+  .res-hero{flex-direction:column;align-items:flex-start}
+  .ring{margin-left:0}
+}
+@media print{
+  body{background:#fff}
+  #screen-cover,#screen-quiz,.modal-ov,.no-print{display:none!important}
+  #screen-result{display:block!important;padding:0}
+  .res-wrap{max-width:100%}
+  .res-hero,.res-table-wrap{box-shadow:none}
+  .res-hero{border-radius:0}
+  .res-hero,.ring,.stat{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
+
+/* ============ TABEL DATA DI DALAM SOAL ============ */
+.qt{border-collapse:collapse;margin:10px 0 6px;font-size:14.5px;background:#fff}
+.qt th,.qt td{border:1.5px solid #dfe4f7;padding:6px 14px;text-align:center;font-weight:600}
+.qt th{background:#eef2ff;color:#3730a3;font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- ============ LAYAR COVER ============ -->
+<section id="screen-cover" class="screen active">
+  <div class="cover-deco" aria-hidden="true">
+    <span class="sym s1">π</span><span class="sym s2">∑</span><span class="sym s3">√</span>
+    <span class="sym s4">Δ</span><span class="sym s5">∞</span><span class="sym s6">∫</span>
+    <span class="sym s7">≈</span><span class="sym s8">÷</span>
+  </div>
+  <div class="cover-wrap">
+    <div class="cover-card">
+      <span class="badge-top">Persiapan Final Olimpiade • Kelas IV SD (Fase B)</span>
+      <h1>Latihan Olimpiade <span>Matematika</span></h1>
+      <p class="lead">Media latihan interaktif — 11 bab, 220 soal pilihan ganda HOTS, lengkap dengan kunci jawaban, pembahasan, dan timer per soal.</p>
+      <label class="lbl" for="inpNama">Nama Siswa</label>
+      <input id="inpNama" type="text" placeholder="Tulis nama lengkapmu di sini..." maxlength="40" autocomplete="off">
+      <div class="tutor-box">
+        <div class="tutor-head">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.2 1.9"></path></svg>
+          Pengaturan Tutor — Waktu per Soal
+        </div>
+        <div class="preset-row">
+          <button class="chip" data-t="30" type="button">30 dtk</button>
+          <button class="chip" data-t="60" type="button">60 dtk</button>
+          <button class="chip" data-t="90" type="button">90 dtk</button>
+          <button class="chip active" data-t="120" type="button">120 dtk</button>
+          <button class="chip" data-t="180" type="button">180 dtk</button>
+          <button class="chip" data-t="300" type="button">300 dtk</button>
+          <button class="chip" data-t="0" type="button">Tanpa Batas</button>
+        </div>
+        <div class="custom-row">
+          <label for="inpWaktu">Atur sendiri:</label>
+          <input id="inpWaktu" type="number" min="0" max="3600" step="5" value="120" inputmode="numeric">
+          <span>detik per soal</span>
+        </div>
+        <p class="hint">Hitungan mundur berjalan pada setiap soal dan otomatis berhenti saat siswa menekan tombol "Cek Jawaban". Isi 0 untuk berlatih tanpa batas waktu.</p>
+      </div>
+      <div class="err" id="errNama"></div>
+    </div>
+    <h2 class="pick-title">Pilih Bab Latihan</h2>
+    <div class="grid-bab" id="gridBab"></div>
+  </div>
+</section>
+
+<!-- ============ LAYAR LATIHAN ============ -->
+<section id="screen-quiz" class="screen">
+  <header class="quiz-top no-print">
+    <div class="qt-left">
+      <div class="qt-name" id="qName">—</div>
+      <div class="qt-bab" id="qBab">—</div>
+    </div>
+    <div class="qt-right">
+      <div class="timer" id="qTimerBox">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.2 1.9"></path></svg>
+        <span id="qTimer">--:--</span>
+      </div>
+      <button class="btn-danger-ghost" id="btnEnd" type="button">Akhiri Latihan</button>
+    </div>
+  </header>
+  <div class="progress"><div id="qProg"></div></div>
+  <main class="quiz-main">
+    <div class="q-card">
+      <div class="q-meta"><span class="q-num" id="qNum"></span><span class="q-type" id="qType"></span></div>
+      <div class="q-text" id="qText"></div>
+      <div class="q-answer" id="qAnswer"></div>
+      <div class="q-actions" id="qActions"></div>
+      <div class="q-feedback" id="qFeedback"></div>
+    </div>
+  </main>
+</section>
+
+<!-- ============ LAYAR HASIL ============ -->
+<section id="screen-result" class="screen">
+  <div class="res-wrap">
+    <div class="res-hero" id="resHead"></div>
+    <div class="stat-grid">
+      <div class="stat ok"><div class="v" id="stB">0</div><div class="l">Jawaban Benar</div></div>
+      <div class="stat bad"><div class="v" id="stS">0</div><div class="l">Jawaban Salah</div></div>
+      <div class="stat emp"><div class="v" id="stK">0</div><div class="l">Tidak Dijawab</div></div>
+      <div class="stat"><div class="v" id="stT">00:00</div><div class="l">Total Waktu</div></div>
+      <div class="stat"><div class="v" id="stR">00:00</div><div class="l">Rata-rata per Soal</div></div>
+    </div>
+    <div class="res-table-wrap">
+      <table>
+        <thead><tr><th>Bab</th><th class="num">Benar</th><th class="num">Salah</th><th class="num">Tidak Dijawab</th><th class="num">Total Waktu</th><th class="num">Rata-rata / Soal</th></tr></thead>
+        <tbody id="resRows"></tbody>
+      </table>
+    </div>
+    <div class="res-actions no-print">
+      <button class="btn btn-primary" id="btnAgain" type="button">Latihan Lagi</button>
+      <button class="btn btn-ghost" id="btnPrint" type="button">Cetak Hasil</button>
+    </div>
+    <p class="res-note no-print">Gunakan tombol "Cetak Hasil" untuk menyimpan rekap latihan sebagai dokumen laporan.</p>
+  </div>
+</section>
+
+<!-- ============ MODAL AKHIRI ============ -->
+<div class="modal-ov" id="modalEnd" hidden>
+  <div class="modal">
+    <h3>Akhiri latihan sekarang?</h3>
+    <p>Soal yang belum dikerjakan akan dihitung sebagai <b>tidak dijawab</b>, lalu hasil latihan langsung ditampilkan.</p>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" id="mNo" type="button">Lanjutkan Latihan</button>
+      <button class="btn btn-danger" id="mYes" type="button">Ya, Akhiri Latihan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+/* ================== BANK SOAL ================== */
+const BANK=[
+ {
+  "id": "cacah",
+  "no": 1,
+  "judul": "Bilangan Cacah",
+  "topik": "Nilai Tempat & Menyusun Bilangan Sampai Ratusan Ribu",
+  "bentuk": "pg",
+  "questions": [
+   {
+    "q": "Sebuah perpustakaan daerah mencatat jumlah kunjungan pemustaka selama 5 tahun terakhir sebanyak 348.725 orang. Angka 4 pada bilangan tersebut menempati nilai tempat ...",
+    "options": [
+     "Puluh ribuan dengan nilai 40.000",
+     "Ratus ribuan dengan nilai 400.000",
+     "Ribuan dengan nilai 4.000",
+     "Ratusan dengan nilai 400"
+    ],
+    "correct": 0,
+    "kunci": "A. Puluh ribuan dengan nilai 40.000",
+    "bah": "Pada bilangan 348.725: angka 3 = ratus ribuan (300.000), angka 4 = <b>puluh ribuan (40.000)</b>, angka 8 = ribuan (8.000), angka 7 = ratusan (700), angka 2 = puluhan (20), dan angka 5 = satuan (5)."
+   },
+   {
+    "q": "Dina memiliki sebuah kode brankas 6 angka yaitu 782.491. Manakah pernyataan yang benar mengenai selisih nilai angka 8 dan nilai angka 2 pada kode tersebut?",
+    "options": [
+     "78.000",
+     "79.800",
+     "82.000",
+     "6.000"
+    ],
+    "correct": 0,
+    "kunci": "A. 78.000",
+    "bah": "Nilai angka 8 pada posisi puluh ribuan adalah 80.000. Nilai angka 2 pada posisi ribuan adalah 2.000.<br>Selisih = 80.000 − 2.000 = <b>78.000</b>."
+   },
+   {
+    "q": "Dalam sebuah pameran otomotif, harga tiket paket keluarga tertulis: &quot;Tiga ratus enam puluh ribu delapan ratus lima rupiah&quot;. Lambang bilangan yang tepat sesuai penulisan tersebut adalah ...",
+    "options": [
+     "Rp360.850,00",
+     "Rp360.805,00",
+     "Rp306.805,00",
+     "Rp316.850,00"
+    ],
+    "correct": 1,
+    "kunci": "B. Rp360.805,00",
+    "bah": "&quot;Tiga ratus enam puluh ribu&quot; = 360.000 dan &quot;delapan ratus lima&quot; = 805, digabungkan menjadi <b>360.805</b> (Rp360.805,00). Pilihan A bernilai delapan ratus lima puluh, sedangkan C bernilai tiga ratus enam ribu."
+   },
+   {
+    "q": "Sebuah pabrik makanan ringan memproduksi 504.092 kemasan biskuit. Cara membaca lambang bilangan tersebut dengan tepat adalah ...",
+    "options": [
+     "Lima ratus empat ribu sembilan puluh dua",
+     "Lima ratus empat puluh ribu sembilan puluh dua",
+     "Lima puluh empat ribu sembilan ratus dua puluh",
+     "Lima ratus empat ribu sembilan ratus dua"
+    ],
+    "correct": 0,
+    "kunci": "A. Lima ratus empat ribu sembilan puluh dua",
+    "bah": "Pada bilangan 504.092, periode ribuannya adalah 504 (lima ratus empat ribu), ratusannya 0, puluhannya 9, dan satuannya 2 (sembilan puluh dua). Dibaca: <b>&quot;Lima ratus empat ribu sembilan puluh dua&quot;</b>."
+   },
+   {
+    "q": "Perhatikan bentuk dekomposisi bilangan berikut:<br>M = (6 × 100.000) + (0 × 10.000) + (7 × 1.000) + (5 × 100) + (0 × 10) + (9 × 1)<br>Bilangan M yang terbentuk adalah ...",
+    "options": [
+     "670.509",
+     "607.509",
+     "675.009",
+     "607.590"
+    ],
+    "correct": 1,
+    "kunci": "B. 607.509",
+    "bah": "(6 × 100.000) = 600.000; (7 × 1.000) = 7.000; (5 × 100) = 500; (9 × 1) = 9. Total komposisi = 600.000 + 7.000 + 500 + 9 = <b>607.509</b>."
+   },
+   {
+    "q": "Bilangan 849.271 jika didekomposisikan berdasarkan nilai tempatnya secara tepat adalah ...",
+    "options": [
+     "800.000 + 40.000 + 9.000 + 200 + 70 + 1",
+     "80.000 + 40.000 + 9.000 + 200 + 70 + 1",
+     "800.000 + 4.000 + 900 + 20 + 7 + 1",
+     "840.000 + 90.000 + 200 + 70 + 1"
+    ],
+    "correct": 0,
+    "kunci": "A. 800.000 + 40.000 + 9.000 + 200 + 70 + 1",
+    "bah": "8 ratus ribuan (800.000) + 4 puluh ribuan (40.000) + 9 ribuan (9.000) + 2 ratusan (200) + 7 puluhan (70) + 1 satuan (1)."
+   },
+   {
+    "q": "Pak Budi memiliki uang sebesar Rp425.000,00, Bu Siti memiliki uang sebesar Rp428.500,00, dan Pak Joko memiliki uang sebesar Rp419.900,00. Pernyataan perbandingan berikut yang tepat adalah ...",
+    "options": [
+     "Uang Pak Budi lebih banyak daripada uang Bu Siti",
+     "Uang Pak Joko lebih banyak daripada uang Pak Budi",
+     "Uang Bu Siti paling banyak di antara ketiganya",
+     "Uang Pak Joko berada di antara uang Pak Budi dan Bu Siti"
+    ],
+    "correct": 2,
+    "kunci": "C. Uang Bu Siti paling banyak di antara ketiganya",
+    "bah": "Urutan nilai uang: Bu Siti (Rp428.500) &gt; Pak Budi (Rp425.000) &gt; Pak Joko (Rp419.900). Jadi, uang <b>Bu Siti paling banyak</b> di antara ketiganya."
+   },
+   {
+    "q": "Diberikan kartu angka acak: [3], [7], [1], [0], [9], [5]. Semua kartu harus digunakan tepat satu kali untuk membentuk sebuah bilangan ratusan ribu genap terbesar. Bilangan yang terbentuk adalah ...",
+    "options": [
+     "975.310",
+     "975.301",
+     "975.130",
+     "973.510"
+    ],
+    "correct": 0,
+    "kunci": "A. 975.310",
+    "bah": "Agar genap, angka satuannya harus genap. Dari kartu tersebut satu-satunya angka genap adalah 0, sehingga satuan = 0. Agar terbesar, urutkan sisa kartu dari terbesar pada nilai tempat tertinggi: ratus ribuan 9, puluh ribuan 7, ribuan 5, ratusan 3, puluhan 1 → terbentuk <b>975.310</b>."
+   },
+   {
+    "q": "Berikut adalah data perolehan suara pada pemilihan kepala desa di 4 wilayah:<br>• Wilayah A: 125.430 suara<br>• Wilayah B: 125.340 suara<br>• Wilayah C: 125.800 suara<br>• Wilayah D: 125.099 suara<br>Urutan wilayah dari yang memiliki perolehan suara terkecil ke terbesar adalah ...",
+    "options": [
+     "Wilayah D, Wilayah B, Wilayah A, Wilayah C",
+     "Wilayah D, Wilayah A, Wilayah B, Wilayah C",
+     "Wilayah C, Wilayah A, Wilayah B, Wilayah D",
+     "Wilayah B, Wilayah D, Wilayah A, Wilayah C"
+    ],
+    "correct": 0,
+    "kunci": "A. Wilayah D, Wilayah B, Wilayah A, Wilayah C",
+    "bah": "Semua berawalan 125 ribu, bandingkan ratusan dan puluhannya: D (125.<b>099</b>) &lt; B (125.<b>340</b>) &lt; A (125.<b>430</b>) &lt; C (125.<b>800</b>)."
+   },
+   {
+    "q": "Sebuah toko grosir beras mencatat persediaan beras dalam kemasan karung. Nilai angka 6 pada bilangan 763.421 memiliki kelipatan ... kali dibanding nilai angka 6 pada bilangan 126.940.",
+    "options": [
+     "10 kali",
+     "100 kali",
+     "1.000 kali",
+     "60 kali"
+    ],
+    "correct": 0,
+    "kunci": "A. 10 kali",
+    "bah": "Pada 763.421, angka 6 bernilai 60.000 (puluh ribuan). Pada 126.940, angka 6 bernilai 6.000 (ribuan). Perbandingan = 60.000 ÷ 6.000 = <b>10 kali</b>."
+   },
+   {
+    "q": "Aku adalah bilangan cacah genap 6 angka. Angka ratus ribuanku adalah 5. Angka ribuanku adalah dua kali lipat dari angka puluh ribuanku. Jika angka puluh ribuanku adalah 3, angka ratusanku 0, angka puluhanku 4, dan angka satuanku bilangan genap terkecil selain 0, maka aku adalah ...",
+    "options": [
+     "536.042",
+     "563.042",
+     "536.402",
+     "536.044"
+    ],
+    "correct": 0,
+    "kunci": "A. 536.042",
+    "bah": "Ratus ribuan = 5; puluh ribuan = 3; ribuan = 2 × 3 = 6; ratusan = 0; puluhan = 4; satuan = genap terkecil selain 0, yaitu 2. Bilangan yang terbentuk adalah <b>536.042</b>."
+   },
+   {
+    "q": "Panitia donasi bencana alam berhasil mengumpulkan dana sebesar Rp700.000,00 + Rp50.000,00 + Rp8.000,00 + Rp300,00 + Rp20,00. Jika ditulis dalam kalimat, jumlah dana sumbangan tersebut adalah ...",
+    "options": [
+     "Tujuh ratus lima puluh delapan ribu tiga ratus dua puluh rupiah",
+     "Tujuh ratus delapan puluh lima ribu tiga ratus dua rupiah",
+     "Tujuh ratus lima puluh delapan ribu dua ratus tiga puluh rupiah",
+     "Tujuh ratus lima puluh delapan ribu tiga ratus dua rupiah"
+    ],
+    "correct": 0,
+    "kunci": "A. Tujuh ratus lima puluh delapan ribu tiga ratus dua puluh rupiah",
+    "bah": "Total = 700.000 + 50.000 + 8.000 + 300 + 20 = Rp758.320,00, dibaca <b>&quot;Tujuh ratus lima puluh delapan ribu tiga ratus dua puluh rupiah&quot;</b>."
+   },
+   {
+    "q": "Perhatikan perbandingan dua bilangan berikut: 6a4.890 &lt; 634.890. Agar pertidaksamaan tersebut bernilai benar, angka yang dapat menggantikan huruf a adalah ...",
+    "options": [
+     "3, 4, atau 5",
+     "2, 1, atau 0",
+     "Hanya angka 3",
+     "4, 5, atau 6"
+    ],
+    "correct": 1,
+    "kunci": "B. 2, 1, atau 0",
+    "bah": "Kedua bilangan sama pada ribuan (4), ratusan (8), puluhan (9), dan satuan (0). Agar 6a4.890 &lt; 634.890, angka a pada puluh ribuan harus kurang dari 3, yaitu <b>2, 1, atau 0</b>."
+   },
+   {
+    "q": "Arka, Bela, Citra, dan Doni sedang bermain tebak bilangan. Mereka menuliskan bilangan masing-masing di papan:<br>• Arka: 245.890<br>• Bela: 254.980<br>• Citra: 245.980<br>• Doni: 254.890<br>Siapakah yang menuliskan bilangan terbesar kedua?",
+    "options": [
+     "Bela",
+     "Doni",
+     "Citra",
+     "Arka"
+    ],
+    "correct": 1,
+    "kunci": "B. Doni",
+    "bah": "Urutan dari terbesar: 1) Bela (254.980), 2) <b>Doni (254.890)</b>, 3) Citra (245.980), 4) Arka (245.890). Terbesar kedua adalah Doni."
+   },
+   {
+    "q": "Bilangan 418.605 diubah dengan mengganti angka pada tempat puluhan ribu dengan angka 7, serta menukar letak angka ratusan dengan angka satuannya. Bilangan baru yang terbentuk adalah ...",
+    "options": [
+     "478.506",
+     "478.605",
+     "478.065",
+     "418.506"
+    ],
+    "correct": 0,
+    "kunci": "A. 478.506",
+    "bah": "Ganti angka puluhan ribu (1) dengan 7 → 478.605. Tukar letak angka ratusan (6) dengan satuan (5) → ratusan menjadi 5 dan satuan menjadi 6 → terbentuk <b>478.506</b>."
+   },
+   {
+    "q": "Sebuah perusahaan logistik mengirim paket seberat 300 kg dalam bentuk gram, setara dengan 300.000 gram. Jika perusahaan tersebut membagi paket ke beberapa kontainer bernilai tempat: 2 ratus ribuan, 9 puluh ribuan, 9 ribuan, 9 ratusan, 9 puluhan, dan 10 satuan, berapakah total nilai dekomposisi tersebut?",
+    "options": [
+     "299.990",
+     "300.000",
+     "300.010",
+     "299.900"
+    ],
+    "correct": 1,
+    "kunci": "B. 300.000",
+    "bah": "(2 × 100.000) + (9 × 10.000) + (9 × 1.000) + (9 × 100) + (9 × 10) + (10 × 1) = 200.000 + 90.000 + 9.000 + 900 + 90 + 10 = <b>300.000</b>."
+   },
+   {
+    "q": "Manakah di antara pilihan perbandingan bilangan cacah berikut ini yang bernilai SALAH?",
+    "options": [
+     "512.640 &gt; 512.460",
+     "870.315 &lt; 870.351",
+     "643.200 &gt; 643.020",
+     "908.125 &lt; 908.115"
+    ],
+    "correct": 3,
+    "kunci": "D. 908.125 &lt; 908.115",
+    "bah": "Pada pilihan D: 908.125 &lt; 908.115 bernilai SALAH, karena angka puluhan 2 lebih besar daripada 1 (seharusnya 908.125 &gt; 908.115). Pilihan A, B, dan C semuanya benar."
+   },
+   {
+    "q": "Diketahui data hasil panen jagung di empat kabupaten dalam satuan kilogram:<br>• Kabupaten Melati: 356.400 kg<br>• Kabupaten Mawar: 356.090 kg<br>• Kabupaten Cempaka: 356.750 kg<br>• Kabupaten Kenanga: 356.405 kg<br>Jika diurutkan dari hasil panen terbanyak, urutan yang benar adalah ...",
+    "options": [
+     "Cempaka, Kenanga, Melati, Mawar",
+     "Cempaka, Melati, Kenanga, Mawar",
+     "Mawar, Melati, Kenanga, Cempaka",
+     "Kenanga, Cempaka, Melati, Mawar"
+    ],
+    "correct": 0,
+    "kunci": "A. Cempaka, Kenanga, Melati, Mawar",
+    "bah": "Semua berawalan 356 ribu. Urutan ratusannya: Cempaka (750) &gt; Kenanga (405) &gt; Melati (400) &gt; Mawar (090). Jadi urutannya: <b>Cempaka, Kenanga, Melati, Mawar</b>."
+   },
+   {
+    "q": "Suatu bilangan tersusun atas 4 ratus ribuan, 8 ribuan, 3 puluhan, dan 7 satuan. Bentuk penulisan lambang bilangan tersebut dengan benar adalah ...",
+    "options": [
+     "480.037",
+     "408.037",
+     "48.307",
+     "408.370"
+    ],
+    "correct": 1,
+    "kunci": "B. 408.037",
+    "bah": "4 ratus ribuan (400.000) + 0 puluh ribuan (0) + 8 ribuan (8.000) + 0 ratusan (0) + 3 puluhan (30) + 7 satuan (7) = <b>408.037</b>."
+   },
+   {
+    "q": "Bu Wati ingin menyusun nomor antrean pelanggan VIP dari kartu angka [4], [8], [2], [6], [1], [5]. Nomor antrean harus berupa bilangan terkecil yang lebih dari 500.000 dengan semua angka berbeda. Bilangan yang tepat adalah ...",
+    "options": [
+     "512.468",
+     "512.486",
+     "486.521",
+     "521.468"
+    ],
+    "correct": 0,
+    "kunci": "A. 512.468",
+    "bah": "Agar lebih dari 500.000 dan bernilai terkecil, pilih angka ratus ribuan terkecil yang ≥ 5, yaitu 5. Sisa kartu [1, 2, 4, 6, 8] diurutkan menaik: puluh ribuan 1, ribuan 2, ratusan 4, puluhan 6, satuan 8 → terbentuk <b>512.468</b>."
+   }
+  ]
+ },
+ {
+  "id": "operasi",
+  "no": 2,
+  "judul": "Operasi Hitung Bilangan Cacah",
+  "topik": "Operasi Campuran & Pemecahan Masalah",
+  "bentuk": "pg",
+  "questions": [
+   {
+    "q": "Sebuah gudang logistik memiliki stok awal beras sebanyak 245.850 kg. Minggu ini gudang tersebut menerima pasokan baru sebanyak 138.475 kg dan mengirim beras untuk bantuan sosial sebanyak 189.620 kg. Sisa persediaan beras di gudang tersebut saat ini adalah ... kg.",
+    "options": [
+     "194.705",
+     "195.705",
+     "204.605",
+     "294.705"
+    ],
+    "correct": 0,
+    "kunci": "A. 194.705",
+    "bah": "Stok setelah pasokan baru = 245.850 + 138.475 = 384.325 kg.<br>Sisa setelah pengiriman bansos = 384.325 − 189.620 = <b>194.705 kg</b>."
+   },
+   {
+    "q": "Panitia penggalangan dana mencatat perolehan donasi dari tiga donatur utama: Donatur A menyumbang Rp350.000,00, Donatur B menyumbang Rp75.500,00 lebih sedikit dari Donatur A, dan Donatur C menyumbang Rp120.000,00 lebih banyak dari Donatur B. Total dana yang dikumpulkan dari ketiga donatur tersebut adalah ...",
+    "options": [
+     "Rp1.019.000,00",
+     "Rp989.500,00",
+     "Rp1.009.500,00",
+     "Rp874.500,00"
+    ],
+    "correct": 0,
+    "kunci": "A. Rp1.019.000,00",
+    "bah": "Donatur A = Rp350.000,00.<br>Donatur B = Rp350.000 − Rp75.500 = Rp274.500,00.<br>Donatur C = Rp274.500 + Rp120.000 = Rp394.500,00.<br>Total = Rp350.000 + Rp274.500 + Rp394.500 = <b>Rp1.019.000,00</b>."
+   },
+   {
+    "q": "Perhatikan operasi pengurangan bersusun berikut:<br><b>54P.280 − 2Q8.450 = 264.830</b><br>Nilai dari P + Q adalah ...",
+    "options": [
+     "9",
+     "10",
+     "11",
+     "12"
+    ],
+    "correct": 1,
+    "kunci": "B. 10",
+    "bah": "Satuan, puluhan, dan ratusan: 280 − 450 perlu meminjam dari ribuan, hasil 830 (sesuai).<br>Ribuan: (10 + P − 1) − 8 = 4 ⇒ 9 + P − 8 = 4 ⇒ <b>P = 3</b>.<br>Puluh ribuan: (10 + 4 − 1) − Q = 6 ⇒ 13 − Q = 6 ⇒ <b>Q = 7</b>.<br>Ratus ribuan: (5 − 1) − 2 = 2 (sesuai). Jadi P + Q = 3 + 7 = <b>10</b>."
+   },
+   {
+    "q": "Sebuah pabrik percetakan buku memasang target memproduksi 600.000 buku pelajaran. Pada bulan pertama berhasil dicetak 184.650 buku dan pada bulan kedua berhasil dicetak 235.800 buku. Berapa buku lagi yang harus dicetak agar target produksi tercapai?",
+    "options": [
+     "179.550 buku",
+     "180.450 buku",
+     "189.550 buku",
+     "279.550 buku"
+    ],
+    "correct": 0,
+    "kunci": "A. 179.550 buku",
+    "bah": "Buku yang sudah dicetak = 184.650 + 235.800 = 420.450 buku.<br>Sisa untuk mencapai target = 600.000 − 420.450 = <b>179.550 buku</b>."
+   },
+   {
+    "q": "Koperasi sekolah membeli 48 kotak pulpen. Setiap kotak berisi 24 buah pulpen. Seluruh pulpen tersebut akan dibagikan sama rata kepada 16 kelas. Banyak pulpen yang diterima setiap kelas adalah ... buah.",
+    "options": [
+     "68",
+     "72",
+     "76",
+     "84"
+    ],
+    "correct": 1,
+    "kunci": "B. 72",
+    "bah": "Total pulpen = 48 × 24 = 1.152 pulpen.<br>Pulpen per kelas = 1.152 ÷ 16 = <b>72 buah</b>."
+   },
+   {
+    "q": "Sebuah perkebunan jeruk memanen 3.450 buah jeruk setiap hari selama 12 hari berturut-turut. Sebanyak 1.800 buah jeruk ternyata busuk dan dibuang, sedangkan sisanya dikemas ke dalam keranjang yang masing-masing memuat 60 buah. Jumlah keranjang yang dibutuhkan adalah ...",
+    "options": [
+     "650 keranjang",
+     "660 keranjang",
+     "690 keranjang",
+     "710 keranjang"
+    ],
+    "correct": 1,
+    "kunci": "B. 660 keranjang",
+    "bah": "Total panen 12 hari = 3.450 × 12 = 41.400 buah.<br>Jeruk yang layak dikemas = 41.400 − 1.800 = 39.600 buah.<br>Banyak keranjang = 39.600 ÷ 60 = <b>660 keranjang</b>."
+   },
+   {
+    "q": "Hasil dari 425 × 36 ÷ 25 adalah ...",
+    "options": [
+     "580",
+     "612",
+     "624",
+     "648"
+    ],
+    "correct": 1,
+    "kunci": "B. 612",
+    "bah": "Ubah urutan agar mudah: (425 ÷ 25) × 36 = 17 × 36 = <b>612</b>."
+   },
+   {
+    "q": "Di sebuah acara pesta rakyat, panitia menyiapkan 7.200 tusuk sate. Pada siang hari terjual 4.850 tusuk sate. Sore harinya, panitia membuat tambahan sate sebanyak 25 loyang dengan tiap loyang berisi 120 tusuk. Jumlah tusuk sate yang tersedia sekarang adalah ...",
+    "options": [
+     "5.350 tusuk",
+     "5.250 tusuk",
+     "5.450 tusuk",
+     "5.150 tusuk"
+    ],
+    "correct": 0,
+    "kunci": "A. 5.350 tusuk",
+    "bah": "Sisa sate siang hari = 7.200 − 4.850 = 2.350 tusuk.<br>Tambahan sore hari = 25 × 120 = 3.000 tusuk.<br>Total = 2.350 + 3.000 = <b>5.350 tusuk</b>."
+   },
+   {
+    "q": "Hasil pengerjaan operasi hitung campuran: 125.000 − 4.500 × 18 + 36.000 ÷ 12 adalah ...",
+    "options": [
+     "47.000",
+     "45.000",
+     "87.000",
+     "89.000"
+    ],
+    "correct": 0,
+    "kunci": "A. 47.000",
+    "bah": "Kerjakan perkalian dan pembagian terlebih dahulu:<br>4.500 × 18 = 81.000 dan 36.000 ÷ 12 = 3.000.<br>125.000 − 81.000 + 3.000 = 44.000 + 3.000 = <b>47.000</b>."
+   },
+   {
+    "q": "Agar kalimat matematika (3.500 + n) × 15 = 75.000 bernilai benar, bilangan pengganti n yang tepat adalah ...",
+    "options": [
+     "1.500",
+     "2.000",
+     "2.500",
+     "5.000"
+    ],
+    "correct": 0,
+    "kunci": "A. 1.500",
+    "bah": "(3.500 + n) = 75.000 ÷ 15 = 5.000.<br>n = 5.000 − 3.500 = <b>1.500</b>."
+   },
+   {
+    "q": "Suatu toko kelontong memesan 125 karung tepung terigu dengan berat masing-masing 25 kg. Pemilik toko membungkus ulang seluruh tepung ke dalam kantong plastik kecil berukuran 5 kg. Jika tiap kantong kecil dijual seharga Rp45.000,00, total uang hasil penjualan seluruh tepung adalah ...",
+    "options": [
+     "Rp28.125.000,00",
+     "Rp28.500.000,00",
+     "Rp31.250.000,00",
+     "Rp32.500.000,00"
+    ],
+    "correct": 0,
+    "kunci": "A. Rp28.125.000,00",
+    "bah": "Total berat tepung = 125 × 25 = 3.125 kg.<br>Banyak kantong kecil = 3.125 ÷ 5 = 625 kantong.<br>Hasil penjualan = 625 × Rp45.000 = <b>Rp28.125.000,00</b>."
+   },
+   {
+    "q": "Kereta api ekspres memiliki 8 gerbong penumpang. Setiap gerbong memiliki 64 tempat duduk. Dalam perjalanan liburan, semua tempat duduk terisi penuh, kecuali pada 2 gerbong yang masing-masing masih menyisakan 15 kursi kosong. Jumlah penumpang di dalam kereta tersebut adalah ... orang.",
+    "options": [
+     "482",
+     "497",
+     "512",
+     "467"
+    ],
+    "correct": 0,
+    "kunci": "A. 482",
+    "bah": "Total kapasitas = 8 × 64 = 512 kursi.<br>Kursi kosong = 2 × 15 = 30 kursi.<br>Jumlah penumpang = 512 − 30 = <b>482 orang</b>."
+   },
+   {
+    "q": "Perhatikan operasi hitung berikut: 450.000 ÷ (180 − 155) + 6.250 × 4. Nilai akhir dari perhitungan tersebut adalah ...",
+    "options": [
+     "41.000",
+     "43.000",
+     "45.000",
+     "47.000"
+    ],
+    "correct": 1,
+    "kunci": "B. 43.000",
+    "bah": "Kurung: 180 − 155 = 25.<br>Pembagian: 450.000 ÷ 25 = 18.000.<br>Perkalian: 6.250 × 4 = 25.000.<br>Jumlahkan: 18.000 + 25.000 = <b>43.000</b>."
+   },
+   {
+    "q": "Pak Rahmat memiliki kebun mangga. Saat panen raya diperoleh hasil 8.640 buah. Sebanyak 2.400 buah mangga dijual ke pasar lokal, dan sisanya dibagikan sama banyak kepada 32 pedagang buah keliling. Tiap pedagang keliling menerima ... buah mangga.",
+    "options": [
+     "185",
+     "195",
+     "205",
+     "215"
+    ],
+    "correct": 1,
+    "kunci": "B. 195",
+    "bah": "Sisa mangga = 8.640 − 2.400 = 6.240 buah.<br>Bagian tiap pedagang = 6.240 ÷ 32 = <b>195 buah</b>."
+   },
+   {
+    "q": "Suatu perpustakaan keliling memiliki 5 rak buku. Setiap rak memuat 450 buku cerita. Dinas Pendidikan memberikan sumbangan tambahan sebanyak 1.750 buku, kemudian 600 buku yang rusak ditarik dari peredaran. Berapa jumlah buku yang layak baca di perpustakaan tersebut sekarang?",
+    "options": [
+     "3.400 buku",
+     "3.500 buku",
+     "3.600 buku",
+     "3.800 buku"
+    ],
+    "correct": 0,
+    "kunci": "A. 3.400 buku",
+    "bah": "Buku awal = 5 × 450 = 2.250 buku.<br>Ditambah sumbangan = 2.250 + 1.750 = 4.000 buku.<br>Dikurangi buku rusak = 4.000 − 600 = <b>3.400 buku</b>."
+   },
+   {
+    "q": "Jika P = 275 × 18 dan Q = 6.450 ÷ 15, maka nilai dari P − 3Q adalah ...",
+    "options": [
+     "3.660",
+     "3.720",
+     "3.840",
+     "4.120"
+    ],
+    "correct": 0,
+    "kunci": "A. 3.660",
+    "bah": "P = 275 × 18 = 4.950.<br>Q = 6.450 ÷ 15 = 430, sehingga 3Q = 3 × 430 = 1.290.<br>P − 3Q = 4.950 − 1.290 = <b>3.660</b>."
+   },
+   {
+    "q": "Dalam kompetisi cerdas cermat, setiap regu akan dinilai dengan aturan: jawaban benar mendapat nilai +15, jawaban salah bernilai −5, dan tidak menjawab bernilai 0. Dari 40 soal yang diberikan, Regu Cerdas berhasil menjawab 28 soal dengan benar dan 8 soal salah, sedangkan sisanya tidak dijawab. Total nilai yang diperoleh Regu Cerdas adalah ...",
+    "options": [
+     "360",
+     "380",
+     "400",
+     "420"
+    ],
+    "correct": 1,
+    "kunci": "B. 380",
+    "bah": "Nilai benar = 28 × 15 = 420.<br>Nilai salah = 8 × (−5) = −40.<br>Nilai tidak dijawab = (40 − 28 − 8) × 0 = 4 × 0 = 0.<br>Total nilai = 420 − 40 + 0 = <b>380</b>."
+   },
+   {
+    "q": "Ibu membeli 5 karung gula pasir dengan harga Rp185.000,00 per karung dan 8 dus minyak goreng dengan harga Rp145.000,00 per dus. Jika Ibu membayar menggunakan 22 lembar uang seratus ribuan, berapakah uang kembalian yang diterima Ibu?",
+    "options": [
+     "Rp105.000,00",
+     "Rp115.000,00",
+     "Rp125.000,00",
+     "Rp135.000,00"
+    ],
+    "correct": 1,
+    "kunci": "B. Rp115.000,00",
+    "bah": "Harga 5 karung gula = 5 × Rp185.000 = Rp925.000.<br>Harga 8 dus minyak = 8 × Rp145.000 = Rp1.160.000.<br>Total belanja = Rp2.085.000. Uang Ibu = 22 × Rp100.000 = Rp2.200.000.<br>Kembalian = Rp2.200.000 − Rp2.085.000 = <b>Rp115.000,00</b>."
+   },
+   {
+    "q": "Sebuah pabrik garmen mempekerjakan 45 orang penjahit. Setiap penjahit mampu menyelesaikan 18 potong kemeja per hari. Jika dalam 1 minggu penjahit bekerja selama 6 hari kerja, berapa total kemeja yang berhasil diproduksi seluruhnya?",
+    "options": [
+     "4.760 potong",
+     "4.860 potong",
+     "4.940 potong",
+     "5.020 potong"
+    ],
+    "correct": 1,
+    "kunci": "B. 4.860 potong",
+    "bah": "Produksi 1 hari = 45 × 18 = 810 kemeja.<br>Produksi 6 hari = 810 × 6 = <b>4.860 kemeja</b>."
+   },
+   {
+    "q": "Diberikan persamaan: k × (1.250 + 750) ÷ 25 = 1.600. Nilai bilangan cacah k yang memenuhi persamaan tersebut adalah ...",
+    "options": [
+     "18",
+     "20",
+     "24",
+     "25"
+    ],
+    "correct": 1,
+    "kunci": "B. 20",
+    "bah": "Kurung: 1.250 + 750 = 2.000.<br>Persamaan: k × 2.000 ÷ 25 = 1.600 ⇒ k × 80 = 1.600 ⇒ k = 1.600 ÷ 80 = <b>20</b>."
+   }
+  ]
+ },
+ {
+  "id": "kpk",
+  "no": 3,
+  "judul": "KPK dan FPB",
+  "topik": "Kelipatan, Faktor, Faktor Prima, KPK & FPB",
+  "bentuk": "pg",
+  "questions": [
+   {
+    "q": "Diketahui sebuah bilangan dua angka yang merupakan kelipatan dari 6 dan juga kelipatan dari 8. Jika bilangan tersebut berada di antara rentang 60 sampai 80, maka bilangan yang dimaksud adalah ...",
+    "options": [
+     "64",
+     "72",
+     "76",
+     "80"
+    ],
+    "correct": 1,
+    "kunci": "B. 72",
+    "bah": "Kelipatan persekutuan 6 dan 8 dicari melalui KPK(6, 8).<br>6 = 2 × 3 dan 8 = 2<sup>3</sup>, sehingga KPK(6, 8) = 2<sup>3</sup> × 3 = 24.<br>Kelipatan 24: 24, 48, <b>72</b>, 96, ... Bilangan di antara 60 dan 80 adalah <b>72</b>."
+   },
+   {
+    "q": "Semua faktor dari bilangan 42 dicatat oleh Raka. Manakah di antara pernyataan berikut yang benar mengenai faktor-faktor dari 42?",
+    "options": [
+     "Banyaknya faktor dari bilangan 42 adalah 6 buah",
+     "Jumlah semua faktor prima dari 42 adalah 10",
+     "Faktor persekutuan antara 42 dan 18 adalah 1, 2, 3, 6, dan 7",
+     "42 memiliki tepat dua bilangan prima sebagai faktornya"
+    ],
+    "correct": 1,
+    "kunci": "B. Jumlah semua faktor prima dari 42 adalah 10",
+    "bah": "Faktor dari 42: 1, 2, 3, 6, 7, 14, 21, 42 (ada 8 faktor, pernyataan A salah).<br>Faktor prima 42 adalah 2, 3, dan 7. Jumlahnya = 2 + 3 + 7 = <b>10</b> (pernyataan B benar).<br>Faktor persekutuan 42 dan 18 adalah 1, 2, 3, 6 (tanpa 7, pernyataan C salah), dan 42 memiliki 3 faktor prima (pernyataan D salah)."
+   },
+   {
+    "q": "Sebuah teka-teki bilangan berbunyi: &quot;Aku adalah bilangan kelipatan persekutuan dari 4 dan 9. Aku lebih besar dari 100 tetapi lebih kecil dari 120. Siapakah aku?&quot;",
+    "options": [
+     "104",
+     "108",
+     "112",
+     "116"
+    ],
+    "correct": 1,
+    "kunci": "B. 108",
+    "bah": "Karena 4 dan 9 saling prima (FPB = 1), maka KPK(4, 9) = 4 × 9 = 36.<br>Kelipatan 36: 36, 72, <b>108</b>, 144, ... Bilangan di antara 100 dan 120 adalah <b>108</b>."
+   },
+   {
+    "q": "Faktorisasi prima dari bilangan 180 yang ditulis dalam bentuk perkalian bilangan berpangkat adalah ...",
+    "options": [
+     "2<sup>2</sup> × 3 × 5",
+     "2 × 3<sup>2</sup> × 5",
+     "2<sup>2</sup> × 3<sup>2</sup> × 5",
+     "2<sup>3</sup> × 3 × 5"
+    ],
+    "correct": 2,
+    "kunci": "C. 2<sup>2</sup> × 3<sup>2</sup> × 5",
+    "bah": "Pohon faktor 180: 180 ÷ 2 = 90; 90 ÷ 2 = 45; 45 ÷ 3 = 15; 15 ÷ 3 = 5.<br>Faktorisasi prima = 2 × 2 × 3 × 3 × 5 = <b>2<sup>2</sup> × 3<sup>2</sup> × 5</b>."
+   },
+   {
+    "q": "Bilangan M memiliki faktorisasi prima 2<sup>3</sup> × 3 × 7. Jika bilangan N memiliki faktorisasi prima 2<sup>2</sup> × 3<sup>2</sup> × 5, maka faktor persekutuan terbesar (FPB) dari M dan N adalah ...",
+    "options": [
+     "6",
+     "12",
+     "24",
+     "36"
+    ],
+    "correct": 1,
+    "kunci": "B. 12",
+    "bah": "FPB diambil dari faktor prima yang sama dengan pangkat terkecil: 2<sup>2</sup> dan 3<sup>1</sup>.<br>FPB = 2<sup>2</sup> × 3 = 4 × 3 = <b>12</b>."
+   },
+   {
+    "q": "KPK dari tiga bilangan yaitu 24, 36, dan 40 adalah ...",
+    "options": [
+     "180",
+     "240",
+     "360",
+     "720"
+    ],
+    "correct": 2,
+    "kunci": "C. 360",
+    "bah": "24 = 2<sup>3</sup> × 3; 36 = 2<sup>2</sup> × 3<sup>2</sup>; 40 = 2<sup>3</sup> × 5.<br>KPK = seluruh faktor prima dengan pangkat tertinggi = 2<sup>3</sup> × 3<sup>2</sup> × 5 = 8 × 9 × 5 = <b>360</b>."
+   },
+   {
+    "q": "FPB dari bilangan 48, 72, dan 96 adalah ...",
+    "options": [
+     "12",
+     "16",
+     "24",
+     "32"
+    ],
+    "correct": 2,
+    "kunci": "C. 24",
+    "bah": "48 = 2<sup>4</sup> × 3; 72 = 2<sup>3</sup> × 3<sup>2</sup>; 96 = 2<sup>5</sup> × 3.<br>FPB = faktor sama dengan pangkat terkecil = 2<sup>3</sup> × 3 = 8 × 3 = <b>24</b>."
+   },
+   {
+    "q": "Tiga orang penari berlatih di sanggar tari yang sama. Penari A berlatih setiap 4 hari sekali, penari B setiap 6 hari sekali, dan penari C setiap 8 hari sekali. Jika mereka berlatih bersama untuk pertama kalinya pada hari Rabu, pada hari apakah mereka akan berlatih bersama untuk kedua kalinya?",
+    "options": [
+     "Kamis",
+     "Jumat",
+     "Sabtu",
+     "Minggu"
+    ],
+    "correct": 2,
+    "kunci": "C. Sabtu",
+    "bah": "KPK(4, 6, 8): 4 = 2<sup>2</sup>; 6 = 2 × 3; 8 = 2<sup>3</sup> → KPK = 2<sup>3</sup> × 3 = 24 hari lagi.<br>24 ÷ 7 = 3 minggu sisa 3 hari. Rabu + 3 hari = Kamis, Jumat, <b>Sabtu</b>. Jadi mereka berlatih bersama lagi pada hari <b>Sabtu</b>."
+   },
+   {
+    "q": "Bu Rahma memiliki 45 buah apel, 60 buah jeruk, dan 75 buah mangga. Seluruh buah akan dimasukkan ke dalam beberapa kantong bingkisan dengan jumlah dan jenis yang sama banyak untuk setiap kantong tanpa ada buah yang tersisa. Banyaknya buah jeruk di dalam setiap kantong adalah ...",
+    "options": [
+     "3 buah",
+     "4 buah",
+     "5 buah",
+     "15 buah"
+    ],
+    "correct": 1,
+    "kunci": "B. 4 buah",
+    "bah": "Banyak kantong terbanyak = FPB(45, 60, 75).<br>45 = 3<sup>2</sup> × 5; 60 = 2<sup>2</sup> × 3 × 5; 75 = 3 × 5<sup>2</sup> → FPB = 3 × 5 = 15 kantong.<br>Jeruk per kantong = 60 ÷ 15 = <b>4 buah</b>."
+   },
+   {
+    "q": "Di sebuah stasiun, kereta jurusan A berangkat setiap 20 menit sekali, kereta jurusan B berangkat setiap 25 menit sekali, dan kereta jurusan C berangkat setiap 30 menit sekali. Jika ketiga kereta tersebut berangkat bersamaan pada pukul 07.15, pada pukul berapakah ketiga kereta tersebut akan berangkat bersamaan kembali?",
+    "options": [
+     "Pukul 11.15",
+     "Pukul 12.15",
+     "Pukul 12.45",
+     "Pukul 13.15"
+    ],
+    "correct": 1,
+    "kunci": "B. Pukul 12.15",
+    "bah": "20 = 2<sup>2</sup> × 5; 25 = 5<sup>2</sup>; 30 = 2 × 3 × 5.<br>KPK = 2<sup>2</sup> × 3 × 5<sup>2</sup> = 4 × 3 × 25 = 300 menit = 5 jam.<br>07.15 + 5 jam = <b>pukul 12.15</b>."
+   },
+   {
+    "q": "Diketahui bilangan P = 2<sup>a</sup> × 3 dan Q = 2<sup>2</sup> × 3<sup>b</sup>. Jika FPB(P, Q) = 12 dan KPK(P, Q) = 72, maka nilai dari a + b adalah ...",
+    "options": [
+     "3",
+     "4",
+     "5",
+     "6"
+    ],
+    "correct": 2,
+    "kunci": "C. 5",
+    "bah": "FPB = 12 = 2<sup>2</sup> × 3 dan KPK = 72 = 2<sup>3</sup> × 3<sup>2</sup>.<br>Pangkat 2: KPK = 2<sup>3</sup> ⇒ a = 3 (karena max(a, 2) = 3).<br>Pangkat 3: KPK = 3<sup>2</sup> ⇒ b = 2 (karena max(1, b) = 2).<br>Jadi a + b = 3 + 2 = <b>5</b>."
+   },
+   {
+    "q": "Pak Lurah akan membagikan bantuan pangan berupa 84 kg beras dan 56 kaleng susu sarden kepada sejumlah warga yang berhak menerima. Tiap warga mendapatkan bagian beras dan susu sarden yang sama banyak. Berapakah jumlah warga terbanyak yang mungkin menerima bantuan tersebut?",
+    "options": [
+     "14 orang",
+     "24 orang",
+     "28 orang",
+     "42 orang"
+    ],
+    "correct": 2,
+    "kunci": "C. 28 orang",
+    "bah": "Jumlah penerima terbanyak = FPB(84, 56).<br>84 = 2<sup>2</sup> × 3 × 7; 56 = 2<sup>3</sup> × 7 → FPB = 2<sup>2</sup> × 7 = 4 × 7 = <b>28 orang</b>."
+   },
+   {
+    "q": "Lampu hias di taman menyala berkedip secara periodik. Lampu merah menyala setiap 12 detik, lampu hijau setiap 15 detik, dan lampu kuning setiap 20 detik. Dalam kurun waktu 15 menit, berapa kali ketiga lampu tersebut menyala bersama-sama setelah pertama kali menyala bersama di awal?",
+    "options": [
+     "12 kali",
+     "15 kali",
+     "16 kali",
+     "18 kali"
+    ],
+    "correct": 1,
+    "kunci": "B. 15 kali",
+    "bah": "12 = 2<sup>2</sup> × 3; 15 = 3 × 5; 20 = 2<sup>2</sup> × 5.<br>KPK = 2<sup>2</sup> × 3 × 5 = 60 detik = 1 menit sekali.<br>Dalam 15 menit, ketiga lampu menyala bersama sebanyak 15 ÷ 1 = <b>15 kali</b>."
+   },
+   {
+    "q": "Sebuah ruangan berbentuk persegi panjang berukuran panjang 720 cm dan lebar 540 cm akan dipasangi ubin berbentuk bujur sangkar (persegi) berukuran sama tanpa dipotong. Ukuran sisi ubin terbesar yang mungkin digunakan adalah ...",
+    "options": [
+     "90 cm",
+     "120 cm",
+     "180 cm",
+     "240 cm"
+    ],
+    "correct": 2,
+    "kunci": "C. 180 cm",
+    "bah": "Sisi ubin terbesar = FPB(720, 540).<br>720 = 2<sup>4</sup> × 3<sup>2</sup> × 5; 540 = 2<sup>2</sup> × 3<sup>3</sup> × 5.<br>FPB = 2<sup>2</sup> × 3<sup>2</sup> × 5 = 4 × 9 × 5 = <b>180 cm</b>."
+   },
+   {
+    "q": "Dua buah tali pramuka masing-masing memiliki panjang 150 cm dan 225 cm. Kedua tali tersebut akan dipotong menjadi potongan-potongan pendek dengan ukuran panjang yang sama tanpa ada bagian yang tersisa. Banyaknya potongan tali yang dihasilkan secara keseluruhan adalah ...",
+    "options": [
+     "5 potong",
+     "8 potong",
+     "10 potong",
+     "15 potong"
+    ],
+    "correct": 0,
+    "kunci": "A. 5 potong",
+    "bah": "Panjang tiap potongan terbesar = FPB(150, 225).<br>150 = 2 × 3 × 5<sup>2</sup>; 225 = 3<sup>2</sup> × 5<sup>2</sup> → FPB = 3 × 5<sup>2</sup> = 75 cm.<br>Tali 150 cm → 2 potong; tali 225 cm → 3 potong. Total = 2 + 3 = <b>5 potong</b>."
+   },
+   {
+    "q": "Jumlah dua bilangan cacah prima terkecil yang memiliki selisih 2 (bilangan prima kembar) di antara 20 dan 35 adalah ...",
+    "options": [
+     "52",
+     "60",
+     "62",
+     "64"
+    ],
+    "correct": 1,
+    "kunci": "B. 60",
+    "bah": "Bilangan prima antara 20 dan 35: 23, 29, dan 31.<br>Pasangan prima kembar (selisih 2) adalah 29 dan 31.<br>Jumlahnya = 29 + 31 = <b>60</b>."
+   },
+   {
+    "q": "Doni memiliki sejumlah kelereng. Jika kelereng tersebut dimasukkan ke dalam kantong isi 6, selalu bersisa 2. Jika dimasukkan ke dalam kantong isi 8, juga selalu bersisa 2. Jika jumlah kelereng Doni berada di antara 40 dan 60 butir, banyak kelereng Doni seluruhnya adalah ...",
+    "options": [
+     "48 butir",
+     "50 butir",
+     "52 butir",
+     "54 butir"
+    ],
+    "correct": 1,
+    "kunci": "B. 50 butir",
+    "bah": "K = kelipatan KPK(6, 8) + 2. KPK(6, 8) = 24.<br>Kelipatan 24 + 2: 26, 50, 74, ...<br>Yang berada di antara 40 dan 60 adalah <b>50 butir</b>."
+   },
+   {
+    "q": "Diberikan tiga bilangan asli: 30, 45, dan 75. Perbandingan antara nilai KPK dan FPB dari ketiga bilangan tersebut berturut-turut adalah ...",
+    "options": [
+     "15 : 1",
+     "25 : 1",
+     "30 : 1",
+     "45 : 1"
+    ],
+    "correct": 2,
+    "kunci": "C. 30 : 1",
+    "bah": "30 = 2 × 3 × 5; 45 = 3<sup>2</sup> × 5; 75 = 3 × 5<sup>2</sup>.<br>FPB = 3 × 5 = 15. KPK = 2 × 3<sup>2</sup> × 5<sup>2</sup> = 2 × 9 × 25 = 450.<br>Perbandingan KPK : FPB = 450 : 15 = <b>30 : 1</b>."
+   },
+   {
+    "q": "Bu Guru ingin membuat paket alat tulis untuk hadiah siswa berprestasi. Tersedia 72 buku tulis, 48 pensil, dan 36 penghapus. Setiap paket berisi ketiga jenis alat tulis dengan jumlah masing-masing sama rata. Jumlah total barang yang terdapat di dalam satu buah paket adalah ...",
+    "options": [
+     "11 barang",
+     "12 barang",
+     "13 barang",
+     "15 barang"
+    ],
+    "correct": 2,
+    "kunci": "C. 13 barang",
+    "bah": "Banyak paket terbanyak = FPB(72, 48, 36).<br>72 = 2<sup>3</sup> × 3<sup>2</sup>; 48 = 2<sup>4</sup> × 3; 36 = 2<sup>2</sup> × 3<sup>2</sup> → FPB = 2<sup>2</sup> × 3 = 12 paket.<br>Isi per paket: buku 72 ÷ 12 = 6; pensil 48 ÷ 12 = 4; penghapus 36 ÷ 12 = 3.<br>Total = 6 + 4 + 3 = <b>13 barang</b>."
+   },
+   {
+    "q": "Tiga bus antar kota antar provinsi (AKAP) berangkat dari terminal yang sama pada tanggal 12 Maret 2026 pukul 06.00 WIB. Bus Merah kembali ke terminal tiap 12 jam, Bus Biru tiap 18 jam, dan Bus Kuning tiap 24 jam. Pada tanggal dan jam berapakah ketiga bus tersebut akan bertemu bersama kembali di terminal tersebut?",
+    "options": [
+     "14 Maret 2026 pukul 18.00 WIB",
+     "15 Maret 2026 pukul 06.00 WIB",
+     "15 Maret 2026 pukul 12.00 WIB",
+     "16 Maret 2026 pukul 06.00 WIB"
+    ],
+    "correct": 1,
+    "kunci": "B. 15 Maret 2026 pukul 06.00 WIB",
+    "bah": "12 = 2<sup>2</sup> × 3; 18 = 2 × 3<sup>2</sup>; 24 = 2<sup>3</sup> × 3.<br>KPK = 2<sup>3</sup> × 3<sup>2</sup> = 8 × 9 = 72 jam = 3 hari penuh.<br>12 Maret pukul 06.00 + 3 hari = <b>15 Maret 2026 pukul 06.00 WIB</b>."
+   }
+  ]
+ },
+ {
+  "id": "pecahan",
+  "no": 4,
+  "judul": "Pecahan",
+  "topik": "Membandingkan, Operasi Hitung & Pemecahan Masalah",
+  "bentuk": "pg",
+  "questions": [
+   {
+    "q": "Diberikan dua buah pecahan 3/5 dan 5/8. Pernyataan perbandingan berikut yang tepat adalah ...",
+    "options": [
+     "3/5 &gt; 5/8 karena 3 &lt; 5",
+     "3/5 &lt; 5/8 karena 24 &lt; 25 saat disamakan penyebutnya",
+     "3/5 = 5/8 karena selisih pembilang dan penyebut keduanya sama",
+     "3/5 &lt; 5/8 karena penyebut 8 lebih besar dari 5"
+    ],
+    "correct": 1,
+    "kunci": "B. 3/5 &lt; 5/8 karena 24 &lt; 25 saat disamakan penyebutnya",
+    "bah": "Samakan penyebut dengan KPK(5, 8) = 40: 3/5 = 24/40 dan 5/8 = 25/40.<br>Karena 24 &lt; 25, maka 3/5 &lt; 5/8. Pilihan B memberikan alasan matematis yang tepat melalui penyamaan penyebut."
+   },
+   {
+    "q": "Perhatikan empat pecahan berikut: 1/2, 3/4, 2/5, dan 7/10. Urutan pecahan tersebut mulai dari yang terkecil hingga terbesar adalah ...",
+    "options": [
+     "2/5, 1/2, 7/10, 3/4",
+     "1/2, 2/5, 7/10, 3/4",
+     "2/5, 7/10, 1/2, 3/4",
+     "3/4, 7/10, 1/2, 2/5"
+    ],
+    "correct": 0,
+    "kunci": "A. 2/5, 1/2, 7/10, 3/4",
+    "bah": "Samakan semua penyebut ke KPK(2, 4, 5, 10) = 20:<br>1/2 = 10/20; 3/4 = 15/20; 2/5 = 8/20; 7/10 = 14/20.<br>Urutan pembilang dari terkecil: 8, 10, 14, 15, sehingga urutannya <b>2/5, 1/2, 7/10, 3/4</b>."
+   },
+   {
+    "q": "Suatu pecahan berada tepat di tengah-tengah antara 2/3 dan 4/5 pada garis bilangan. Nilai pecahan tersebut adalah ...",
+    "options": [
+     "11/15",
+     "22/30",
+     "11/30",
+     "3/4"
+    ],
+    "correct": 0,
+    "kunci": "A. 11/15",
+    "bah": "Nilai tengah = (2/3 + 4/5) ÷ 2 = (10/15 + 12/15) ÷ 2 = 22/15 ÷ 2 = 22/30 = <b>11/15</b>."
+   },
+   {
+    "q": "Hasil dari penjumlahan pecahan 5/6 + 3/8 dalam bentuk pecahan campuran paling sederhana adalah ...",
+    "options": [
+     "1 1/24",
+     "1 5/24",
+     "1 7/24",
+     "1 11/24"
+    ],
+    "correct": 1,
+    "kunci": "B. 1 5/24",
+    "bah": "KPK(6, 8) = 24.<br>5/6 + 3/8 = 20/24 + 9/24 = 29/24 = <b>1 5/24</b>."
+   },
+   {
+    "q": "Nilai dari 3 1/4 − 1 5/6 adalah ...",
+    "options": [
+     "1 5/12",
+     "1 7/12",
+     "2 5/12",
+     "2 7/12"
+    ],
+    "correct": 0,
+    "kunci": "A. 1 5/12",
+    "bah": "Samakan bagian pecahan dengan penyebut 12:<br>3 1/4 = 3 3/12 = 2 15/12 dan 1 5/6 = 1 10/12.<br>Selisih = 2 15/12 − 1 10/12 = <b>1 5/12</b>."
+   },
+   {
+    "q": "Nilai dari 4/9 × 3/8 jika disederhanakan ke bentuk paling sederhana adalah ...",
+    "options": [
+     "1/6",
+     "1/4",
+     "2/9",
+     "12/72"
+    ],
+    "correct": 0,
+    "kunci": "A. 1/6",
+    "bah": "(4 × 3) / (9 × 8) = 12/72.<br>Sederhanakan dengan FPB(12, 72) = 12 → <b>1/6</b>."
+   },
+   {
+    "q": "Hasil pembagian dari pecahan 5/12 ÷ 15/16 adalah ...",
+    "options": [
+     "4/9",
+     "5/9",
+     "9/4",
+     "3/8"
+    ],
+    "correct": 0,
+    "kunci": "A. 4/9",
+    "bah": "5/12 ÷ 15/16 = 5/12 × 16/15 = (5 × 16) / (12 × 15).<br>Sederhanakan silang: 5/15 = 1/3 dan 16/12 = 4/3 → hasil = (1 × 4) / (3 × 3) = <b>4/9</b>."
+   },
+   {
+    "q": "Hasil pengerjaan operasi hitung campuran: 2/3 + 3/4 × 2/5 adalah ...",
+    "options": [
+     "17/30",
+     "29/30",
+     "1 1/30",
+     "19/20"
+    ],
+    "correct": 1,
+    "kunci": "B. 29/30",
+    "bah": "Dahulukan perkalian: 3/4 × 2/5 = 6/20 = 3/10.<br>Lalu jumlahkan: 2/3 + 3/10 = 20/30 + 9/30 = <b>29/30</b>."
+   },
+   {
+    "q": "Nilai dari (1 1/2 − 3/5) ÷ 9/10 adalah ...",
+    "options": [
+     "3/4",
+     "1",
+     "1 1/5",
+     "1 1/3"
+    ],
+    "correct": 1,
+    "kunci": "B. 1",
+    "bah": "Kurung: 1 1/2 − 3/5 = 3/2 − 3/5 = 15/10 − 6/10 = 9/10.<br>Kemudian bagi: 9/10 ÷ 9/10 = <b>1</b>."
+   },
+   {
+    "q": "Ibu memiliki persediaan minyak goreng 2 1/2 liter. Sebanyak 3/4 liter digunakan untuk menggoreng ikan dan 2/3 liter digunakan untuk membuat tumisan. Sisa minyak goreng Ibu sekarang adalah ... liter.",
+    "options": [
+     "1 1/12",
+     "1 5/12",
+     "1 7/12",
+     "11/12"
+    ],
+    "correct": 0,
+    "kunci": "A. 1 1/12",
+    "bah": "Total minyak terpakai = 3/4 + 2/3 = 9/12 + 8/12 = 17/12 = 1 5/12 liter.<br>Sisa = 2 1/2 − 1 5/12 = 2 6/12 − 1 5/12 = <b>1 1/12 liter</b>."
+   },
+   {
+    "q": "Pak Danu memiliki sebidang tanah pekarangan. Sebanyak 2/5 bagian ditanami pohon pisang, 1/3 bagian ditanami pohon mangga, dan sisanya seluas 160 m<sup>2</sup> dibuat kolam ikan. Luas total seluruh pekarangan Pak Danu adalah ... m<sup>2</sup>.",
+    "options": [
+     "480",
+     "540",
+     "600",
+     "720"
+    ],
+    "correct": 2,
+    "kunci": "C. 600",
+    "bah": "Bagian pisang dan mangga = 2/5 + 1/3 = 6/15 + 5/15 = 11/15 bagian.<br>Sisa untuk kolam = 1 − 11/15 = 4/15 bagian.<br>Jika 4/15 bagian = 160 m<sup>2</sup>, maka luas total = 160 ÷ 4/15 = 160 × 15/4 = <b>600 m<sup>2</sup></b>."
+   },
+   {
+    "q": "Di sebuah toko roti, tersedia 18 kg tepung terigu. Setiap loyang kue bolu memerlukan 3/4 kg tepung terigu. Banyak loyang kue bolu yang dapat dibuat menggunakan seluruh persediaan tepung tersebut adalah ...",
+    "options": [
+     "20 loyang",
+     "24 loyang",
+     "27 loyang",
+     "32 loyang"
+    ],
+    "correct": 1,
+    "kunci": "B. 24 loyang",
+    "bah": "Banyak loyang = 18 ÷ 3/4 = 18 × 4/3 = 6 × 4 = <b>24 loyang</b>."
+   },
+   {
+    "q": "Dita memiliki pita hias sepanjang 4 2/5 meter. Ia memberikan pita tersebut kepada adiknya sepanjang 1 1/2 meter. Sisa pita dipotong menjadi beberapa bagian sama panjang yang masing-masing berukuran 29/50 meter. Banyak potongan pita yang diperoleh Dita adalah ...",
+    "options": [
+     "4 potong",
+     "5 potong",
+     "6 potong",
+     "7 potong"
+    ],
+    "correct": 1,
+    "kunci": "B. 5 potong",
+    "bah": "Sisa pita = 4 2/5 − 1 1/2 = 22/5 − 3/2 = 44/10 − 15/10 = 29/10 meter.<br>Banyak potongan = 29/10 ÷ 29/50 = 29/10 × 50/29 = <b>5 potong</b>."
+   },
+   {
+    "q": "Perhatikan persamaan pecahan berikut: k/7 &lt; 5/9. Nilai bilangan cacah terbesar yang dapat menggantikan k agar pernyataan tersebut benar adalah ...",
+    "options": [
+     "2",
+     "3",
+     "4",
+     "5"
+    ],
+    "correct": 1,
+    "kunci": "B. 3",
+    "bah": "Perkalian silang: 9 × k &lt; 5 × 7 ⇒ 9k &lt; 35.<br>Jika k = 3: 27 &lt; 35 (benar). Jika k = 4: 36 &lt; 35 (salah).<br>Jadi bilangan cacah terbesar pengganti k adalah <b>3</b>."
+   },
+   {
+    "q": "Sebuah ember besar menampung air sebanyak 15 liter. Sebanyak 3/5 dari air tersebut diambil untuk menyiram tanaman bunga. Dari sisa air yang ada di dalam ember, 1/2 bagiannya digunakan untuk mencuci sepeda. Banyak air yang masih tersisa di dalam ember adalah ...",
+    "options": [
+     "2 liter",
+     "3 liter",
+     "4 liter",
+     "6 liter"
+    ],
+    "correct": 1,
+    "kunci": "B. 3 liter",
+    "bah": "Air untuk tanaman = 3/5 × 15 = 9 liter → sisa = 15 − 9 = 6 liter.<br>Air untuk mencuci = 1/2 × 6 = 3 liter.<br>Sisa akhir = 6 − 3 = <b>3 liter</b>."
+   },
+   {
+    "q": "Hasil dari 2 2/3 × 1 1/8 − 5/6 adalah ...",
+    "options": [
+     "1 1/6",
+     "2 1/6",
+     "2 1/3",
+     "2 2/3"
+    ],
+    "correct": 1,
+    "kunci": "B. 2 1/6",
+    "bah": "Dahulukan perkalian: 2 2/3 × 1 1/8 = 8/3 × 9/8 = 72/24 = 3.<br>Kurangkan: 3 − 5/6 = 2 6/6 − 5/6 = <b>2 1/6</b>."
+   },
+   {
+    "q": "Rani dan Sinta memiliki uang saku dengan jumlah sama. Rani membelanjakan 5/8 bagian uang sakunya untuk buku, sedangkan Sinta membelanjakan 7/12 bagian uang sakunya untuk alat tulis. Pernyataan yang benar adalah ...",
+    "options": [
+     "Sisa uang saku Rani lebih banyak daripada sisa uang saku Sinta",
+     "Pengeluaran Sinta lebih besar daripada pengeluaran Rani",
+     "Sisa uang saku Sinta lebih banyak daripada sisa uang saku Rani",
+     "Kedua anak memiliki sisa uang yang sama"
+    ],
+    "correct": 2,
+    "kunci": "C. Sisa uang saku Sinta lebih banyak daripada sisa uang saku Rani",
+    "bah": "Samakan penyebut dengan KPK(8, 12) = 24:<br>Rani belanja = 5/8 = 15/24 bagian; Sinta belanja = 7/12 = 14/24 bagian.<br>Karena Rani belanja lebih banyak (15 &gt; 14), sisa Rani = 9/24 dan sisa Sinta = 10/24. Jadi <b>sisa uang saku Sinta lebih banyak</b> daripada sisa uang saku Rani."
+   },
+   {
+    "q": "Nilai dari 7/8 − 1/4 ÷ 2/3 adalah ...",
+    "options": [
+     "1/2",
+     "3/8",
+     "5/8",
+     "15/16"
+    ],
+    "correct": 0,
+    "kunci": "A. 1/2",
+    "bah": "Dahulukan pembagian: 1/4 ÷ 2/3 = 1/4 × 3/2 = 3/8.<br>Lalu kurangkan: 7/8 − 3/8 = 4/8 = <b>1/2</b>."
+   },
+   {
+    "q": "Sebuah mobil tangki mengangkut 4 4/5 kiloliter bahan bakar. Sebanyak 5/8 dari muatan tangki tersebut disalurkan ke SPBU Melati. Sisa muatan kemudian disalurkan merata ke 3 pangkalan minyak tanah. Banyak bahan bakar yang diterima masing-masing pangkalan adalah ... kiloliter.",
+    "options": [
+     "2/5",
+     "3/5",
+     "4/5",
+     "1 1/5"
+    ],
+    "correct": 1,
+    "kunci": "B. 3/5",
+    "bah": "Total muatan = 4 4/5 = 24/5 kL.<br>Sisa muatan setelah SPBU = 1 − 5/8 = 3/8 bagian → 3/8 × 24/5 = 9/5 kL.<br>Dibagi merata ke 3 pangkalan = 9/5 ÷ 3 = <b>3/5 kL</b>."
+   },
+   {
+    "q": "Diketahui persamaan: (1 1/3 + 5/6) × P = 1 4/9. Nilai pecahan P yang paling sederhana adalah ...",
+    "options": [
+     "2/3",
+     "3/4",
+     "4/5",
+     "5/6"
+    ],
+    "correct": 0,
+    "kunci": "A. 2/3",
+    "bah": "Kurung: 1 1/3 + 5/6 = 4/3 + 5/6 = 8/6 + 5/6 = 13/6.<br>Persamaan: 13/6 × P = 1 4/9 = 13/9.<br>P = 13/9 ÷ 13/6 = 13/9 × 6/13 = 6/9 = <b>2/3</b>."
+   }
+  ]
+ },
+ {
+  "id": "desimal",
+  "no": 5,
+  "judul": "Bilangan Desimal",
+  "topik": "Nilai Tempat, Membandingkan & Operasi Hitung",
+  "bentuk": "pg",
+  "questions": [
+   {
+    "q": "Pada bilangan desimal 47,825, angka 2 menempati nilai tempat ...",
+    "options": [
+     "Persepuluhan dengan nilai 0,2",
+     "Perseratusan dengan nilai 0,02",
+     "Perseribuan dengan nilai 0,002",
+     "Puluhan dengan nilai 20"
+    ],
+    "correct": 1,
+    "kunci": "B. Perseratusan dengan nilai 0,02",
+    "bah": "Pada bilangan 47,825: angka 4 = puluhan (40), angka 7 = satuan (7), angka 8 = persepuluhan (0,8), angka 2 = <b>perseratusan (0,02)</b>, dan angka 5 = perseribuan (0,005)."
+   },
+   {
+    "q": "Diketahui bilangan desimal 135,704. Selisih antara nilai angka 5 dengan nilai angka 4 pada bilangan tersebut adalah ...",
+    "options": [
+     "4,96",
+     "4,996",
+     "4,096",
+     "1,000"
+    ],
+    "correct": 1,
+    "kunci": "B. 4,996",
+    "bah": "Angka 5 menempati tempat satuan bernilai 5. Angka 4 menempati tempat perseribuan bernilai 0,004.<br>Selisih = 5 − 0,004 = <b>4,996</b>."
+   },
+   {
+    "q": "Suatu bilangan tersusun dari 3 puluhan, 6 satuan, 4 persepuluhan, dan 8 perseribuan. Bentuk desimal dari bilangan tersebut adalah ...",
+    "options": [
+     "36,48",
+     "36,048",
+     "36,408",
+     "364,08"
+    ],
+    "correct": 2,
+    "kunci": "C. 36,408",
+    "bah": "(3 × 10) + (6 × 1) + (4 × 0,1) + (0 × 0,01) + (8 × 0,001) = 30 + 6 + 0,4 + 0 + 0,008 = <b>36,408</b>."
+   },
+   {
+    "q": "Bentuk pecahan biasa 7/20 jika diubah ke dalam bentuk desimal adalah ...",
+    "options": [
+     "0,035",
+     "0,35",
+     "0,70",
+     "3,5"
+    ],
+    "correct": 1,
+    "kunci": "B. 0,35",
+    "bah": "Kalikan pembilang dan penyebut dengan 5: 7/20 = 35/100 = <b>0,35</b>."
+   },
+   {
+    "q": "Bentuk desimal 0,64 jika diubah menjadi pecahan biasa paling sederhana adalah ...",
+    "options": [
+     "32/50",
+     "16/25",
+     "8/15",
+     "64/100"
+    ],
+    "correct": 1,
+    "kunci": "B. 16/25",
+    "bah": "0,64 = 64/100. Sederhanakan dengan FPB(64, 100) = 4 → (64 ÷ 4) / (100 ÷ 4) = <b>16/25</b>."
+   },
+   {
+    "q": "Pecahan campuran 2 3/8 senilai dengan bentuk desimal ...",
+    "options": [
+     "2,125",
+     "2,375",
+     "2,625",
+     "2,875"
+    ],
+    "correct": 1,
+    "kunci": "B. 2,375",
+    "bah": "Ubah 3/8 ke desimal dengan mengalikan pembilang dan penyebut dengan 125: 3/8 = 375/1000 = 0,375.<br>Maka 2 3/8 = 2 + 0,375 = <b>2,375</b>."
+   },
+   {
+    "q": "Manakah perbandingan bilangan desimal berikut yang bernilai BENAR?",
+    "options": [
+     "0,6 &lt; 0,08",
+     "3,45 &gt; 3,5",
+     "0,72 &gt; 0,709",
+     "5,018 &gt; 5,1"
+    ],
+    "correct": 2,
+    "kunci": "C. 0,72 &gt; 0,709",
+    "bah": "Bandingkan 0,72 dan 0,709 dengan menyamakan jumlah desimal: 0,720 dibanding 0,709. Karena 720 &gt; 709, pernyataan <b>0,72 &gt; 0,709</b> BENAR.<br>Opsi A salah karena 0,60 &gt; 0,08; Opsi B salah karena 3,45 &lt; 3,50; Opsi D salah karena 5,018 &lt; 5,100."
+   },
+   {
+    "q": "Diberikan empat bilangan desimal: 0,85 ; 0,805 ; 0,8 ; 0,855. Urutan bilangan tersebut mulai dari yang terkecil hingga terbesar adalah ...",
+    "options": [
+     "0,8 ; 0,805 ; 0,85 ; 0,855",
+     "0,805 ; 0,8 ; 0,85 ; 0,855",
+     "0,855 ; 0,85 ; 0,805 ; 0,8",
+     "0,8 ; 0,85 ; 0,805 ; 0,855"
+    ],
+    "correct": 0,
+    "kunci": "A. 0,8 ; 0,805 ; 0,85 ; 0,855",
+    "bah": "Samakan menjadi 3 angka di belakang koma: 0,850 ; 0,805 ; 0,800 ; 0,855.<br>Urutan dari terkecil: 0,800 (0,8) &lt; 0,805 &lt; 0,850 (0,85) &lt; 0,855."
+   },
+   {
+    "q": "Perhatikan pertidaksamaan berikut: 0,45 &lt; N &lt; 3/5. Bilangan desimal yang memenuhi posisi N adalah ...",
+    "options": [
+     "0,42",
+     "0,52",
+     "0,65",
+     "0,75"
+    ],
+    "correct": 1,
+    "kunci": "B. 0,52",
+    "bah": "3/5 = 6/10 = 0,60. Pertidaksamaan: 0,45 &lt; N &lt; 0,60.<br>0,42 (&lt; 0,45); <b>0,52</b> (di antara 0,45 dan 0,60); 0,65 (&gt; 0,60); 0,75 (&gt; 0,60). Jadi N = 0,52."
+   },
+   {
+    "q": "Hasil penjumlahan dari 14,85 + 6,709 adalah ...",
+    "options": [
+     "21,559",
+     "21,595",
+     "20,559",
+     "21,459"
+    ],
+    "correct": 0,
+    "kunci": "A. 21,559",
+    "bah": "Penjumlahan bersusun lurus dengan koma disejajarkan: 14,850 + 6,709 = <b>21,559</b>."
+   },
+   {
+    "q": "Hasil dari 25 − 8,375 adalah ...",
+    "options": [
+     "16,625",
+     "16,725",
+     "17,625",
+     "17,725"
+    ],
+    "correct": 0,
+    "kunci": "A. 16,625",
+    "bah": "Tulis 25 sebagai 25,000: 25,000 − 8,375 = <b>16,625</b>."
+   },
+   {
+    "q": "Hasil perhitungan dari 3,45 × 1,6 adalah ...",
+    "options": [
+     "5,52",
+     "5,62",
+     "55,2",
+     "0,552"
+    ],
+    "correct": 0,
+    "kunci": "A. 5,52",
+    "bah": "Hitung 345 × 16 = 5.520. Jumlah angka di belakang koma: 2 (dari 3,45) + 1 (dari 1,6) = 3 angka.<br>Maka hasilnya 5,520 = <b>5,52</b>."
+   },
+   {
+    "q": "Nilai dari 7,2 ÷ 0,15 adalah ...",
+    "options": [
+     "4,8",
+     "48",
+     "480",
+     "0,48"
+    ],
+    "correct": 1,
+    "kunci": "B. 48",
+    "bah": "Kalikan kedua bilangan dengan 100 untuk menghilangkan koma pembagi:<br>7,2 ÷ 0,15 = 720 ÷ 15 = <b>48</b>."
+   },
+   {
+    "q": "Hasil operasi hitung campuran 12,5 + 4,8 × 2,5 − 6,75 adalah ...",
+    "options": [
+     "17,75",
+     "18,25",
+     "19,75",
+     "36,5"
+    ],
+    "correct": 0,
+    "kunci": "A. 17,75",
+    "bah": "Dahulukan perkalian: 4,8 × 2,5 = 12,0.<br>Kerjakan penjumlahan dan pengurangan dari kiri: 12,5 + 12,0 − 6,75 = 24,5 − 6,75 = <b>17,75</b>."
+   },
+   {
+    "q": "Bu Mirna membeli 3 kantong beras dengan berat masing-masing 4,75 kg dan sebuah melon dengan berat 2,8 kg. Seluruh belanjaan dimasukkan ke dalam keranjang yang memiliki kapasitas maksimal 18 kg. Sisa daya tampung keranjang tersebut adalah ... kg.",
+    "options": [
+     "0,85",
+     "0,95",
+     "1,05",
+     "1,95"
+    ],
+    "correct": 1,
+    "kunci": "B. 0,95",
+    "bah": "Berat 3 kantong beras = 3 × 4,75 = 14,25 kg.<br>Total belanjaan = 14,25 + 2,8 = 17,05 kg.<br>Sisa daya tampung = 18 − 17,05 = <b>0,95 kg</b>."
+   },
+   {
+    "q": "Sebuah botol berisi 2,4 liter sari buah apel. Sari buah tersebut dituangkan sama rata ke dalam 8 gelas kecil. Jika adik meminum 2 gelas sari buah sampai habis, volume sari buah yang diminum adik adalah ... liter.",
+    "options": [
+     "0,3",
+     "0,4",
+     "0,6",
+     "0,8"
+    ],
+    "correct": 2,
+    "kunci": "C. 0,6",
+    "bah": "Isi tiap gelas = 2,4 ÷ 8 = 0,3 liter.<br>Volume 2 gelas = 2 × 0,3 = <b>0,6 liter</b>."
+   },
+   {
+    "q": "Sebuah truk mula-mula membawa muatan pasir seberat 5,4 ton. Di tempat proyek pertama diturunkan 1,85 ton pasir, kemudian di tempat proyek kedua diturunkan lagi 2,175 ton pasir. Sisa pasir yang masih ada di dalam truk adalah ... ton.",
+    "options": [
+     "1,275",
+     "1,375",
+     "1,475",
+     "1,525"
+    ],
+    "correct": 1,
+    "kunci": "B. 1,375",
+    "bah": "Total pasir yang diturunkan = 1,85 + 2,175 = 4,025 ton.<br>Sisa pasir = 5,4 − 4,025 = <b>1,375 ton</b>."
+   },
+   {
+    "q": "Ayah membeli 15 meter kabel listrik. Kabel tersebut dipotong menjadi 8 bagian sama panjang untuk memasang instalasi lampu. Panjang setiap potongan kabel tersebut adalah ... meter.",
+    "options": [
+     "1,75",
+     "1,825",
+     "1,875",
+     "1,95"
+    ],
+    "correct": 2,
+    "kunci": "C. 1,875",
+    "bah": "Panjang potongan = 15 ÷ 8 = 1 7/8 = 1 + 7/8 = 1 + 0,875 = <b>1,875 meter</b>."
+   },
+   {
+    "q": "Diketahui persamaan: (P − 2,75) ÷ 1,5 = 4,2. Nilai bilangan desimal P yang tepat adalah ...",
+    "options": [
+     "8,05",
+     "8,95",
+     "9,05",
+     "9,15"
+    ],
+    "correct": 2,
+    "kunci": "C. 9,05",
+    "bah": "(P − 2,75) = 4,2 × 1,5 = 6,3.<br>P = 6,3 + 2,75 = <b>9,05</b>."
+   },
+   {
+    "q": "Empat pelari mengikuti lomba lari cepat 100 meter dan mencatat waktu sebagai berikut:<br>• Aldi: 13,25 detik<br>• Bagas: 13,09 detik<br>• Candra: 13,3 detik<br>• Dani: 13,15 detik<br>Pelari yang menjadi pemenang tercepat kedua adalah ...",
+    "options": [
+     "Aldi",
+     "Bagas",
+     "Candra",
+     "Dani"
+    ],
+    "correct": 3,
+    "kunci": "D. Dani",
+    "bah": "Dalam lomba lari, pelari dengan waktu paling sedikit adalah yang paling cepat.<br>Urutan dari tercepat: 1) Bagas (13,09), 2) <b>Dani (13,15)</b>, 3) Aldi (13,25), 4) Candra (13,30). Jadi tercepat kedua adalah <b>Dani</b>."
+   }
+  ]
+ },
+ {
+  "id": "persen",
+  "no": 6,
+  "judul": "Persen",
+  "topik": "Konversi, Proporsi Masalah, Kuantitas Objek & Diskon",
+  "bentuk": "pg",
+  "questions": [
+   {
+    "q": "Bentuk pecahan biasa 17/25 jika diubah ke dalam bentuk persen adalah ...",
+    "options": [
+     "34%",
+     "51%",
+     "68%",
+     "85%"
+    ],
+    "correct": 2,
+    "kunci": "C. 68%",
+    "bah": "Samakan penyebut menjadi 100 dengan mengalikan pembilang dan penyebut dengan 4:<br>17/25 = (17 × 4) / (25 × 4) = 68/100 = <b>68%</b>."
+   },
+   {
+    "q": "Bilangan desimal 0,425 jika dinyatakan dalam bentuk persentase adalah ...",
+    "options": [
+     "4,25%",
+     "42,5%",
+     "425%",
+     "0,425%"
+    ],
+    "correct": 1,
+    "kunci": "B. 42,5%",
+    "bah": "Mengubah desimal ke persen dilakukan dengan mengalikan dengan 100%:<br>0,425 × 100% = <b>42,5%</b>."
+   },
+   {
+    "q": "Bentuk persen 76% jika disederhanakan menjadi pecahan biasa paling sederhana adalah ...",
+    "options": [
+     "38/50",
+     "19/25",
+     "19/20",
+     "33/50"
+    ],
+    "correct": 1,
+    "kunci": "B. 19/25",
+    "bah": "76% = 76/100. Sederhanakan dengan FPB(76, 100) = 4:<br>(76 ÷ 4) / (100 ÷ 4) = <b>19/25</b>."
+   },
+   {
+    "q": "Sebuah botol sirup memiliki label persentase kadar gula sebesar 8,5%. Bentuk desimal yang setara dengan persentase tersebut adalah ...",
+    "options": [
+     "0,85",
+     "0,085",
+     "0,0085",
+     "8,50"
+    ],
+    "correct": 1,
+    "kunci": "B. 0,085",
+    "bah": "Persen berarti per seratus: 8,5% = 8,5 ÷ 100. Geser tanda koma dua langkah ke kiri:<br>8,5% = <b>0,085</b>."
+   },
+   {
+    "q": "Di dalam kelas IV SD Harapan Bangsa terdapat 40 siswa. Sebanyak 26 siswa di antaranya adalah perempuan. Persentase siswa laki-laki di kelas tersebut adalah ...",
+    "options": [
+     "35%",
+     "45%",
+     "55%",
+     "65%"
+    ],
+    "correct": 0,
+    "kunci": "A. 35%",
+    "bah": "Banyak siswa laki-laki = 40 − 26 = 14 orang.<br>Persentase = (14 ÷ 40) × 100% = 7/20 × 100% = 7 × 5% = <b>35%</b>."
+   },
+   {
+    "q": "Dalam sebuah ujian matematika yang terdiri atas 50 soal, Farhan berhasil menjawab benar 42 butir soal, menjawab salah 6 butir soal, dan sisanya tidak dijawab. Persentase jawaban Farhan yang benar dari total seluruh soal adalah ...",
+    "options": [
+     "80%",
+     "84%",
+     "86%",
+     "88%"
+    ],
+    "correct": 1,
+    "kunci": "B. 84%",
+    "bah": "Persentase benar = (jumlah benar ÷ total soal) × 100% = (42 ÷ 50) × 100% = 42 × 2% = <b>84%</b>."
+   },
+   {
+    "q": "Sebuah tempat parkir menampung 150 kendaraan. Sebanyak 45 kendaraan di antaranya adalah mobil, sedangkan sisanya sepeda motor. Persentase sepeda motor terhadap seluruh kendaraan yang ada di tempat parkir tersebut adalah ...",
+    "options": [
+     "30%",
+     "60%",
+     "70%",
+     "75%"
+    ],
+    "correct": 2,
+    "kunci": "C. 70%",
+    "bah": "Banyak sepeda motor = 150 − 45 = 105 unit.<br>Persentase = (105 ÷ 150) × 100% = 7/10 × 100% = <b>70%</b>."
+   },
+   {
+    "q": "Seorang peternak memiliki 240 ekor unggas. Sebanyak 35% dari unggas tersebut adalah bebek, sedangkan sisanya ayam. Jumlah ayam yang dimiliki peternak tersebut adalah ... ekor.",
+    "options": [
+     "84",
+     "144",
+     "156",
+     "166"
+    ],
+    "correct": 2,
+    "kunci": "C. 156",
+    "bah": "Persentase ayam = 100% − 35% = 65%.<br>Jumlah ayam = 65% × 240 = 0,65 × 240 = <b>156 ekor</b>."
+   },
+   {
+    "q": "Perpustakaan sekolah mempunyai koleksi 800 buku. Sebanyak 45% berupa buku cerita, 25% buku pengetahuan umum, 18% majalah anak, dan sisanya buku pelajaran. Banyak koleksi buku pelajaran di perpustakaan tersebut adalah ... buku.",
+    "options": [
+     "96",
+     "104",
+     "112",
+     "120"
+    ],
+    "correct": 0,
+    "kunci": "A. 96",
+    "bah": "Persentase buku pelajaran = 100% − (45% + 25% + 18%) = 100% − 88% = 12%.<br>Banyak buku pelajaran = 12% × 800 = 12 × 8 = <b>96 buku</b>."
+   },
+   {
+    "q": "Di sebuah toko swalayan, sepasang sepatu dibanderol dengan label harga Rp250.000,00. Pada saat festival diskon akhir pekan, toko tersebut memberikan diskon sebesar 20%. Besar potongan harga (diskon) yang diperoleh pembeli adalah ...",
+    "options": [
+     "Rp25.000,00",
+     "Rp50.000,00",
+     "Rp75.000,00",
+     "Rp200.000,00"
+    ],
+    "correct": 1,
+    "kunci": "B. Rp50.000,00",
+    "bah": "Besar diskon = 20% × Rp250.000 = 1/5 × Rp250.000 = <b>Rp50.000,00</b>."
+   },
+   {
+    "q": "Sebuah tas ransel sekolah dijual dengan harga Rp180.000,00 dan mendapat potongan harga sebesar 15%. Berapakah uang yang harus dibayarkan pembeli di kasir?",
+    "options": [
+     "Rp153.000,00",
+     "Rp155.000,00",
+     "Rp162.000,00",
+     "Rp165.000,00"
+    ],
+    "correct": 0,
+    "kunci": "A. Rp153.000,00",
+    "bah": "Persentase bayar = 100% − 15% = 85%.<br>Uang yang dibayar = 85% × Rp180.000 = <b>Rp153.000,00</b>.<br>(Atau: diskon = 15% × 180.000 = Rp27.000; bayar = 180.000 − 27.000 = Rp153.000,00)."
+   },
+   {
+    "q": "Toko Buku Mentari memasang promo &quot;Beli Kamus Diskon 25%&quot;. Setelah dipotong diskon, Dimas membayar kamus tersebut ke kasir sebesar Rp60.000,00. Berapakah harga awal kamus tersebut sebelum mendapatkan diskon?",
+    "options": [
+     "Rp75.000,00",
+     "Rp80.000,00",
+     "Rp85.000,00",
+     "Rp90.000,00"
+    ],
+    "correct": 1,
+    "kunci": "B. Rp80.000,00",
+    "bah": "Setelah diskon 25%, persentase harga yang dibayar = 100% − 25% = 75% = 3/4.<br>75% × Harga Awal = Rp60.000.<br>Harga Awal = Rp60.000 × 4/3 = <b>Rp80.000,00</b>."
+   },
+   {
+    "q": "Diberikan empat nilai berikut: P = 3/4, Q = 0,72, R = 78%, dan S = 7/10. Urutan nilai tersebut dari yang terbesar ke terkecil adalah ...",
+    "options": [
+     "R, P, Q, S",
+     "R, Q, P, S",
+     "P, R, Q, S",
+     "R, P, S, Q"
+    ],
+    "correct": 0,
+    "kunci": "A. R, P, Q, S",
+    "bah": "Konversikan semua nilai ke bentuk persen:<br>P = 3/4 = 75%; Q = 0,72 = 72%; R = 78%; S = 7/10 = 70%.<br>Urutan dari terbesar: <b>R (78%) &gt; P (75%) &gt; Q (72%) &gt; S (70%)</b>."
+   },
+   {
+    "q": "Sebuah tangki air berisi 500 liter air. Karena ada kebocoran halus di bagian bawah, volume air berkurang sebanyak 12%. Kemudian pemilik tangki menambahkan air bersih sebanyak 160 liter. Volume air di dalam tangki sekarang adalah ... liter.",
+    "options": [
+     "580",
+     "600",
+     "620",
+     "640"
+    ],
+    "correct": 1,
+    "kunci": "B. 600",
+    "bah": "Volume air yang bocor = 12% × 500 = 60 liter.<br>Sisa air = 500 − 60 = 440 liter.<br>Setelah penambahan = 440 + 160 = <b>600 liter</b>."
+   },
+   {
+    "q": "Bu Salma membeli jaket di Toko Anugerah seharga Rp200.000,00 dengan diskon 30%. Di toko yang sama, ia juga membeli kemeja seharga Rp120.000,00 dengan diskon 10%. Total biaya yang harus dibayar Bu Salma untuk kedua pakaian tersebut adalah ...",
+    "options": [
+     "Rp236.000,00",
+     "Rp248.000,00",
+     "Rp252.000,00",
+     "Rp260.000,00"
+    ],
+    "correct": 1,
+    "kunci": "B. Rp248.000,00",
+    "bah": "Harga jaket setelah diskon 30% = 70% × Rp200.000 = Rp140.000.<br>Harga kemeja setelah diskon 10% = 90% × Rp120.000 = Rp108.000.<br>Total belanja = Rp140.000 + Rp108.000 = <b>Rp248.000,00</b>."
+   },
+   {
+    "q": "Sebuah perkebunan apel memanen 650 kg buah. Setelah dilakukan penyortiran mutu, 8% dari buah apel tersebut tidak lolos uji kualitas dan dipisahkan untuk dijadikan pakan ternak. Berat buah apel segar yang siap dipasarkan ke supermarket adalah ... kg.",
+    "options": [
+     "586",
+     "598",
+     "602",
+     "612"
+    ],
+    "correct": 1,
+    "kunci": "B. 598",
+    "bah": "Persentase apel yang lolos = 100% − 8% = 92%.<br>Berat apel siap pasarkan = 92% × 650 = 0,92 × 650 = <b>598 kg</b>."
+   },
+   {
+    "q": "Dua toko menjual barang yang sama persis: sebuah meja belajar dengan harga banderol Rp400.000,00.<br>• Toko A memberikan diskon langsung sebesar 25%.<br>• Toko B memberikan potongan harga tunai tetap sebesar Rp90.000,00.<br>Pernyataan yang tepat mengenai harga akhir meja tersebut adalah ...",
+    "options": [
+     "Toko A lebih murah Rp10.000,00 daripada Toko B",
+     "Toko B lebih murah Rp10.000,00 daripada Toko A",
+     "Kedua toko memberikan harga akhir yang sama persis",
+     "Toko A lebih murah Rp20.000,00 daripada Toko B"
+    ],
+    "correct": 0,
+    "kunci": "A. Toko A lebih murah Rp10.000,00 daripada Toko B",
+    "bah": "Toko A: diskon = 25% × Rp400.000 = Rp100.000 → harga akhir = Rp300.000.<br>Toko B: potongan Rp90.000 → harga akhir = Rp310.000.<br>Selisih = Rp310.000 − Rp300.000 = Rp10.000. Jadi <b>Toko A lebih murah Rp10.000,00</b> daripada Toko B."
+   },
+   {
+    "q": "Dari seluruh tabungan miliknya, Nabila menggunakan 40% untuk membeli perlengkapan sekolah dan 25% disumbangkan ke panti asuhan. Jika sisa uang tabungan Nabila sekarang adalah Rp105.000,00, maka jumlah tabungan Nabila mula-mula adalah ...",
+    "options": [
+     "Rp280.000,00",
+     "Rp300.000,00",
+     "Rp320.000,00",
+     "Rp350.000,00"
+    ],
+    "correct": 1,
+    "kunci": "B. Rp300.000,00",
+    "bah": "Persentase terpakai = 40% + 25% = 65% → sisa = 100% − 65% = 35%.<br>35% × Tabungan = Rp105.000.<br>Tabungan mula-mula = Rp105.000 × 100/35 = 3.000 × 100 = <b>Rp300.000,00</b>."
+   },
+   {
+    "q": "Hasil dari 60% + 3/5 − 0,45 jika dinyatakan dalam bentuk persen adalah ...",
+    "options": [
+     "65%",
+     "70%",
+     "75%",
+     "80%"
+    ],
+    "correct": 2,
+    "kunci": "C. 75%",
+    "bah": "Ubah seluruh bentuk ke persen:<br>60% = 60%; 3/5 = 60%; 0,45 = 45%.<br>Hasil = 60% + 60% − 45% = 120% − 45% = <b>75%</b>."
+   },
+   {
+    "q": "Pak Arman memperoleh gaji bulanan sebesar Rp3.500.000,00. Sebanyak 60% digunakan untuk kebutuhan pokok rumah tangga, 15% untuk biaya pendidikan anak, 10% untuk ditabung di bank, dan sisanya dimasukkan ke dalam dana darurat. Besar uang yang dialokasikan Pak Arman untuk dana darurat adalah ...",
+    "options": [
+     "Rp450.000,00",
+     "Rp500.000,00",
+     "Rp525.000,00",
+     "Rp550.000,00"
+    ],
+    "correct": 2,
+    "kunci": "C. Rp525.000,00",
+    "bah": "Persentase dana darurat = 100% − (60% + 15% + 10%) = 100% − 85% = 15%.<br>Dana darurat = 15% × Rp3.500.000 = 15 × Rp35.000 = <b>Rp525.000,00</b>."
+   }
+  ]
+ },
+ {
+  "id": "garis",
+  "no": 7,
+  "judul": "Garis dan Sudut",
+  "topik": "Hubungan Antargaris & Pengukuran Sudut",
+  "bentuk": "pg",
+  "questions": [
+   {
+    "q": "Perhatikan benda-benda di sekitar kita: sepasang rel kereta api yang lurus, lintasan zebra cross di jalan raya, dan dua sisi penggaris besi yang berhadapan. Hubungan antargaris yang ditunjukkan oleh benda-benda tersebut adalah ...",
+    "options": [
+     "Garis saling berpotongan",
+     "Garis saling tegak lurus",
+     "Garis sejajar",
+     "Garis berimpit"
+    ],
+    "correct": 2,
+    "kunci": "C. Garis sejajar",
+    "bah": "Rel kereta api lurus, garis marka zebra cross, dan tepi penggaris memiliki jarak yang selalu tetap sama dan tidak pernah berpotongan meski diperpanjang. Hal ini merupakan ciri khas <b>garis saling sejajar</b>."
+   },
+   {
+    "q": "Dua buah garis terletak pada satu bidang datar. Jika kedua garis tersebut diperpanjang tanpa batas di kedua arahnya dan tidak akan pernah bertemu atau memotong di satu titik pun, maka kedua garis tersebut dikatakan ...",
+    "options": [
+     "Sejajar",
+     "Berimpit",
+     "Tegak lurus",
+     "Bersilangan"
+    ],
+    "correct": 0,
+    "kunci": "A. Sejajar",
+    "bah": "Berdasarkan definisi geometri, dua garis pada bidang datar yang tidak memiliki titik potong (tidak pernah bertemu) walaupun diperpanjang sampai tak terhingga disebut dua garis <b>sejajar</b>."
+   },
+   {
+    "q": "Jam dinding di ruang tamu menunjukkan tepat pukul 12.00. Pada saat itu, jarum pendek dan jarum panjang menunjuk tepat pada angka 12 secara bersamaan sehingga terlihat seperti satu garis lurus. Hubungan kedudukan kedua jarum jam tersebut dinamakan ...",
+    "options": [
+     "Dua garis saling tegak lurus",
+     "Dua garis saling berimpit",
+     "Dua garis saling bersilangan",
+     "Dua garis saling berpelurus"
+    ],
+    "correct": 1,
+    "kunci": "B. Dua garis saling berimpit",
+    "bah": "Pada pukul 12.00, jarum pendek dan jarum panjang berada pada satu lintasan garis yang sama dan saling menutupi satu sama lain. Keadaan ini disebut dua garis saling <b>berimpit</b> (memiliki tak terhingga titik persekutuan)."
+   },
+   {
+    "q": "Persimpangan empat jalan raya berbentuk tanda tambah (+) yang sempurna diatur oleh lampu lalu lintas. Garis marka jalan yang saling bersilangan dan membentuk sudut siku-siku 90° disebut ...",
+    "options": [
+     "Garis sejajar",
+     "Garis berimpit",
+     "Garis tegak lurus",
+     "Garis berlawanan"
+    ],
+    "correct": 2,
+    "kunci": "C. Garis tegak lurus",
+    "bah": "Dua garis berpotongan yang pertemuannya menghasilkan empat sudut siku-siku (masing-masing 90°) disebut dua garis saling <b>tegak lurus</b>."
+   },
+   {
+    "q": "Jika garis k tegak lurus terhadap garis m, dan garis n juga tegak lurus terhadap garis m pada bidang yang sama, maka kedudukan garis k terhadap garis n adalah ...",
+    "options": [
+     "Saling berimpit",
+     "Saling sejajar",
+     "Saling tegak lurus",
+     "Saling memotong serong"
+    ],
+    "correct": 1,
+    "kunci": "B. Saling sejajar",
+    "bah": "Sifat garis pada satu bidang: jika dua garis (k dan n) sama-sama tegak lurus terhadap satu garis acuan yang sama (m), maka garis k dan n akan memiliki arah yang sama persis dan tidak akan pernah bertemu. Dengan demikian, garis k dan n <b>saling sejajar</b>."
+   },
+   {
+    "q": "Sudut yang memiliki ukuran lebih besar dari 90° tetapi lebih kecil dari 180° dikelompokkan ke dalam jenis ...",
+    "options": [
+     "Sudut lancip",
+     "Sudut siku-siku",
+     "Sudut tumpul",
+     "Sudut refleks"
+    ],
+    "correct": 2,
+    "kunci": "C. Sudut tumpul",
+    "bah": "Sudut 0°–90° disebut sudut lancip; tepat 90° sudut siku-siku; 90°–180° sudut <b>tumpul</b>; tepat 180° sudut lurus; dan lebih dari 180° sampai kurang dari 360° sudut refleks."
+   },
+   {
+    "q": "Sebuah sudut memiliki besar 215°. Berdasarkan klasifikasi ukuran sudut, sudut tersebut termasuk dalam kelompok ...",
+    "options": [
+     "Sudut tumpul",
+     "Sudut lurus",
+     "Sudut refleks",
+     "Sudut satu putaran penuh"
+    ],
+    "correct": 2,
+    "kunci": "C. Sudut refleks",
+    "bah": "Sudut 215° lebih besar dari 180° dan lebih kecil dari 360°. Sudut dalam rentang 180° &lt; sudut &lt; 360° disebut <b>sudut refleks</b>."
+   },
+   {
+    "q": "Sebuah jarum jam berputar mengelilingi pusat lingkaran dari angka 12, melewati seluruh angka, dan kembali tepat ke angka 12. Besar sudut yang dibentuk oleh perputaran satu putaran penuh tersebut adalah ...",
+    "options": [
+     "90°",
+     "180°",
+     "270°",
+     "360°"
+    ],
+    "correct": 3,
+    "kunci": "D. 360°",
+    "bah": "Satu putaran lingkaran penuh memiliki besar sudut tepat <b>360°</b>."
+   },
+   {
+    "q": "Pada saat jam dinding menunjukkan tepat pukul 03.00, jarum pendek menunjuk ke angka 3 dan jarum panjang menunjuk ke angka 12. Sudut terkecil yang dibentuk oleh kedua jarum jam tersebut berukuran ...",
+    "options": [
+     "60° (sudut lancip)",
+     "90° (sudut siku-siku)",
+     "120° (sudut tumpul)",
+     "150° (sudut tumpul)"
+    ],
+    "correct": 1,
+    "kunci": "B. 90° (sudut siku-siku)",
+    "bah": "Lingkaran jam dibagi 12 angka, tiap interval 1 jam bernilai 360° ÷ 12 = 30°.<br>Pada pukul 03.00, selisih jarum 3 langkah, sehingga sudut = 3 × 30° = <b>90°</b> (sudut siku-siku)."
+   },
+   {
+    "q": "Ketika waktu menunjukkan tepat pukul 04.00, sudut terkecil yang terbentuk antara jarum pendek dan jarum panjang adalah ...",
+    "options": [
+     "90°",
+     "120°",
+     "140°",
+     "150°"
+    ],
+    "correct": 1,
+    "kunci": "B. 120°",
+    "bah": "Pada pukul 04.00, selisih jarum 4 langkah angka.<br>Sudut terkecil = 4 × 30° = <b>120°</b> (sudut tumpul)."
+   },
+   {
+    "q": "Dua sudut dikatakan saling berpenyiku (komplementer) apabila jumlah kedua sudut tersebut adalah ...",
+    "options": [
+     "90°",
+     "180°",
+     "270°",
+     "360°"
+    ],
+    "correct": 0,
+    "kunci": "A. 90°",
+    "bah": "Dua sudut saling berpenyiku (komplementer) adalah pasangan sudut yang apabila dijumlahkan menghasilkan sudut siku-siku, yaitu sebesar <b>90°</b>."
+   },
+   {
+    "q": "Diketahui sudut A dan sudut B saling berpenyiku. Jika besar sudut A adalah 38°, maka besar sudut B adalah ...",
+    "options": [
+     "42°",
+     "52°",
+     "142°",
+     "152°"
+    ],
+    "correct": 1,
+    "kunci": "B. 52°",
+    "bah": "Sudut A + Sudut B = 90° (berpenyiku).<br>38° + Sudut B = 90° → Sudut B = 90° − 38° = <b>52°</b>."
+   },
+   {
+    "q": "Sudut P dan sudut Q adalah dua sudut yang saling berpelurus (suplementer). Jika besar sudut P adalah 115°, maka besar sudut Q adalah ...",
+    "options": [
+     "65°",
+     "75°",
+     "85°",
+     "95°"
+    ],
+    "correct": 0,
+    "kunci": "A. 65°",
+    "bah": "Sudut P + Sudut Q = 180° (berpelurus).<br>115° + Sudut Q = 180° → Sudut Q = 180° − 115° = <b>65°</b>."
+   },
+   {
+    "q": "Diketahui besar sudut X sama dengan empat kali besar sudut penyikunya. Besar sudut X tersebut adalah ...",
+    "options": [
+     "18°",
+     "36°",
+     "72°",
+     "80°"
+    ],
+    "correct": 2,
+    "kunci": "C. 72°",
+    "bah": "Misalkan sudut penyikunya adalah Y, maka X = 4Y.<br>Karena berpenyiku: X + Y = 90° ⇒ 4Y + Y = 90° ⇒ 5Y = 90° ⇒ Y = 18°.<br>Besar sudut X = 4 × 18° = <b>72°</b>."
+   },
+   {
+    "q": "Dua sudut yang saling berpelurus memiliki perbandingan besar sudut 2 : 3. Besar sudut yang paling kecil di antara keduanya adalah ...",
+    "options": [
+     "36°",
+     "54°",
+     "72°",
+     "108°"
+    ],
+    "correct": 2,
+    "kunci": "C. 72°",
+    "bah": "Jumlah rasio = 2 + 3 = 5 bagian, dan jumlah kedua sudut = 180°.<br>Nilai 1 bagian = 180° ÷ 5 = 36°.<br>Sudut terkecil (rasio 2) = 2 × 36° = <b>72°</b> (sudut terbesar = 3 × 36° = 108°)."
+   },
+   {
+    "q": "Seseorang sedang berdiri menghadap ke arah Utara. Kemudian ia berputar searah jarum jam sejauh 225°. Arah mata angin yang dihadapi orang tersebut sekarang dan jenis sudut putaran yang terbentuk adalah ...",
+    "options": [
+     "Tenggara, sudut tumpul",
+     "Barat Daya, sudut refleks",
+     "Barat Daya, sudut tumpul",
+     "Barat Laut, sudut refleks"
+    ],
+    "correct": 1,
+    "kunci": "B. Barat Daya, sudut refleks",
+    "bah": "Arah utara = 0°/360°. Putaran searah jarum jam: Timur (90°), Selatan (180°), Barat Daya (180° + 45° = 225°).<br>Karena 225° berada di antara 180° dan 360°, sudut ini tergolong <b>sudut refleks</b> dan arahnya <b>Barat Daya</b>."
+   },
+   {
+    "q": "Pada segitiga sama kaki ABC, sudut alas ∠B dan ∠C memiliki besar yang sama yaitu 70°. Jika sebuah garis lurus ditarik dari alas membentuk sudut luar yang berpelurus dengan ∠C, maka besar sudut pelurus tersebut adalah ...",
+    "options": [
+     "20°",
+     "40°",
+     "110°",
+     "130°"
+    ],
+    "correct": 2,
+    "kunci": "C. 110°",
+    "bah": "Sudut luar dan sudut dalam pada garis lurus saling berpelurus (total 180°).<br>Besar sudut luar pelurus dari ∠C = 180° − 70° = <b>110°</b>."
+   },
+   {
+    "q": "Pada pukul 05.00, jarum jam membentuk dua buah sudut: sudut kecil di sisi dalam dan sudut besar di sisi luar. Besar sudut refleks (sudut terbesar) yang dibentuk oleh kedua jarum jam pada pukul 05.00 adalah ...",
+    "options": [
+     "150°",
+     "180°",
+     "210°",
+     "240°"
+    ],
+    "correct": 2,
+    "kunci": "C. 210°",
+    "bah": "Pada pukul 05.00, selisih langkah jarum = 5 angka.<br>Sudut terkecil = 5 × 30° = 150°.<br>Sudut refleks = 360° − 150° = <b>210°</b>."
+   },
+   {
+    "q": "Perhatikan gambar tiga sinar garis yang berpangkal sama di titik O membentuk sudut lurus ∠AOC = 180°. Sinar garis OB membagi sudut lurus tersebut menjadi ∠AOB = (2x + 10)° dan ∠BOC = (3x)°. Nilai x yang memenuhi adalah ...",
+    "options": [
+     "30",
+     "34",
+     "36",
+     "40"
+    ],
+    "correct": 1,
+    "kunci": "B. 34",
+    "bah": "Karena membentuk sudut lurus (saling berpelurus):<br>∠AOB + ∠BOC = 180° → (2x + 10) + 3x = 180<br>5x + 10 = 180 ⇒ 5x = 170 ⇒ x = 170 ÷ 5 = <b>34</b>."
+   },
+   {
+    "q": "Selisih antara besar sudut pelurus dari 65° dengan sudut penyiku dari 65° adalah ...",
+    "options": [
+     "65°",
+     "75°",
+     "90°",
+     "115°"
+    ],
+    "correct": 2,
+    "kunci": "C. 90°",
+    "bah": "Sudut pelurus dari 65° = 180° − 65° = 115°.<br>Sudut penyiku dari 65° = 90° − 65° = 25°.<br>Selisih keduanya = 115° − 25° = <b>90°</b>. (Secara umum, selisih pelurus dan penyiku sudut apa pun selalu tetap 90°)."
+   }
+  ]
+ },
+ {
+  "id": "datar",
+  "no": 8,
+  "judul": "Bangun Datar",
+  "topik": "Poligon, Simetri, Keliling & Luas",
+  "bentuk": "pg",
+  "questions": [
+   {
+    "q": "Poligon adalah kurva tertutup sederhana yang dibatasi oleh segmen-segmen garis lurus. Di antara bangun-bangun berikut, yang BUKAN merupakan segi banyak (poligon) adalah ...",
+    "options": [
+     "Bintang segilima",
+     "Jajar genjang",
+     "Lingkaran",
+     "Trapesium sama kaki"
+    ],
+    "correct": 2,
+    "kunci": "C. Lingkaran",
+    "bah": "Poligon (segi banyak) dibatasi oleh garis-garis lurus tertutup. Bintang segilima, jajar genjang, dan trapesium semuanya dibatasi ruas garis lurus. Sementara itu, <b>lingkaran</b> dibatasi kurva lengkung, sehingga lingkaran BUKAN poligon."
+   },
+   {
+    "q": "Suatu segi banyak beraturan memiliki ciri seluruh sisi sama panjang dan semua sudut sama besar. Manakah di antara segi empat berikut yang merupakan segi banyak beraturan (poligon beraturan)?",
+    "options": [
+     "Persegi panjang",
+     "Belah ketupat",
+     "Persegi",
+     "Jajar genjang"
+    ],
+    "correct": 2,
+    "kunci": "C. Persegi",
+    "bah": "Poligon beraturan harus memenuhi dua syarat: semua sisi sama panjang dan semua sudut sama besar. <b>Persegi</b> memenuhi keduanya (4 sisi sama panjang dan 4 sudut siku-siku 90°). Persegi panjang sudutnya sama tetapi sisinya tidak sama; belah ketupat sisinya sama tetapi sudutnya tidak sama; jajar genjang sudut dan sisinya tidak semuanya sama."
+   },
+   {
+    "q": "Sebuah bangun datar segiempat memiliki sifat-sifat: memiliki dua pasang sisi yang sama panjang, sepasang sudut berhadapan sama besar, serta kedua diagonalnya saling berpotongan tegak lurus dan salah satu diagonal membagi dua sama panjang diagonal yang lain. Bangun datar yang dimaksud adalah ...",
+    "options": [
+     "Layang-layang",
+     "Belah ketupat",
+     "Jajar genjang",
+     "Trapesium"
+    ],
+    "correct": 0,
+    "kunci": "A. Layang-layang",
+    "bah": "Ciri-ciri dua pasang sisi berdampingan sama panjang, diagonal saling tegak lurus, dan hanya satu diagonal yang terbagi dua sama panjang oleh diagonal lain adalah sifat khas <b>layang-layang</b>. Pada belah ketupat, keempat sisinya sama panjang dan kedua diagonalnya saling membagi dua sama panjang."
+   },
+   {
+    "q": "Perhatikan perbandingan sifat dua bangun datar: Bangun X memiliki 2 simetri lipat dan 2 simetri putar, sedangkan Bangun Y memiliki 4 simetri lipat dan 4 simetri putar. Pasangan bangun datar X dan Y yang tepat adalah ...",
+    "options": [
+     "Persegi panjang dan Persegi",
+     "Belah ketupat dan Layang-layang",
+     "Jajar genjang dan Persegi",
+     "Persegi dan Segitiga sama sisi"
+    ],
+    "correct": 0,
+    "kunci": "A. Persegi panjang dan Persegi",
+    "bah": "<b>Persegi panjang</b> memiliki 2 simetri lipat dan 2 simetri putar (Bangun X). <b>Persegi</b> memiliki 4 simetri lipat dan 4 simetri putar (Bangun Y). Jadi pasangan yang tepat adalah persegi panjang dan persegi."
+   },
+   {
+    "q": "Bangun datar yang memiliki simetri putar tingkat 2 tetapi TIDAK memiliki simetri lipat (sumbu simetri = 0) adalah ...",
+    "options": [
+     "Trapesium sama kaki",
+     "Jajar genjang",
+     "Layang-layang",
+     "Segitiga sama kaki"
+    ],
+    "correct": 1,
+    "kunci": "B. Jajar genjang",
+    "bah": "<b>Jajar genjang</b> sembarang memiliki simetri putar tingkat 2 (menempati bingkainya pada putaran 180° dan 360°), tetapi tidak memiliki sumbu simetri lipat (0 sumbu simetri)."
+   },
+   {
+    "q": "Banyak sumbu simetri lipat dan tingkat simetri putar yang dimiliki oleh bangun lingkaran secara berurutan adalah ...",
+    "options": [
+     "Tepat 4 dan tingkat 4",
+     "Tepat 8 dan tingkat 8",
+     "Tak terhingga dan tingkat tak terhingga",
+     "Tepat 360 dan tingkat 360"
+    ],
+    "correct": 2,
+    "kunci": "C. Tak terhingga dan tingkat tak terhingga",
+    "bah": "Lingkaran dapat dilipat pada setiap garis yang melalui titik pusatnya (diameter), sehingga memiliki sumbu simetri lipat <b>tak terhingga</b>. Lingkaran juga menempati bingkainya pada setiap sudut putaran di titik pusatnya, sehingga memiliki simetri putar <b>tak terhingga</b>."
+   },
+   {
+    "q": "Sebuah taman kota berbentuk persegi memiliki luas 324 m<sup>2</sup>. Di sekeliling taman tersebut akan dipasang lampu taman dengan jarak antarlampu 3 meter. Banyak lampu yang dibutuhkan seluruhnya adalah ...",
+    "options": [
+     "24 buah",
+     "27 buah",
+     "36 buah",
+     "48 buah"
+    ],
+    "correct": 0,
+    "kunci": "A. 24 buah",
+    "bah": "Panjang sisi taman = √324 = 18 meter.<br>Keliling taman = 4 × 18 = 72 meter.<br>Banyak lampu = 72 ÷ 3 = <b>24 buah</b>."
+   },
+   {
+    "q": "Lapangan upacara di sekolah berbentuk persegi panjang dengan keliling 110 meter. Jika ukuran panjang lapangan tersebut 15 meter lebih panjang daripada lebarnya, luas lapangan upacara tersebut adalah ... m<sup>2</sup>.",
+    "options": [
+     "650",
+     "700",
+     "750",
+     "800"
+    ],
+    "correct": 1,
+    "kunci": "B. 700",
+    "bah": "Keliling = 2 × (p + l) = 110 ⇒ p + l = 55 meter.<br>Diketahui p = l + 15, maka (l + 15) + l = 55 ⇒ 2l = 40 ⇒ l = 20 dan p = 35 meter.<br>Luas = 35 × 20 = <b>700 m<sup>2</sup></b>."
+   },
+   {
+    "q": "Sebuah lantai aula berbentuk persegi panjang berukuran panjang 12 meter dan lebar 8 meter akan dipasangi ubin keramik berbentuk persegi dengan panjang sisi 40 cm. Jumlah ubin yang diperlukan untuk menutup seluruh lantai aula tersebut adalah ... keping.",
+    "options": [
+     "600",
+     "800",
+     "960",
+     "1.200"
+    ],
+    "correct": 0,
+    "kunci": "A. 600",
+    "bah": "Konversikan ke cm: panjang = 1.200 cm, lebar = 800 cm.<br>Luas lantai = 1.200 × 800 = 960.000 cm<sup>2</sup>.<br>Luas 1 keping ubin = 40 × 40 = 1.600 cm<sup>2</sup>.<br>Jumlah ubin = 960.000 ÷ 1.600 = <b>600 keping</b>."
+   },
+   {
+    "q": "Selembar seng berbentuk segitiga siku-siku memiliki panjang sisi alas 24 cm dan sisi miring 30 cm. Jika luas seng tersebut adalah 216 cm<sup>2</sup>, maka keliling selembar seng tersebut adalah ...",
+    "options": [
+     "64 cm",
+     "72 cm",
+     "78 cm",
+     "84 cm"
+    ],
+    "correct": 1,
+    "kunci": "B. 72 cm",
+    "bah": "Luas segitiga = 1/2 × alas × tinggi ⇒ 216 = 1/2 × 24 × tinggi ⇒ tinggi = 18 cm.<br>Ketiga sisi segitiga siku-siku: 24 cm (alas), 18 cm (tinggi), dan 30 cm (sisi miring).<br>Keliling = 24 + 18 + 30 = <b>72 cm</b>."
+   },
+   {
+    "q": "Tanah kebun Pak Raden berbentuk jajar genjang dengan panjang alas 35 meter dan tinggi 20 meter. Jika di sekeliling kebun dipagari bambu dan diketahui sisi miring jajar genjang tersebut adalah 25 meter, maka perbandingan luas kebun (m<sup>2</sup>) terhadap keliling kebun (m) adalah ...",
+    "options": [
+     "35 : 6",
+     "7 : 2",
+     "5 : 1",
+     "25 : 4"
+    ],
+    "correct": 0,
+    "kunci": "A. 35 : 6",
+    "bah": "Luas = alas × tinggi = 35 × 20 = 700 m<sup>2</sup>.<br>Keliling = 2 × (35 + 25) = 2 × 60 = 120 meter.<br>Perbandingan = 700 : 120 = <b>35 : 6</b>."
+   },
+   {
+    "q": "Hiasan dinding berbentuk belah ketupat memiliki keliling 68 cm. Jika panjang salah satu diagonalnya adalah 30 cm dan panjang diagonal lainnya adalah 16 cm, luas hiasan dinding tersebut adalah ... cm<sup>2</sup>.",
+    "options": [
+     "240",
+     "480",
+     "510",
+     "960"
+    ],
+    "correct": 0,
+    "kunci": "A. 240",
+    "bah": "Luas belah ketupat = 1/2 × d<sub>1</sub> × d<sub>2</sub> = 1/2 × 30 × 16 = 15 × 16 = <b>240 cm<sup>2</sup></b>.<br>(Cek keliling: setengah diagonal 15 dan 8 membentuk sisi √(15² + 8²) = 17 cm, sehingga keliling = 4 × 17 = 68 cm — sesuai)."
+   },
+   {
+    "q": "Gilang membuat kerangka layang-layang menggunakan dua bilah bambu sebagai diagonal berukuran 45 cm dan 32 cm. Kertas minyak yang diperlukan untuk menutup seluruh permukaan layang-layang tersebut minimal seluas ... cm<sup>2</sup>.",
+    "options": [
+     "720",
+     "840",
+     "1.120",
+     "1.440"
+    ],
+    "correct": 0,
+    "kunci": "A. 720",
+    "bah": "Luas layang-layang = 1/2 × d<sub>1</sub> × d<sub>2</sub> = 1/2 × 45 × 32 = 45 × 16 = <b>720 cm<sup>2</sup></b>."
+   },
+   {
+    "q": "Sebuah papan reklame berbentuk trapesium sama kaki memiliki panjang sisi-sisi sejajar 18 meter dan 12 meter serta tinggi 8 meter. Jika panjang kedua sisi miringnya masing-masing 10 meter, berapakah luas dan keliling papan reklame tersebut berturut-turut?",
+    "options": [
+     "Luas = 120 m<sup>2</sup> dan Keliling = 50 m",
+     "Luas = 144 m<sup>2</sup> dan Keliling = 48 m",
+     "Luas = 240 m<sup>2</sup> dan Keliling = 50 m",
+     "Luas = 120 m<sup>2</sup> dan Keliling = 40 m"
+    ],
+    "correct": 0,
+    "kunci": "A. Luas = 120 m<sup>2</sup> dan Keliling = 50 m",
+    "bah": "Luas trapesium = 1/2 × (jumlah sisi sejajar) × tinggi = 1/2 × (18 + 12) × 8 = 1/2 × 30 × 8 = <b>120 m<sup>2</sup></b>.<br>Keliling = 18 + 12 + 10 + 10 = <b>50 meter</b>."
+   },
+   {
+    "q": "Roda sepeda adik memiliki diameter 42 cm. Jika roda tersebut menggelinding berputar di lintasan lurus sebanyak 50 kali putaran penuh (gunakan π = 22/7), panjang lintasan yang telah ditempuh roda tersebut adalah ... meter.",
+    "options": [
+     "66",
+     "132",
+     "198",
+     "264"
+    ],
+    "correct": 0,
+    "kunci": "A. 66",
+    "bah": "Keliling roda = π × d = 22/7 × 42 = 22 × 6 = 132 cm.<br>Panjang lintasan 50 putaran = 132 × 50 = 6.600 cm.<br>Konversi ke meter = 6.600 ÷ 100 = <b>66 meter</b>."
+   },
+   {
+    "q": "Sebuah kolam ikan berbentuk lingkaran memiliki panjang jari-jari 14 meter. Di sekeliling kolam akan ditanami pohon palem kecil dengan jarak antarpohon 4 meter. Banyaknya pohon palem yang dapat ditanam (π = 22/7) adalah ... batang.",
+    "options": [
+     "20",
+     "22",
+     "24",
+     "28"
+    ],
+    "correct": 1,
+    "kunci": "B. 22",
+    "bah": "Keliling lingkaran kolam = 2 × π × r = 2 × 22/7 × 14 = 2 × 22 × 2 = 88 meter.<br>Banyak pohon palem = 88 ÷ 4 = <b>22 batang</b>."
+   },
+   {
+    "q": "Suatu persegi panjang memiliki luas 180 cm<sup>2</sup>. Jika panjangnya adalah 15 cm, maka keliling persegi panjang tersebut adalah ... cm.",
+    "options": [
+     "54",
+     "56",
+     "60",
+     "64"
+    ],
+    "correct": 0,
+    "kunci": "A. 54",
+    "bah": "Lebar = Luas ÷ Panjang = 180 ÷ 15 = 12 cm.<br>Keliling = 2 × (15 + 12) = 2 × 27 = <b>54 cm</b>."
+   },
+   {
+    "q": "Kawat sepanjang 96 cm dipotong dan dibentuk menjadi sebuah kerangka persegi tanpa ada sisa kawat. Luas daerah persegi yang terbentuk oleh kawat tersebut adalah ... cm<sup>2</sup>.",
+    "options": [
+     "484",
+     "576",
+     "625",
+     "676"
+    ],
+    "correct": 1,
+    "kunci": "B. 576",
+    "bah": "Panjang kawat merupakan keliling persegi = 96 cm.<br>Panjang sisi = 96 ÷ 4 = 24 cm.<br>Luas persegi = 24 × 24 = <b>576 cm<sup>2</sup></b>."
+   },
+   {
+    "q": "Keliling sebuah persegi panjang sama dengan keliling sebuah persegi yang memiliki panjang sisi 18 cm. Jika lebar persegi panjang tersebut adalah 12 cm, luas persegi panjang tersebut adalah ... cm<sup>2</sup>.",
+    "options": [
+     "264",
+     "288",
+     "324",
+     "360"
+    ],
+    "correct": 1,
+    "kunci": "B. 288",
+    "bah": "Keliling persegi = 4 × 18 = 72 cm, sehingga keliling persegi panjang = 72 cm.<br>2 × (p + 12) = 72 ⇒ p + 12 = 36 ⇒ p = 24 cm.<br>Luas = 24 × 12 = <b>288 cm<sup>2</sup></b>."
+   },
+   {
+    "q": "Selembar karton berukuran 40 cm × 30 cm dipotong di keempat pojoknya dengan potongan berbentuk persegi berukuran 5 cm × 5 cm. Luas sisa karton setelah keempat pojoknya dipotong adalah ... cm<sup>2</sup>.",
+    "options": [
+     "1.000",
+     "1.100",
+     "1.150",
+     "1.175"
+    ],
+    "correct": 1,
+    "kunci": "B. 1.100",
+    "bah": "Luas karton mula-mula = 40 × 30 = 1.200 cm<sup>2</sup>.<br>Luas 1 potongan pojok = 5 × 5 = 25 cm<sup>2</sup>, sehingga 4 potongan = 100 cm<sup>2</sup>.<br>Luas sisa = 1.200 − 100 = <b>1.100 cm<sup>2</sup></b>."
+   }
+  ]
+ },
+ {
+  "id": "ruang",
+  "no": 9,
+  "judul": "Bangun Ruang",
+  "topik": "Unsur, Sifat, Volume & Dimensi Rusuk",
+  "bentuk": "pg",
+  "questions": [
+   {
+    "q": "Perhatikan pernyataan mengenai unsur-unsur pada sebuah kubus ABCD.EFGH berikut:<br>(1) Memiliki 12 rusuk sama panjang<br>(2) Memiliki 6 bidang diagonal<br>(3) Memiliki 12 diagonal sisi (bidang)<br>(4) Memiliki 4 diagonal ruang<br>Pernyataan di atas yang bernilai BENAR adalah ...",
+    "options": [
+     "(1) dan (3) saja",
+     "(2) dan (4) saja",
+     "(1), (3), dan (4) saja",
+     "(1), (2), (3), dan (4)"
+    ],
+    "correct": 3,
+    "kunci": "D. (1), (2), (3), dan (4)",
+    "bah": "Kubus memiliki 12 rusuk sama panjang, 6 sisi persegi kongruen, 8 titik sudut, 12 diagonal sisi (2 pada setiap sisi persegi: 6 × 2 = 12), 4 diagonal ruang (menghubungkan dua titik sudut berseberangan melewati ruang), dan 6 bidang diagonal (berbentuk persegi panjang di dalam kubus). Seluruh pernyataan (1), (2), (3), dan (4) bernilai benar."
+   },
+   {
+    "q": "Pada balok KLMN.OPQR, ruas garis yang menghubungkan titik sudut K dengan titik sudut Q menembus bagian dalam ruang balok. Ruas garis KQ tersebut dinamakan ...",
+    "options": [
+     "Diagonal sisi",
+     "Diagonal ruang",
+     "Bidang diagonal",
+     "Rusuk tegak"
+    ],
+    "correct": 1,
+    "kunci": "B. Diagonal ruang",
+    "bah": "Ruas garis yang menghubungkan dua titik sudut yang saling berhadapan dan melewati bagian dalam ruang balok dinamakan <b>diagonal ruang</b>. Diagonal sisi terletak pada satu bidang permukaan luar, sedangkan bidang diagonal adalah luasan bidang datar di dalam ruang balok."
+   },
+   {
+    "q": "Suatu bangun ruang memiliki sifat-sifat: memiliki 5 sisi (1 sisi alas berbentuk segi empat dan 4 sisi tegak berbentuk segitiga), memiliki 8 rusuk, dan memiliki 5 titik sudut dengan 1 titik sudut merupakan titik puncak. Bangun ruang tersebut adalah ...",
+    "options": [
+     "Prisma segitiga",
+     "Limas segi empat",
+     "Limas segitiga",
+     "Prisma segi empat"
+    ],
+    "correct": 1,
+    "kunci": "B. Limas segi empat",
+    "bah": "<b>Limas segi empat</b> memiliki 1 sisi alas segi empat dan 4 sisi tegak segitiga (total 5 sisi), 8 rusuk (4 di alas dan 4 rusuk tegak), serta 5 titik sudut (4 di sudut alas dan 1 titik puncak)."
+   },
+   {
+    "q": "Sebuah prisma memiliki alas berbentuk segi delapan (oktagon). Banyaknya rusuk dan titik sudut pada prisma tersebut berturut-turut adalah ...",
+    "options": [
+     "16 rusuk dan 10 titik sudut",
+     "24 rusuk dan 16 titik sudut",
+     "18 rusuk dan 12 titik sudut",
+     "24 rusuk dan 8 titik sudut"
+    ],
+    "correct": 1,
+    "kunci": "B. 24 rusuk dan 16 titik sudut",
+    "bah": "Rumus umum unsur prisma segi-n:<br>Banyak rusuk = 3 × n = 3 × 8 = <b>24 rusuk</b>.<br>Banyak titik sudut = 2 × n = 2 × 8 = <b>16 titik sudut</b>."
+   },
+   {
+    "q": "Manakah bangun ruang berikut yang memiliki tepat 2 rusuk lengkung, 3 bidang sisi (2 lingkaran dan 1 selimut melengkung), serta TIDAK memiliki titik sudut sama sekali?",
+    "options": [
+     "Kerucut",
+     "Tabung",
+     "Bola",
+     "Prisma lingkaran"
+    ],
+    "correct": 1,
+    "kunci": "B. Tabung",
+    "bah": "<b>Tabung</b> dibatasi oleh 3 sisi (sisi alas dan tutup berbentuk lingkaran datar yang sejajar, serta 1 selimut lengkung), memiliki 2 rusuk lengkung pada tepian lingkaran alas dan tutup, serta tidak memiliki titik sudut."
+   },
+   {
+    "q": "Topi ulang tahun berbentuk kerucut memiliki karakteristik unsur bangun ruang yang khas. Banyaknya sisi, rusuk, dan titik sudut pada kerucut berturut-turut adalah ...",
+    "options": [
+     "2 sisi, 1 rusuk lengkung, dan 1 titik puncak",
+     "3 sisi, 2 rusuk lengkung, dan 1 titik sudut",
+     "2 sisi, 0 rusuk, dan 1 titik sudut",
+     "1 sisi, 1 rusuk lengkung, dan 0 titik sudut"
+    ],
+    "correct": 0,
+    "kunci": "A. 2 sisi, 1 rusuk lengkung, dan 1 titik puncak",
+    "bah": "Kerucut memiliki <b>2 sisi</b> (sisi alas lingkaran dan selimut kerucut yang melengkung), <b>1 rusuk lengkung</b> di sekeliling alas, dan <b>1 titik sudut puncak</b>."
+   },
+   {
+    "q": "Sebuah kerangka kubus dibuat dari kawat. Jika panjang seluruh kawat yang digunakan untuk membuat kerangka kubus tersebut adalah 180 cm, maka luas salah satu bidang sisi kubus tersebut adalah ... cm<sup>2</sup>.",
+    "options": [
+     "144",
+     "225",
+     "324",
+     "400"
+    ],
+    "correct": 1,
+    "kunci": "B. 225",
+    "bah": "Kerangka kubus tersusun atas 12 rusuk sama panjang.<br>Panjang 1 rusuk (s) = 180 ÷ 12 = 15 cm.<br>Luas salah satu sisi persegi = s × s = 15 × 15 = <b>225 cm<sup>2</sup></b>."
+   },
+   {
+    "q": "Volume sebuah kubus mainan adalah 1.728 cm<sup>3</sup>. Panjang rusuk kubus mainan tersebut adalah ... cm.",
+    "options": [
+     "11",
+     "12",
+     "14",
+     "16"
+    ],
+    "correct": 1,
+    "kunci": "B. 12",
+    "bah": "Volume kubus = s<sup>3</sup> = 1.728 cm<sup>3</sup>.<br>Panjang rusuk s = <sup>3</sup>√1.728 = <b>12 cm</b> (karena 12 × 12 × 12 = 1.728)."
+   },
+   {
+    "q": "Sebuah bak penampungan air berbentuk balok berukuran panjang 120 cm dan lebar 80 cm. Jika bak tersebut dapat menampung air maksimal sebanyak 720 liter, maka tinggi bak penampungan air tersebut adalah ... cm.",
+    "options": [
+     "65",
+     "70",
+     "75",
+     "80"
+    ],
+    "correct": 2,
+    "kunci": "C. 75",
+    "bah": "Konversi liter ke cm<sup>3</sup>: 1 liter = 1 dm<sup>3</sup> = 1.000 cm<sup>3</sup>, jadi 720 liter = 720.000 cm<sup>3</sup>.<br>Volume balok = p × l × t → 720.000 = 120 × 80 × t = 9.600 × t<br>t = 720.000 ÷ 9.600 = <b>75 cm</b>."
+   },
+   {
+    "q": "Sebuah balok memiliki volume 2.400 cm<sup>3</sup>. Jika panjang balok 20 cm dan tingginya 12 cm, maka lebar balok tersebut adalah ... cm.",
+    "options": [
+     "8",
+     "10",
+     "12",
+     "15"
+    ],
+    "correct": 1,
+    "kunci": "B. 10",
+    "bah": "Volume balok = p × l × t.<br>2.400 = 20 × l × 12 = 240 × l<br>l = 2.400 ÷ 240 = <b>10 cm</b>."
+   },
+   {
+    "q": "Dua buah kubus masing-masing memiliki panjang rusuk 4 cm dan 8 cm. Perbandingan volume kedua kubus tersebut adalah ...",
+    "options": [
+     "1 : 2",
+     "1 : 4",
+     "1 : 6",
+     "1 : 8"
+    ],
+    "correct": 3,
+    "kunci": "D. 1 : 8",
+    "bah": "Volume kubus 1 = 4<sup>3</sup> = 64 cm<sup>3</sup>.<br>Volume kubus 2 = 8<sup>3</sup> = 512 cm<sup>3</sup>.<br>Perbandingan = 64 : 512 = <b>1 : 8</b>. (Secara cepat: jika rasio rusuk 1 : 2, rasio volumenya 1<sup>3</sup> : 2<sup>3</sup> = 1 : 8)."
+   },
+   {
+    "q": "Sebuah kotak mainan berbentuk balok memiliki ukuran panjang 40 cm, lebar 30 cm, dan tinggi 25 cm. Kotak tersebut akan diisi kubus-kubus satuan kayu kecil dengan panjang rusuk 5 cm hingga penuh. Banyak kubus satuan yang dibutuhkan adalah ... buah.",
+    "options": [
+     "180",
+     "200",
+     "240",
+     "300"
+    ],
+    "correct": 2,
+    "kunci": "C. 240",
+    "bah": "Banyak kubus = (40 ÷ 5) × (30 ÷ 5) × (25 ÷ 5) = 8 × 6 × 5 = <b>240 buah</b>.<br>(Atau: volume kotak = 40 × 30 × 25 = 30.000 cm<sup>3</sup>; volume 1 kubus = 125 cm<sup>3</sup>; 30.000 ÷ 125 = 240 buah)."
+   },
+   {
+    "q": "Bangun ruang prisma tegak segitiga memiliki alas berbentuk segitiga siku-siku dengan panjang sisi siku-sikunya 6 cm dan 8 cm. Jika tinggi prisma tersebut adalah 15 cm, maka volume prisma segitiga tersebut adalah ... cm<sup>3</sup>.",
+    "options": [
+     "360",
+     "480",
+     "720",
+     "900"
+    ],
+    "correct": 0,
+    "kunci": "A. 360",
+    "bah": "Luas alas segitiga siku-siku = 1/2 × 6 × 8 = 24 cm<sup>2</sup>.<br>Volume prisma = Luas alas × tinggi prisma = 24 × 15 = <b>360 cm<sup>3</sup></b>."
+   },
+   {
+    "q": "Sebuah limas dengan alas berbentuk persegi memiliki volume 400 cm<sup>3</sup>. Jika tinggi limas tersebut adalah 12 cm, maka panjang sisi alas limas tersebut adalah ... cm.",
+    "options": [
+     "8",
+     "10",
+     "12",
+     "14"
+    ],
+    "correct": 1,
+    "kunci": "B. 10",
+    "bah": "Volume limas = 1/3 × Luas alas × tinggi.<br>400 = 1/3 × Luas alas × 12 = 4 × Luas alas ⇒ Luas alas = 100 cm<sup>2</sup>.<br>Alas persegi: s<sup>2</sup> = 100 ⇒ s = √100 = <b>10 cm</b>."
+   },
+   {
+    "q": "Sebuah kaleng biskuit berbentuk tabung memiliki jari-jari alas 7 cm dan tinggi kaleng 20 cm. Volume kaleng biskuit tersebut adalah ... cm<sup>3</sup>. (Gunakan π = 22/7)",
+    "options": [
+     "2.840",
+     "3.080",
+     "3.160",
+     "3.240"
+    ],
+    "correct": 1,
+    "kunci": "B. 3.080",
+    "bah": "Volume tabung = π × r<sup>2</sup> × t = 22/7 × 7 × 7 × 20 = 22 × 7 × 20 = 154 × 20 = <b>3.080 cm<sup>3</sup></b>."
+   },
+   {
+    "q": "Sebuah cetakan tumpeng berbentuk kerucut memiliki diameter alas 14 cm dan tinggi 18 cm. Volume cetakan nasi tumpeng tersebut adalah ... cm<sup>3</sup>. (Gunakan π = 22/7)",
+    "options": [
+     "924",
+     "1.848",
+     "2.772",
+     "3.696"
+    ],
+    "correct": 0,
+    "kunci": "A. 924",
+    "bah": "Jari-jari r = diameter ÷ 2 = 14 ÷ 2 = 7 cm.<br>Volume kerucut = 1/3 × π × r<sup>2</sup> × t = 1/3 × 22/7 × 7 × 7 × 18 = 1/3 × 18 × 154 = 6 × 154 = <b>924 cm<sup>3</sup></b>."
+   },
+   {
+    "q": "Sebuah akuarium berbentuk balok memiliki ukuran panjang 60 cm, lebar 40 cm, dan tinggi 50 cm. Akuarium tersebut mula-mula telah terisi air sebanyak 3/5 bagian. Volume air yang harus ditambahkan agar akuarium terisi penuh adalah ... liter.",
+    "options": [
+     "48",
+     "72",
+     "96",
+     "120"
+    ],
+    "correct": 0,
+    "kunci": "A. 48",
+    "bah": "Volume kapasitas total = 60 × 40 × 50 = 120.000 cm<sup>3</sup> = 120 liter.<br>Bagian yang belum terisi = 1 − 3/5 = 2/5 bagian.<br>Volume air yang ditambahkan = 2/5 × 120 = <b>48 liter</b>."
+   },
+   {
+    "q": "Diberikan sebuah balok dengan volume 1.200 cm<sup>3</sup>. Panjang balok adalah dua kali lebarnya, dan tinggi balok adalah 6 cm. Panjang balok tersebut adalah ... cm.",
+    "options": [
+     "15",
+     "20",
+     "24",
+     "25"
+    ],
+    "correct": 1,
+    "kunci": "B. 20",
+    "bah": "Misalkan lebar = l, maka panjang = 2l.<br>Volume = p × l × t → 1.200 = (2l) × l × 6 = 12l<sup>2</sup>.<br>l<sup>2</sup> = 1.200 ÷ 12 = 100 ⇒ l = 10 cm.<br>Panjang = 2 × 10 = <b>20 cm</b>."
+   },
+   {
+    "q": "Suatu prisma segi-n memiliki 15 buah rusuk. Jenis prisma tersebut dan banyaknya titik sudut yang dimiliki secara berturut-turut adalah ...",
+    "options": [
+     "Prisma segi empat, 8 titik sudut",
+     "Prisma segi lima, 10 titik sudut",
+     "Prisma segi enam, 12 titik sudut",
+     "Prisma segi tujuh, 14 titik sudut"
+    ],
+    "correct": 1,
+    "kunci": "B. Prisma segi lima, 10 titik sudut",
+    "bah": "Pada prisma segi-n, banyak rusuk = 3n.<br>3n = 15 ⇒ n = 5 (prisma segi lima).<br>Banyak titik sudut prisma segi lima = 2n = 2 × 5 = <b>10 titik sudut</b>."
+   },
+   {
+    "q": "Doni memiliki kawat sepanjang 2 meter. Kawat tersebut digunakan untuk membuat kerangka balok berukuran panjang 18 cm, lebar 12 cm, dan tinggi 10 cm. Sisa kawat yang tidak terpakai oleh Doni adalah ... cm.",
+    "options": [
+     "30",
+     "40",
+     "50",
+     "60"
+    ],
+    "correct": 1,
+    "kunci": "B. 40",
+    "bah": "Panjang kawat awal = 2 meter = 200 cm.<br>Kerangka balok memerlukan 4 panjang, 4 lebar, dan 4 tinggi:<br>Terpakai = 4 × (p + l + t) = 4 × (18 + 12 + 10) = 4 × 40 = 160 cm.<br>Sisa kawat = 200 − 160 = <b>40 cm</b>."
+   }
+  ]
+ },
+ {
+  "id": "pola",
+  "no": 10,
+  "judul": "Pola Bilangan & Pola Gambar",
+  "topik": "Barisan Bilangan & Konfigurasi Gambar",
+  "bentuk": "pg",
+  "questions": [
+   {
+    "q": "Perhatikan barisan bilangan berikut: 14, 21, 28, 35, 42, .... Aturan pembentukan pola bilangan tersebut yang tepat adalah ...",
+    "options": [
+     "Dikalikan dengan 2 kemudian dikurang 7",
+     "Ditambah 7 untuk setiap suku berikutnya",
+     "Ditambah 6 secara bergantian",
+     "Kelipatan bilangan ganjil berurutan"
+    ],
+    "correct": 1,
+    "kunci": "B. Ditambah 7 untuk setiap suku berikutnya",
+    "bah": "Perhatikan selisih antarsuku yang berdekatan: 21 − 14 = 7; 28 − 21 = 7; 35 − 28 = 7; 42 − 35 = 7.<br>Terlihat bahwa polanya selalu <b>ditambah 7</b> untuk setiap suku berikutnya."
+   },
+   {
+    "q": "Perhatikan barisan bilangan yang mengecil berikut: 120, 108, 96, 84, .... Suku ke-6 dari barisan bilangan tersebut adalah ...",
+    "options": [
+     "72",
+     "64",
+     "60",
+     "48"
+    ],
+    "correct": 2,
+    "kunci": "C. 60",
+    "bah": "Selisih antarsuku: 108 − 120 = −12; 96 − 108 = −12; 84 − 96 = −12 (aturan: berkurang 12).<br>Suku ke-5 = 84 − 12 = 72.<br>Suku ke-6 = 72 − 12 = <b>60</b>."
+   },
+   {
+    "q": "Diberikan pola bilangan bertingkat: 3, 5, 9, 15, 23, P, Q. Nilai yang tepat untuk menggantikan huruf P dan Q secara berturut-turut adalah ...",
+    "options": [
+     "31 dan 41",
+     "33 dan 45",
+     "33 dan 43",
+     "35 dan 47"
+    ],
+    "correct": 1,
+    "kunci": "B. 33 dan 45",
+    "bah": "Hitung selisih antarsuku: 3 (+2) → 5 (+4) → 9 (+6) → 15 (+8) → 23.<br>Pola penambahannya adalah bilangan genap berurutan (+2, +4, +6, +8, +10, +12, ...).<br>P = 23 + 10 = <b>33</b> dan Q = 33 + 12 = <b>45</b>."
+   },
+   {
+    "q": "Perhatikan barisan bilangan geometri sederhana berikut: 2, 6, 18, 54, .... Aturan pembentukan pola dan dua suku berikutnya berturut-turut adalah ...",
+    "options": [
+     "Ditambah 4; 58 dan 62",
+     "Dikalikan 3; 162 dan 486",
+     "Dikalikan 3; 108 dan 216",
+     "Dikalikan 2 lalu ditambah 2; 110 dan 222"
+    ],
+    "correct": 1,
+    "kunci": "B. Dikalikan 3; 162 dan 486",
+    "bah": "Rasio pengali tiap suku: 6 ÷ 2 = 3; 18 ÷ 6 = 3; 54 ÷ 18 = 3. Aturannya <b>dikalikan 3</b>.<br>Suku ke-5 = 54 × 3 = <b>162</b> dan suku ke-6 = 162 × 3 = <b>486</b>."
+   },
+   {
+    "q": "Perhatikan barisan bilangan dua pola (berselang-seling) berikut:<br>5, 20, 8, 17, 11, 14, 14, 11, X, Y<br>Nilai X dan Y yang memenuhi urutan pola tersebut adalah ...",
+    "options": [
+     "17 dan 8",
+     "17 dan 9",
+     "16 dan 8",
+     "15 dan 9"
+    ],
+    "correct": 0,
+    "kunci": "A. 17 dan 8",
+    "bah": "Pisahkan menjadi dua pola berselang-seling:<br>• Pola ganjil (suku 1, 3, 5, 7, 9): 5, 8, 11, 14, X → bertambah 3, maka X = 14 + 3 = <b>17</b>.<br>• Pola genap (suku 2, 4, 6, 8, 10): 20, 17, 14, 11, Y → berkurang 3, maka Y = 11 − 3 = <b>8</b>."
+   },
+   {
+    "q": "Dalam sebuah gedung pertunjukan bioskop mini, baris paling depan (baris pertama) memiliki 16 kursi. Baris kedua memiliki 20 kursi, baris ketiga memiliki 24 kursi, dan baris-baris berikutnya selalu bertambah dengan jumlah tetap yang sama. Banyaknya kursi yang tersedia pada baris ke-8 adalah ... kursi.",
+    "options": [
+     "40",
+     "44",
+     "48",
+     "52"
+    ],
+    "correct": 1,
+    "kunci": "B. 44",
+    "bah": "Barisan kursi: 16, 20, 24, 28, ... (bertambah 4 kursi tiap baris).<br>Rumus suku ke-n: 16 + (n − 1) × 4.<br>Baris ke-8 = 16 + (7 × 4) = 16 + 28 = <b>44 kursi</b>."
+   },
+   {
+    "q": "Perhatikan barisan bilangan: 4, 7, 12, 19, 28, .... Aturan selisih penambahan antarsuku bilangan tersebut adalah ...",
+    "options": [
+     "Bertambah dengan bilangan genap berurutan mulai dari 2",
+     "Bertambah dengan bilangan ganjil berurutan mulai dari 3",
+     "Bertambah 3 pada setiap suku berikutnya",
+     "Dikalikan 2 lalu dikurangi 1"
+    ],
+    "correct": 1,
+    "kunci": "B. Bertambah dengan bilangan ganjil berurutan mulai dari 3",
+    "bah": "Hitung selisihnya: 7 − 4 = 3; 12 − 7 = 5; 19 − 12 = 7; 28 − 19 = 9.<br>Penambahan antarsuku adalah +3, +5, +7, +9, yaitu <b>bilangan ganjil berurutan mulai dari 3</b>."
+   },
+   {
+    "q": "Tiko menyusun segitiga menggunakan batang korek api dengan susunan berkait: Pola 1 (3 batang) → Pola 2 (5 batang) → Pola 3 (7 batang), dan seterusnya. Banyaknya batang korek api yang dibutuhkan Tiko untuk membuat Pola ke-10 adalah ... batang.",
+    "options": [
+     "19",
+     "20",
+     "21",
+     "23"
+    ],
+    "correct": 2,
+    "kunci": "C. 21",
+    "bah": "Pola korek api segitiga berantai: Pola 1 = 3, Pola 2 = 5, Pola 3 = 7 — selalu bertambah 2 batang setiap menambah 1 segitiga.<br>Rumus pola ke-n = 2n + 1.<br>Pola ke-10 = (2 × 10) + 1 = 20 + 1 = <b>21 batang</b>."
+   },
+   {
+    "q": "Perhatikan gambar konfigurasi noktah (titik) persegi berikut: Pola 1 = 1 titik, Pola 2 = 4 titik, Pola 3 = 9 titik, Pola 4 = 16 titik. Selisih banyaknya titik antara Pola ke-8 dan Pola ke-6 adalah ... titik.",
+    "options": [
+     "20",
+     "24",
+     "28",
+     "32"
+    ],
+    "correct": 2,
+    "kunci": "C. 28",
+    "bah": "Pola persegi ke-n memiliki titik sebanyak n<sup>2</sup>.<br>Pola ke-8 = 8<sup>2</sup> = 64 titik dan Pola ke-6 = 6<sup>2</sup> = 36 titik.<br>Selisih = 64 − 36 = <b>28 titik</b>."
+   },
+   {
+    "q": "Sejumlah lingkaran disusun bertumpuk membentuk gambar segitiga: Pola 1 (1 lingkaran) → Pola 2 (3 lingkaran) → Pola 3 (6 lingkaran), dan seterusnya. Banyaknya lingkaran pada Pola ke-7 adalah ... lingkaran.",
+    "options": [
+     "21",
+     "28",
+     "36",
+     "45"
+    ],
+    "correct": 1,
+    "kunci": "B. 28",
+    "bah": "Pola bilangan segitiga ke-n adalah 1 + 2 + 3 + ... + n = n × (n + 1)/2.<br>Pola ke-7 = 1 + 2 + 3 + 4 + 5 + 6 + 7 = 7 × 8 ÷ 2 = <b>28 lingkaran</b>."
+   },
+   {
+    "q": "Perhatikan deretan simbol visual yang tercetak berulang secara teratur pada kain batik berikut:<br>Pola berulang: [Bintang, Lingkaran, Segitiga, Persegi, Bintang, ...]<br>Simbol yang terletak pada urutan ke-58 adalah ...",
+    "options": [
+     "★ (bintang)",
+     "● (lingkaran)",
+     "▲ (segitiga)",
+     "■ (persegi)"
+    ],
+    "correct": 1,
+    "kunci": "B. ● (lingkaran)",
+    "bah": "Pola simbol berulang setiap 4 bentuk (★, ●, ▲, ■).<br>Bagi nomor urutan dengan panjang periode: 58 ÷ 4 = 14 bersisa 2.<br>Sisa 1 = ★; sisa 2 = ●; sisa 3 = ▲; sisa 0 = ■. Karena sisa 2, simbol urutan ke-58 adalah <b>● (lingkaran)</b>."
+   },
+   {
+    "q": "Lampu hias taman berkedip dengan urutan warna tetap: Merah, Kuning, Hijau, Biru, Ungu, lalu kembali lagi ke Merah, dan seterusnya. Warna lampu pada urutan ke-73 adalah ...",
+    "options": [
+     "Kuning",
+     "Hijau",
+     "Biru",
+     "Ungu"
+    ],
+    "correct": 1,
+    "kunci": "B. Hijau",
+    "bah": "Terdapat 5 warna yang berulang secara periodik (Merah = 1, Kuning = 2, Hijau = 3, Biru = 4, Ungu = 5/0).<br>Bagi 73 dengan 5: 73 ÷ 5 = 14 bersisa 3.<br>Warna urutan ke-3 adalah <b>Hijau</b>."
+   },
+   {
+    "q": "Perhatikan kelompok pola huruf yang berulang secara periodik: B, E, L, A, J, A, R, B, E, L, A, J, A, R, .... Huruf yang berada pada posisi ke-100 adalah huruf ...",
+    "options": [
+     "B",
+     "E",
+     "L",
+     "A"
+    ],
+    "correct": 1,
+    "kunci": "B. E",
+    "bah": "Kata &quot;BELAJAR&quot; terdiri atas 7 huruf yang berulang: 1 = B, 2 = E, 3 = L, 4 = A, 5 = J, 6 = A, 7 = R.<br>Bagi 100 dengan 7: 100 = 7 × 14 + 2 (sisa 2).<br>Sisa 2 berarti huruf ke-2 dalam urutan BELAJAR, yaitu <b>E</b>."
+   },
+   {
+    "q": "Seorang pengrajin menyusun ubin berbentuk segi enam beraturan dalam formasi melingkar berpusat:<br>• Lapisan ke-1 (tengah): 1 ubin<br>• Lapisan ke-2 (sekeliling lapisan 1): 6 ubin<br>• Lapisan ke-3: 12 ubin<br>• Lapisan ke-4: 18 ubin<br>Banyaknya ubin yang dibutuhkan khusus pada lapisan terluar ke-7 saja adalah ... ubin.",
+    "options": [
+     "30",
+     "36",
+     "42",
+     "48"
+    ],
+    "correct": 1,
+    "kunci": "B. 36",
+    "bah": "Lapisan 2 = 6, lapisan 3 = 12, lapisan 4 = 18 — pola penambahan lapisan luar mengikuti kelipatan 6.<br>Ubin lapisan ke-k = (k − 1) × 6.<br>Lapisan ke-7 = (7 − 1) × 6 = <b>36 ubin</b>."
+   },
+   {
+    "q": "Amati deretan bilangan Fibonacci sederhana berikut: 1, 2, 3, 5, 8, 13, 21, K. Aturan pola bilangan tersebut dan nilai K berturut-turut adalah ...",
+    "options": [
+     "Dikalikan 2 lalu dikurang 1; nilai K = 31",
+     "Menjumlahkan dua suku sebelumnya; nilai K = 34",
+     "Menambahkan bilangan prima berurutan; nilai K = 32",
+     "Menjumlahkan tiga suku sebelumnya; nilai K = 37"
+    ],
+    "correct": 1,
+    "kunci": "B. Menjumlahkan dua suku sebelumnya; nilai K = 34",
+    "bah": "Aturan barisan Fibonacci adalah menjumlahkan dua bilangan tepat sebelumnya:<br>1 + 2 = 3; 2 + 3 = 5; 3 + 5 = 8; 5 + 8 = 13; 8 + 13 = 21.<br>Maka nilai K = 13 + 21 = <b>34</b>."
+   },
+   {
+    "q": "Meja belajar di ruang diskusi dirapatkan secara memanjang satu baris: 1 meja menampung 6 orang, 2 meja menampung 10 orang, dan seterusnya dengan pola yang sama. Jika ada 9 meja yang dirapatkan secara memanjang menjadi satu barisan, banyak orang yang dapat duduk adalah ... orang.",
+    "options": [
+     "36",
+     "38",
+     "40",
+     "42"
+    ],
+    "correct": 1,
+    "kunci": "B. 38",
+    "bah": "1 meja = 6 orang; 2 meja = 10 orang; 3 meja = 14 orang — bertambah 4 orang setiap bertambah 1 meja (sisi memanjang bertambah 2 atas + 2 bawah = 4 kursi).<br>Rumus kapasitas n meja = 4n + 2.<br>Untuk 9 meja = (4 × 9) + 2 = 36 + 2 = <b>38 orang</b>."
+   },
+   {
+    "q": "Perhatikan kelompok pola gambar kartu bernomor berikut:<br>• Kelompok 1: (1, 4)<br>• Kelompok 2: (2, 7)<br>• Kelompok 3: (3, 10)<br>• Kelompok 4: (4, 13)<br>Jika pola tersebut berlanjut terus, pasangan bilangan pada Kelompok ke-12 adalah ...",
+    "options": [
+     "(12, 34)",
+     "(12, 36)",
+     "(12, 37)",
+     "(12, 40)"
+    ],
+    "correct": 2,
+    "kunci": "C. (12, 37)",
+    "bah": "Nilai a = nomor kelompok n, sehingga pada kelompok ke-12 nilai a = 12.<br>Nilai b: 4, 7, 10, 13, ... selalu bertambah 3 (rumus: 3n + 1).<br>Untuk n = 12: b = (3 × 12) + 1 = 36 + 1 = 37.<br>Pasangan kelompok ke-12 adalah <b>(12, 37)</b>."
+   },
+   {
+    "q": "Diberikan susunan bilangan: 2, 4, 8, 14, 22, 32, .... Suku berikutnya setelah bilangan 32 adalah ...",
+    "options": [
+     "42",
+     "44",
+     "46",
+     "48"
+    ],
+    "correct": 1,
+    "kunci": "B. 44",
+    "bah": "Hitung selisih antarsuku: 4 − 2 = 2 (+2); 8 − 4 = 4 (+4); 14 − 8 = 6 (+6); 22 − 14 = 8 (+8); 32 − 22 = 10 (+10).<br>Penambahan berikutnya haruslah +12, maka suku setelah 32 = 32 + 12 = <b>44</b>."
+   },
+   {
+    "q": "Balok mainan kubus kayu ditumpuk membentuk piramida bertingkat: Tingkat 1 (1 balok), Tingkat 2 (3 balok), Tingkat 3 (5 balok), Tingkat 4 (7 balok). Jika menara tersebut dibuat setinggi 6 tingkat dengan pola bilangan ganjil yang sama, jumlah seluruh balok kayu yang digunakan untuk menyusun menara tersebut adalah ... balok.",
+    "options": [
+     "30",
+     "32",
+     "36",
+     "42"
+    ],
+    "correct": 2,
+    "kunci": "C. 36",
+    "bah": "Jumlah balok pada 6 tingkat adalah deret 6 bilangan ganjil pertama:<br>1 + 3 + 5 + 7 + 9 + 11 = <b>36 balok</b>.<br>(Secara matematis: jumlah n bilangan ganjil pertama selalu sama dengan n<sup>2</sup> = 6<sup>2</sup> = 36)."
+   },
+   {
+    "q": "Doni membuat barisan pola bilangan dengan aturan: &quot;Kalikan suku sebelumnya dengan 2, kemudian kurangkan dengan 3&quot;. Jika suku pertama barisan Doni adalah 5, maka nilai suku ke-5 barisan tersebut adalah ...",
+    "options": [
+     "35",
+     "43",
+     "65",
+     "67"
+    ],
+    "correct": 0,
+    "kunci": "A. 35",
+    "bah": "Terapkan aturan (2 × suku sebelumnya) − 3 secara bertahap:<br>Suku 1 = 5<br>Suku 2 = (2 × 5) − 3 = 7<br>Suku 3 = (2 × 7) − 3 = 11<br>Suku 4 = (2 × 11) − 3 = 19<br>Suku 5 = (2 × 19) − 3 = 38 − 3 = <b>35</b>."
+   }
+  ]
+ },
+ {
+  "id": "data",
+  "no": 11,
+  "judul": "Analisis Data",
+  "topik": "Penyajian & Analisis Data",
+  "bentuk": "pg",
+  "questions": [
+   {
+    "q": "Berikut adalah data berat badan (dalam kg) sepuluh siswa kelas IV: 32, 28, 35, 30, 28, 34, 38, 30, 29, 36.<br>Urutan data tersebut dari yang terkecil sampai yang terbesar adalah ...",
+    "options": [
+     "28, 28, 29, 30, 30, 32, 34, 35, 36, 38",
+     "28, 29, 30, 30, 32, 34, 35, 36, 38, 38",
+     "28, 28, 29, 30, 32, 34, 34, 35, 36, 38",
+     "28, 29, 30, 32, 34, 35, 36, 38, 30, 28"
+    ],
+    "correct": 0,
+    "kunci": "A. 28, 28, 29, 30, 30, 32, 34, 35, 36, 38",
+    "bah": "Susun data dari yang bernilai terkecil ke terbesar:<br><b>28, 28, 29, 30, 30, 32, 34, 35, 36, 38</b>. Semua 10 data terurut secara tepat dan lengkap pada pilihan A."
+   },
+   {
+    "q": "Hasil pengukuran tinggi badan (dalam cm) lima anggota regu pramuka tercatat: 136, 142, 133, 145, 138.<br>Selisih antara siswa yang paling tinggi dengan siswa yang paling pendek (jangkauan data) adalah ... cm.",
+    "options": [
+     "9",
+     "11",
+     "12",
+     "15"
+    ],
+    "correct": 2,
+    "kunci": "C. 12",
+    "bah": "Data tertinggi = 145 cm dan data terendah = 133 cm.<br>Jangkauan (range) = 145 − 133 = <b>12 cm</b>."
+   },
+   {
+    "q": "Nilai ulangan matematika 8 orang siswa adalah sebagai berikut: 75, 80, 65, 90, 85, 70, 95, 80. Banyaknya siswa yang memperoleh nilai lebih dari atau sama dengan 80 adalah ... orang.",
+    "options": [
+     "3",
+     "4",
+     "5",
+     "6"
+    ],
+    "correct": 2,
+    "kunci": "C. 5",
+    "bah": "Urutkan nilai: 65, 70, 75, 80, 80, 85, 90, 95.<br>Nilai yang ≥ 80 adalah 80, 80, 85, 90, dan 95, ada sebanyak <b>5 orang siswa</b>."
+   },
+   {
+    "q": "Guru mencatat ukuran sepatu siswa kelas IV dalam tabel frekuensi berikut:<br><table class='qt'><tr><th>Ukuran Sepatu</th><th>Banyak Siswa (Frekuensi)</th></tr><tr><td>32</td><td>4</td></tr><tr><td>33</td><td>6</td></tr><tr><td>34</td><td>12</td></tr><tr><td>35</td><td>8</td></tr><tr><td>36</td><td>2</td></tr></table><br>Pernyataan berikut yang PALING TEPAT berdasarkan data pada tabel di atas adalah ...",
+    "options": [
+     "Jumlah seluruh siswa yang didata adalah 30 siswa",
+     "Siswa paling banyak memakai sepatu dengan ukuran 36",
+     "Siswa yang memakai sepatu ukuran 34 adalah dua kali lipat dari ukuran 33",
+     "Siswa yang memakai ukuran sepatu di bawah 34 berjumlah 12 orang"
+    ],
+    "correct": 2,
+    "kunci": "C. Siswa yang memakai sepatu ukuran 34 adalah dua kali lipat dari ukuran 33",
+    "bah": "Cek setiap pilihan:<br>• Total siswa = 4 + 6 + 12 + 8 + 2 = 32 orang (pilihan A salah).<br>• Ukuran paling banyak adalah 34 dengan 12 orang (pilihan B salah).<br>• Ukuran 34 = 12 orang dan ukuran 33 = 6 orang; karena 12 = 2 × 6, <b>pernyataan pilihan C benar</b>.<br>• Ukuran di bawah 34 = 4 + 6 = 10 orang (pilihan D salah)."
+   },
+   {
+    "q": "Perhatikan tabel pencatatan turus pilihan ekstrakurikuler siswa kelas IV berikut:<br><table class='qt'><tr><th>Ekstrakurikuler</th><th>Jumlah Siswa</th></tr><tr><td>Seni Tari</td><td>7</td></tr><tr><td>Futsal</td><td>12</td></tr><tr><td>Pramuka</td><td>9</td></tr></table><br>Berapakah selisih banyaknya siswa yang memilih futsal dibandingkan siswa yang memilih seni tari?",
+    "options": [
+     "3 siswa",
+     "4 siswa",
+     "5 siswa",
+     "7 siswa"
+    ],
+    "correct": 2,
+    "kunci": "C. 5 siswa",
+    "bah": "Dari tabel turus: Futsal = 2 ikat (10) + 2 batang = 12 siswa; Seni Tari = 1 ikat (5) + 2 batang = 7 siswa.<br>Selisih = 12 − 7 = <b>5 siswa</b>."
+   },
+   {
+    "q": "Perhatikan piktogram (diagram gambar) penjualan buku tulis di Koperasi Siswa selama 4 hari berikut:<br><table class='qt'><tr><th>Hari</th><th>Simbol Buku Terjual</th></tr><tr><td>Senin</td><td>■ ■ ■ □</td></tr><tr><td>Selasa</td><td>■ ■ ■ ■ □</td></tr><tr><td>Rabu</td><td>■ ■</td></tr><tr><td>Kamis</td><td>■ ■ ■ ■ ■</td></tr></table><br>Keterangan: [■ besar] mewakili 10 buku, [□ kecil] mewakili 5 buku.<br>Total buku tulis yang berhasil terjual selama hari Selasa dan Kamis adalah ... buku.",
+    "options": [
+     "85",
+     "90",
+     "95",
+     "100"
+    ],
+    "correct": 2,
+    "kunci": "C. 95",
+    "bah": "• Selasa = 4 kotak besar + 1 kotak kecil = (4 × 10) + 5 = 45 buku.<br>• Kamis = 5 kotak besar = 5 × 10 = 50 buku.<br>Total Selasa dan Kamis = 45 + 50 = <b>95 buku</b>."
+   },
+   {
+    "q": "Berdasarkan piktogram pada nomor 6 di atas, hari apakah yang mencatat penjualan buku paling sedikit dan berapa jumlahnya?",
+    "options": [
+     "Senin, 3 buku",
+     "Rabu, 20 buku",
+     "Senin, 30 buku",
+     "Rabu, 2 buku"
+    ],
+    "correct": 1,
+    "kunci": "B. Rabu, 20 buku",
+    "bah": "Penjualan terkecil ada pada hari <b>Rabu</b>, yaitu 2 gambar simbol buku besar = 2 × 10 = <b>20 buku</b>."
+   },
+   {
+    "q": "Perhatikan diagram batang hasil panen buah apel di Desa Sukamaju berikut ini:<br><table class='qt'><tr><th>Tahun</th><th>Panen (Ton)</th></tr><tr><td>2021</td><td>35</td></tr><tr><td>2022</td><td>50</td></tr><tr><td>2023</td><td>45</td></tr><tr><td>2024</td><td>60</td></tr></table><br>Kenaikan panen apel terbesar terjadi antara tahun ...",
+    "options": [
+     "2021 ke 2022 sebesar 15 ton",
+     "2022 ke 2023 sebesar 10 ton",
+     "2023 ke 2024 sebesar 15 ton",
+     "Tahun 2021 ke 2022 dan 2023 ke 2024 sama-sama mengalami kenaikan terbesar yaitu 15 ton"
+    ],
+    "correct": 3,
+    "kunci": "D. Tahun 2021 ke 2022 dan 2023 ke 2024 sama-sama mengalami kenaikan terbesar yaitu 15 ton",
+    "bah": "Hitung perubahan per tahun:<br>• 2021 ke 2022: naik dari 35 ke 50 = +15 ton.<br>• 2022 ke 2023: turun dari 50 ke 45 = −5 ton.<br>• 2023 ke 2024: naik dari 45 ke 60 = +15 ton.<br>Jadi kenaikan terbesar terjadi pada <b>2021 ke 2022 dan 2023 ke 2024</b>, yang keduanya sama-sama naik 15 ton."
+   },
+   {
+    "q": "Berdasarkan diagram batang pada nomor 8, total hasil panen buah apel selama empat tahun tersebut adalah ... ton.",
+    "options": [
+     "170",
+     "180",
+     "190",
+     "200"
+    ],
+    "correct": 2,
+    "kunci": "C. 190",
+    "bah": "Total panen = 35 + 50 + 45 + 60 = <b>190 ton</b>."
+   },
+   {
+    "q": "Perhatikan diagram batang mendatar (horizontal) tentang jenis buah kesukaan siswa kelas IV berikut:<br><table class='qt'><tr><th>Jenis Buah</th><th>Banyak Siswa</th></tr><tr><td>Mangga</td><td>14</td></tr><tr><td>Jeruk</td><td>8</td></tr><tr><td>Pisang</td><td>10</td></tr><tr><td>Apel</td><td>6</td></tr></table><br>Jika seluruh siswa di kelas IV tersebut hanya memilih satu jenis buah kesukaan, jumlah siswa perempuan dan laki-laki seluruhnya di kelas itu adalah ... orang.",
+    "options": [
+     "36",
+     "38",
+     "40",
+     "42"
+    ],
+    "correct": 1,
+    "kunci": "B. 38",
+    "bah": "Jumlah siswa = penyuka Mangga (14) + Jeruk (8) + Pisang (10) + Apel (6) = 14 + 8 + 10 + 6 = <b>38 orang</b>."
+   },
+   {
+    "q": "Dari diagram batang mendatar nomor 10 di atas, perbandingan antara siswa yang menyukai jeruk terhadap siswa yang menyukai mangga dalam bentuk paling sederhana adalah ...",
+    "options": [
+     "3 : 5",
+     "4 : 7",
+     "2 : 3",
+     "7 : 4"
+    ],
+    "correct": 1,
+    "kunci": "B. 4 : 7",
+    "bah": "Rasio Jeruk : Mangga = 8 : 14.<br>Bagi kedua angka dengan FPB(8, 14) = 2, diperoleh bentuk sederhana <b>4 : 7</b>."
+   },
+   {
+    "q": "Diketahui data acak jumlah kelereng milik 6 anak: 48, 52, 39, 65, 44, 58. Jangkauan dari data jumlah kelereng tersebut adalah ... butir.",
+    "options": [
+     "24",
+     "26",
+     "27",
+     "29"
+    ],
+    "correct": 1,
+    "kunci": "B. 26",
+    "bah": "Data diurutkan: 39, 44, 48, 52, 58, 65.<br>Data tertinggi = 65 dan data terendah = 39.<br>Jangkauan = 65 − 39 = <b>26 butir</b>."
+   },
+   {
+    "q": "Perhatikan diagram batang pengunjung perpustakaan sekolah selama satu minggu berikut:<br><table class='qt'><tr><th>Hari</th><th>Pengunjung</th></tr><tr><td>Senin</td><td>45</td></tr><tr><td>Selasa</td><td>55</td></tr><tr><td>Rabu</td><td>30</td></tr><tr><td>Kamis</td><td>50</td></tr><tr><td>Jumat</td><td>20</td></tr></table><br>Penurunan jumlah pengunjung perpustakaan yang paling curam (terbesar) terjadi pada hari ...",
+    "options": [
+     "Senin ke Selasa",
+     "Selasa ke Rabu",
+     "Rabu ke Kamis",
+     "Kamis ke Jumat"
+    ],
+    "correct": 3,
+    "kunci": "D. Kamis ke Jumat",
+    "bah": "Perhatikan penurunan pengunjung:<br>• Senin ke Selasa: naik (45 → 55).<br>• Selasa ke Rabu: turun 55 → 30 = turun 25 orang.<br>• Rabu ke Kamis: naik (30 → 50).<br>• Kamis ke Jumat: turun 50 → 20 = <b>turun 30 orang</b> — paling tajam."
+   },
+   {
+    "q": "Berdasarkan diagram batang pada nomor 13, rata-rata pengunjung harian jika dihitung dari jumlah seluruh pengunjung dibagi 5 hari operasional adalah ... orang.",
+    "options": [
+     "38",
+     "40",
+     "42",
+     "45"
+    ],
+    "correct": 1,
+    "kunci": "B. 40",
+    "bah": "Total pengunjung = 45 + 55 + 30 + 50 + 20 = 200 orang.<br>Rata-rata per hari = 200 ÷ 5 = <b>40 orang</b>."
+   },
+   {
+    "q": "Bu Guru menyajikan data jenis hewan peliharaan siswa dalam bentuk piktogram dengan keterangan: <b>setiap 1 bulatan [●] mewakili 4 orang siswa</b>. Jika terdapat data tambahan hewan kelinci yang dipelihara oleh 10 orang siswa, gambar simbol yang tepat untuk ditambahkan pada baris kelinci adalah ...",
+    "options": [
+     "2 bulatan penuh dan 1 setengah bulatan",
+     "2 bulatan penuh saja",
+     "3 bulatan penuh",
+     "2 bulatan penuh dan 1 seperempat bulatan"
+    ],
+    "correct": 0,
+    "kunci": "A. 2 bulatan penuh dan 1 setengah bulatan",
+    "bah": "Karena 1 bulatan [●] mewakili 4 orang, maka untuk 10 orang siswa:<br>10 ÷ 4 = 2 sisa 2 (2 orang adalah separuh dari 4, yaitu setengah bulatan [◐]).<br>Jadi simbol yang ditambahkan adalah <b>2 bulatan penuh dan 1 setengah bulatan</b>."
+   },
+   {
+    "q": "Data nilai ulangan harian IPA kelas IV: 8, 9, 7, 8, 6, 10, 8, 7, 9, 8, 7, 6, 8, 9, 7. Nilai yang paling sering muncul (modus data) adalah ...",
+    "options": [
+     "Nilai 7",
+     "Nilai 8",
+     "Nilai 9",
+     "Nilai 10"
+    ],
+    "correct": 1,
+    "kunci": "B. Nilai 8",
+    "bah": "Frekuensi tiap nilai:<br>• Nilai 6 = 2 siswa • Nilai 7 = 4 siswa • <b>Nilai 8 = 5 siswa</b> • Nilai 9 = 3 siswa • Nilai 10 = 1 siswa<br>Nilai yang paling sering muncul adalah nilai <b>8</b> (sebanyak 5 kali)."
+   },
+   {
+    "q": "Perhatikan tabel data frekuensi hasil sumbangan paket sembako di 4 RW berikut:<br><table class='qt'><tr><th>Nama Wilayah</th><th>Banyak Paket (Dus)</th></tr><tr><td>RW 01</td><td>48</td></tr><tr><td>RW 02</td><td>36</td></tr><tr><td>RW 03</td><td>52</td></tr><tr><td>RW 04</td><td>X</td></tr></table><br>Jika total sumbangan dari keempat RW tersebut adalah 180 dus paket sembako, maka persentase sumbangan paket dari RW 04 terhadap seluruh sumbangan adalah ...",
+    "options": [
+     "20%",
+     "24%",
+     "25%",
+     "30%"
+    ],
+    "correct": 1,
+    "kunci": "B. 24%",
+    "bah": "Paket RW 04 = 180 − (48 + 36 + 52) = 180 − 136 = 44 dus.<br>Persentase RW 04 = (44 ÷ 180) × 100% ≈ 24,4% ≈ <b>24%</b> (pilihan terdekat yang tepat)."
+   },
+   {
+    "q": "Diberikan diagram batang ganda nilai rata-rata ulangan Matematika dan IPA untuk tiga kelas IV:<br><table class='qt'><tr><th>Kelas</th><th>Matematika</th><th>IPA</th></tr><tr><td>Kelas 4A</td><td>85</td><td>75</td></tr><tr><td>Kelas 4B</td><td>80</td><td>85</td></tr><tr><td>Kelas 4C</td><td>90</td><td>80</td></tr></table><br>Kelas manakah yang memiliki nilai rata-rata Matematika tertinggi dan berapakah nilainya?",
+    "options": [
+     "Kelas 4A dengan nilai 85",
+     "Kelas 4B dengan nilai 80",
+     "Kelas 4C dengan nilai 90",
+     "Kelas 4C dengan nilai 80"
+    ],
+    "correct": 2,
+    "kunci": "C. Kelas 4C dengan nilai 90",
+    "bah": "Dari diagram batang ganda: nilai Matematika kelas 4A = 85, kelas 4B = 80, dan kelas 4C = 90.<br>Nilai Matematika tertinggi diraih oleh <b>Kelas 4C dengan nilai 90</b>."
+   },
+   {
+    "q": "Dari diagram batang ganda pada nomor 18, selisih nilai rata-rata Matematika dan IPA terbesar ditemukan pada kelas ...",
+    "options": [
+     "Kelas 4A dan Kelas 4C (sama-sama berselisih 10 poin)",
+     "Kelas 4B (berselisih 5 poin)",
+     "Hanya Kelas 4A",
+     "Hanya Kelas 4C"
+    ],
+    "correct": 0,
+    "kunci": "A. Kelas 4A dan Kelas 4C (sama-sama berselisih 10 poin)",
+    "bah": "Selisih nilai antarmapel pada tiap kelas:<br>• Kelas 4A: |85 − 75| = 10 poin<br>• Kelas 4B: |80 − 85| = 5 poin<br>• Kelas 4C: |90 − 80| = 10 poin<br>Selisih terbesar adalah 10 poin, yang dimiliki bersama oleh <b>Kelas 4A dan Kelas 4C</b>."
+   },
+   {
+    "q": "Doni mengumpulkan data berat sampah daur ulang (kardus) selama 5 hari (dalam kg): 14, 18, 12, 22, 19.<br>Jika pada hari ke-6 Doni mengumpulkan sejumlah kardus sehingga jangkauan data berubah menjadi 15 kg, berapakah kemungkinan berat kardus yang dikumpulkan Doni pada hari ke-6?",
+    "options": [
+     "25 kg atau 9 kg",
+     "27 kg atau 7 kg",
+     "26 kg atau 8 kg",
+     "24 kg atau 10 kg"
+    ],
+    "correct": 1,
+    "kunci": "B. 27 kg atau 7 kg",
+    "bah": "Data awal diurutkan: 12, 14, 18, 19, 22. Terendah = 12, tertinggi = 22 (jangkauan awal = 22 − 12 = 10).<br>Agar jangkauan menjadi 15:<br>• Kasus 1: nilai baru menjadi tertinggi baru → Nilai Baru − 12 = 15 ⇒ Nilai Baru = <b>27 kg</b>.<br>• Kasus 2: nilai baru menjadi terendah baru → 22 − Nilai Baru = 15 ⇒ Nilai Baru = <b>7 kg</b>.<br>Jadi kemungkinan nilai hari ke-6 adalah <b>27 kg atau 7 kg</b>."
+   }
+  ]
+ }
+];
+const TOTAL_SOAL=BANK.reduce(function(n,b){return n+b.questions.length;},0);
+/* ================== UTIL ================== */
+const $=s=>document.querySelector(s);
+function el(t,c,h){const e=document.createElement(t);if(c)e.className=c;if(h!==undefined)e.innerHTML=h;return e;}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function fmtTime(s){s=Math.max(0,Math.round(s));const m=Math.floor(s/60),d=s%60;return String(m).padStart(2,'0')+':'+String(d).padStart(2,'0');}
+
+/* ================== PARSER JAWABAN ISIAN ================== */
+function parseCore(s){
+  s=s.trim(); if(!s)return NaN;
+  let m=s.match(/^(-?\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+  if(m){const w=Number(m[1]);return w+Math.sign(w||1)*Number(m[2])/Number(m[3]);}
+  m=s.match(/^(-?\d+)\s*\/\s*(\d+)$/); if(m)return Number(m[1])/Number(m[2]);
+  m=s.match(/^-?\d{1,3}(?:\.\d{3})+$/); if(m)return Number(s.replace(/\./g,''));
+  m=s.match(/^(-?\d+),(\d+)$/); if(m)return Number(m[1]+'.'+m[2]);
+  const v=Number(s.replace(/\s+/g,''));
+  return Number.isFinite(v)?v:NaN;
+}
+function parseValue(raw){
+  if(raw===null||raw===undefined)return NaN;
+  let s=String(raw).toLowerCase().trim(); if(!s)return NaN;
+  s=s.replace(/[−–—]/g,'-');
+  s=s.replace(/¼/g,' 1/4').replace(/½/g,' 1/2').replace(/¾/g,' 3/4')
+     .replace(/⅓/g,' 1/3').replace(/⅔/g,' 2/3').replace(/⅕/g,' 1/5').replace(/⅖/g,' 2/5')
+     .replace(/⅗/g,' 3/5').replace(/⅘/g,' 4/5').replace(/⅙/g,' 1/6').replace(/⅚/g,' 5/6')
+     .replace(/⅛/g,' 1/8').replace(/⅜/g,' 3/8').replace(/⅝/g,' 5/8').replace(/⅞/g,' 7/8');
+  s=s.replace(/\brp\.?\s*/g,' ');
+  s=s.replace(/persen/g,'%');
+  s=s.replace(/(\d)\s*(km²|km2|m²|m2|km|cm|mm|kg|kilometer|kilogram|liter|meter|menit|jam|hari|minggu|orang|ekor|kursi|tahun|siswa|warga|ayam|buah|biji|putaran|rpm|detik|dtk|derajat|celcius|bagian|lembar|unit)/g,'$1 ');
+  s=s.replace(/°/g,' ');
+  s=s.replace(/[a-z]+\s*=/g,' ');
+  s=s.replace(/[=]/g,' ');
+  s=s.replace(/[a-z]+/g,' ');
+  s=s.replace(/\s+/g,' ').trim();
+  if(!s)return NaN;
+  if(s.indexOf('%')>-1){const inner=s.replace(/%/g,'').trim();const v=parseCore(inner);return Number.isFinite(v)?v/100:NaN;}
+  return parseCore(s);
+}
+function normText(raw){
+  let s=String(raw||'').toLowerCase().trim();
+  s=s.replace(/persen/g,'%');
+  s=s.replace(/\s+/g,'');
+  s=s.replace(/[&;=\/]/g,'dan');
+  return s;
+}
+function normSet(raw){
+  let s=String(raw||'').toLowerCase().trim();
+  s=s.replace(/\bdan\b/g,',');
+  s=s.replace(/[{}()\[\]<>=]/g,' ');
+  s=s.replace(/[;\s]+/g,',');
+  s=s.replace(/,+/g,',').replace(/^,+|,+$/g,'');
+  if(!s)return '';
+  const toks=s.split(',').map(t=>t.trim()).filter(Boolean);
+  const allNum=toks.length>0&&toks.every(t=>/^-?\d+$/.test(t));
+  if(allNum)toks.sort(function(a,b){return Number(a)-Number(b);}); else toks.sort();
+  return toks.join(',');
+}
+function parseSeq(raw){
+  let s=String(raw||'').toLowerCase().trim(); if(!s)return null;
+  s=s.replace(/[−–—]/g,'-');
+  s=s.replace(/,(?=\s)/g,'|');
+  let parts=s.split(/[;<>|]+/).map(t=>t.trim()).filter(Boolean);
+  if(parts.length<2)parts=s.split(/\s+/).filter(Boolean);
+  const vals=parts.map(parseValue);
+  if(!vals.length||vals.some(v=>!Number.isFinite(v)))return null;
+  return vals;
+}
+function parsePair(raw){
+  let s=String(raw||'').toLowerCase().trim(); if(!s)return null;
+  s=s.replace(/[−–—]/g,'-').replace(/\bdan\b/g,',');
+  const parts=s.split(/[,;\s<>|]+/).map(t=>t.trim()).filter(Boolean);
+  if(parts.length!==2)return null;
+  const vals=parts.map(parseValue);
+  if(vals.some(v=>!Number.isFinite(v)))return null;
+  return vals;
+}
+function eq(a,b){
+  if(!Number.isFinite(a)||!Number.isFinite(b))return false;
+  const d=Math.abs(a-b);
+  return d<=0.0051||(b!==0&&d<=Math.abs(b)*1e-9);
+}
+function judge(q,raw){
+  if(q.kind==='pg'||Array.isArray(q.options))return raw===q.correct;
+  if(q.kind==='num'){const v=parseValue(raw);return q.ans.some(t=>eq(v,t));}
+  if(q.kind==='set')return normSet(raw)===q.ans[0];
+  if(q.kind==='text')return q.ans.indexOf(normText(raw))>-1;
+  if(q.kind==='seq'){const a=parseSeq(raw);return !!a&&a.length===q.ans.length&&q.ans.every((t,i)=>eq(a[i],t));}
+  if(q.kind==='pair'){const a=parsePair(raw);return !!a&&eq(a[0],q.ans[0])&&eq(a[1],q.ans[1]);}
+  return false;
+}
+
+/* ================== STATE ================== */
+let S=null,TMR=null,T0=Date.now(),LIMIT=0,checked=false,selOpt=-1,inTrans=false;
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(function(e){e.classList.remove('active');});
+  document.querySelector(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ================== COVER ================== */
+function renderCover(){
+  const g=$('#gridBab');g.innerHTML='';
+  const all=el('button','bab-card bab-all','<span class="bab-no">★</span><span class="bab-judul">Latihan Semua Bab</span><span class="bab-meta">'+TOTAL_SOAL+' Soal • Pilihan Ganda</span>');
+  all.onclick=function(){tryStart(BANK.map(function(b){return b.id;}));};
+  g.appendChild(all);
+  BANK.forEach(function(b){
+    const c=el('button','bab-card','<span class="bab-no">'+b.no+'</span><span class="bab-judul">'+b.judul+'</span><span class="bab-meta">'+b.questions.length+' Soal • '+(b.bentuk==='pg'?'Pilihan Ganda':'Isian Singkat')+'</span>');
+    c.onclick=function(){tryStart([b.id]);};
+    g.appendChild(c);
+  });
+}
+function tryStart(ids){
+  const name=$('#inpNama').value.trim();
+  const err=$('#errNama');
+  if(!name){
+    err.textContent='Isi dulu nama siswa di kolom atas ya.';
+    $('#inpNama').classList.add('shake');
+    setTimeout(function(){$('#inpNama').classList.remove('shake');},400);
+    $('#inpNama').focus();return;
+  }
+  err.textContent='';
+  let w=parseInt($('#inpWaktu').value,10);
+  if(isNaN(w))w=120;
+  w=Math.max(0,Math.min(3600,w));
+  startSession(name,w,ids);
+}
+function startSession(name,time,ids){
+  const tasks=[];
+  ids.forEach(function(cid){
+    const ch=BANK.find(function(b){return b.id===cid;});
+    ch.questions.forEach(function(q,qi){tasks.push({ch:ch,q:q,qi:qi});});
+  });
+  S={name:name,time:time,ids:ids,tasks:tasks,idx:0,rec:tasks.map(function(){return{st:null,t:0};})};
+  $('#qName').textContent=name;
+  checked=false;inTrans=false;
+  showScreen('#screen-quiz');
+  renderQ();
+}
+
+/* ================== TIMER ================== */
+function elapsed(){return (Date.now()-T0)/1000;}
+function stopTimerInt(){if(TMR){clearInterval(TMR);TMR=null;}}
+function recordTime(){
+  let t=(LIMIT>0)?Math.min(LIMIT,elapsed()):elapsed();
+  return Math.round(t*10)/10;
+}
+function startTimer(){
+  stopTimerInt();
+  LIMIT=S.time;T0=Date.now();
+  const box=$('#qTimerBox');
+  box.className='timer'+(LIMIT===0?' free':'');
+  updateTimerDisp();
+  TMR=setInterval(function(){
+    if(LIMIT>0&&elapsed()>=LIMIT){onTimeUp();return;}
+    updateTimerDisp();
+  },250);
+}
+function updateTimerDisp(){
+  const box=$('#qTimerBox'),disp=$('#qTimer');
+  if(!box||!disp)return;
+  let s;
+  if(LIMIT>0){s=Math.max(0,Math.ceil(LIMIT-elapsed()));box.classList.toggle('danger',s<=10&&s>0);}
+  else{s=Math.floor(elapsed());}
+  disp.textContent=fmtTime(s);
+}
+
+/* ================== RENDER SOAL ================== */
+function curTask(){return S.tasks[S.idx];}
+function renderQ(){
+  checked=false;selOpt=-1;inTrans=false;
+  const t=curTask(),ch=t.ch;
+  $('#qBab').textContent='Bab '+ch.no+' • '+ch.judul+' — '+ch.topik;
+  $('#qNum').textContent='Soal '+(t.qi+1)+' dari '+ch.questions.length;
+  $('#qType').textContent=ch.bentuk==='pg'?'Pilihan Ganda':'Isian Singkat';
+  $('#qText').innerHTML=t.q.q;
+  $('#qProg').style.width=(S.idx/S.tasks.length*100)+'%';
+  const fb=$('#qFeedback');fb.innerHTML='';fb.className='q-feedback';
+  const ans=$('#qAnswer');ans.innerHTML='';
+  if(ch.bentuk==='pg'){
+    const list=el('div','opt-list');
+    t.q.options.forEach(function(o,i){
+      const b=el('button','opt','<span class="opt-letter">'+'ABCD'[i]+'</span><span class="opt-text">'+o+'</span>');
+      b.onclick=function(){
+        if(checked)return;
+        selOpt=i;
+        list.querySelectorAll('.opt').forEach(function(x,j){x.classList.toggle('picked',j===i);});
+        const w=$('#warnInline');if(w)w.remove();
+        const bc=$('#btnCheck');if(bc)bc.focus();
+      };
+      list.appendChild(b);
+    });
+    ans.appendChild(list);
+  }else{
+    const inp=el('input','ans-input');
+    inp.id='inpJawab';inp.type='text';inp.autocomplete='off';inp.maxLength='80';
+    inp.placeholder=t.q.ph||'Ketik jawabanmu di sini...';
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();onCheck();}});
+    inp.addEventListener('input',function(){
+      const w=$('#warnInline');if(w)w.remove();
+      inp.classList.remove('shake');
+    });
+    ans.appendChild(inp);
+  }
+  const act=$('#qActions');act.innerHTML='';
+  const bc=el('button','btn btn-primary','Cek Jawaban');bc.id='btnCheck';bc.onclick=onCheck;
+  const bs=el('button','btn btn-ghost','Lewati Soal');bs.id='btnSkip';bs.onclick=onSkip;
+  act.appendChild(bc);act.appendChild(bs);
+  startTimer();
+  if(ch.bentuk!=='pg')setTimeout(function(){const i=$('#inpJawab');if(i)i.focus();},60);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ================== AKSI JAWAB ================== */
+function warnAnswer(msg){
+  const t=curTask();
+  if(t.ch.bentuk!=='pg'){
+    const inp=$('#inpJawab');
+    if(inp){inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');inp.focus();}
+  }
+  let w=$('#warnInline');
+  if(!w){w=el('div','warn-inline');w.id='warnInline';$('#qActions').appendChild(w);}
+  w.textContent=msg;
+}
+function onCheck(){
+  if(checked||!S)return;
+  const t=curTask();
+  let raw=null;
+  if(t.ch.bentuk==='pg'){
+    if(selOpt<0){warnAnswer('Pilih salah satu jawaban (A/B/C/D) terlebih dahulu.');return;}
+    raw=selOpt;
+  }else{
+    const inp=$('#inpJawab');
+    if(!inp.value.trim()){warnAnswer('Isi jawabanmu dulu, atau tekan tombol "Lewati Soal".');return;}
+    raw=inp.value;
+  }
+  stopTimerInt();
+  const time=recordTime();
+  const ok=judge(t.q,raw);
+  S.rec[S.idx]={st:ok?'benar':'salah',t:time};
+  checked=true;
+  showFeedback(ok?'benar':'salah',time,(t.ch.bentuk==='pg')?null:raw,false);
+  lockAfterCheck(t,ok);
+}
+function onSkip(){
+  if(checked||!S)return;
+  stopTimerInt();
+  const time=recordTime();
+  S.rec[S.idx]={st:'kosong',t:time};
+  checked=true;
+  showFeedback('kosong',time,null,false);
+  lockAfterCheck(curTask(),false);
+}
+function onTimeUp(){
+  if(checked||!S)return;
+  stopTimerInt();
+  const t=curTask();
+  let st='kosong',raw=null;
+  if(t.ch.bentuk==='pg'){
+    if(selOpt>=0){st=judge(t.q,selOpt)?'benar':'salah';raw=selOpt;}
+  }else{
+    const inp=$('#inpJawab');
+    if(inp&&inp.value.trim()){st=judge(t.q,inp.value)?'benar':'salah';raw=inp.value;}
+  }
+  const time=LIMIT>0?LIMIT:recordTime();
+  S.rec[S.idx]={st:st,t:time};
+  checked=true;
+  showFeedback(st,time,(t.ch.bentuk==='pg'||st==='kosong')?null:raw,true);
+  lockAfterCheck(t,st==='benar');
+}
+function lockAfterCheck(t,ok){
+  const act=$('#qActions');act.innerHTML='';
+  const isLast=S.idx===S.tasks.length-1;
+  const nxt=isLast?null:S.tasks[S.idx+1].ch;
+  let label='Soal Berikutnya';
+  if(isLast)label='Lihat Hasil Latihan';
+  else if(nxt.id!==t.ch.id)label='Lanjut ke Bab '+nxt.no+': '+nxt.judul;
+  const bn=el('button','btn btn-primary',label+' →');
+  bn.id='btnNext';
+  bn.onclick=onNext;
+  act.appendChild(bn);
+  bn.focus();
+  if(t.ch.bentuk==='pg'){
+    document.querySelectorAll('#qAnswer .opt').forEach(function(o,i){
+      o.disabled=true;
+      if(i===t.q.correct)o.classList.add('right');
+      else if(i===selOpt&&!ok)o.classList.add('wrong');
+    });
+  }else{
+    const inp=$('#inpJawab');if(inp)inp.disabled=true;
+  }
+}
+function showFeedback(st,time,raw,timeUp){
+  const t=curTask();
+  const fb=$('#qFeedback');
+  fb.className='q-feedback show '+st;
+  const head=st==='benar'?'Jawaban Benar!':(st==='salah'?'Jawaban Belum Tepat':'Tidak Dijawab');
+  const mark=st==='benar'?'✓':(st==='salah'?'✗':'–');
+  let html='<div class="fb-head"><span class="fb-mark">'+mark+'</span>'+head+(timeUp?' <span class="fb-timeup">— waktu habis</span>':'')+'</div>';
+  html+='<div class="fb-kunci">Kunci: <b>'+t.q.kunci+'</b><span class="fb-time"> • waktu pengerjaan: '+fmtTime(time)+'</span></div>';
+  if(st==='salah'&&raw!==null&&raw!==undefined&&t.ch.bentuk!=='pg'){
+    html+='<div class="fb-jawabanmu">Jawabanmu: <b>'+esc(String(raw))+'</b></div>';
+  }
+  html+='<div class="fb-bah"><div class="fb-bah-title">Pembahasan</div><div class="fb-bah-body">'+t.q.bah+'</div></div>';
+  fb.innerHTML=html;
+}
+
+/* ================== NAVIGASI ================== */
+function onNext(){
+  if(!checked)return;
+  const prevCh=curTask().ch;
+  S.idx++;
+  if(S.idx>=S.tasks.length){finish();return;}
+  const nextCh=curTask().ch;
+  if(nextCh.id!==prevCh.id)renderTransition(prevCh,nextCh);
+  else renderQ();
+}
+function renderTransition(done,next){
+  inTrans=true;checked=true;
+  stopTimerInt();
+  const st=statsForCh(done);
+  $('#qBab').textContent='Bab '+done.no+' • '+done.judul;
+  $('#qNum').textContent='Bab Selesai';
+  $('#qType').textContent='Rekap Bab';
+  $('#qText').innerHTML='<div class="trans"><div class="trans-title">Bab '+done.no+' — '+esc(done.judul)+' selesai!</div>'
+    +'<div class="trans-stats"><span class="ts ok">Benar: '+st.benar+'</span><span class="ts bad">Salah: '+st.salah+'</span><span class="ts emp">Tidak Dijawab: '+st.kosong+'</span></div>'
+    +'<div class="trans-next">Bab berikutnya: <b>Bab '+next.no+' — '+esc(next.judul)+'</b></div></div>';
+  $('#qAnswer').innerHTML='';
+  const fb=$('#qFeedback');fb.innerHTML='';fb.className='q-feedback';
+  const act=$('#qActions');act.innerHTML='';
+  const b=el('button','btn btn-primary','Mulai Bab '+next.no+' →');
+  b.onclick=function(){renderQ();};
+  act.appendChild(b);b.focus();
+  $('#qProg').style.width=(S.idx/S.tasks.length*100)+'%';
+  T0=Date.now();LIMIT=0;
+  const box=$('#qTimerBox');box.className='timer';
+  $('#qTimer').textContent='--:--';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ================== HASIL ================== */
+function statsForCh(ch){
+  let benar=0,salah=0,kosong=0,tot=0,n=0;
+  S.tasks.forEach(function(t,i){
+    if(t.ch.id!==ch.id)return;
+    const r=S.rec[i];n++;
+    if(r.st==='benar')benar++;else if(r.st==='salah')salah++;else kosong++;
+    tot+=(r.t||0);
+  });
+  return {benar:benar,salah:salah,kosong:kosong,tot:tot,n:n,avg:n?tot/n:0};
+}
+function finish(){
+  stopTimerInt();
+  S.rec.forEach(function(r){if(!r.st)r.st='kosong';});
+  renderResults();
+  showScreen('#screen-result');
+}
+function renderResults(){
+  const rows=S.ids.map(function(id){const ch=BANK.find(function(b){return b.id===id;});const st=statsForCh(ch);return {ch:ch,benar:st.benar,salah:st.salah,kosong:st.kosong,tot:st.tot,avg:st.avg,n:st.n};});
+  const T=rows.reduce(function(a,r){a.benar+=r.benar;a.salah+=r.salah;a.kosong+=r.kosong;a.tot+=r.tot;a.n+=r.n;return a;},{benar:0,salah:0,kosong:0,tot:0,n:0});
+  const skor=T.n?Math.round(T.benar/T.n*1000)/10:0;
+  const tgl=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+  $('#resHead').innerHTML='<div><div class="res-title">Hasil Latihan</div><div class="res-name">'+esc(S.name)+'</div>'
+    +'<div class="res-sub">'+S.ids.length+' bab • '+T.n+' soal • selesai '+tgl+'</div></div>'
+    +'<div class="ring" style="--p:'+skor+'"><div class="ring-in"><div class="ring-val">'+skor+'%</div><div class="ring-lbl">SKOR</div></div></div>';
+  $('#stB').textContent=T.benar;
+  $('#stS').textContent=T.salah;
+  $('#stK').textContent=T.kosong;
+  $('#stT').textContent=fmtTime(T.tot);
+  $('#stR').textContent=T.n?fmtTime(T.tot/T.n):'–';
+  let trs='';
+  rows.forEach(function(r){
+    const pct=r.n?Math.round(r.benar/r.n*100):0;
+    trs+='<tr><td class="bab-cell"><b>Bab '+r.ch.no+' — '+r.ch.judul+'</b><div class="bar"><i style="width:'+pct+'%"></i></div></td>'
+      +'<td class="num" style="color:#15803d;font-weight:700">'+r.benar+'</td>'
+      +'<td class="num" style="color:#dc2626;font-weight:700">'+r.salah+'</td>'
+      +'<td class="num" style="color:#b45309;font-weight:700">'+r.kosong+'</td>'
+      +'<td class="num">'+fmtTime(r.tot)+'</td>'
+      +'<td class="num">'+(r.n?fmtTime(r.avg):'–')+'</td></tr>';
+  });
+  trs+='<tr class="total-row"><td>TOTAL</td><td class="num">'+T.benar+'</td><td class="num">'+T.salah+'</td><td class="num">'+T.kosong+'</td><td class="num">'+fmtTime(T.tot)+'</td><td class="num">'+(T.n?fmtTime(T.tot/T.n):'–')+'</td></tr>';
+  $('#resRows').innerHTML=trs;
+}
+
+/* ================== MODAL & TOMBOL GLOBAL ================== */
+function openModal(){$('#modalEnd').hidden=false;}
+function closeModal(){$('#modalEnd').hidden=true;}
+$('#btnEnd').addEventListener('click',function(){if(S)openModal();});
+$('#mNo').addEventListener('click',closeModal);
+$('#modalEnd').addEventListener('click',function(e){if(e.target===this)closeModal();});
+$('#mYes').addEventListener('click',function(){
+  closeModal();
+  if(S&&S.idx<S.tasks.length&&!S.rec[S.idx].st){
+    if(inTrans){S.rec[S.idx]={st:'kosong',t:0};}
+    else{stopTimerInt();S.rec[S.idx]={st:'kosong',t:recordTime()};}
+  }
+  finish();
+});
+$('#btnAgain').addEventListener('click',function(){S=null;showScreen('#screen-cover');});
+$('#btnPrint').addEventListener('click',function(){window.print();});
+
+/* ================== PENGATURAN TIMER ================== */
+document.querySelectorAll('.chip').forEach(function(c){
+  c.addEventListener('click',function(){
+    document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('active');});
+    c.classList.add('active');
+    $('#inpWaktu').value=c.dataset.t;
+  });
+});
+$('#inpWaktu').addEventListener('input',function(){
+  const v=$('#inpWaktu').value;
+  document.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('active',x.dataset.t===v);});
+});
+
+/* ================== INIT ================== */
+renderCover();
+</script>
+</body>
+</html>
