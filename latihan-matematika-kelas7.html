@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latihan Matematika</title>
+<style>
+:root{
+  --biru:#4f46e5; --biru2:#7c3aed; --cyan:#0ea5e9;
+  --bg:#eef2ff; --hijau:#16a34a; --hijau-bg:#dcfce7;
+  --merah:#dc2626; --merah-bg:#fee2e2; --kuning:#f59e0b;
+  --teks:#1e293b; --abu:#64748b; --garis:#e2e8f0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif;
+  background:linear-gradient(160deg,#eef2ff 0%,#e0f2fe 60%,#faf5ff 100%);
+  min-height:100vh;color:var(--teks);
+}
+.page{display:none;max-width:920px;margin:0 auto;padding:28px 16px 70px}
+.page.active{display:block}
+h1,h2,h3{line-height:1.3}
+
+/* ===== tombol ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;
+  font-weight:600;font-size:15px;border-radius:12px;padding:12px 22px;
+  background:#fff;color:var(--biru);box-shadow:0 2px 6px rgba(79,70,229,.15);
+  transition:transform .08s, box-shadow .15s;
+}
+.btn:hover{box-shadow:0 4px 14px rgba(79,70,229,.25)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(135deg,var(--biru),var(--biru2));color:#fff}
+.btn.danger{background:linear-gradient(135deg,#ef4444,#f97316);color:#fff}
+.btn.ghost{background:#f1f5f9;color:var(--abu);box-shadow:none}
+.btn.small{padding:8px 14px;font-size:13px;border-radius:10px}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+/* ===== cover ===== */
+#page-cover{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px 16px}
+#page-cover.active{display:flex}
+.cover-card{
+  background:#fff;border-radius:26px;box-shadow:0 20px 60px rgba(79,70,229,.22);
+  max-width:520px;width:100%;padding:42px 36px;text-align:center;
+  border-top:8px solid var(--biru);
+}
+.cover-emoji{font-size:56px}
+.cover-card h1{font-size:26px;margin:10px 0 6px;color:var(--biru)}
+.cover-card .sub{color:var(--abu);font-size:15px;margin-bottom:6px}
+.cover-card .info{font-size:13px;color:var(--abu);background:#f1f5f9;border-radius:10px;padding:8px;margin:14px 0 20px}
+.cover-card label{display:block;text-align:left;font-weight:600;font-size:14px;margin-bottom:6px}
+.cover-card input{
+  width:100%;padding:13px 16px;font-size:16px;border:2px solid var(--garis);
+  border-radius:12px;outline:none;transition:border .15s;
+}
+.cover-card input:focus{border-color:var(--biru)}
+.cover-card .btn{width:100%;justify-content:center;margin-top:18px;font-size:16px;padding:14px}
+
+/* ===== kartu umum ===== */
+.card{background:#fff;border-radius:18px;box-shadow:0 6px 24px rgba(30,41,59,.08);padding:24px}
+.head-title{color:var(--biru);margin-bottom:4px}
+.hint{color:var(--abu);font-size:14px;margin-bottom:18px}
+
+/* ===== settings ===== */
+.preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.preset-row .btn.small{background:#eef2ff;color:var(--biru);box-shadow:none}
+.set-row{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 14px;border:1.5px solid var(--garis);border-radius:12px;margin-bottom:10px;background:#f8fafc;
+}
+.set-row .nm{font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px}
+.set-row .nm small{display:block;font-weight:400;color:var(--abu);font-size:12px}
+.set-row input{
+  width:110px;padding:9px 10px;font-size:15px;text-align:center;
+  border:2px solid var(--garis);border-radius:10px;outline:none;
+}
+.set-row input:focus{border-color:var(--biru)}
+.settings-actions{display:flex;gap:10px;margin-top:18px}
+.settings-actions .btn{flex:1;justify-content:center}
+
+/* ===== menu ===== */
+#halo{color:var(--biru)}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:18px 0}
+.sec-card{
+  background:#fff;border-radius:16px;padding:16px;cursor:pointer;text-align:left;
+  border:2px solid transparent;box-shadow:0 4px 14px rgba(30,41,59,.07);
+  transition:border .12s, transform .12s;position:relative;
+}
+.sec-card:hover{border-color:var(--biru);transform:translateY(-2px)}
+.sec-card .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sec-card .ico{font-size:26px}
+.sec-card .nm{font-weight:700;font-size:15px;color:var(--teks)}
+.sec-card .meta{font-size:13px;color:var(--abu);display:flex;gap:12px;margin-bottom:10px}
+.chip{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px}
+.chip.blink{background:#f1f5f9;color:var(--abu)}
+.chip.progres{background:#fef9c3;color:#a16207}
+.chip.selesai{background:var(--hijau-bg);color:var(--hijau)}
+.menu-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.menu-actions .btn{flex:1;justify-content:center;min-width:220px}
+
+/* ===== practice ===== */
+.pr-topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.pr-topbar .title{font-weight:800;color:var(--biru);font-size:16px;flex:1;min-width:150px}
+.pr-topbar .prog{font-size:13px;color:var(--abu);font-weight:600}
+#timer{
+  font-variant-numeric:tabular-nums;font-weight:800;font-size:16px;color:var(--biru);
+  background:#fff;border:2px solid var(--biru);border-radius:999px;padding:7px 16px;min-width:92px;text-align:center;
+}
+#timer.low{color:var(--merah);border-color:var(--merah);background:var(--merah-bg);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.qcard{background:#fff;border-radius:18px;box-shadow:0 6px 24px rgba(30,41,59,.08);padding:24px;margin-bottom:14px}
+.qhead{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.badge-no{background:linear-gradient(135deg,var(--biru),var(--biru2));color:#fff;font-weight:800;border-radius:10px;padding:6px 12px;font-size:14px}
+.badge-type{background:#eef2ff;color:var(--biru);font-weight:700;font-size:12px;border-radius:999px;padding:5px 12px}
+.badge-status{margin-left:auto;font-weight:700;font-size:12px;border-radius:999px;padding:5px 12px}
+.badge-status.benar{background:var(--hijau-bg);color:var(--hijau)}
+.badge-status.salah{background:var(--merah-bg);color:var(--merah)}
+.badge-status.timeout{background:#fef9c3;color:#a16207}
+#q-text{white-space:pre-line;font-size:16px;line-height:1.65;margin-bottom:14px}
+.qimg{text-align:center;margin:6px 0 14px}
+.qimg svg{max-width:320px;width:100%;height:auto;background:#fff}
+.opt{
+  display:block;width:100%;text-align:left;background:#f8fafc;border:2px solid var(--garis);
+  border-radius:12px;padding:12px 16px;font-size:15px;margin-bottom:10px;cursor:pointer;
+  transition:border .12s, background .12s;color:var(--teks);
+}
+.opt:hover{border-color:var(--biru)}
+.opt.selected{border-color:var(--biru);background:#eef2ff;font-weight:600}
+.opt.benar{border-color:var(--hijau);background:var(--hijau-bg);font-weight:700}
+.opt.salah{border-color:var(--merah);background:var(--merah-bg)}
+.opt.dim{opacity:.55}
+.opt:disabled{cursor:default}
+#isian-wrap input{
+  width:100%;max-width:320px;padding:13px 16px;font-size:17px;font-weight:600;
+  border:2px solid var(--biru);border-radius:12px;outline:none;display:block;
+}
+#isian-wrap input:disabled{background:#f1f5f9;color:var(--abu)}
+#feedback{display:none;border-radius:14px;padding:16px 18px;margin-top:16px}
+#feedback.show{display:block}
+#feedback.benar{background:var(--hijau-bg);border:2px solid var(--hijau)}
+#feedback.salah{background:var(--merah-bg);border:2px solid var(--merah)}
+#feedback.timeout{background:#fef9c3;border:2px solid var(--kuning)}
+.verdict{font-weight:800;font-size:16px;margin-bottom:6px}
+#feedback.benar .verdict{color:var(--hijau)}
+#feedback.salah .verdict{color:var(--merah)}
+#feedback.timeout .verdict{color:#a16207}
+.kunci{font-size:14px;margin-bottom:10px}
+.bahas-box{background:#fff;border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.65;white-space:pre-line}
+.bahas-box b{color:var(--biru)}
+.pr-nav{display:flex;gap:10px;flex-wrap:wrap}
+.pr-nav .btn{flex:1;justify-content:center;min-width:140px}
+.pr-nav .btn.cek{min-width:200px}
+
+/* ===== results ===== */
+.res-wrap{overflow-x:auto}
+table.res{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+table.res th,table.res td{padding:10px 12px;border-bottom:1.5px solid var(--garis);text-align:center}
+table.res th{background:#eef2ff;color:var(--biru);font-size:13px}
+table.res td:first-child,table.res th:first-child{text-align:left}
+table.res tr.total td{font-weight:800;background:#f8fafc}
+.pill-b{background:var(--hijau-bg);color:var(--hijau);border-radius:999px;padding:3px 10px;font-weight:700}
+.pill-s{background:var(--merah-bg);color:var(--merah);border-radius:999px;padding:3px 10px;font-weight:700}
+.pill-t{background:#f1f5f9;color:var(--abu);border-radius:999px;padding:3px 10px;font-weight:700}
+.res-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.res-actions .btn{flex:1;justify-content:center;min-width:200px}
+.res-emoji{font-size:40px;text-align:center;margin-bottom:4px}
+
+/* ===== toast ===== */
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+  background:#1e293b;color:#fff;padding:11px 20px;border-radius:12px;font-size:14px;
+  opacity:0;pointer-events:none;transition:all .25s;z-index:99;max-width:90vw;text-align:center;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (max-width:560px){
+  .qcard{padding:18px 16px}
+  #q-text{font-size:15px}
+  .opt{padding:11px 13px;font-size:14px}
+  .cover-card{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div id="page-cover" class="page active">
+  <div class="cover-card">
+    <div class="cover-emoji">🏅</div>
+    <h1 id="cover-title">Latihan Matematika</h1>
+    <p class="sub" id="cover-sub">Media latihan interaktif</p>
+    <div class="info" id="cover-info"></div>
+    <label for="nama">👤 Nama Siswa</label>
+    <input id="nama" type="text" placeholder="Tulis namamu di sini..." autocomplete="off">
+    <button class="btn primary" id="btn-mulai">Mulai Latihan ➜</button>
+  </div>
+</div>
+
+<!-- ============ PENGATURAN TUTOR ============ -->
+<div id="page-settings" class="page">
+  <div class="card">
+    <h2 class="head-title">⚙️ Pengaturan Tutor</h2>
+    <p class="hint">Atur <b>waktu hitung mundur per soal</b> (detik) untuk setiap bagian. Waktu berhenti otomatis ketika siswa menekan tombol <b>Cek Jawaban</b>. Jika waktu habis, soal terkunci dan masuk hitungan "tidak dijawab".</p>
+    <div class="preset-row" id="preset-row"></div>
+    <div id="set-rows"></div>
+    <div class="settings-actions">
+      <button class="btn ghost" id="btn-set-kembali">◀ Kembali</button>
+      <button class="btn primary" id="btn-simpan">Simpan &amp; Lanjut ➜</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MENU BAGIAN ============ -->
+<div id="page-menu" class="page">
+  <div class="card">
+    <h2 id="halo">Halo! 👋</h2>
+    <p class="hint">Pilih bagian latihan di bawah. Kamu bisa berpindah bagian kapan saja — jawaban yang sudah diperiksa tersimpan.</p>
+    <div class="menu-grid" id="menu-grid"></div>
+    <div class="menu-actions">
+      <button class="btn ghost" id="btn-ubah-waktu">⚙️ Ubah Waktu per Soal</button>
+      <button class="btn danger" id="btn-akhiri">🏁 Akhiri Latihan &amp; Lihat Hasil</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ LATIHAN ============ -->
+<div id="page-practice" class="page">
+  <div class="pr-topbar">
+    <button class="btn small ghost" id="btn-menu">◀ Menu</button>
+    <span class="title" id="pr-title"></span>
+    <span class="prog" id="pr-progress"></span>
+    <span id="timer">--:--</span>
+    <button class="btn small danger" id="btn-akhiri2">🏁 Akhiri</button>
+  </div>
+  <div class="qcard">
+    <div class="qhead">
+      <span class="badge-no" id="q-no">Soal 1</span>
+      <span class="badge-type" id="q-type"></span>
+      <span class="badge-status" id="q-status" style="display:none"></span>
+    </div>
+    <div id="q-text"></div>
+    <div class="qimg" id="q-img" style="display:none"></div>
+    <div id="q-opts"></div>
+    <div id="isian-wrap" style="display:none">
+      <label style="font-size:13px;color:var(--abu);font-weight:600;display:block;margin-bottom:6px">✏️ Tulis jawabanmu:</label>
+      <input id="q-input" type="text" placeholder="contoh: 125" autocomplete="off">
+    </div>
+    <div id="feedback">
+      <div class="verdict" id="verdict"></div>
+      <div class="kunci" id="kunci"></div>
+      <div class="bahas-box" id="bahas"></div>
+    </div>
+  </div>
+  <div class="pr-nav">
+    <button class="btn ghost" id="btn-prev">◀ Sebelumnya</button>
+    <button class="btn primary cek" id="btn-cek">✔ Cek Jawaban</button>
+    <button class="btn" id="btn-next">Berikutnya ▶</button>
+  </div>
+</div>
+
+<!-- ============ HASIL ============ -->
+<div id="page-results" class="page">
+  <div class="card">
+    <div class="res-emoji">📊</div>
+    <h2 class="head-title" style="text-align:center">Hasil Latihan</h2>
+    <p class="hint" style="text-align:center" id="res-name"></p>
+    <div class="res-wrap">
+      <table class="res">
+        <thead>
+          <tr>
+            <th>Bagian</th><th>✔ Benar</th><th>✘ Salah</th><th>— Tidak Dijawab</th>
+            <th>Total Waktu</th><th>Rata-rata / Soal</th><th>Skor</th>
+          </tr>
+        </thead>
+        <tbody id="res-body"></tbody>
+      </table>
+    </div>
+    <div class="res-actions">
+      <button class="btn ghost" id="btn-home">🏠 Kembali ke Menu</button>
+      <button class="btn primary" id="btn-ulang">🔁 Ulangi Latihan</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SOAL = { meta: { title: "Latihan Matematika Kelas 7 SMP", subtitle: "7 Materi — dari Bilangan Bulat sampai Aritmatika Sosial" }, sections: [
+{ name: "Bilangan bulat", icon: "🔢", questions: [
+{ n: 1, type: "mc", text: "Hasil dari (-12) + 18 - (-7) adalah ...", img: null, options: ["A. -1", "B. 1", "C. 13", "D. 37"], answer: "C", bahas: "Ubah pengurangan menjadi penjumlahan: -(-7) menjadi +7, sehingga bentuknya (-12) + 18 + 7. Hitung dari kiri: (-12) + 18 = 6, lalu 6 + 7 = 13." },
+{ n: 2, type: "mc", text: "Hasil dari (-8) × 6 : (-4) adalah ...", img: null, options: ["A. -12", "B. -3", "C. 3", "D. 12"], answer: "D", bahas: "Kerjakan dari kiri: (-8) × 6 = -48. Kemudian -48 : (-4) = 12 karena negatif dibagi negatif menghasilkan positif." },
+{ n: 3, type: "mc", text: "Nilai dari (-5) + (-3) × 4 - (-10) adalah ...", img: null, options: ["A. -27", "B. -7", "C. 2", "D. 17"], answer: "B", bahas: "Kerjakan perkalian terlebih dahulu: (-3) × 4 = -12. Maka (-5) + (-12) - (-10) = -17 + 10 = -7." },
+{ n: 4, type: "mc", text: "Hasil operasi hitung campuran 24 : (-3) + 5 × (-2) adalah ...", img: null, options: ["A. -18", "B. -2", "C. 2", "D. 18"], answer: "A", bahas: "Kerjakan pembagian dan perkalian lebih dahulu: 24 : (-3) = -8 dan 5 × (-2) = -10. Hasilnya (-8) + (-10) = -18." },
+{ n: 5, type: "mc", text: "Nilai dari (-4)^3 + (-3)^2 adalah ...", img: null, options: ["A. -73", "B. -55", "C. 55", "D. 73"], answer: "B", bahas: "Hitung masing-masing pangkat: (-4)^3 = (-4) × (-4) × (-4) = -64 dan (-3)^2 = (-3) × (-3) = 9. Maka -64 + 9 = -55." },
+{ n: 6, type: "mc", text: "Hasil dari (-15 - 9) : (4 - 10) adalah ...", img: null, options: ["A. -4", "B. -3", "C. 4", "D. 6"], answer: "C", bahas: "Kerjakan dalam kurung terlebih dahulu: -15 - 9 = -24 dan 4 - 10 = -6. Hasilnya (-24) : (-6) = 4 karena negatif dibagi negatif menghasilkan positif." },
+{ n: 7, type: "mc", text: "Jika a = -3, b = 4, dan c = -2, maka nilai dari 2a - b + 3c adalah ...", img: null, options: ["A. -16", "B. -8", "C. 4", "D. 16"], answer: "A", bahas: "Substitusikan a = -3, b = 4, dan c = -2 ke dalam bentuk: 2(-3) - 4 + 3(-2). Hasilnya -6 - 4 - 6 = -16." },
+{ n: 8, type: "mc", text: "Urutan bilangan bulat berikut dari yang terkecil ke yang terbesar adalah: -18, 12, -5, 0, 7, -11", img: null, options: ["A. -18, -11, -5, 0, 7, 12", "B. 0, -5, 7, -11, 12, -18", "C. -5, -11, -18, 0, 7, 12", "D. 12, 7, 0, -5, -11, -18"], answer: "A", bahas: "Pada garis bilangan, makin besar nilai negatifnya makin kecil nilainya. Urutan dari terkecil: -18, -11, -5, 0, 7, 12." },
+{ n: 9, type: "mc", text: "Hasil dari [(-18) + 30] × [(-12) - (-7)] adalah ...", img: null, options: ["A. -144", "B. -60", "C. 60", "D. 144"], answer: "B", bahas: "Kurung pertama: (-18) + 30 = 12. Kurung kedua: (-12) - (-7) = -12 + 7 = -5. Hasil perkaliannya 12 × (-5) = -60." },
+{ n: 10, type: "mc", text: "Nilai x yang memenuhi persamaan x + (-14) = -6 adalah ...", img: null, options: ["A. -20", "B. -8", "C. 8", "D. 20"], answer: "C", bahas: "x + (-14) = -6 berarti x - 14 = -6. Maka x = -6 + 14 = 8." },
+{ n: 11, type: "mc", text: "Suhu di dalam kulkas mula-mula adalah -4°C. Pada saat listrik padam, suhu naik 2°C setiap 5 menit. Suhu di dalam kulkas setelah listrik padam selama 15 menit adalah ...", img: null, options: ["A. -10°C", "B. -2°C", "C. 2°C", "D. 10°C"], answer: "C", bahas: "Banyak kenaikan suhu: 15 menit : 5 menit = 3 kali, dengan total kenaikan 3 × 2°C = 6°C. Suhu akhir = -4°C + 6°C = 2°C." },
+{ n: 12, type: "mc", text: "Dalam suatu tes yang terdiri dari 40 soal, aturan penskoran adalah: benar diberi nilai 4, salah diberi nilai -2, dan tidak dijawab diberi nilai -1. Budi menjawab benar 30 soal, salah 6 soal, dan sisanya tidak dijawab. Nilai total yang diperoleh Budi adalah ...", img: null, options: ["A. 104", "B. 108", "C. 112", "D. 120"], answer: "A", bahas: "Jumlah soal tidak dijawab = 40 - (30 + 6) = 4 soal. Skor benar = 30 × 4 = 120, skor salah = 6 × (-2) = -12, dan skor tidak dijawab = 4 × (-1) = -4. Total skor = 120 - 12 - 4 = 104." },
+{ n: 13, type: "mc", text: "Seekor lumba-lumba melompat keluar air hingga ketinggian 3 meter di atas permukaan laut, lalu menyelam kembali hingga kedalaman 8 meter di bawah permukaan laut. Selisih ketinggian antara posisi tertinggi dan terdalam lumba-lumba tersebut adalah ...", img: null, options: ["A. 5 meter", "B. 8 meter", "C. 11 meter", "D. 24 meter"], answer: "C", bahas: "Posisi atas = +3 meter dan posisi bawah = -8 meter. Selisih ketinggian = 3 - (-8) = 3 + 8 = 11 meter." },
+{ n: 14, type: "mc", text: "Kota A memiliki suhu 15°C pada siang hari. Menjelang malam, suhu udara turun sebesar 18°C. Berapakah suhu kota A pada malam hari?", img: null, options: ["A. -3°C", "B. -2°C", "C. 3°C", "D. 33°C"], answer: "A", bahas: "Suhu awal 15°C dengan penurunan 18°C. Suhu malam = 15°C - 18°C = -3°C." },
+{ n: 15, type: "mc", text: "Seorang pedagang buah membeli 5 keranjang apel. Setiap keranjang berisi 24 buah apel. Jika terdapat 15 buah apel yang busuk dan sisa apel yang bagus dibagi rata ke dalam 7 kantong plastik, berapa banyak apel pada setiap kantong?", img: null, options: ["A. 12 buah", "B. 15 buah", "C. 18 buah", "D. 21 buah"], answer: "B", bahas: "Total apel awal = 5 × 24 = 120 buah. Apel yang bagus = 120 - 15 = 105 buah. Banyak apel tiap kantong = 105 : 7 = 15 buah." },
+{ n: 16, type: "mc", text: "Sebuah kapal selam berada pada kedalaman 120 meter di bawah permukaan laut. Kapal bergerak naik sejauh 45 meter, kemudian menyelam lagi sejauh 30 meter. Posisi kedalaman kapal selam sekarang adalah ...", img: null, options: ["A. 45 meter di bawah permukaan laut", "B. 75 meter di bawah permukaan laut", "C. 105 meter di bawah permukaan laut", "D. 195 meter di bawah permukaan laut"], answer: "C", bahas: "Tulis kedalaman sebagai bilangan negatif: -120 meter. Pergerakannya -120 + 45 - 30 = -105. Jadi kapal selam berada 105 meter di bawah permukaan laut." },
+{ n: 17, type: "mc", text: "Lift di sebuah gedung perkantoran mula-mula berada di lantai 5. Lift naik 8 lantai, lalu turun 6 lantai, dan naik lagi 2 lantai. Posisi lift sekarang berada di lantai ...", img: null, options: ["A. Lantai 7", "B. Lantai 8", "C. Lantai 9", "D. Lantai 11"], answer: "C", bahas: "Posisi awal 5 dengan pergerakan naik +8, turun -6, dan naik +2. Maka 5 + 8 - 6 + 2 = 9, jadi lift berada di lantai 9." },
+{ n: 18, type: "mc", text: "Ibu memiliki tabungan di bank sebesar Rp500.000,00. Ibu menarik uang sebesar Rp200.000,00 untuk berbelanja. Dua hari kemudian, Ibu menyetor uang kembali sebesar Rp350.000,00. Berapa sisa uang simpanan Ibu di bank sekarang?", img: null, options: ["A. Rp350.000,00", "B. Rp550.000,00", "C. Rp650.000,00", "D. Rp1.050.000,00"], answer: "C", bahas: "Saldo awal Rp500.000,00, penarikan -Rp200.000,00, dan setoran +Rp350.000,00. Sisa tabungan = 500.000 - 200.000 + 350.000 = Rp650.000,00." },
+{ n: 19, type: "mc", text: "Temperatur di Puncak Jaya pada malam hari mencapai -5°C. Pada siang hari, temperaturnya naik menjadi 7°C. Berapa kenaikan suhu udara dari malam ke siang hari?", img: null, options: ["A. 2°C", "B. 7°C", "C. 10°C", "D. 12°C"], answer: "D", bahas: "Kenaikan suhu = suhu siang - suhu malam = 7 - (-5). Hasilnya 7 + 5 = 12°C." },
+{ n: 20, type: "mc", text: "Suatu kompetisi matematika menggunakan sistem skor: menang diberi nilai 3, seri diberi nilai 0, dan kalah diberi nilai -1. Sebuah tim bermain 10 kali dengan hasil 6 kali menang, 2 kali seri, dan sisanya kalah. Total skor tim tersebut adalah ...", img: null, options: ["A. 14", "B. 16", "C. 18", "D. 20"], answer: "B", bahas: "Banyak kalah = 10 - (6 + 2) = 2 kali. Skor menang = 6 × 3 = 18, skor seri = 2 × 0 = 0, dan skor kalah = 2 × (-1) = -2. Total skor = 18 + 0 - 2 = 16." }
+] },
+{ name: "KPK dan FPB", icon: "🧩", questions: [
+{ n: 1, type: "mc", text: "Faktor Persekutuan Terbesar (FPB) dari 24 dan 36 adalah ...", img: null, options: ["A. 4", "B. 6", "C. 12", "D. 24"], answer: "C", bahas: "Faktorisasi prima: 24 = 2^3 × 3 dan 36 = 2^2 × 3^2. FPB diambil dari faktor yang sama dengan pangkat terkecil: 2^2 × 3 = 12." },
+{ n: 2, type: "mc", text: "Kelipatan Persekutuan Terkecil (KPK) dari 15 dan 25 adalah ...", img: null, options: ["A. 45", "B. 75", "C. 150", "D. 225"], answer: "B", bahas: "Faktorisasi prima: 15 = 3 × 5 dan 25 = 5^2. KPK diambil dari semua faktor dengan pangkat terbesar: 3 × 5^2 = 75." },
+{ n: 3, type: "mc", text: "FPB dari tiga bilangan 48, 72, dan 96 adalah ...", img: null, options: ["A. 8", "B. 12", "C. 24", "D. 48"], answer: "C", bahas: "Faktorisasi prima: 48 = 2^4 × 3, 72 = 2^3 × 3^2, dan 96 = 2^5 × 3. FPB = 2^3 × 3 = 24." },
+{ n: 4, type: "mc", text: "KPK dari bilangan 12, 18, dan 30 adalah ...", img: null, options: ["A. 90", "B. 120", "C. 180", "D. 360"], answer: "C", bahas: "Faktorisasi prima: 12 = 2^2 × 3, 18 = 2 × 3^2, dan 30 = 2 × 3 × 5. KPK = 2^2 × 3^2 × 5 = 180." },
+{ n: 5, type: "mc", text: "Faktorisasi prima dari bilangan 120 adalah ...", img: null, options: ["A. 2^2 × 3 × 5", "B. 2^3 × 3 × 5", "C. 2^3 × 3^2", "D. 2 × 3^2 × 5"], answer: "B", bahas: "Bagi 120 dengan bilangan prima berturut-turut: 120 : 2 = 60, 60 : 2 = 30, 30 : 2 = 15, lalu 15 : 3 = 5. Jadi 120 = 2^3 × 3 × 5." },
+{ n: 6, type: "mc", text: "Hasil kali dari nilai KPK dan FPB dari bilangan 16 dan 24 adalah ...", img: null, options: ["A. 192", "B. 288", "C. 384", "D. 432"], answer: "C", bahas: "KPK(16, 24) = 48 dan FPB(16, 24) = 8, sehingga hasil kalinya 48 × 8 = 384. Nilai KPK × FPB selalu sama dengan hasil kali kedua bilangan, yaitu 16 × 24 = 384." },
+{ n: 7, type: "mc", text: "Nilai dari KPK(14, 21) - FPB(14, 21) adalah ...", img: null, options: ["A. 28", "B. 35", "C. 42", "D. 49"], answer: "B", bahas: "Faktorisasi: 14 = 2 × 7 dan 21 = 3 × 7, sehingga FPB = 7 dan KPK = 2 × 3 × 7 = 42. Maka KPK - FPB = 42 - 7 = 35." },
+{ n: 8, type: "mc", text: "Diketahui dua bilangan A = 2^3 × 3^2 × 5 dan B = 2^2 × 3^3 × 7. FPB dari bilangan A dan B adalah ...", img: null, options: ["A. 18", "B. 36", "C. 72", "D. 108"], answer: "B", bahas: "Faktor persekutuan A dan B adalah basis 2 dan 3, diambil dengan pangkat terkecil yaitu 2^2 dan 3^2. FPB = 2^2 × 3^2 = 36." },
+{ n: 9, type: "mc", text: "KPK dari 28 dan 42 adalah ...", img: null, options: ["A. 56", "B. 84", "C. 112", "D. 168"], answer: "B", bahas: "Faktorisasi: 28 = 2^2 × 7 dan 42 = 2 × 3 × 7. KPK diambil dengan pangkat terbesar: 2^2 × 3 × 7 = 84." },
+{ n: 10, type: "mc", text: "Dua buah bilangan memiliki FPB = 6 dan KPK = 120. Jika salah satu bilangan tersebut adalah 24, maka bilangan yang lain adalah ...", img: null, options: ["A. 30", "B. 36", "C. 40", "D. 48"], answer: "A", bahas: "Gunakan rumus bilangan pertama × bilangan kedua = FPB × KPK. Maka 24 × B = 6 × 120 = 720, sehingga B = 720 : 24 = 30." },
+{ n: 11, type: "mc", text: "Lampu A menyala setiap 8 detik dan lampu B menyala setiap 12 detik. Jika kedua lampu menyala bersamaan pada detik ke-0, pada detik ke berapa kedua lampu akan menyala bersamaan untuk pertama kalinya lagi?", img: null, options: ["A. 16 detik", "B. 24 detik", "C. 36 detik", "D. 48 detik"], answer: "B", bahas: "Masalah menyala bersama-sama menggunakan KPK. KPK dari 8 = 2^3 dan 12 = 2^2 × 3 adalah 2^3 × 3 = 24 detik." },
+{ n: 12, type: "mc", text: "Ibu mempunyai 30 kue lapis dan 45 kue mangkok. Ibu ingin membagikan kedua jenis kue tersebut ke dalam beberapa piring dengan jumlah kue lapis dan kue mangkok yang sama pada setiap piring. Berapa piring terbanyak yang dapat disiapkan Ibu?", img: null, options: ["A. 5 piring", "B. 10 piring", "C. 15 piring", "D. 30 piring"], answer: "C", bahas: "Pembagian sama banyak menggunakan FPB. Faktorisasi 30 = 2 × 3 × 5 dan 45 = 3^2 × 5, sehingga FPB = 3 × 5 = 15 piring." },
+{ n: 13, type: "mc", text: "Tiga buah bus berangkat dari terminal yang sama. Bus A berangkat setiap 15 menit, bus B setiap 20 menit, dan bus C setiap 30 menit. Jika ketiga bus berangkat bersamaan pada pukul 07.00, pukul berapa ketiga bus berangkat bersamaan kembali?", img: null, options: ["A. Pukul 07.45", "B. Pukul 08.00", "C. Pukul 08.15", "D. Pukul 08.30"], answer: "B", bahas: "KPK dari 15 = 3 × 5, 20 = 2^2 × 5, dan 30 = 2 × 3 × 5 adalah 2^2 × 3 × 5 = 60 menit = 1 jam. Berangkat bersama lagi pada 07.00 + 1 jam = pukul 08.00." },
+{ n: 14, type: "mc", text: "Ani les matematika setiap 3 hari sekali dan Budi setiap 4 hari sekali. Jika pada hari Selasa mereka les bersama-sama, pada hari apa mereka akan les bersama-sama lagi berikutnya?", img: null, options: ["A. Hari Jumat", "B. Hari Sabtu", "C. Hari Minggu", "D. Hari Senin"], answer: "C", bahas: "KPK dari 3 dan 4 adalah 12 hari. Karena 12 : 7 = 1 sisa 5, maka Selasa + 5 hari = hari Minggu." },
+{ n: 15, type: "mc", text: "Pak Doni memiliki 48 buah apel, 64 buah jeruk, dan 80 buah mangga. Buah-buah tersebut dimasukkan ke dalam beberapa parsel dengan jumlah masing-masing jenis buah sama banyak di setiap parsel. Berapa banyak buah jeruk pada setiap parsel?", img: null, options: ["A. 3 buah", "B. 4 buah", "C. 5 buah", "D. 6 buah"], answer: "B", bahas: "FPB dari 48 = 2^4 × 3, 64 = 2^6, dan 80 = 2^4 × 5 adalah 2^4 = 16 parsel. Banyak jeruk per parsel = 64 : 16 = 4 buah." },
+{ n: 16, type: "mc", text: "Ayah ronda malam setiap 6 hari sekali, Pak RT setiap 8 hari sekali, dan Pak RW setiap 12 hari sekali. Jika tanggal 1 Mei mereka ronda bersama-sama, pada tanggal berapa mereka akan ronda bersama-sama lagi?", img: null, options: ["A. 20 Mei", "B. 24 Mei", "C. 25 Mei", "D. 26 Mei"], answer: "C", bahas: "KPK dari 6 = 2 × 3, 8 = 2^3, dan 12 = 2^2 × 3 adalah 2^3 × 3 = 24 hari. Tanggal 1 Mei + 24 hari = tanggal 25 Mei." },
+{ n: 17, type: "mc", text: "Kelompok PMR memiliki 36 anggota laki-laki dan 54 anggota perempuan. Anggota tersebut akan dibagi menjadi beberapa kelompok belajar dengan komposisi laki-laki dan perempuan sama banyak tiap kelompok. Berapa jumlah anggota laki-laki di setiap kelompok?", img: null, options: ["A. 2 orang", "B. 3 orang", "C. 4 orang", "D. 6 orang"], answer: "A", bahas: "FPB dari 36 = 2^2 × 3^2 dan 54 = 2 × 3^3 adalah 2 × 3^2 = 18 kelompok. Banyak laki-laki tiap kelompok = 36 : 18 = 2 orang." },
+{ n: 18, type: "mc", text: "Dua buah pita berwarna merah (panjang 45 cm) dan putih (panjang 75 cm) akan dipotong menjadi beberapa bagian yang sama panjang tanpa ada sisa. Berapa panjang potongan pita terpanjang yang dapat diperoleh?", img: null, options: ["A. 5 cm", "B. 10 cm", "C. 15 cm", "D. 25 cm"], answer: "C", bahas: "Panjang potongan terpanjang adalah FPB(45, 75). Karena 45 = 3^2 × 5 dan 75 = 3 × 5^2, maka FPB = 3 × 5 = 15 cm." },
+{ n: 19, type: "mc", text: "Jam dinding A berdentang setiap 45 menit sekali dan jam B berdentang setiap 60 menit sekali. Jika kedua jam berdentang bersamaan pada pukul 10.00, pukul berapa kedua jam berdentang bersamaan lagi?", img: null, options: ["A. Pukul 11.30", "B. Pukul 12.00", "C. Pukul 12.30", "D. Pukul 13.00"], answer: "D", bahas: "KPK dari 45 = 3^2 × 5 dan 60 = 2^2 × 3 × 5 adalah 2^2 × 3^2 × 5 = 180 menit = 3 jam. Kedua jam berdentang bersama lagi pada 10.00 + 3 jam = pukul 13.00." },
+{ n: 20, type: "mc", text: "Panitia sosial menerima sumbangan 72 kg beras, 48 kg gula, dan 36 liter minyak goreng. Seluruh barang dibagikan kepada keluarga penerima dalam bentuk paket sembako yang identik. Berapa jumlah keluarga terbanyak yang dapat menerima paket bantuan tersebut?", img: null, options: ["A. 6 keluarga", "B. 12 keluarga", "C. 18 keluarga", "D. 24 keluarga"], answer: "B", bahas: "Jumlah keluarga terbanyak adalah FPB dari 72 = 2^3 × 3^2, 48 = 2^4 × 3, dan 36 = 2^2 × 3^2. FPB = 2^2 × 3 = 12 keluarga." }
+] },
+{ name: "Bilangan rasional", icon: "🍕", questions: [
+{ n: 1, type: "mc", text: "Hasil penjumlahan dari 3/4 + 2/5 - 1/2 adalah ...", img: null, options: ["A. 7/20", "B. 11/20", "C. 13/20", "D. 17/20"], answer: "C", bahas: "Samakan penyebut dengan KPK(4, 5, 2) = 20, sehingga 3/4 = 15/20, 2/5 = 8/20, dan 1/2 = 10/20. Hasilnya (15 + 8 - 10)/20 = 13/20." },
+{ n: 2, type: "mc", text: "Hasil operasi (2/3 × 9/10) : 3/5 adalah ...", img: null, options: ["A. 1/2", "B. 3/5", "C. 1", "D. 1 1/2"], answer: "C", bahas: "Kerjakan perkalian terlebih dahulu: 2/3 × 9/10 = 18/30 = 3/5. Kemudian 3/5 : 3/5 = 3/5 × 5/3 = 1." },
+{ n: 3, type: "mc", text: "Bentuk desimal dari pecahan 7/8 adalah ...", img: null, options: ["A. 0,750", "B. 0,825", "C. 0,850", "D. 0,875"], answer: "D", bahas: "Lakukan pembagian 7 : 8 dengan melengkapi angka desimal: 7,000 : 8 = 0,875." },
+{ n: 4, type: "mc", text: "Hasil perkalian dan penjumlahan desimal 3,45 + 2,8 × 1,5 adalah ...", img: null, options: ["A. 7,65", "B. 8,375", "C. 9,375", "D. 9,75"], answer: "A", bahas: "Kerjakan perkalian terlebih dahulu: 2,8 × 1,5 = 4,20. Kemudian jumlahkan: 3,45 + 4,20 = 7,65." },
+{ n: 5, type: "mc", text: "Bentuk pecahan paling sederhana dari 65% adalah ...", img: null, options: ["A. 6/10", "B. 13/20", "C. 13/25", "D. 7/10"], answer: "B", bahas: "Ubah persen ke pecahan per seratus: 65% = 65/100. Bagi pembilang dan penyebut dengan 5 sehingga diperoleh 13/20." },
+{ n: 6, type: "mc", text: "Urutan bilangan berikut dari yang terkecil hingga terbesar adalah: 58%, 3/5, 0,65, 2/3", img: null, options: ["A. 58%, 3/5, 0,65, 2/3", "B. 3/5, 58%, 0,65, 2/3", "C. 58%, 0,65, 3/5, 2/3", "D. 2/3, 0,65, 3/5, 58%"], answer: "A", bahas: "Ubah semua bentuk menjadi desimal: 58% = 0,58, 3/5 = 0,60, 0,65 = 0,65, dan 2/3 ≈ 0,667. Urutan dari terkecil adalah 0,58, 0,60, 0,65, 0,667, yaitu 58%, 3/5, 0,65, 2/3." },
+{ n: 7, type: "mc", text: "Nilai dari 2 1/2 + 1,75 - 3/4 adalah ...", img: null, options: ["A. 3,25", "B. 3,50", "C. 3,75", "D. 4,00"], answer: "B", bahas: "Ubah ke bentuk desimal: 2 1/2 = 2,5 dan 3/4 = 0,75. Maka 2,5 + 1,75 - 0,75 = 4,25 - 0,75 = 3,50." },
+{ n: 8, type: "mc", text: "Hasil pembagian desimal 4,8 : 0,12 adalah ...", img: null, options: ["A. 0,4", "B. 4", "C. 40", "D. 400"], answer: "C", bahas: "Kalikan kedua bilangan dengan 100 untuk menghilangkan koma desimal: 4,8 × 100 = 480 dan 0,12 × 100 = 12. Maka 480 : 12 = 40." },
+{ n: 9, type: "mc", text: "Nilai dari 15% dari 240 adalah ...", img: null, options: ["A. 24", "B. 30", "C. 36", "D. 42"], answer: "C", bahas: "15% dari 240 = 15/100 × 240 = 3.600/100 = 36." },
+{ n: 10, type: "mc", text: "Hasil perkalian pecahan campuran 3 1/3 × 1 1/5 adalah ...", img: null, options: ["A. 3 1/15", "B. 3 2/5", "C. 4", "D. 4 1/3"], answer: "C", bahas: "Ubah pecahan campuran menjadi pecahan biasa: 3 1/3 = 10/3 dan 1 1/5 = 6/5. Hasil perkaliannya 10/3 × 6/5 = 60/15 = 4." },
+{ n: 11, type: "mc", text: "Ibu membeli 2 1/2 kg gula pasir. Sebanyak 1 1/4 kg digunakan untuk membuat kue dan 0,5 kg digunakan untuk membuat es teh. Sisa gula pasir milik Ibu adalah ...", img: null, options: ["A. 0,5 kg", "B. 0,75 kg", "C. 1,0 kg", "D. 1,25 kg"], answer: "B", bahas: "Ubah semua ke bentuk desimal: gula mula-mula 2,5 kg, untuk kue 1,25 kg, dan untuk es teh 0,5 kg. Sisa gula = 2,5 - 1,25 - 0,5 = 0,75 kg." },
+{ n: 12, type: "mc", text: "Sebuah toko baju memberikan diskon sebesar 20% untuk semua produk. Jika Budi membeli kemeja seharga Rp150.000,00, jumlah uang yang harus dibayar Budi setelah diskon adalah ...", img: null, options: ["A. Rp110.000,00", "B. Rp120.000,00", "C. Rp130.000,00", "D. Rp135.000,00"], answer: "B", bahas: "Besar potongan diskon = 20% × Rp150.000,00 = Rp30.000,00. Uang yang dibayar = Rp150.000,00 - Rp30.000,00 = Rp120.000,00." },
+{ n: 13, type: "mc", text: "Pak Ahmad memiliki lahan seluas 1,2 hektar. Sebanyak 1/3 bagian lahan ditanami padi dan 25% ditanami jagung, sedangkan sisanya dijadikan kolam ikan. Luas lahan yang dijadikan kolam ikan adalah ...", img: null, options: ["A. 0,3 hektar", "B. 0,4 hektar", "C. 0,5 hektar", "D. 0,6 hektar"], answer: "C", bahas: "Padi = 1/3 × 1,2 = 0,4 hektar dan jagung = 25% × 1,2 = 0,3 hektar. Luas kolam ikan = 1,2 - 0,4 - 0,3 = 0,5 hektar." },
+{ n: 14, type: "mc", text: "Dari 40 siswa kelas 7A, sebanyak 85% siswa hadir pada kegiatan ekstrakurikuler. Banyak siswa yang tidak hadir adalah ...", img: null, options: ["A. 4 orang", "B. 6 orang", "C. 8 orang", "D. 10 orang"], answer: "B", bahas: "Persentase siswa tidak hadir = 100% - 85% = 15%. Banyak siswa tidak hadir = 15% × 40 = 6 orang." },
+{ n: 15, type: "mc", text: "Dian mendapat uang saku sebesar Rp50.000,00. Sebanyak 2/5 bagian disimpan untuk menabung, 30% digunakan untuk jajan, dan sisanya untuk ongkos transportasi. Berapakah uang yang digunakan untuk ongkos?", img: null, options: ["A. Rp10.000,00", "B. Rp15.000,00", "C. Rp20.000,00", "D. Rp25.000,00"], answer: "B", bahas: "Tabungan = 2/5 × Rp50.000,00 = Rp20.000,00 dan jajan = 30% × Rp50.000,00 = Rp15.000,00. Ongkos = Rp50.000,00 - (Rp20.000,00 + Rp15.000,00) = Rp15.000,00." },
+{ n: 16, type: "mc", text: "Pak Joko memiliki seutas tali sepanjang 15 meter. Tali tersebut akan dipotong-potong menjadi beberapa bagian yang masing-masing panjangnya 3/4 meter. Banyak potongan tali yang dihasilkan adalah ...", img: null, options: ["A. 12 potongan", "B. 15 potongan", "C. 18 potongan", "D. 20 potongan"], answer: "D", bahas: "Banyak potongan = 15 : 3/4 = 15 × 4/3 = 20 potongan." },
+{ n: 17, type: "mc", text: "Sebuah resep minuman sirup membutuhkan 0,75 liter sirup murni dan 2 1/2 liter air matang. Total volume campuran sirup dan air tersebut adalah ...", img: null, options: ["A. 3,15 liter", "B. 3,25 liter", "C. 3,40 liter", "D. 3,50 liter"], answer: "B", bahas: "Ubah pecahan ke desimal: 2 1/2 = 2,5 liter. Total volume = 0,75 + 2,5 = 3,25 liter." },
+{ n: 18, type: "mc", text: "Dalam sebuah tes yang terdiri dari 50 soal, Rina berhasil menjawab benar 80% dari seluruh soal. Berapakah jumlah soal yang dijawab salah atau tidak dijawab oleh Rina?", img: null, options: ["A. 8 soal", "B. 10 soal", "C. 12 soal", "D. 15 soal"], answer: "B", bahas: "Persentase soal salah atau tidak dijawab = 100% - 80% = 20%. Banyak soalnya = 20% × 50 = 10 soal." },
+{ n: 19, type: "mc", text: "Sebuah loyang kue dipotong menjadi beberapa bagian sama besar. Doni memakan 1/4 bagian dan Sisi memakan 1/3 bagian. Sisa kue di dalam loyang adalah ... bagian.", img: null, options: ["A. 5/12", "B. 1/2", "C. 7/12", "D. 3/4"], answer: "A", bahas: "Bagian kue yang dimakan = 1/4 + 1/3 = 3/12 + 4/12 = 7/12. Sisa kue = 12/12 - 7/12 = 5/12 bagian." },
+{ n: 20, type: "mc", text: "Roni menabung di bank sebesar Rp800.000,00. Setelah satu tahun, tabungannya bertambah sebesar 5% karena bunga simpanan. Berapakah jumlah total tabungan Roni setelah satu tahun?", img: null, options: ["A. Rp830.000,00", "B. Rp840.000,00", "C. Rp850.000,00", "D. Rp860.000,00"], answer: "B", bahas: "Besar bunga = 5% × Rp800.000,00 = Rp40.000,00. Total tabungan = Rp800.000,00 + Rp40.000,00 = Rp840.000,00." }
+] },
+{ name: "Rasio, skala, perbandingan", icon: "🗺️", questions: [
+{ n: 1, type: "mc", text: "Bentuk paling sederhana dari rasio 45 : 75 adalah ...", img: null, options: ["A. 2 : 3", "B. 3 : 5", "C. 3 : 4", "D. 5 : 8"], answer: "B", bahas: "Bagi kedua bilangan dengan FPB dari 45 dan 75, yaitu 15. Hasilnya 45 : 15 = 3 dan 75 : 15 = 5, jadi rasio sederhananya 3 : 5." },
+{ n: 2, type: "mc", text: "Bentuk sederhana dari perbandingan 500 gram : 2 kg adalah ...", img: null, options: ["A. 1 : 2", "B. 1 : 4", "C. 2 : 5", "D. 1 : 20"], answer: "B", bahas: "Samakan satuan terlebih dahulu ke gram: 2 kg = 2.000 gram. Rasio 500 : 2.000 dibagi 500 sehingga menjadi 1 : 4." },
+{ n: 3, type: "mc", text: "Diketahui rasio a : b = 4 : 7. Jika nilai a = 24, maka nilai b adalah ...", img: null, options: ["A. 35", "B. 40", "C. 42", "D. 49"], answer: "C", bahas: "Dari a : b = 4 : 7 diperoleh 24/b = 4/7. Perkalian silang: 4b = 24 × 7 = 168, sehingga b = 168 : 4 = 42." },
+{ n: 4, type: "mc", text: "Jika variabel x dan y berbalik nilai, dengan x1 = 6, y1 = 15, dan x2 = 10, maka nilai y2 adalah ...", img: null, options: ["A. 9", "B. 12", "C. 20", "D. 25"], answer: "A", bahas: "Pada perbandingan berbalik nilai, hasil kali kedua variabel konstan: x1 × y1 = x2 × y2. Maka 6 × 15 = 10 × y2, sehingga y2 = 90 : 10 = 9." },
+{ n: 5, type: "mc", text: "Diketahui jarak pada peta adalah 4 cm dan jarak sebenarnya di lapangan adalah 120 km. Skala peta tersebut adalah ...", img: null, options: ["A. 1 : 300.000", "B. 1 : 400.000", "C. 1 : 3.000.000", "D. 1 : 4.000.000"], answer: "C", bahas: "Konversi jarak sebenarnya ke cm: 120 km = 12.000.000 cm. Skala = jarak peta : jarak sebenarnya = 4 : 12.000.000 = 1 : 3.000.000." },
+{ n: 6, type: "mc", text: "Suatu peta digambar dengan skala 1 : 500.000. Jika jarak sebenarnya dua kota adalah 45 km, maka jarak kedua kota tersebut pada peta adalah ...", img: null, options: ["A. 7 cm", "B. 8 cm", "C. 9 cm", "D. 12 cm"], answer: "C", bahas: "Jarak sebenarnya = 45 km = 4.500.000 cm. Jarak pada peta = 4.500.000 : 500.000 = 9 cm." },
+{ n: 7, type: "mc", text: "Jika perbandingan senilai memenuhi 5/8 = x/56, maka nilai x adalah ...", img: null, options: ["A. 30", "B. 35", "C. 40", "D. 42"], answer: "B", bahas: "Perkalian silang: 8x = 5 × 56 = 280. Maka x = 280 : 8 = 35." },
+{ n: 8, type: "mc", text: "Perbandingan tiga nilai adalah p : q : r = 2 : 3 : 5. Jika jumlah nilai p + q + r = 80, maka nilai q adalah ...", img: null, options: ["A. 16", "B. 24", "C. 32", "D. 40"], answer: "B", bahas: "Total bagian pembanding = 2 + 3 + 5 = 10. Nilai q = (bagian q / total bagian) × total nilai = (3/10) × 80 = 24." },
+{ n: 9, type: "mc", text: "Pasangan nilai (p, q) mengikuti perbandingan berbalik nilai dengan konstanta k = p × q = 120. Jika p = 15, maka nilai q adalah ...", img: null, options: ["A. 6", "B. 8", "C. 10", "D. 12"], answer: "B", bahas: "Dari k = p × q diperoleh 120 = 15 × q. Maka q = 120 : 15 = 8." },
+{ n: 10, type: "mc", text: "Bentuk paling sederhana dari rasio waktu 45 menit : 1,5 jam adalah ...", img: null, options: ["A. 1 : 2", "B. 1 : 3", "C. 2 : 3", "D. 3 : 4"], answer: "A", bahas: "Ubah 1,5 jam ke menit: 1,5 × 60 = 90 menit. Rasio 45 : 90 disederhanakan dengan membagi 45 menjadi 1 : 2." },
+{ n: 11, type: "mc", text: "Harga 4 kg beras super di sebuah toko adalah Rp56.000,00. Harga 7 kg beras jenis yang sama adalah ...", img: null, options: ["A. Rp84.000,00", "B. Rp91.000,00", "C. Rp98.000,00", "D. Rp112.000,00"], answer: "C", bahas: "Harga 1 kg beras = Rp56.000,00 : 4 = Rp14.000,00. Harga 7 kg beras = 7 × Rp14.000,00 = Rp98.000,00." },
+{ n: 12, type: "mc", text: "Sebuah mobil membutuhkan 6 liter bensin untuk menempuh jarak 72 km. Jika mobil tersebut akan menempuh jarak 108 km, banyak bensin yang diperlukan adalah ...", img: null, options: ["A. 8 liter", "B. 9 liter", "C. 10 liter", "D. 12 liter"], answer: "B", bahas: "Gunakan perbandingan senilai: 6/72 = x/108. Maka x = (6 × 108) : 72 = 648 : 72 = 9 liter." },
+{ n: 13, type: "mc", text: "Pekerjaan renovasi rumah dapat diselesaikan oleh 12 pekerja dalam waktu 20 hari. Jika pemilik rumah ingin pekerjaan selesai dalam waktu 15 hari, banyak pekerja yang dibutuhkan adalah ...", img: null, options: ["A. 15 pekerja", "B. 16 pekerja", "C. 18 pekerja", "D. 20 pekerja"], answer: "B", bahas: "Semakin sedikit waktu, pekerja harus semakin banyak (berbalik nilai): 12 × 20 = p × 15. Maka p = 240 : 15 = 16 pekerja." },
+{ n: 14, type: "mc", text: "Proyek pembangunan jembatan ditargetkan selesai dalam 30 hari oleh 15 pekerja. Setelah dikerjakan selama 10 hari, pekerjaan terhenti selama 5 hari karena cuaca buruk. Agar proyek selesai tepat waktu, tambahan pekerja yang diperlukan adalah ...", img: null, options: ["A. 3 orang", "B. 5 orang", "C. 8 orang", "D. 10 orang"], answer: "B", bahas: "Sisa waktu normal = 30 - 10 = 20 hari dengan 15 pekerja; karena berhenti 5 hari, sisa waktu efektif = 20 - 5 = 15 hari. Dengan berbalik nilai: 15 × 20 = P × 15, sehingga P = 20 pekerja. Tambahan pekerja = 20 - 15 = 5 orang." },
+{ n: 15, type: "mc", text: "Seorang peternak memiliki persediaan pakan yang cukup untuk 40 ekor sapi selama 18 hari. Jika peternak tersebut membeli lagi 5 ekor sapi, persediaan pakan tersebut akan habis dalam waktu ...", img: null, options: ["A. 14 hari", "B. 15 hari", "C. 16 hari", "D. 17 hari"], answer: "C", bahas: "Jumlah sapi akhir = 40 + 5 = 45 ekor. Perbandingan berbalik nilai: 40 × 18 = 45 × H, sehingga H = 720 : 45 = 16 hari." },
+{ n: 16, type: "mc", text: "Rasio uang tabungan Sani dan Ari adalah 3 : 5. Jika selisih uang tabungan mereka adalah Rp40.000,00, maka jumlah total uang tabungan keduanya adalah ...", img: null, options: ["A. Rp120.000,00", "B. Rp140.000,00", "C. Rp160.000,00", "D. Rp200.000,00"], answer: "C", bahas: "Selisih pembanding = 5 - 3 = 2 dan jumlah pembanding = 3 + 5 = 8. Jumlah uang = (8/2) × Rp40.000,00 = Rp160.000,00." },
+{ n: 17, type: "mc", text: "Denah sebuah gedung berbentuk persegi panjang berukuran 8 cm × 5 cm dengan skala 1 : 200. Luas gedung sebenarnya adalah ...", img: null, options: ["A. 80 m^2", "B. 120 m^2", "C. 160 m^2", "D. 320 m^2"], answer: "C", bahas: "Panjang sebenarnya = 8 × 200 = 1.600 cm = 16 m dan lebar sebenarnya = 5 × 200 = 1.000 cm = 10 m. Luas sebenarnya = 16 × 10 = 160 m^2." },
+{ n: 18, type: "mc", text: "Sebuah mesin cetak mampu menghasilkan 240 lembar dokumen dalam waktu 40 menit. Banyak dokumen yang dapat dicetak mesin tersebut selama 1,5 jam adalah ...", img: null, options: ["A. 480 lembar", "B. 520 lembar", "C. 540 lembar", "D. 600 lembar"], answer: "C", bahas: "Ubah 1,5 jam ke menit: 1,5 × 60 = 90 menit. Dengan perbandingan senilai 240/40 = N/90, diperoleh N = 6 × 90 = 540 lembar." },
+{ n: 19, type: "mc", text: "Pak Doni mengendarai mobil dari kota X ke kota Y dengan kecepatan rata-rata 60 km/jam dan membutuhkan waktu 3 jam. Jika Pak Doni ingin tiba dalam waktu 2,5 jam, kecepatan rata-rata mobil yang harus digunakan adalah ...", img: null, options: ["A. 68 km/jam", "B. 70 km/jam", "C. 72 km/jam", "D. 75 km/jam"], answer: "C", bahas: "Jarak = kecepatan × waktu = 60 × 3 = 180 km. Kecepatan baru = 180 : 2,5 = 72 km/jam." },
+{ n: 20, type: "mc", text: "Perbandingan kelereng Farhan dan Bagas adalah 2 : 3, sedangkan perbandingan kelereng Bagas dan Candra adalah 4 : 5. Jika jumlah total kelereng mereka bertiga adalah 70 butir, maka banyak kelereng Bagas adalah ...", img: null, options: ["A. 16 butir", "B. 24 butir", "C. 30 butir", "D. 35 butir"], answer: "B", bahas: "Samakan bagian Bagas: Farhan : Bagas = 2 : 3 = 8 : 12 dan Bagas : Candra = 4 : 5 = 12 : 15. Rasio gabungan F : B : C = 8 : 12 : 15 dengan total 35, sehingga kelereng Bagas = (12/35) × 70 = 24 butir." }
+] },
+{ name: "Aljabar", icon: "🧮", questions: [
+{ n: 1, type: "mc", text: "Diberikan bentuk aljabar 3x^2 - 7x + 12. Koefisien dari variabel x adalah ...", img: null, options: ["A. 3", "B. -7", "C. 7", "D. 12"], answer: "B", bahas: "Koefisien adalah angka yang melekat pada variabel. Suku yang mengandung variabel x (pangkat 1) adalah -7x, maka koefisien dari x adalah -7." },
+{ n: 2, type: "mc", text: "Variabel-variabel yang terdapat pada bentuk aljabar 5p^2q - 3pr + 8 adalah ...", img: null, options: ["A. p dan q saja", "B. p, q, dan r", "C. p^2q dan pr", "D. 5, -3, dan 8"], answer: "B", bahas: "Variabel adalah lambang atau huruf pengganti nilai yang belum diketahui. Huruf-huruf yang digunakan pada 5p^2q - 3pr + 8 adalah p, q, dan r." },
+{ n: 3, type: "mc", text: "Pasangan suku berikut yang merupakan suku-suku sejenis adalah ...", img: null, options: ["A. 4x^2 dan 4x", "B. 3ab dan 5ba", "C. 2xy dan 2xz", "D. 6p^2q dan 6pq^2"], answer: "B", bahas: "Suku sejenis adalah suku yang memiliki variabel dan pangkat variabel yang sama persis. Karena ab = ba (sifat komutatif), maka 3ab dan 5ba memiliki variabel yang sama, yaitu ab." },
+{ n: 4, type: "mc", text: "Hasil penjumlahan dari (5a - 3b + 7) dan (2a + 8b - 4) adalah ...", img: null, options: ["A. 7a + 5b + 3", "B. 7a - 11b + 3", "C. 7a + 5b + 11", "D. 3a + 5b + 3"], answer: "A", bahas: "Kelompokkan suku-suku sejenis: (5a + 2a) + (-3b + 8b) + (7 - 4). Hasilnya 7a + 5b + 3." },
+{ n: 5, type: "mc", text: "Hasil pengurangan (8x - 5y + 3) oleh (3x + 2y - 7) adalah ...", img: null, options: ["A. 5x - 7y + 10", "B. 5x - 3y - 4", "C. 5x - 7y - 4", "D. 11x - 3y + 10"], answer: "A", bahas: "Pengurangan A oleh B berarti A - B: (8x - 5y + 3) - (3x + 2y - 7) = 8x - 5y + 3 - 3x - 2y + 7. Kelompokkan suku sejenis: (8x - 3x) + (-5y - 2y) + (3 + 7) = 5x - 7y + 10." },
+{ n: 6, type: "mc", text: "Bentuk sederhana dari 4(2x - 3y) - 3(x - 5y) adalah ...", img: null, options: ["A. 5x - 3y", "B. 5x + 3y", "C. 5x - 27y", "D. 11x + 3y"], answer: "B", bahas: "Jabarkan dengan sifat distributif: 4(2x - 3y) - 3(x - 5y) = 8x - 12y - 3x + 15y. Kelompokkan: (8x - 3x) + (-12y + 15y) = 5x + 3y." },
+{ n: 7, type: "mc", text: "Hasil perkalian dari (2x + 3)(x - 4) adalah ...", img: null, options: ["A. 2x^2 - 5x - 12", "B. 2x^2 + 5x - 12", "C. 2x^2 - 11x - 12", "D. 2x^2 - 5x + 12"], answer: "A", bahas: "Gunakan metode perkalian silang: (2x + 3)(x - 4) = 2x^2 - 8x + 3x - 12. Hasilnya 2x^2 - 5x - 12." },
+{ n: 8, type: "mc", text: "Hasil pembagian 15a^3b^2 : 3ab adalah ...", img: null, options: ["A. 5a^2b", "B. 5ab^2", "C. 5a^3b", "D. 5a^2b^2"], answer: "A", bahas: "Bagi koefisien dan kurangkan pangkat variabel sejenis: (15 : 3) × a^(3-1) × b^(2-1). Hasilnya 5a^2b." },
+{ n: 9, type: "mc", text: "Bentuk sederhana dari pecahan aljabar (x^2 - 9) / (x + 3) untuk x ≠ -3 adalah ...", img: null, options: ["A. x + 3", "B. x - 3", "C. x - 9", "D. x + 9"], answer: "B", bahas: "Faktorkan pembilang dengan selisih dua kuadrat: x^2 - 9 = (x + 3)(x - 3). Maka [(x + 3)(x - 3)] / (x + 3) = x - 3." },
+{ n: 10, type: "mc", text: "Jika x = -3 dan y = 4, maka nilai dari bentuk aljabar 2x^2 - 3xy + y adalah ...", img: null, options: ["A. 58", "B. 50", "C. 38", "D. -10"], answer: "A", bahas: "Substitusi x = -3 dan y = 4 ke dalam bentuk: 2(-3)^2 - 3(-3)(4) + 4. Hasilnya 18 + 36 + 4 = 58." },
+{ n: 11, type: "mc", text: "Harga 1 buku tulis dinyatakan sebagai x rupiah dan harga 1 pulpen dinyatakan sebagai y rupiah. Jika Budi membeli 5 buku tulis dan 3 pulpen, bentuk aljabar total harga belanjaan Budi adalah ...", img: null, options: ["A. 5x + 3y", "B. 3x + 5y", "C. 8(x + y)", "D. 15xy"], answer: "A", bahas: "Harga 5 buku tulis = 5x dan harga 3 pulpen = 3y. Total harga belanjaan = 5x + 3y." },
+{ n: 12, type: "mc", text: "Sebuah persegi panjang memiliki panjang (3x + 4) cm dan lebar (x - 2) cm. Keliling persegi panjang tersebut dalam variabel x adalah ...", img: null, options: ["A. 4x + 2 cm", "B. 8x + 4 cm", "C. 8x + 2 cm", "D. 4x + 4 cm"], answer: "B", bahas: "Keliling K = 2 × (panjang + lebar) = 2 × [(3x + 4) + (x - 2)]. Hasilnya 2(4x + 2) = 8x + 4 cm." },
+{ n: 13, type: "mc", text: "Umur Rian saat ini adalah n tahun. Jika umur ayah Rian 4 tahun yang lalu adalah 3 kali umur Rian saat ini, bentuk aljabar yang menyatakan umur ayah Rian saat ini adalah ...", img: null, options: ["A. 3n - 4 tahun", "B. 3n + 4 tahun", "C. 3(n + 4) tahun", "D. 4n + 3 tahun"], answer: "B", bahas: "Misalkan umur ayah saat ini A. Umur ayah 4 tahun lalu = A - 4 dan diketahui A - 4 = 3n. Maka A = 3n + 4 tahun." },
+{ n: 14, type: "mc", text: "Pak Eko memiliki sebidang tanah berbentuk persegi panjang dengan ukuran panjang (2x + 5) meter dan lebar (x + 3) meter. Luas tanah Pak Eko dalam bentuk aljabar adalah ...", img: null, options: ["A. 2x^2 + 11x + 15 m^2", "B. 2x^2 + 8x + 15 m^2", "C. 2x^2 + 6x + 15 m^2", "D. 3x^2 + 11x + 15 m^2"], answer: "A", bahas: "Luas = panjang × lebar = (2x + 5)(x + 3) = 2x^2 + 6x + 5x + 15. Hasilnya 2x^2 + 11x + 15 m^2." },
+{ n: 15, type: "mc", text: "Rani membeli 3 kg apel dan 2 kg jeruk dengan total pembayaran Rp105.000,00. Jika harga 1 kg jeruk adalah x rupiah dan harga 1 kg apel Rp5.000,00 lebih mahal dari 1 kg jeruk, model persamaan aljabar yang benar adalah ...", img: null, options: ["A. 3(x + 5.000) + 2x = 105.000", "B. 3x + 2(x + 5.000) = 105.000", "C. 5x + 5.000 = 105.000", "D. 3x + 2x = 105.000"], answer: "A", bahas: "Harga 1 kg jeruk = x dan harga 1 kg apel = x + 5.000. Modelnya 3 kg apel + 2 kg jeruk = 105.000, yaitu 3(x + 5.000) + 2x = 105.000." },
+{ n: 16, type: "mc", text: "Sebuah segitiga memiliki panjang sisi-sisinya (x + 3) cm, (2x - 1) cm, dan (3x + 5) cm. Keliling segitiga tersebut adalah ...", img: null, options: ["A. 6x + 7 cm", "B. 6x + 9 cm", "C. 5x + 7 cm", "D. 6x - 7 cm"], answer: "A", bahas: "Keliling segitiga = jumlah ketiga sisinya = (x + 3) + (2x - 1) + (3x + 5). Hasilnya (x + 2x + 3x) + (3 - 1 + 5) = 6x + 7 cm." },
+{ n: 17, type: "mc", text: "Toko \"Maju Jaya\" memiliki stok awal (7x - 4) karung beras. Hari ini toko menerima kiriman tambahan (3x + 10) karung, lalu berhasil menjual (5x - 2) karung. Sisa persediaan beras toko tersebut adalah ...", img: null, options: ["A. 5x + 8 karung", "B. 5x + 16 karung", "C. 15x + 4 karung", "D. 5x + 4 karung"], answer: "A", bahas: "Sisa persediaan = (stok awal + tambahan) - terjual = [(7x - 4) + (3x + 10)] - (5x - 2). Hasilnya (10x + 6) - (5x - 2) = 10x + 6 - 5x + 2 = 5x + 8 karung." },
+{ n: 18, type: "mc", text: "Suatu tabungan awal sebesar x rupiah mendapat bunga tetap sebesar Rp25.000,00 per bulan. Jumlah uang tabungan tersebut setelah m bulan adalah ...", img: null, options: ["A. x + 25.000m", "B. (x + 25.000)m", "C. 25.000x + m", "D. xm + 25.000"], answer: "A", bahas: "Tabungan awal = x dan bunga selama m bulan = 25.000 × m = 25.000m. Total tabungan = x + 25.000m." },
+{ n: 19, type: "mc", text: "Suatu trapesium memiliki panjang sisi-sisi sejajarnya (x + 4) cm dan (3x - 2) cm, serta tinggi 6 cm. Luas trapesium tersebut dalam variabel x adalah ...", img: null, options: ["A. 12x + 6 cm^2", "B. 24x + 12 cm^2", "C. 12x + 12 cm^2", "D. 4x + 2 cm^2"], answer: "A", bahas: "Luas trapesium = 1/2 × (jumlah sisi sejajar) × tinggi = 1/2 × [(x + 4) + (3x - 2)] × 6. Hasilnya 3 × (4x + 2) = 12x + 6 cm^2." },
+{ n: 20, type: "mc", text: "Pak Ahmad membagikan (12x^2y + 8xy^2) butir permen secara merata kepada 4xy orang anak. Banyak permen yang diterima oleh masing-masing anak adalah ...", img: null, options: ["A. 3x + 2y", "B. 3x + 2", "C. 3xy + 2y", "D. 4x + 2y"], answer: "A", bahas: "Bagi setiap suku dengan pembagi 4xy: (12x^2y : 4xy) + (8xy^2 : 4xy). Hasilnya 3x + 2y butir permen." }
+] },
+{ name: "Pemfaktoran aljabar", icon: "🧱", questions: [
+{ n: 1, type: "mc", text: "Faktor Persekutuan Terbesar (FPB) dari bentuk aljabar 6x^2y dan 9xy^2 adalah ...", img: null, options: ["A. 3xy", "B. 6xy", "C. 3x^2y^2", "D. 18xy"], answer: "A", bahas: "FPB angka: FPB(6, 9) = 3. FPB variabel: FPB(x^2, x) = x dan FPB(y, y^2) = y. Maka FPB dari 6x^2y dan 9xy^2 adalah 3xy." },
+{ n: 2, type: "mc", text: "Bentuk pemfaktoran dari 5x + 15 adalah ...", img: null, options: ["A. 5(x + 3)", "B. 5(x + 15)", "C. 15(x + 1)", "D. 5x(1 + 3)"], answer: "A", bahas: "FPB dari 5 dan 15 adalah 5. Keluarkan angka 5 dari dalam kurung sehingga 5x + 15 = 5(x + 3)." },
+{ n: 3, type: "mc", text: "Hasil pemfaktoran dari 8x^2 - 12x adalah ...", img: null, options: ["A. 4x(2x - 3)", "B. 4(2x^2 - 3x)", "C. 2x(4x - 6)", "D. 8x(x - 12)"], answer: "A", bahas: "FPB dari 8 dan 12 adalah 4 dan FPB dari x^2 dan x adalah x, sehingga FPB utamanya 4x. Maka 8x^2 - 12x = 4x(2x - 3)." },
+{ n: 4, type: "mc", text: "Bentuk pemfaktoran dari 14a^2b - 21ab^2 adalah ...", img: null, options: ["A. 7ab(2a - 3b)", "B. 7ab(2a + 3b)", "C. 7a^2b(2 - 3b)", "D. 14ab(a - 2b)"], answer: "A", bahas: "FPB dari 14 dan 21 adalah 7 dan FPB dari a^2b dan ab^2 adalah ab. Maka 14a^2b - 21ab^2 = 7ab(2a - 3b)." },
+{ n: 5, type: "mc", text: "Hasil pemfaktoran dari 6p^3q^2 + 9p^2q^3 - 15p^2q^2 adalah ...", img: null, options: ["A. 3p^2q^2(2p + 3q - 5)", "B. 3pq(2p^2 + 3q^2 - 5)", "C. 3p^2q^2(2p - 3q + 5)", "D. 6p^2q^2(p + q - 2)"], answer: "A", bahas: "FPB koefisien 6, 9, dan 15 adalah 3, dan variabel berpangkat terkecil adalah p^2q^2. Maka bentuk tersebut = 3p^2q^2(2p + 3q - 5)." },
+{ n: 6, type: "mc", text: "Bentuk sederhana dari pemfaktoran x(y + 2) + 3(y + 2) adalah ...", img: null, options: ["A. (x + 3)(y + 2)", "B. (x - 3)(y + 2)", "C. (x + y)(3 + 2)", "D. 3x(y + 2)"], answer: "A", bahas: "Kedua suku memiliki faktor persekutuan yang sama, yaitu (y + 2). Keluarkan faktor tersebut sehingga hasilnya (x + 3)(y + 2)." },
+{ n: 7, type: "mc", text: "Bentuk pemfaktoran dari selisih dua kuadrat x^2 - 25 adalah ...", img: null, options: ["A. (x + 5)(x - 5)", "B. (x - 5)(x - 5)", "C. (x + 25)(x - 1)", "D. (x + 5)(x + 5)"], answer: "A", bahas: "Gunakan rumus selisih dua kuadrat a^2 - b^2 = (a + b)(a - b). Karena 25 = 5^2, maka x^2 - 25 = (x + 5)(x - 5)." },
+{ n: 8, type: "mc", text: "Bentuk pemfaktoran dari 4a^2 - 9 adalah ...", img: null, options: ["A. (2a + 3)(2a - 3)", "B. (4a + 3)(a - 3)", "C. (2a - 3)(2a - 3)", "D. (2a + 9)(2a - 1)"], answer: "A", bahas: "Ubah ke bentuk kuadrat sempurna: 4a^2 = (2a)^2 dan 9 = 3^2. Maka 4a^2 - 9 = (2a + 3)(2a - 3)." },
+{ n: 9, type: "mc", text: "Hasil pemfaktoran dari 16x^2 - 49y^2 adalah ...", img: null, options: ["A. (4x + 7y)(4x - 7y)", "B. (8x + 7y)(2x - 7y)", "C. (4x - 7y)^2", "D. (16x + y)(x - 49y)"], answer: "A", bahas: "Ubah ke bentuk kuadrat: 16x^2 = (4x)^2 dan 49y^2 = (7y)^2. Maka 16x^2 - 49y^2 = (4x + 7y)(4x - 7y)." },
+{ n: 10, type: "mc", text: "Bentuk pemfaktoran lengkap dari 3x^2 - 75 adalah ...", img: null, options: ["A. 3(x + 5)(x - 5)", "B. (3x + 15)(x - 5)", "C. 3(x^2 - 25)", "D. (x + 5)(3x - 15)"], answer: "A", bahas: "Langkah pertama, keluarkan FPB 3: 3x^2 - 75 = 3(x^2 - 25). Langkah kedua, faktorkan selisih dua kuadrat: x^2 - 25 = (x + 5)(x - 5). Pemfaktoran lengkapnya 3(x + 5)(x - 5)." },
+{ n: 11, type: "mc", text: "Salah satu faktor dari bentuk aljabar 25p^2 - 36q^2 adalah ...", img: null, options: ["A. 5p - 6q", "B. 5p - 36q", "C. 25p + 6q", "D. 5p + 12q"], answer: "A", bahas: "Faktorkan dengan selisih dua kuadrat: 25p^2 - 36q^2 = (5p + 6q)(5p - 6q). Faktor yang tersedia di pilihan adalah 5p - 6q." },
+{ n: 12, type: "mc", text: "Hasil pemfaktoran dari bentuk kuadrat x^2 + 7x + 12 adalah ...", img: null, options: ["A. (x + 3)(x + 4)", "B. (x + 2)(x + 6)", "C. (x + 1)(x + 12)", "D. (x - 3)(x - 4)"], answer: "A", bahas: "Cari dua bilangan yang jika dijumlahkan bernilai +7 dan jika dikalikan bernilai +12, yaitu +3 dan +4. Sehingga x^2 + 7x + 12 = (x + 3)(x + 4)." },
+{ n: 13, type: "mc", text: "Bentuk pemfaktoran dari x^2 - 5x + 6 adalah ...", img: null, options: ["A. (x - 2)(x - 3)", "B. (x + 2)(x + 3)", "C. (x - 1)(x - 6)", "D. (x + 1)(x - 6)"], answer: "A", bahas: "Cari dua bilangan yang jika dijumlahkan bernilai -5 dan jika dikalikan bernilai +6, yaitu -2 dan -3. Sehingga x^2 - 5x + 6 = (x - 2)(x - 3)." },
+{ n: 14, type: "mc", text: "Bentuk pemfaktoran dari x^2 + 2x - 15 adalah ...", img: null, options: ["A. (x + 5)(x - 3)", "B. (x - 5)(x + 3)", "C. (x + 15)(x - 1)", "D. (x - 3)(x - 5)"], answer: "A", bahas: "Cari dua bilangan yang jika dijumlahkan bernilai +2 dan jika dikalikan bernilai -15, yaitu +5 dan -3. Sehingga x^2 + 2x - 15 = (x + 5)(x - 3)." },
+{ n: 15, type: "mc", text: "Hasil pemfaktoran dari x^2 - 4x - 21 adalah ...", img: null, options: ["A. (x - 7)(x + 3)", "B. (x + 7)(x - 3)", "C. (x - 21)(x + 1)", "D. (x - 3)(x - 4)"], answer: "A", bahas: "Cari dua bilangan yang jika dijumlahkan bernilai -4 dan jika dikalikan bernilai -21, yaitu -7 dan +3. Sehingga x^2 - 4x - 21 = (x - 7)(x + 3)." },
+{ n: 16, type: "mc", text: "Bentuk pemfaktoran dari kuadrat sempurna x^2 + 10x + 25 adalah ...", img: null, options: ["A. (x + 5)^2", "B. (x - 5)^2", "C. (x + 10)^2", "D. (x + 25)(x + 1)"], answer: "A", bahas: "Bentuk ini mengikuti pola a^2 + 2ab + b^2 = (a + b)^2. Karena x^2 + 2(5)(x) + 5^2, maka hasilnya (x + 5)^2." },
+{ n: 17, type: "mc", text: "Hasil pemfaktoran dari 2x^2 + 7x + 3 adalah ...", img: null, options: ["A. (2x + 1)(x + 3)", "B. (2x + 3)(x + 1)", "C. (2x - 1)(x - 3)", "D. (x + 2)(2x + 3)"], answer: "A", bahas: "Cari dua bilangan yang jumlahnya 7 dan hasil kalinya 2 × 3 = 6, yaitu 6 dan 1. Pecah suku tengah: 2x^2 + 6x + x + 3 = 2x(x + 3) + 1(x + 3). Faktorkan: (2x + 1)(x + 3)." },
+{ n: 18, type: "mc", text: "Bentuk pemfaktoran dari 3x^2 - 5x - 2 adalah ...", img: null, options: ["A. (3x + 1)(x - 2)", "B. (3x - 1)(x + 2)", "C. (3x - 2)(x + 1)", "D. (3x + 2)(x - 1)"], answer: "A", bahas: "Cari dua bilangan yang jumlahnya -5 dan hasil kalinya 3 × (-2) = -6, yaitu -6 dan +1. Pecah suku tengah: 3x^2 - 6x + x - 2 = 3x(x - 2) + 1(x - 2). Faktorkan: (3x + 1)(x - 2)." },
+{ n: 19, type: "mc", text: "Bentuk pemfaktoran dari ax + ay + bx + by dengan pengelompokan suku adalah ...", img: null, options: ["A. (a + b)(x + y)", "B. (a + x)(b + y)", "C. (ab)(xy)", "D. (a - b)(x - y)"], answer: "A", bahas: "Kelompokkan dua suku pertama dan dua suku terakhir: (ax + ay) + (bx + by) = a(x + y) + b(x + y). Keluarkan faktor sejenis (x + y) sehingga hasilnya (a + b)(x + y)." },
+{ n: 20, type: "mc", text: "Luas sebuah papan tulis berbentuk persegi panjang dinyatakan oleh bentuk aljabar (x^2 + 8x + 15) cm^2. Pasangan ukuran panjang dan lebar papan tulis tersebut berturut-turut adalah ...", img: null, options: ["A. (x + 5) cm dan (x + 3) cm", "B. (x + 8) cm dan (x + 15) cm", "C. (x - 5) cm dan (x - 3) cm", "D. (x + 1) cm dan (x + 15) cm"], answer: "A", bahas: "Luas = panjang × lebar, jadi faktorkan x^2 + 8x + 15. Dua bilangan yang jumlahnya 8 dan hasil kalinya 15 adalah 5 dan 3, sehingga x^2 + 8x + 15 = (x + 5)(x + 3). Panjang dan lebarnya berturut-turut (x + 5) cm dan (x + 3) cm." }
+] },
+{ name: "Aritmatika sosial", icon: "💰", questions: [
+{ n: 1, type: "mc", text: "Pak Amir membeli HP bekas seharga Rp1.200.000,00. Setelah memperbaikinya dengan mengeluarkan biaya Rp300.000,00, ia menjual HP tersebut seharga Rp1.800.000,00. Persentase keuntungan yang diperoleh Pak Amir dari modal yang dikeluarkan adalah ...", img: null, options: ["A. 20%", "B. 15%", "C. 25%", "D. 30%"], answer: "A", bahas: "Total modal = harga beli + biaya perbaikan = Rp1.200.000,00 + Rp300.000,00 = Rp1.500.000,00. Keuntungan = Rp1.800.000,00 - Rp1.500.000,00 = Rp300.000,00. Persentase untung = (300.000 / 1.500.000) × 100% = 20%." },
+{ n: 2, type: "mc", text: "Harga normal sebuah mantel musim dingin di toko pakaian adalah Rp200.000,00. Karena ada akhir musim, toko memberikan penurunan harga sebesar 15%. Harga mantel tersebut setelah mengalami penurunan harga adalah ...", img: null, options: ["A. Rp170.000,00", "B. Rp180.000,00", "C. Rp165.000,00", "D. Rp175.000,00"], answer: "A", bahas: "Nominal penurunan = 15% × Rp200.000,00 = Rp30.000,00. Harga setelah penurunan = Rp200.000,00 - Rp30.000,00 = Rp170.000,00." },
+{ n: 3, type: "mc", text: "Bu Sinta membeli 1 kodi baju kaos seharga Rp1.000.000,00. Karena modelnya sudah kurang diminati, baju-baju tersebut dijual kembali seharga Rp45.000,00 per potong. Besar persentase kerugian yang dialami Bu Sinta adalah ...", img: null, options: ["A. 10%", "B. 8%", "C. 12%", "D. 15%"], answer: "A", bahas: "1 kodi = 20 potong, sehingga total hasil penjualan = 20 × Rp45.000,00 = Rp900.000,00. Kerugian = Rp1.000.000,00 - Rp900.000,00 = Rp100.000,00. Persentase rugi = (100.000 / 1.000.000) × 100% = 10%." },
+{ n: 4, type: "mc", text: "Seorang dealer motor bekas menjual sebuah sepeda motor seharga Rp10.800.000,00 dan memperoleh keuntungan sebesar 20%. Harga beli (modal awal) sepeda motor tersebut adalah ...", img: null, options: ["A. Rp9.000.000,00", "B. Rp8.600.000,00", "C. Rp9.200.000,00", "D. Rp8.800.000,00"], answer: "A", bahas: "Persentase harga jual = 100% + 20% = 120%. Harga beli = (100/120) × Rp10.800.000,00 = Rp9.000.000,00." },
+{ n: 5, type: "mc", text: "Seorang pedagang buah membeli 50 kg jeruk seharga Rp600.000,00. Jika ia ingin memperoleh keuntungan total sebesar 25%, maka harga jual jeruk per kilogramnya adalah ...", img: null, options: ["A. Rp15.000,00", "B. Rp14.000,00", "C. Rp16.000,00", "D. Rp13.500,00"], answer: "A", bahas: "Total target penjualan = modal + untung = Rp600.000,00 + (25% × Rp600.000,00) = Rp750.000,00. Harga jual per kg = Rp750.000,00 : 50 kg = Rp15.000,00." },
+{ n: 6, type: "mc", text: "Akibat kenaikan biaya distribusi, harga beras kualitas super naik dari Rp12.000,00 per kg menjadi Rp15.000,00 per kg. Persentase kenaikan harga beras tersebut adalah ...", img: null, options: ["A. 25%", "B. 20%", "C. 30%", "D. 15%"], answer: "A", bahas: "Nominal kenaikan = Rp15.000,00 - Rp12.000,00 = Rp3.000,00. Persentase kenaikan = (3.000 / 12.000) × 100% = 25%." },
+{ n: 7, type: "mc", text: "Di sebuah department store, sebuah jaket dilabeli harga Rp350.000,00 dengan potongan diskon 30%. Jumlah uang yang harus dibayar pembeli untuk memboyong jaket tersebut adalah ...", img: null, options: ["A. Rp245.000,00", "B. Rp255.000,00", "C. Rp235.000,00", "D. Rp260.000,00"], answer: "A", bahas: "Besar diskon = 30% × Rp350.000,00 = Rp105.000,00. Harga yang dibayar = Rp350.000,00 - Rp105.000,00 = Rp245.000,00." },
+{ n: 8, type: "mc", text: "Sebuah tas merk terkenal dipasang harga Rp500.000,00 dengan promo bertingkat \"Diskon 50% + 20%\". Jumlah uang yang harus dibayar oleh pembeli kasir adalah ...", img: null, options: ["A. Rp200.000,00", "B. Rp150.000,00", "C. Rp250.000,00", "D. Rp175.000,00"], answer: "A", bahas: "Diskon pertama 50%: harga menjadi Rp500.000,00 - Rp250.000,00 = Rp250.000,00. Diskon kedua 20% dari harga sisa: Rp250.000,00 - Rp50.000,00 = Rp200.000,00." },
+{ n: 9, type: "mc", text: "Setelah mendapat potongan diskon sebesar 25%, Anton membayar sepasang sepatu olahraga sebesar Rp225.000,00 di kasir. Harga sepatu tersebut sebelum dipotong diskon adalah ...", img: null, options: ["A. Rp300.000,00", "B. Rp280.000,00", "C. Rp320.000,00", "D. Rp350.000,00"], answer: "A", bahas: "Persentase pembayaran = 100% - 25% = 75%. Harga sebelum diskon = Rp225.000,00 : 0,75 = Rp300.000,00." },
+{ n: 10, type: "mc", text: "Pak Harun membeli 2 karung gula pasir dengan berat kotor (bruto) masing-masing karung 50 kg dan tara 2%. Netto keseluruhan gula pasir yang dibeli Pak Harun adalah ...", img: null, options: ["A. 98 kg", "B. 96 kg", "C. 97,5 kg", "D. 99 kg"], answer: "A", bahas: "Total bruto = 2 karung × 50 kg = 100 kg. Total tara = 2% × 100 kg = 2 kg. Netto = 100 kg - 2 kg = 98 kg." },
+{ n: 11, type: "mc", text: "Pedagang buah membeli 5 peti apel dengan bruto 40 kg per peti. Jika tara tiap peti adalah 5% dan apel dijual dengan harga Rp25.000,00 per kg netto, total uang hasil penjualan seluruh apel adalah ...", img: null, options: ["A. Rp4.750.000,00", "B. Rp5.000.000,00", "C. Rp4.500.000,00", "D. Rp4.800.000,00"], answer: "A", bahas: "Total bruto = 5 × 40 = 200 kg dan total tara = 5% × 200 = 10 kg. Netto = 200 - 10 = 190 kg. Uang penjualan = 190 × Rp25.000,00 = Rp4.750.000,00." },
+{ n: 12, type: "mc", text: "Satu karung semen memiliki berat kotor (bruto) 50 kg. Setelah seluruh semen dikeluarkan dan digunakan, kemasan karung kosong ditimbang dan beratnya 0,5 kg. Persentase tara dari semen tersebut adalah ...", img: null, options: ["A. 1%", "B. 2%", "C. 0,5%", "D. 1,5%"], answer: "A", bahas: "Bruto = 50 kg dengan tara 0,5 kg. Persentase tara = (0,5 / 50) × 100% = 1%." },
+{ n: 13, type: "mc", text: "Rina menabung uangnya di bank sebesar Rp4.000.000,00 dengan suku bunga tunggal 9% per tahun. Besar seluruh uang tabungan Rina setelah 1 tahun adalah ...", img: null, options: ["A. Rp4.360.000,00", "B. Rp4.320.000,00", "C. Rp4.400.000,00", "D. Rp4.280.000,00"], answer: "A", bahas: "Bunga 1 tahun = 9% × Rp4.000.000,00 = Rp360.000,00. Total tabungan = Rp4.000.000,00 + Rp360.000,00 = Rp4.360.000,00." },
+{ n: 14, type: "mc", text: "Dedi menyimpan uang di bank sebesar Rp6.000.000,00 dengan suku bunga tunggal 8% per tahun. Setelah 9 bulan, besar bunga yang diperoleh Dedi adalah ...", img: null, options: ["A. Rp360.000,00", "B. Rp400.000,00", "C. Rp320.000,00", "D. Rp480.000,00"], answer: "A", bahas: "Bunga 9 bulan = (9/12) × 8% × Rp6.000.000,00 = (3/4) × Rp480.000,00. Hasilnya Rp360.000,00." },
+{ n: 15, type: "mc", text: "Ibu Dewi menabung uang sebesar Rp2.000.000,00 di bank yang memberikan bunga tunggal 12% per tahun. Saat seluruh tabungannya diambil, nilainya menjadi Rp2.180.000,00. Lama Ibu Dewi menabung adalah ...", img: null, options: ["A. 9 bulan", "B. 8 bulan", "C. 10 bulan", "D. 12 bulan"], answer: "A", bahas: "Total bunga diperoleh = Rp2.180.000,00 - Rp2.000.000,00 = Rp180.000,00. Bunga per bulan = (12% × Rp2.000.000,00) : 12 = Rp20.000,00. Lama menabung = 180.000 : 20.000 = 9 bulan." },
+{ n: 16, type: "mc", text: "Pak Doni meminjam uang di koperasi sebesar Rp12.000.000,00 dengan bunga tunggal 10% per tahun. Pinjaman tersebut akan dilunasi secara mengangsur selama 10 bulan. Besar angsuran yang wajib dibayar Pak Doni setiap bulan adalah ...", img: null, options: ["A. Rp1.300.000,00", "B. Rp1.250.000,00", "C. Rp1.350.000,00", "D. Rp1.400.000,00"], answer: "A", bahas: "Total bunga 10 bulan = (10/12) × 10% × Rp12.000.000,00 = Rp1.000.000,00. Total pinjaman + bunga = Rp13.000.000,00. Angsuran per bulan = Rp13.000.000,00 : 10 = Rp1.300.000,00." },
+{ n: 17, type: "mc", text: "Pak Budi membeli sebuah laptop seharga Rp8.000.000,00 di supermarket elektronik. Pembelian laptop tersebut dikenakan Pajak Pertambahan Nilai (PPN) sebesar 11%. Total uang yang harus dibayar Pak Budi adalah ...", img: null, options: ["A. Rp8.880.000,00", "B. Rp8.800.000,00", "C. Rp8.960.000,00", "D. Rp8.110.000,00"], answer: "A", bahas: "Nominal PPN = 11% × Rp8.000.000,00 = Rp880.000,00. Total pembayaran = Rp8.000.000,00 + Rp880.000,00 = Rp8.880.000,00." },
+{ n: 18, type: "mc", text: "Siska dan keluarganya makan di sebuah restoran dengan total tagihan makanan Rp250.000,00. Restoran memberlakukan PPN sebesar 10% dan biaya layanan (service charge) sebesar 5%. Total tagihan akhir yang harus dilunasi Siska adalah ...", img: null, options: ["A. Rp287.500,00", "B. Rp275.000,00", "C. Rp285.000,00", "D. Rp290.000,00"], answer: "A", bahas: "PPN 10% = Rp25.000,00 dan biaya layanan 5% = Rp12.500,00. Total tagihan = Rp250.000,00 + Rp25.000,00 + Rp12.500,00 = Rp287.500,00." },
+{ n: 19, type: "mc", text: "Pak Rahmad bekerja pada sebuah perusahaan dengan gaji kotor Rp6.000.000,00 per bulan. Jika gaji Pak Rahmad dikenakan Pajak Penghasilan (PPh) sebesar 5%, gaji bersih yang diterima Pak Rahmad setiap bulan adalah ...", img: null, options: ["A. Rp5.700.000,00", "B. Rp5.650.000,00", "C. Rp5.800.000,00", "D. Rp5.750.000,00"], answer: "A", bahas: "Potongan PPh = 5% × Rp6.000.000,00 = Rp300.000,00. Gaji bersih = Rp6.000.000,00 - Rp300.000,00 = Rp5.700.000,00." },
+{ n: 20, type: "mc", text: "Budi berhasil memenangkan olimpiade sains dan mendapat hadiah uang tunai sebesar Rp20.000.000,00. Berdasarkan aturan, hadiah tersebut dikenakan Pajak Pemenang sebesar 15%. Besar uang tunai bersih yang diterima Budi adalah ...", img: null, options: ["A. Rp17.000.000,00", "B. Rp16.500.000,00", "C. Rp17.500.000,00", "D. Rp18.000.000,00"], answer: "A", bahas: "Potongan pajak hadiah = 15% × Rp20.000.000,00 = Rp3.000.000,00. Hadiah uang bersih = Rp20.000.000,00 - Rp3.000.000,00 = Rp17.000.000,00." }
+] } ] };
+
+/* ================= state & util ================= */
+const SEC = SOAL.sections;
+const APP = { name:'', perQ:[], cur:null, data:[] };
+const $ = s => document.querySelector(s);
+const fmtT = s => {
+  s = Math.max(0, Math.round(s));
+  const j = Math.floor(s/3600), m = Math.floor((s%3600)/60), d = s%60;
+  return (j ? j + ':' + String(m).padStart(2,'0') : String(m)) + ':' + String(d).padStart(2,'0');
+};
+const norm = v => String(v).trim().toLowerCase().replace(/\s+/g,'').replace(/,/g,'.');
+let toastTimer = null;
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  $('#page-' + id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ================= cover ================= */
+(function initCover(){
+  document.title = SOAL.meta.title;
+  $('#cover-title').textContent = SOAL.meta.title;
+  $('#cover-sub').textContent = SOAL.meta.subtitle;
+  const tot = SEC.reduce((a,s)=>a+s.questions.length,0);
+  $('#cover-info').textContent = `📚 ${SEC.length} bagian • ${tot} soal • timer per soal diatur oleh tutor`;
+  $('#btn-mulai').addEventListener('click', () => {
+    const v = $('#nama').value.trim();
+    if(!v){ toast('Tulis dulu namamu ya 😊'); $('#nama').focus(); return; }
+    APP.name = v;
+    buildSettings();
+    showPage('settings');
+  });
+  $('#nama').addEventListener('keydown', e => { if(e.key==='Enter') $('#btn-mulai').click(); });
+})();
+
+/* ================= settings ================= */
+function buildSettings(){
+  const preset = $('#preset-row');
+  preset.innerHTML = '';
+  [30,60,120,180,300,600].forEach(sec => {
+    const b = document.createElement('button');
+    b.className = 'btn small';
+    b.textContent = fmtT(sec) + ' / soal';
+    b.addEventListener('click', () => {
+      SEC.forEach((s,i) => $('#perq-'+i).value = sec);
+      toast('Semua bagian diatur ' + fmtT(sec) + ' per soal');
+    });
+    preset.appendChild(b);
+  });
+
+  const wrap = $('#set-rows'); wrap.innerHTML = '';
+  SEC.forEach((s,i) => {
+    const row = document.createElement('div');
+    row.className = 'set-row';
+    const tot = s.questions.length;
+    row.innerHTML = `<div class="nm">${s.icon} ${s.name}<small>${tot} soal</small></div>`;
+    const inp = document.createElement('input');
+    inp.type = 'number'; inp.id = 'perq-'+i; inp.min = 10; inp.max = 3600; inp.step = 5;
+    inp.value = APP.perQ[i] || 120;
+    row.appendChild(inp);
+    wrap.appendChild(row);
+  });
+}
+$('#btn-set-kembali').addEventListener('click', () => showPage('cover'));
+$('#btn-simpan').addEventListener('click', () => {
+  const adaProgres = APP.data.some(d => d);
+  if(adaProgres && !confirm('Mengubah pengaturan waktu akan MENGHAPUS semua progres jawaban. Lanjutkan?')) return;
+  APP.perQ = SEC.map((s,i) => {
+    let v = parseInt($('#perq-'+i).value, 10);
+    if(isNaN(v) || v < 10) v = 10;
+    if(v > 3600) v = 3600;
+    return v;
+  });
+  APP.data = SEC.map(()=>null);
+  buildMenu();
+  showPage('menu');
+});
+
+/* ================= menu ================= */
+function statusOf(si){
+  const d = APP.data[si];
+  if(!d) return {cls:'blink', txt:'Belum dikerjakan'};
+  const t = SEC[si].questions.length;
+  const done = d.filter(a=>a.checked||a.timeout).length;
+  if(done === 0) return {cls:'blink', txt:'Belum dikerjakan'};
+  if(done >= t) return {cls:'selesai', txt:'Selesai ✓'};
+  return {cls:'progres', txt:`Progres ${done}/${t}`};
+}
+function buildMenu(){
+  $('#halo').textContent = `Halo, ${APP.name}! 👋`;
+  const grid = $('#menu-grid'); grid.innerHTML = '';
+  SEC.forEach((s,i) => {
+    const st = statusOf(i);
+    const card = document.createElement('button');
+    card.className = 'sec-card';
+    card.innerHTML = `
+      <div class="top"><span class="ico">${s.icon}</span><span class="nm">${s.name}</span></div>
+      <div class="meta"><span>📋 ${s.questions.length} soal</span><span>⏱ ${fmtT(APP.perQ[i]||120)}/soal</span></div>
+      <span class="chip ${st.cls}">${st.txt}</span>`;
+    card.addEventListener('click', () => startSection(i));
+    grid.appendChild(card);
+  });
+}
+$('#btn-ubah-waktu').addEventListener('click', () => { buildSettings(); showPage('settings'); });
+function keHasil(){
+  if(!APP.data.some(d=>d)){ toast('Belum ada soal yang dikerjakan'); return; }
+  buildResults(); showPage('results');
+}
+$('#btn-akhiri').addEventListener('click', keHasil);
+$('#btn-akhiri2').addEventListener('click', () => {
+  if(confirm('Akhiri latihan sekarang dan lihat hasil?')) keHasil();
+});
+$('#btn-menu').addEventListener('click', () => { buildMenu(); showPage('menu'); });
+
+/* ================= practice ================= */
+function startSection(si){
+  if(!APP.data[si]){
+    APP.data[si] = SEC[si].questions.map(() => ({
+      choice:null, val:'', checked:false, correct:null, spent:0, remaining:APP.perQ[si], timeout:false
+    }));
+  }
+  const d = APP.data[si];
+  let qi = d.findIndex(a => !a.checked && !a.timeout);
+  if(qi < 0) qi = 0;
+  APP.cur = {si, qi};
+  renderQ();
+  showPage('practice');
+}
+function curQ(){ return SEC[APP.cur.si].questions[APP.cur.qi]; }
+function curA(){ return APP.data[APP.cur.si][APP.cur.qi]; }
+
+function renderQ(){
+  const si = APP.cur.si, qi = APP.cur.qi;
+  const s = SEC[si], q = curQ(), a = curA();
+  $('#pr-title').textContent = s.icon + ' ' + s.name;
+  $('#pr-progress').textContent = `Soal ${qi+1} dari ${s.questions.length}`;
+  $('#q-no').textContent = 'Soal ' + q.n;
+  $('#q-type').textContent = q.type === 'mc' ? '📝 Pilihan Ganda' : '✏️ Isian Singkat';
+
+  const st = $('#q-status');
+  st.style.display = 'none';
+  if(a.checked){ st.style.display=''; st.className='badge-status '+(a.correct?'benar':'salah'); st.textContent = a.correct?'✔ Benar':'✘ Belum tepat'; }
+  else if(a.timeout){ st.style.display=''; st.className='badge-status timeout'; st.textContent='⏰ Waktu habis'; }
+
+  $('#q-text').textContent = q.text;
+  const imgBox = $('#q-img');
+  if(q.img){ imgBox.style.display=''; imgBox.innerHTML = q.img; } else { imgBox.style.display='none'; imgBox.innerHTML=''; }
+
+  const kunciTeks = q.type === 'mc'
+    ? q.options.find(o => o.trim().startsWith(q.answer + '.')).trim()
+    : String(q.answer);
+
+  // opsi / isian
+  const opts = $('#q-opts'); opts.innerHTML = '';
+  const iwrap = $('#isian-wrap');
+  if(q.type === 'mc'){
+    iwrap.style.display = 'none';
+    q.options.forEach(o => {
+      const huruf = o.trim().charAt(0);
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = o.trim();
+      if(a.checked || a.timeout){
+        b.disabled = true;
+        if(huruf === q.answer) b.classList.add('benar');
+        else if(huruf === a.choice) b.classList.add('salah');
+        else b.classList.add('dim');
+      } else {
+        if(a.choice === huruf) b.classList.add('selected');
+        b.addEventListener('click', () => {
+          a.choice = huruf;
+          opts.querySelectorAll('.opt').forEach(x => x.classList.remove('selected'));
+          b.classList.add('selected');
+        });
+      }
+      opts.appendChild(b);
+    });
+  } else {
+    iwrap.style.display = '';
+    const inp = $('#q-input');
+    inp.disabled = a.checked || a.timeout;
+    inp.value = a.val;
+    if(a.checked){
+      inp.style.borderColor = a.correct ? 'var(--hijau)' : 'var(--merah)';
+    } else { inp.style.borderColor = 'var(--biru)'; }
+    inp.oninput = () => { a.val = inp.value; };
+    inp.onkeydown = e => { if(e.key==='Enter') $('#btn-cek').click(); };
+  }
+
+  // feedback
+  const fb = $('#feedback');
+  if(a.checked || a.timeout){
+    fb.className = 'show ' + (a.timeout ? 'timeout' : (a.correct ? 'benar' : 'salah'));
+    $('#verdict').textContent = a.timeout
+      ? '⏰ Waktu habis!'
+      : (a.correct ? '🎉 Benar! Hebat!' : '😔 Belum tepat. Semangat!');
+    $('#kunci').innerHTML = '🔑 Jawaban benar: <b>' + kunciTeks + '</b>';
+    $('#bahas').innerHTML = '<b>💡 Pembahasan:</b>\n' + q.bahas;
+  } else {
+    fb.className = ''; 
+  }
+
+  // tombol
+  $('#btn-prev').disabled = qi === 0;
+  const cek = $('#btn-cek');
+  if(a.checked){ cek.disabled = true; cek.textContent = '✓ Sudah diperiksa'; }
+  else if(a.timeout){ cek.disabled = true; cek.textContent = '⏰ Waktu habis'; }
+  else { cek.disabled = false; cek.textContent = '✔ Cek Jawaban'; }
+  $('#btn-next').textContent = qi === s.questions.length - 1 ? 'Selesai ✓' : 'Berikutnya ▶';
+
+  updateTimer();
+}
+function updateTimer(){
+  const a = curA();
+  const t = $('#timer');
+  t.textContent = fmtT(a.checked || a.timeout ? a.spent : a.remaining);
+  const berjalan = !a.checked && !a.timeout;
+  t.classList.toggle('low', berjalan && a.remaining <= 10);
+}
+$('#btn-prev').addEventListener('click', () => {
+  if(APP.cur.qi > 0){ APP.cur.qi--; renderQ(); }
+});
+$('#btn-next').addEventListener('click', () => {
+  const si = APP.cur.si, n = SEC[si].questions.length;
+  if(APP.cur.qi < n - 1){ APP.cur.qi++; renderQ(); }
+  else {
+    const st = statusOf(si);
+    toast(`${st.txt === 'Selesai ✓' ? 'Bagian ' + SEC[si].name + ' selesai! 🎉' : 'Masih ada soal yang belum diperiksa'} `);
+    buildMenu(); showPage('menu');
+  }
+});
+$('#btn-cek').addEventListener('click', () => {
+  const a = curA(), q = curQ();
+  if(a.checked || a.timeout) return;
+  if(q.type === 'mc'){
+    if(!a.choice){ toast('Pilih salah satu jawaban dulu 😊'); return; }
+  } else {
+    if(!a.val.trim()){ toast('Tulis jawabanmu dulu 😊'); $('#q-input').focus(); return; }
+  }
+  const ok = q.type === 'mc'
+    ? a.choice === q.answer
+    : norm(a.val) === norm(q.answer);
+  a.checked = true; a.correct = ok;
+  a.spent = APP.perQ[APP.cur.si] - a.remaining;
+  renderQ();
+  if(ok) toast('🎉 Jawaban benar!');
+});
+
+/* timer per soal — hanya berjalan saat soal sedang ditampilkan & belum diperiksa */
+setInterval(() => {
+  if(APP.cur && $('#page-practice').classList.contains('active')){
+    const a = curA();
+    if(!a.checked && !a.timeout){
+      a.remaining--;
+      if(a.remaining <= 0){
+        a.remaining = 0; a.timeout = true; a.spent = APP.perQ[APP.cur.si];
+        renderQ();
+      } else updateTimer();
+    }
+  }
+}, 1000);
+
+/* ================= hasil ================= */
+function buildResults(){
+  $('#res-name').textContent = 'Siswa: ' + APP.name + ' • ' + SOAL.meta.title;
+  const body = $('#res-body'); body.innerHTML = '';
+  let gB=0, gS=0, gT=0, gTot=0, gSoal=0;
+  SEC.forEach((s,si) => {
+    const d = APP.data[si];
+    const n = s.questions.length;
+    let benar=0, salah=0, tidak=n, waktu=0, attempted=0;
+    if(d){
+      tidak = 0;
+      d.forEach(a => {
+        if(a.checked){ a.correct ? benar++ : salah++; attempted++; waktu += a.spent; }
+        else if(a.timeout){ attempted++; waktu += a.spent; }
+        else tidak++;
+      });
+    }
+    const avg = attempted ? waktu/attempted : 0;
+    const skor = d ? Math.round(benar/n*100) + '%' : '—';
+    const tr = document.createElement('tr');
+    if(!d){
+      tr.innerHTML = `<td>${s.icon} ${s.name}</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>`;
+    } else {
+      tr.innerHTML = `<td>${s.icon} ${s.name}</td>
+        <td><span class="pill-b">${benar}</span></td>
+        <td><span class="pill-s">${salah}</span></td>
+        <td><span class="pill-t">${tidak}</span></td>
+        <td>${fmtT(waktu)}</td>
+        <td>${attempted ? fmtT(avg) : '—'}</td>
+        <td><b>${skor}</b></td>`;
+      gB+=benar; gS+=salah; gT+=tidak; gTot+=waktu; gSoal+=n;
+    }
+    body.appendChild(tr);
+  });
+  const tr = document.createElement('tr');
+  tr.className = 'total';
+  const attemptedAll = gB + gS;
+  tr.innerHTML = `<td>TOTAL KESELURUHAN</td>
+    <td><span class="pill-b">${gB}</span></td>
+    <td><span class="pill-s">${gS}</span></td>
+    <td><span class="pill-t">${gT}</span></td>
+    <td>${fmtT(gTot)}</td>
+    <td>${attemptedAll ? fmtT(gTot/attemptedAll) : '—'}</td>
+    <td><b>${gSoal ? Math.round(gB/gSoal*100)+'%' : '—'}</b></td>`;
+  body.appendChild(tr);
+}
+$('#btn-home').addEventListener('click', () => { buildMenu(); showPage('menu'); });
+$('#btn-ulang').addEventListener('click', () => {
+  if(confirm('Hapus semua hasil dan mulai latihan baru dari awal?')){
+    APP.data = SEC.map(()=>null);
+    buildMenu(); showPage('menu');
+    toast('Latihan baru siap dimulai 💪');
+  }
+});
+</script>
+</body>
+</html>
