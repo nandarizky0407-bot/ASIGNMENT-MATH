@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latihan Matematika</title>
+<style>
+:root{
+  --biru:#4f46e5; --biru2:#7c3aed; --cyan:#0ea5e9;
+  --bg:#eef2ff; --hijau:#16a34a; --hijau-bg:#dcfce7;
+  --merah:#dc2626; --merah-bg:#fee2e2; --kuning:#f59e0b;
+  --teks:#1e293b; --abu:#64748b; --garis:#e2e8f0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif;
+  background:linear-gradient(160deg,#eef2ff 0%,#e0f2fe 60%,#faf5ff 100%);
+  min-height:100vh;color:var(--teks);
+}
+.page{display:none;max-width:920px;margin:0 auto;padding:28px 16px 70px}
+.page.active{display:block}
+h1,h2,h3{line-height:1.3}
+
+/* ===== tombol ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;
+  font-weight:600;font-size:15px;border-radius:12px;padding:12px 22px;
+  background:#fff;color:var(--biru);box-shadow:0 2px 6px rgba(79,70,229,.15);
+  transition:transform .08s, box-shadow .15s;
+}
+.btn:hover{box-shadow:0 4px 14px rgba(79,70,229,.25)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(135deg,var(--biru),var(--biru2));color:#fff}
+.btn.danger{background:linear-gradient(135deg,#ef4444,#f97316);color:#fff}
+.btn.ghost{background:#f1f5f9;color:var(--abu);box-shadow:none}
+.btn.small{padding:8px 14px;font-size:13px;border-radius:10px}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+/* ===== cover ===== */
+#page-cover{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px 16px}
+#page-cover.active{display:flex}
+.cover-card{
+  background:#fff;border-radius:26px;box-shadow:0 20px 60px rgba(79,70,229,.22);
+  max-width:520px;width:100%;padding:42px 36px;text-align:center;
+  border-top:8px solid var(--biru);
+}
+.cover-emoji{font-size:56px}
+.cover-card h1{font-size:26px;margin:10px 0 6px;color:var(--biru)}
+.cover-card .sub{color:var(--abu);font-size:15px;margin-bottom:6px}
+.cover-card .info{font-size:13px;color:var(--abu);background:#f1f5f9;border-radius:10px;padding:8px;margin:14px 0 20px}
+.cover-card label{display:block;text-align:left;font-weight:600;font-size:14px;margin-bottom:6px}
+.cover-card input{
+  width:100%;padding:13px 16px;font-size:16px;border:2px solid var(--garis);
+  border-radius:12px;outline:none;transition:border .15s;
+}
+.cover-card input:focus{border-color:var(--biru)}
+.cover-card .btn{width:100%;justify-content:center;margin-top:18px;font-size:16px;padding:14px}
+
+/* ===== kartu umum ===== */
+.card{background:#fff;border-radius:18px;box-shadow:0 6px 24px rgba(30,41,59,.08);padding:24px}
+.head-title{color:var(--biru);margin-bottom:4px}
+.hint{color:var(--abu);font-size:14px;margin-bottom:18px}
+
+/* ===== settings ===== */
+.preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.preset-row .btn.small{background:#eef2ff;color:var(--biru);box-shadow:none}
+.set-row{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 14px;border:1.5px solid var(--garis);border-radius:12px;margin-bottom:10px;background:#f8fafc;
+}
+.set-row .nm{font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px}
+.set-row .nm small{display:block;font-weight:400;color:var(--abu);font-size:12px}
+.set-row input{
+  width:110px;padding:9px 10px;font-size:15px;text-align:center;
+  border:2px solid var(--garis);border-radius:10px;outline:none;
+}
+.set-row input:focus{border-color:var(--biru)}
+.settings-actions{display:flex;gap:10px;margin-top:18px}
+.settings-actions .btn{flex:1;justify-content:center}
+
+/* ===== menu ===== */
+#halo{color:var(--biru)}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:18px 0}
+.sec-card{
+  background:#fff;border-radius:16px;padding:16px;cursor:pointer;text-align:left;
+  border:2px solid transparent;box-shadow:0 4px 14px rgba(30,41,59,.07);
+  transition:border .12s, transform .12s;position:relative;
+}
+.sec-card:hover{border-color:var(--biru);transform:translateY(-2px)}
+.sec-card .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sec-card .ico{font-size:26px}
+.sec-card .nm{font-weight:700;font-size:15px;color:var(--teks)}
+.sec-card .meta{font-size:13px;color:var(--abu);display:flex;gap:12px;margin-bottom:10px}
+.chip{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px}
+.chip.blink{background:#f1f5f9;color:var(--abu)}
+.chip.progres{background:#fef9c3;color:#a16207}
+.chip.selesai{background:var(--hijau-bg);color:var(--hijau)}
+.menu-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.menu-actions .btn{flex:1;justify-content:center;min-width:220px}
+
+/* ===== practice ===== */
+.pr-topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.pr-topbar .title{font-weight:800;color:var(--biru);font-size:16px;flex:1;min-width:150px}
+.pr-topbar .prog{font-size:13px;color:var(--abu);font-weight:600}
+#timer{
+  font-variant-numeric:tabular-nums;font-weight:800;font-size:16px;color:var(--biru);
+  background:#fff;border:2px solid var(--biru);border-radius:999px;padding:7px 16px;min-width:92px;text-align:center;
+}
+#timer.low{color:var(--merah);border-color:var(--merah);background:var(--merah-bg);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.qcard{background:#fff;border-radius:18px;box-shadow:0 6px 24px rgba(30,41,59,.08);padding:24px;margin-bottom:14px}
+.qhead{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.badge-no{background:linear-gradient(135deg,var(--biru),var(--biru2));color:#fff;font-weight:800;border-radius:10px;padding:6px 12px;font-size:14px}
+.badge-type{background:#eef2ff;color:var(--biru);font-weight:700;font-size:12px;border-radius:999px;padding:5px 12px}
+.badge-status{margin-left:auto;font-weight:700;font-size:12px;border-radius:999px;padding:5px 12px}
+.badge-status.benar{background:var(--hijau-bg);color:var(--hijau)}
+.badge-status.salah{background:var(--merah-bg);color:var(--merah)}
+.badge-status.timeout{background:#fef9c3;color:#a16207}
+#q-text{white-space:pre-line;font-size:16px;line-height:1.65;margin-bottom:14px}
+.qimg{text-align:center;margin:6px 0 14px}
+.qimg svg{max-width:320px;width:100%;height:auto;background:#fff}
+.opt{
+  display:block;width:100%;text-align:left;background:#f8fafc;border:2px solid var(--garis);
+  border-radius:12px;padding:12px 16px;font-size:15px;margin-bottom:10px;cursor:pointer;
+  transition:border .12s, background .12s;color:var(--teks);
+}
+.opt:hover{border-color:var(--biru)}
+.opt.selected{border-color:var(--biru);background:#eef2ff;font-weight:600}
+.opt.benar{border-color:var(--hijau);background:var(--hijau-bg);font-weight:700}
+.opt.salah{border-color:var(--merah);background:var(--merah-bg)}
+.opt.dim{opacity:.55}
+.opt:disabled{cursor:default}
+#isian-wrap input{
+  width:100%;max-width:320px;padding:13px 16px;font-size:17px;font-weight:600;
+  border:2px solid var(--biru);border-radius:12px;outline:none;display:block;
+}
+#isian-wrap input:disabled{background:#f1f5f9;color:var(--abu)}
+#feedback{display:none;border-radius:14px;padding:16px 18px;margin-top:16px}
+#feedback.show{display:block}
+#feedback.benar{background:var(--hijau-bg);border:2px solid var(--hijau)}
+#feedback.salah{background:var(--merah-bg);border:2px solid var(--merah)}
+#feedback.timeout{background:#fef9c3;border:2px solid var(--kuning)}
+.verdict{font-weight:800;font-size:16px;margin-bottom:6px}
+#feedback.benar .verdict{color:var(--hijau)}
+#feedback.salah .verdict{color:var(--merah)}
+#feedback.timeout .verdict{color:#a16207}
+.kunci{font-size:14px;margin-bottom:10px}
+.bahas-box{background:#fff;border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.65;white-space:pre-line}
+.bahas-box b{color:var(--biru)}
+.pr-nav{display:flex;gap:10px;flex-wrap:wrap}
+.pr-nav .btn{flex:1;justify-content:center;min-width:140px}
+.pr-nav .btn.cek{min-width:200px}
+
+/* ===== results ===== */
+.res-wrap{overflow-x:auto}
+table.res{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+table.res th,table.res td{padding:10px 12px;border-bottom:1.5px solid var(--garis);text-align:center}
+table.res th{background:#eef2ff;color:var(--biru);font-size:13px}
+table.res td:first-child,table.res th:first-child{text-align:left}
+table.res tr.total td{font-weight:800;background:#f8fafc}
+.pill-b{background:var(--hijau-bg);color:var(--hijau);border-radius:999px;padding:3px 10px;font-weight:700}
+.pill-s{background:var(--merah-bg);color:var(--merah);border-radius:999px;padding:3px 10px;font-weight:700}
+.pill-t{background:#f1f5f9;color:var(--abu);border-radius:999px;padding:3px 10px;font-weight:700}
+.res-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.res-actions .btn{flex:1;justify-content:center;min-width:200px}
+.res-emoji{font-size:40px;text-align:center;margin-bottom:4px}
+
+/* ===== toast ===== */
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+  background:#1e293b;color:#fff;padding:11px 20px;border-radius:12px;font-size:14px;
+  opacity:0;pointer-events:none;transition:all .25s;z-index:99;max-width:90vw;text-align:center;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (max-width:560px){
+  .qcard{padding:18px 16px}
+  #q-text{font-size:15px}
+  .opt{padding:11px 13px;font-size:14px}
+  .cover-card{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div id="page-cover" class="page active">
+  <div class="cover-card">
+    <div class="cover-emoji">🏅</div>
+    <h1 id="cover-title">Latihan Matematika</h1>
+    <p class="sub" id="cover-sub">Media latihan interaktif</p>
+    <div class="info" id="cover-info"></div>
+    <label for="nama">👤 Nama Siswa</label>
+    <input id="nama" type="text" placeholder="Tulis namamu di sini..." autocomplete="off">
+    <button class="btn primary" id="btn-mulai">Mulai Latihan ➜</button>
+  </div>
+</div>
+
+<!-- ============ PENGATURAN TUTOR ============ -->
+<div id="page-settings" class="page">
+  <div class="card">
+    <h2 class="head-title">⚙️ Pengaturan Tutor</h2>
+    <p class="hint">Atur <b>waktu hitung mundur per soal</b> (detik) untuk setiap bagian. Waktu berhenti otomatis ketika siswa menekan tombol <b>Cek Jawaban</b>. Jika waktu habis, soal terkunci dan masuk hitungan "tidak dijawab".</p>
+    <div class="preset-row" id="preset-row"></div>
+    <div id="set-rows"></div>
+    <div class="settings-actions">
+      <button class="btn ghost" id="btn-set-kembali">◀ Kembali</button>
+      <button class="btn primary" id="btn-simpan">Simpan &amp; Lanjut ➜</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MENU BAGIAN ============ -->
+<div id="page-menu" class="page">
+  <div class="card">
+    <h2 id="halo">Halo! 👋</h2>
+    <p class="hint">Pilih bagian latihan di bawah. Kamu bisa berpindah bagian kapan saja — jawaban yang sudah diperiksa tersimpan.</p>
+    <div class="menu-grid" id="menu-grid"></div>
+    <div class="menu-actions">
+      <button class="btn ghost" id="btn-ubah-waktu">⚙️ Ubah Waktu per Soal</button>
+      <button class="btn danger" id="btn-akhiri">🏁 Akhiri Latihan &amp; Lihat Hasil</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ LATIHAN ============ -->
+<div id="page-practice" class="page">
+  <div class="pr-topbar">
+    <button class="btn small ghost" id="btn-menu">◀ Menu</button>
+    <span class="title" id="pr-title"></span>
+    <span class="prog" id="pr-progress"></span>
+    <span id="timer">--:--</span>
+    <button class="btn small danger" id="btn-akhiri2">🏁 Akhiri</button>
+  </div>
+  <div class="qcard">
+    <div class="qhead">
+      <span class="badge-no" id="q-no">Soal 1</span>
+      <span class="badge-type" id="q-type"></span>
+      <span class="badge-status" id="q-status" style="display:none"></span>
+    </div>
+    <div id="q-text"></div>
+    <div class="qimg" id="q-img" style="display:none"></div>
+    <div id="q-opts"></div>
+    <div id="isian-wrap" style="display:none">
+      <label style="font-size:13px;color:var(--abu);font-weight:600;display:block;margin-bottom:6px">✏️ Tulis jawabanmu:</label>
+      <input id="q-input" type="text" placeholder="contoh: 125" autocomplete="off">
+    </div>
+    <div id="feedback">
+      <div class="verdict" id="verdict"></div>
+      <div class="kunci" id="kunci"></div>
+      <div class="bahas-box" id="bahas"></div>
+    </div>
+  </div>
+  <div class="pr-nav">
+    <button class="btn ghost" id="btn-prev">◀ Sebelumnya</button>
+    <button class="btn primary cek" id="btn-cek">✔ Cek Jawaban</button>
+    <button class="btn" id="btn-next">Berikutnya ▶</button>
+  </div>
+</div>
+
+<!-- ============ HASIL ============ -->
+<div id="page-results" class="page">
+  <div class="card">
+    <div class="res-emoji">📊</div>
+    <h2 class="head-title" style="text-align:center">Hasil Latihan</h2>
+    <p class="hint" style="text-align:center" id="res-name"></p>
+    <div class="res-wrap">
+      <table class="res">
+        <thead>
+          <tr>
+            <th>Bagian</th><th>✔ Benar</th><th>✘ Salah</th><th>— Tidak Dijawab</th>
+            <th>Total Waktu</th><th>Rata-rata / Soal</th><th>Skor</th>
+          </tr>
+        </thead>
+        <tbody id="res-body"></tbody>
+      </table>
+    </div>
+    <div class="res-actions">
+      <button class="btn ghost" id="btn-home">🏠 Kembali ke Menu</button>
+      <button class="btn primary" id="btn-ulang">🔁 Ulangi Latihan</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SOAL = { meta: { title: "Latihan Matematika Kelas 3 SD — Paket 2", subtitle: "4 Materi: Bilangan Cacah 1000, Penjumlahan & Pengurangan, Pola, Perkalian & Pembagian" }, sections: [
+{ name: "Bilangan cacah hingga 1000", icon: "🔢", questions: [
+{ n: 1, type: "mc", text: "Lambang bilangan dari “empat ratus tujuh puluh sembilan” adalah …", img: null, options: ["A. 497", "B. 479", "C. 749", "D. 794"], answer: "B", bahas: "Empat ratus berarti 400, tujuh puluh berarti 70, dan sembilan berarti 9. Digabungkan menjadi 400 + 70 + 9 = 479. Jadi lambang bilangan yang tepat adalah 479 (B)." },
+{ n: 2, type: "mc", text: "Bilangan 608 jika ditulis dengan kata-kata dibaca …", img: null, options: ["A. Enam ratus delapan puluh", "B. Enam puluh delapan", "C. Enam ratus delapan", "D. Delapan ratus enam"], answer: "C", bahas: "Pada 608, angka 6 menempati ratusan (enam ratus), angka 0 menempati puluhan sehingga tidak dibaca, dan angka 8 menempati satuan (delapan). Jadi 608 dibaca “enam ratus delapan” (C)." },
+{ n: 3, type: "mc", text: "Pada bilangan 853, angka 5 menempati nilai tempat …", img: null, options: ["A. Ribuan", "B. Ratusan", "C. Puluhan", "D. Satuan"], answer: "C", bahas: "Pada bilangan 853: angka 8 menempati ratusan, angka 5 menempati puluhan, dan angka 3 menempati satuan. Jadi angka 5 berada di nilai tempat puluhan (C)." },
+{ n: 4, type: "mc", text: "Nilai angka 9 pada bilangan 924 adalah …", img: null, options: ["A. 9", "B. 90", "C. 900", "D. 9.000"], answer: "C", bahas: "Angka 9 berada di posisi paling depan (ratusan) pada bilangan 924. Nilai tempat ratusan berarti nilainya 9 × 100 = 900. Jadi jawabannya 900 (C)." },
+{ n: 5, type: "mc", text: "Tanda perbandingan yang tepat untuk mengisi titik-titik pada 542 … 524 adalah …", img: null, options: ["A. >", "B. <", "C. =", "D. ≤"], answer: "A", bahas: "Ratusan kedua bilangan sama, yaitu 5. Bandingkan puluhan: 4 puluhan lebih besar daripada 2 puluhan, sehingga 542 lebih besar daripada 524. Tanda yang tepat adalah > (A)." },
+{ n: 6, type: "mc", text: "Ibu membeli sebuah tas seharga tiga ratus lima puluh lima ribu rupiah, sedangkan harga ikat pinggang yang dibeli ayah tertulis pada label harga sebesar Rp355,00 (dalam satuan ratusan rupiah: 355). Lambang bilangan yang tepat untuk bilangan “tiga ratus lima puluh lima” adalah …", img: null, options: ["A. 305", "B. 350", "C. 535", "D. 355"], answer: "D", bahas: "Tiga ratus berarti 300, lima puluh berarti 50, dan lima berarti 5. Digabungkan menjadi 300 + 50 + 5 = 355. Jadi lambang bilangannya adalah 355 (D)." },
+{ n: 7, type: "mc", text: "Pak Budi memanen 716 buah mangga di kebunnya. Petugas pencatat hasil panen menuliskan laporan dalam bentuk huruf. Kalimat yang tepat untuk menuliskan banyaknya mangga Pak Budi adalah …", img: null, options: ["A. Tujuh ratus enam puluh satu", "B. Tujuh ratus satu enam", "C. Tujuh ratus enam belas", "D. Enam ratus tujuh belas"], answer: "C", bahas: "Bilangan 716 terdiri atas 7 ratusan (tujuh ratus) dan 16 (enam belas). Jadi 716 dibaca “tujuh ratus enam belas” (C)." },
+{ n: 8, type: "mc", text: "Perpustakaan sekolah memiliki 482 buku cerita anak. Angka yang menempati nilai tempat satuan pada jumlah buku cerita tersebut adalah …", img: null, options: ["A. 2", "B. 4", "C. 8", "D. 80"], answer: "A", bahas: "Pada 482: angka 4 menempati ratusan, angka 8 menempati puluhan, dan angka paling belakang yaitu 2 menempati satuan. Jadi angka pada nilai tempat satuan adalah 2 (A)." },
+{ n: 9, type: "mc", text: "Dalam lomba lari maraton tingkat kota, Raka mendapat nomor dada 637, Dani mendapat nomor dada 673, dan Bima mendapat nomor dada 635. Anak yang memiliki nomor dada dengan bilangan paling besar adalah …", img: null, options: ["A. Raka", "B. Dani", "C. Bima", "D. Raka dan Bima"], answer: "B", bahas: "Ketiga bilangan memiliki ratusan 6. Bandingkan puluhan: Dani (673) memiliki 7 puluhan, sedangkan Raka (637) dan Bima (635) hanya 3 puluhan. Jadi bilangan paling besar adalah 673, dimiliki Dani (B)." },
+{ n: 10, type: "mc", text: "Sebuah toko roti mencatat penjualan donat selama empat hari berturut-turut: Senin 285 buah, Selasa 258 buah, Rabu 290 buah, dan Kamis 249 buah. Urutan penjualan donat dari yang paling sedikit ke paling banyak adalah …", img: null, options: ["A. 249, 258, 285, 290", "B. 249, 285, 258, 290", "C. 290, 285, 258, 249", "D. 258, 249, 285, 290"], answer: "A", bahas: "Semua bilangan berawalan ratusan 2, maka urutkan berdasarkan puluhan: 4 (249), 5 (258), 8 (285), 9 (290). Urutan dari paling sedikit ke paling banyak adalah 249, 258, 285, 290 (A)." },
+{ n: 11, type: "isian", text: "Lambang bilangan dari “sembilan ratus dua belas” adalah …", img: null, answer: "912", bahas: "Sembilan ratus berarti 900 dan dua belas berarti 12. Digabungkan menjadi 900 + 12 = 912." },
+{ n: 12, type: "isian", text: "Bilangan 340 dibaca …", img: null, answer: "Tiga ratus empat puluh", bahas: "Angka 3 menempati ratusan (tiga ratus), angka 4 menempati puluhan (empat puluh), dan angka 0 pada satuan tidak dibaca. Jadi 340 dibaca “tiga ratus empat puluh”." },
+{ n: 13, type: "isian", text: "Bentuk panjang dari bilangan 764 adalah … + … + …", img: null, answer: "700 + 60 + 4", bahas: "764 diuraikan berdasarkan nilai angkanya: 7 ratusan = 700, 6 puluhan = 60, dan 4 satuan = 4. Jadi bentuk panjangnya 700 + 60 + 4 = 764." },
+{ n: 14, type: "isian", text: "Bilangan yang terbentuk dari 5 ratusan + 0 puluhan + 9 satuan adalah …", img: null, answer: "509", bahas: "5 ratusan = 500, 0 puluhan = 0, dan 9 satuan = 9. Jumlahnya 500 + 0 + 9 = 509." },
+{ n: 15, type: "isian", text: "Urutan bilangan 415, 398, 451, 389 mulai dari yang terbesar adalah …", img: null, answer: "451, 415, 398, 389", bahas: "Bilangan dengan ratusan 4 adalah 451 dan 415; karena 5 puluhan lebih besar daripada 1 puluhan, 451 > 415. Bilangan dengan ratusan 3 adalah 398 dan 389; karena 9 puluhan lebih besar daripada 8 puluhan, 398 > 389. Urutan dari terbesar: 451, 415, 398, 389." },
+{ n: 16, type: "isian", text: "Gedung pertunjukan seni memiliki 805 kursi penonton. Cara membaca banyak kursi penonton di gedung tersebut adalah …", img: null, answer: "Delapan ratus lima", bahas: "Pada 805, angka 8 menempati ratusan (delapan ratus), angka 0 pada puluhan tidak dibaca, dan angka 5 menempati satuan (lima). Jadi dibaca “delapan ratus lima”." },
+{ n: 17, type: "isian", text: "Pada acara bakti sosial, panitia membagikan 629 paket sembako kepada warga. Angka 6 pada jumlah paket sembako tersebut memiliki nilai tempat … dan nilai angkanya …", img: null, answer: "Ratusan; 600", bahas: "Pada bilangan 629, angka 6 berada di posisi paling kiri (ketiga dari kanan), sehingga nilai tempatnya ratusan. Nilai angkanya adalah 6 × 100 = 600." },
+{ n: 18, type: "isian", text: "Siti mengumpulkan 475 perangko, sedangkan Lani mengumpulkan 457 perangko. Anak yang mengumpulkan perangko lebih banyak adalah …", img: null, answer: "Siti", bahas: "Ratusan 475 dan 457 sama, yaitu 4. Bandingkan puluhan: Siti memiliki 7 puluhan, sedangkan Lani hanya 5 puluhan. Karena 7 > 5, Siti mengumpulkan perangko lebih banyak." },
+{ n: 19, type: "isian", text: "Tiga kandang ayam di peternakan Pak Jaya masing-masing berisi 312 ekor, 321 ekor, dan 309 ekor ayam. Kandang yang berisi ayam paling sedikit berjumlah … ekor.", img: null, answer: "309", bahas: "Ketiga bilangan memiliki ratusan 3. Puluhan paling kecil adalah 0 pada bilangan 309, dibandingkan 1 pada 312 dan 2 pada 321. Jadi kandang dengan ayam paling sedikit berisi 309 ekor." },
+{ n: 20, type: "isian", text: "Sebuah bus pariwisata menempuh jarak 560 km pada hari pertama dan 565 km pada hari kedua. Perbandingan kedua jarak tersebut jika ditulis menggunakan simbol (<, >, atau =) adalah 560 … 565.", img: null, answer: "<", bahas: "Ratusan kedua bilangan sama (5) dan puluhannya juga sama (6). Angka satuan 0 lebih kecil daripada 5, sehingga 560 < 565." }
+] },
+{ name: "Penjumlahan dan pengurangan", icon: "➕", questions: [
+{ n: 1, type: "mc", text: "Hasil dari 34 + 25 adalah …", img: null, options: ["A. 58", "B. 59", "C. 61", "D. 69"], answer: "B", bahas: "Jumlahkan satuan: 4 + 5 = 9. Jumlahkan puluhan: 30 + 20 = 50. Hasilnya 50 + 9 = 59 (B)." },
+{ n: 2, type: "mc", text: "Hasil dari 48 + 37 adalah …", img: null, options: ["A. 75", "B. 84", "C. 85", "D. 95"], answer: "C", bahas: "Satuan: 8 + 7 = 15, tulis 5 dan simpan 1 ke puluhan. Puluhan: 1 + 4 + 3 = 8. Jadi 48 + 37 = 85 (C)." },
+{ n: 3, type: "mc", text: "Hasil pengurangan dari 79 − 43 adalah …", img: null, options: ["A. 26", "B. 35", "C. 36", "D. 46"], answer: "C", bahas: "Kurangkan satuan: 9 − 3 = 6. Kurangkan puluhan: 70 − 40 = 30. Hasilnya 30 + 6 = 36 (C)." },
+{ n: 4, type: "mc", text: "Hasil dari 82 − 36 adalah …", img: null, options: ["A. 44", "B. 46", "C. 54", "D. 56"], answer: "B", bahas: "Satuan 2 tidak bisa dikurangi 6, pinjam 1 puluhan sehingga satuan menjadi 12 − 6 = 6. Sisa puluhan 7 − 3 = 4. Jadi hasilnya 46 (B)." },
+{ n: 5, type: "mc", text: "Bilangan yang tepat untuk melengkapi operasi hitung 56 + … = 91 adalah …", img: null, options: ["A. 35", "B. 37", "C. 45", "D. 47"], answer: "A", bahas: "Bilangan yang belum diketahui dihitung dengan 91 − 56 = 35. Pembuktian: 56 + 35 = 91. Jadi jawabannya 35 (A)." },
+{ n: 6, type: "mc", text: "Di dalam keranjang merah terdapat 42 buah jeruk, sedangkan di keranjang biru terdapat 36 buah jeruk. Jumlah seluruh jeruk di kedua keranjang tersebut adalah …", img: null, options: ["A. 68 buah", "B. 76 buah", "C. 78 buah", "D. 88 buah"], answer: "C", bahas: "Jumlahkan 42 + 36: satuan 2 + 6 = 8 dan puluhan 4 + 3 = 7. Jadi seluruh jeruk ada 78 buah (C)." },
+{ n: 7, type: "mc", text: "Sinta memiliki 38 lembar stiker hewan. Saat berkunjung ke rumah nenek, bibi memberinya lagi 27 lembar stiker baru. Banyak stiker yang dimiliki Sinta sekarang adalah …", img: null, options: ["A. 55 lembar", "B. 64 lembar", "C. 65 lembar", "D. 75 lembar"], answer: "C", bahas: "Jumlahkan 38 + 27: satuan 8 + 7 = 15 (tulis 5, simpan 1), puluhan 1 + 3 + 2 = 6. Jadi Sinta sekarang memiliki 65 lembar stiker (C)." },
+{ n: 8, type: "mc", text: "Pedagang kue membawa 85 potong kue bolu ke pasar. Pada siang hari, kue bolu tersebut terjual sebanyak 52 potong. Sisa kue bolu yang belum terjual adalah …", img: null, options: ["A. 23 potong", "B. 33 potong", "C. 37 potong", "D. 43 potong"], answer: "B", bahas: "Sisa = 85 − 52: satuan 5 − 2 = 3 dan puluhan 8 − 5 = 3. Jadi sisa kue bolu 33 potong (B)." },
+{ n: 9, type: "mc", text: "Paman memanen 74 buah semangka di kebun. Sebanyak 28 buah semangka dibagikan kepada tetangga sekitar. Sisa semangka yang dimiliki paman adalah …", img: null, options: ["A. 44 buah", "B. 46 buah", "C. 54 buah", "D. 56 buah"], answer: "B", bahas: "Sisa = 74 − 28. Satuan 4 tidak bisa dikurangi 8, pinjam 1 puluhan menjadi 14 − 8 = 6; sisa puluhan 6 − 2 = 4. Hasilnya 46 buah (B)." },
+{ n: 10, type: "mc", text: "Di perpustakaan kelas terdapat 45 buku cerita dan 39 buku pengetahuan umum. Pada hari Senin, siswa meminjam 24 buku dari rak tersebut. Banyak buku yang masih tersisa di rak adalah …", img: null, options: ["A. 50 buku", "B. 58 buku", "C. 60 buku", "D. 64 buku"], answer: "C", bahas: "Total buku mula-mula = 45 + 39 = 84 buku. Setelah dipinjam 24 buku, sisa = 84 − 24 = 60 buku (C)." },
+{ n: 11, type: "isian", text: "Hasil dari 61 + 28 adalah …", img: null, answer: "89", bahas: "Satuan: 1 + 8 = 9. Puluhan: 6 + 2 = 8. Jadi 61 + 28 = 89." },
+{ n: 12, type: "isian", text: "Hasil dari 49 + 36 adalah …", img: null, answer: "85", bahas: "Satuan: 9 + 6 = 15 (tulis 5, simpan 1). Puluhan: 1 + 4 + 3 = 8. Jadi 49 + 36 = 85." },
+{ n: 13, type: "isian", text: "Hasil dari 96 − 54 adalah …", img: null, answer: "42", bahas: "Satuan: 6 − 4 = 2. Puluhan: 9 − 5 = 4. Jadi 96 − 54 = 42." },
+{ n: 14, type: "isian", text: "Hasil dari 70 − 27 adalah …", img: null, answer: "43", bahas: "Satuan 0 tidak bisa dikurangi 7, pinjam 1 puluhan menjadi 10 − 7 = 3. Sisa puluhan 6 − 2 = 4. Jadi 70 − 27 = 43." },
+{ n: 15, type: "isian", text: "Bilangan yang tepat untuk mengisi titik-titik pada 84 − … = 39 adalah …", img: null, answer: "45", bahas: "Bilangan yang dicari = 84 − 39: satuan 4 tidak bisa dikurangi 9, pinjam 1 puluhan menjadi 14 − 9 = 5; sisa puluhan 7 − 3 = 4. Jadi bilangannya 45, karena 84 − 45 = 39." },
+{ n: 16, type: "isian", text: "Edo mengumpulkan 53 butir kelereng, lalu ayahnya membelikan lagi 29 butir kelereng. Jumlah kelereng Edo sekarang adalah … butir.", img: null, answer: "82", bahas: "Jumlahkan 53 + 29: satuan 3 + 9 = 12 (tulis 2, simpan 1), puluhan 1 + 5 + 2 = 8. Jadi kelereng Edo sekarang 82 butir." },
+{ n: 17, type: "isian", text: "Pada kegiatan menanam pohon, siswa kelas 2 menanam 37 bibit pohon dan siswa kelas 3 menanam 46 bibit pohon. Total bibit pohon yang ditanam kedua kelas tersebut adalah … bibit.", img: null, answer: "83", bahas: "Jumlahkan 37 + 46: satuan 7 + 6 = 13 (tulis 3, simpan 1), puluhan 1 + 3 + 4 = 8. Total 83 bibit pohon." },
+{ n: 18, type: "isian", text: "Ibu membeli 68 butir telur di warung. Saat perjalanan pulang, 15 butir telur pecah. Banyak telur ibu yang masih utuh adalah … butir.", img: null, answer: "53", bahas: "Telur utuh = 68 − 15: satuan 8 − 5 = 3 dan puluhan 6 − 1 = 5. Jadi 53 butir telur masih utuh." },
+{ n: 19, type: "isian", text: "Sebuah bus kota mengangkut 63 penumpang dari terminal. Di halte pertama, sebanyak 25 penumpang turun. Penumpang yang masih berada di dalam bus berjumlah … orang.", img: null, answer: "38", bahas: "Sisa = 63 − 25: satuan 3 tidak bisa dikurangi 5, pinjam 1 puluhan menjadi 13 − 5 = 8; sisa puluhan 5 − 2 = 3. Jadi sisa 38 penumpang." },
+{ n: 20, type: "isian", text: "Lani memiliki 92 lembar kertas origami. Ia menggunakan 35 lembar untuk membuat burung kertas dan 18 lembar untuk membuat perahu kertas. Sisa kertas origami Lani adalah … lembar.", img: null, answer: "39", bahas: "Total kertas terpakai = 35 + 18 = 53 lembar. Sisa = 92 − 53 = 39 lembar." }
+] },
+{ name: "Pola bilangan dan pola gambar", icon: "🔁", questions: [
+{ n: 1, type: "mc", text: "Perhatikan susunan pola bangun datar berikut ini:\n▲, ■, ●, ▲, ■, ●, ▲, …, ●\nBangun datar yang tepat untuk mengisi bagian yang kosong adalah …", img: null, options: ["A. ▲ (segitiga)", "B. ■ (persegi)", "C. ● (lingkaran)", "D. ◆ (belah ketupat)"], answer: "B", bahas: "Pola berulang setiap 3 bangun datar: segitiga (▲), persegi (■), lingkaran (●). Urutan ke-7 adalah ▲, sehingga urutan ke-8 yang kosong kembali ke ■ persegi, dan ● menutup urutan ke-9. Jadi jawabannya persegi (B)." },
+{ n: 2, type: "mc", text: "Perhatikan susunan banyak bintang pada setiap kelompok berikut:\n[★★] → [★★★★] → [★★★★★★] → [ … ]\nBanyak bintang pada kelompok keempat sesuai pola gambar di atas adalah …", img: null, options: ["A. 7 bintang", "B. 8 bintang", "C. 9 bintang", "D. 10 bintang"], answer: "B", bahas: "Banyak bintang bertambah 2 di setiap kelompok: kelompok 1 ada 2, kelompok 2 ada 4, kelompok 3 ada 6. Kelompok keempat = 6 + 2 = 8 bintang (B)." },
+{ n: 3, type: "mc", text: "Bilangan yang tepat untuk melengkapi pola bilangan 14, 19, 24, …, 34 adalah …", img: null, options: ["A. 27", "B. 28", "C. 29", "D. 30"], answer: "C", bahas: "Pola bilangan membesar dengan aturan ditambah 5: 14 + 5 = 19, 19 + 5 = 24, 24 + 5 = 29, dan 29 + 5 = 34. Jadi bilangan rumpang adalah 29 (C)." },
+{ n: 4, type: "mc", text: "Perhatikan barisan bilangan mengecil berikut: 65, 58, 51, 44, … Bilangan berikutnya adalah …", img: null, options: ["A. 36", "B. 37", "C. 38", "D. 39"], answer: "B", bahas: "Pola bilangan mengecil dengan aturan dikurangi 7: 65 − 7 = 58, 58 − 7 = 51, 51 − 7 = 44. Bilangan berikutnya adalah 44 − 7 = 37 (B)." },
+{ n: 5, type: "mc", text: "Aturan pembentukan pola bilangan pada barisan 12, 20, 28, 36, 44 adalah …", img: null, options: ["A. Ditambah 6 setiap suku", "B. Ditambah 8 setiap suku", "C. Dikurangi 8 setiap suku", "D. Ditambah 10 setiap suku"], answer: "B", bahas: "Selisih antarsuku yang berdekatan selalu sama: 20 − 12 = 8, 28 − 20 = 8, 36 − 28 = 8, dan 44 − 36 = 8. Jadi aturannya ditambah 8 setiap suku (B)." },
+{ n: 6, type: "mc", text: "Rina merangkai manik-manik untuk membuat gelang dengan urutan warna: merah, kuning, hijau, merah, kuning, hijau, merah, … Warna manik-manik ke-9 yang harus dipasang Rina adalah …", img: null, options: ["A. Merah", "B. Kuning", "C. Hijau", "D. Biru"], answer: "C", bahas: "Warna berulang setiap 3 manik: ke-1 merah, ke-2 kuning, ke-3 hijau, lalu berulang dari awal. Ke-7 merah dan ke-8 kuning, sehingga manik ke-9 adalah hijau (C)." },
+{ n: 7, type: "mc", text: "Di aula sekolah, petugas menata kursi penonton membentuk pola gambar membesar. Baris pertama berisi 4 kursi, baris kedua berisi 7 kursi, dan baris ketiga berisi 10 kursi. Banyak kursi pada baris keempat adalah …", img: null, options: ["A. 11 kursi", "B. 12 kursi", "C. 13 kursi", "D. 14 kursi"], answer: "C", bahas: "Banyak kursi membentuk pola 4, 7, 10 yang selalu bertambah 3 kursi setiap baris. Baris keempat = 10 + 3 = 13 kursi (C)." },
+{ n: 8, type: "mc", text: "Bima menabung uang saku setiap hari Minggu dengan jumlah yang selalu bertambah tetap. Minggu pertama Bima menabung Rp15.000, minggu kedua Rp20.000, dan minggu ketiga Rp25.000. Besar uang yang ditabung Bima pada minggu kelima adalah …", img: null, options: ["A. Rp30.000", "B. Rp35.000", "C. Rp40.000", "D. Rp45.000"], answer: "B", bahas: "Tabungan bertambah Rp5.000 setiap minggu: minggu 1 Rp15.000, minggu 2 Rp20.000, minggu 3 Rp25.000, minggu 4 Rp30.000. Maka minggu ke-5 = Rp30.000 + Rp5.000 = Rp35.000 (B)." },
+{ n: 9, type: "mc", text: "Sebuah toko buah menumpuk jeruk membentuk pola piramida dari bawah ke atas. Lapisan paling bawah berisi 24 jeruk, lapisan kedua 20 jeruk, dan lapisan ketiga 16 jeruk. Banyak jeruk pada lapisan keempat adalah …", img: null, options: ["A. 10 jeruk", "B. 12 jeruk", "C. 13 jeruk", "D. 14 jeruk"], answer: "B", bahas: "Banyak jeruk berkurang 4 di setiap lapisan ke atas: 24, 20, 16. Lapisan keempat = 16 − 4 = 12 jeruk (B)." },
+{ n: 10, type: "mc", text: "Nomor rumah di sepanjang Jalan Melati sebelah kanan disusun berurutan dengan pola 102, 106, 110, 114, … Jika rumah Dika berada tepat setelah rumah bernomor 114, maka nomor rumah Dika adalah …", img: null, options: ["A. 115", "B. 116", "C. 118", "D. 120"], answer: "C", bahas: "Nomor rumah bertambah 4 setiap langkah: 102, 106, 110, 114. Nomor rumah berikutnya = 114 + 4 = 118, yaitu rumah Dika (C)." },
+{ n: 11, type: "isian", text: "Perhatikan pola gambar panah berikut:\n↑, →, ↓, ←, ↑, →, …\nArah panah berikutnya adalah …", img: null, answer: "Panah ke bawah (↓)", bahas: "Arah panah berputar searah jarum jam: atas (↑), kanan (→), bawah (↓), kiri (←), lalu berulang. Panah ke-6 adalah kanan (→), sehingga panah berikutnya menghadap ke bawah (↓)." },
+{ n: 12, type: "isian", text: "Perhatikan pola susunan lingkaran berikut: Kelompok 1 ada 1 lingkaran, Kelompok 2 ada 4 lingkaran, Kelompok 3 ada 7 lingkaran. Banyak lingkaran pada Kelompok 4 adalah … lingkaran.", img: null, answer: "10", bahas: "Banyak lingkaran bertambah 3 setiap kelompok: 1, 4, 7. Kelompok 4 = 7 + 3 = 10 lingkaran." },
+{ n: 13, type: "isian", text: "Bilangan yang tepat untuk melengkapi pola 27, 33, 39, …, 51 adalah …", img: null, answer: "45", bahas: "Pola bilangan bertambah 6: 27 + 6 = 33, 33 + 6 = 39, 39 + 6 = 45, dan 45 + 6 = 51. Jadi bilangan rumpang adalah 45." },
+{ n: 14, type: "isian", text: "Lengkapi pola bilangan mengecil berikut: 90, 81, 72, 63, …", img: null, answer: "54", bahas: "Setiap suku dikurangi 9: 90 − 9 = 81, 81 − 9 = 72, 72 − 9 = 63. Suku selanjutnya = 63 − 9 = 54." },
+{ n: 15, type: "isian", text: "Perhatikan pola bilangan: 5, 10, 15, 20, 25. Aturan pola bilangan tersebut adalah selalu ditambah …", img: null, answer: "5", bahas: "Setiap bilangan berikutnya diperoleh dengan menjumlahkan 5 pada bilangan sebelumnya: 10 − 5 = 5, 15 − 10 = 5, 20 − 15 = 5, dan 25 − 20 = 5. Jadi aturannya selalu ditambah 5." },
+{ n: 16, type: "isian", text: "Siti menempelkan stiker buah di buku gambarnya dengan pola: apel, jeruk, pisang, apel, jeruk, pisang. Stiker ke-8 yang ditempel Siti adalah gambar buah …", img: null, answer: "Jeruk", bahas: "Pola berulang setiap 3 buah: ke-1 apel, ke-2 jeruk, ke-3 pisang, lalu berulang dari awal. Ke-7 apel dan ke-8 jeruk, jadi stiker ke-8 adalah jeruk." },
+{ n: 17, type: "isian", text: "Edo menyusun batang korek api membentuk segitiga berderet. Satu segitiga membutuhkan 3 batang, dua segitiga membutuhkan 6 batang, dan tiga segitiga membutuhkan 9 batang. Untuk membuat 4 segitiga terpisah, Edo memerlukan … batang korek api.", img: null, answer: "12", bahas: "Banyak batang korek api mengikuti pola kelipatan 3: 3, 6, 9. Untuk 4 segitiga dibutuhkan 9 + 3 = 12 batang." },
+{ n: 18, type: "isian", text: "Sebuah bus kota berangkat dari terminal dengan 45 penumpang. Di setiap halte, penumpang turun dengan jumlah yang tetap sehingga sisa penumpang berturut-turut menjadi 40, 35, dan 30 orang. Sisa penumpang setelah halte berikutnya adalah … orang.", img: null, answer: "25", bahas: "Sisa penumpang berkurang 5 orang di setiap halte: 45, 40, 35, 30. Setelah halte berikutnya sisa = 30 − 5 = 25 orang." },
+{ n: 19, type: "isian", text: "Ibu menyusun pot bunga di teras rumah. Rak pertama berisi 3 pot, rak kedua 6 pot, rak ketiga 9 pot, dan rak keempat 12 pot. Jumlah seluruh pot bunga di keempat rak tersebut adalah … pot.", img: null, answer: "30", bahas: "Jumlahkan seluruh pot dari keempat rak: 3 + 6 + 9 + 12 = 30 pot bunga." },
+{ n: 20, type: "isian", text: "Lani berlatih membaca buku cerita setiap hari. Pada hari Senin ia membaca 8 halaman, Selasa 12 halaman, Rabu 16 halaman, dan Kamis 20 halaman. Jika pola tersebut terus berlanjut, pada hari Jumat Lani akan membaca sebanyak … halaman.", img: null, answer: "24", bahas: "Banyak halaman bertambah 4 setiap hari: 8, 12, 16, 20. Hari Jumat = 20 + 4 = 24 halaman." }
+] },
+{ name: "Perkalian dan pembagian", icon: "✖️", questions: [
+{ n: 1, type: "mc", text: "Bentuk penjumlahan berulang dari 6 × 8 adalah …", img: null, options: ["A. 6 + 6 + 6 + 6 + 6 + 6", "B. 6 + 8 + 6 + 8 + 6 + 8", "C. 8 + 8 + 8 + 8 + 8 + 8", "D. 8 + 8 + 8 + 8 + 8 + 8 + 8 + 8"], answer: "C", bahas: "Perkalian 6 × 8 berarti menjumlahkan bilangan 8 sebanyak 6 kali, yaitu 8 + 8 + 8 + 8 + 8 + 8 = 48. Jadi bentuk yang tepat adalah C." },
+{ n: 2, type: "mc", text: "Hasil dari 7 × 9 adalah …", img: null, options: ["A. 54", "B. 56", "C. 63", "D. 72"], answer: "C", bahas: "7 × 9 artinya 9 dijumlahkan sebanyak 7 kali, sehingga hasilnya 63. Jadi jawabannya C." },
+{ n: 3, type: "mc", text: "Hasil dari 72 ÷ 8 adalah …", img: null, options: ["A. 7", "B. 8", "C. 9", "D. 12"], answer: "C", bahas: "72 ÷ 8 = 9, karena 9 × 8 = 72. Jadi jawabannya C." },
+{ n: 4, type: "mc", text: "Bilangan yang tepat untuk melengkapi operasi hitung … × 6 = 54 adalah …", img: null, options: ["A. 7", "B. 8", "C. 9", "D. 10"], answer: "C", bahas: "Bilangan yang dikalikan 6 agar hasilnya 54 dicari dengan 54 ÷ 6 = 9. Jadi jawabannya C." },
+{ n: 5, type: "mc", text: "Hasil pembagian 96 ÷ 4 adalah …", img: null, options: ["A. 16", "B. 22", "C. 24", "D. 26"], answer: "C", bahas: "Uraikan 96 = 80 + 16, lalu bagi masing-masing dengan 4: (80 ÷ 4) + (16 ÷ 4) = 20 + 4 = 24. Jadi jawabannya C." },
+{ n: 6, type: "mc", text: "Ibu membeli 5 kantong apel. Setiap kantong berisi 12 buah apel. Jumlah seluruh buah apel yang dibeli ibu adalah …", img: null, options: ["A. 50 buah", "B. 55 buah", "C. 60 buah", "D. 65 buah"], answer: "C", bahas: "Jumlah apel = 5 × 12 = (5 × 10) + (5 × 2) = 50 + 10 = 60 buah apel. Jadi jawabannya C." },
+{ n: 7, type: "mc", text: "Di dalam sebuah gedung pertunjukan terdapat 8 baris kursi. Setiap baris terdiri atas 11 kursi. Banyak seluruh kursi di gedung tersebut adalah …", img: null, options: ["A. 77 kursi", "B. 80 kursi", "C. 88 kursi", "D. 96 kursi"], answer: "C", bahas: "Banyak kursi = 8 × 11 = 88 kursi. Jadi jawabannya C." },
+{ n: 8, type: "mc", text: "Siti memiliki 64 butir permen yang akan dibagikan sama rata kepada 8 temannya. Banyak permen yang diterima setiap teman Siti adalah …", img: null, options: ["A. 6 butir", "B. 7 butir", "C. 8 butir", "D. 9 butir"], answer: "C", bahas: "Setiap teman mendapat 64 ÷ 8 = 8 butir permen, karena 8 × 8 = 64. Jadi jawabannya C." },
+{ n: 9, type: "mc", text: "Pak Rudi memanen 84 buah mangga dan mengemasnya ke dalam 7 keranjang dengan isi sama banyak. Banyak mangga pada setiap keranjang adalah …", img: null, options: ["A. 11 buah", "B. 12 buah", "C. 13 buah", "D. 14 buah"], answer: "B", bahas: "Isi tiap keranjang = 84 ÷ 7 = (70 ÷ 7) + (14 ÷ 7) = 10 + 2 = 12 buah mangga. Jadi jawabannya B." },
+{ n: 10, type: "mc", text: "Lani mempunyai 4 kotak pensil warna. Setiap kotak berisi 15 batang pensil warna. Jika Lani memberikan 10 batang pensil kepada adiknya, sisa pensil warna Lani adalah …", img: null, options: ["A. 40 batang", "B. 45 batang", "C. 50 batang", "D. 60 batang"], answer: "C", bahas: "Total pensil mula-mula = 4 × 15 = 60 batang. Setelah diberikan 10 batang, sisa = 60 − 10 = 50 batang. Jadi jawabannya C." },
+{ n: 11, type: "isian", text: "Hasil dari 14 × 6 adalah …", img: null, answer: "84", bahas: "14 × 6 = (10 × 6) + (4 × 6) = 60 + 24 = 84." },
+{ n: 12, type: "isian", text: "Hasil dari 19 × 5 adalah …", img: null, answer: "95", bahas: "19 × 5 = (10 × 5) + (9 × 5) = 50 + 45 = 95." },
+{ n: 13, type: "isian", text: "Hasil dari 81 ÷ 9 adalah …", img: null, answer: "9", bahas: "81 ÷ 9 = 9, karena 9 × 9 = 81." },
+{ n: 14, type: "isian", text: "Hasil dari 75 ÷ 5 adalah …", img: null, answer: "15", bahas: "75 ÷ 5 = (50 ÷ 5) + (25 ÷ 5) = 10 + 5 = 15." },
+{ n: 15, type: "isian", text: "Bilangan yang tepat untuk melengkapi pembagian 90 ÷ … = 15 adalah …", img: null, answer: "6", bahas: "Pembagi dicari dengan 90 ÷ 15 = 6, karena 6 × 15 = 90." },
+{ n: 16, type: "isian", text: "Beni membeli 7 bungkus roti. Setiap bungkus berisi 13 potong roti. Jumlah seluruh potongan roti yang dibeli Beni adalah … potong.", img: null, answer: "91", bahas: "Jumlah roti = 7 × 13 = (7 × 10) + (7 × 3) = 70 + 21 = 91 potong roti." },
+{ n: 17, type: "isian", text: "Sebuah rak buku memiliki 6 tingkat. Jika setiap tingkat memuat 16 buku cerita, maka banyak seluruh buku cerita di rak tersebut adalah … buku.", img: null, answer: "96", bahas: "Total buku cerita = 6 × 16 = (6 × 10) + (6 × 6) = 60 + 36 = 96 buku." },
+{ n: 18, type: "isian", text: "Ibu guru membagikan 78 buku tulis kepada 6 kelompok belajar sama banyak. Setiap kelompok menerima … buku tulis.", img: null, answer: "13", bahas: "Buku tiap kelompok = 78 ÷ 6 = (60 ÷ 6) + (18 ÷ 6) = 10 + 3 = 13 buku tulis." },
+{ n: 19, type: "isian", text: "Paman memiliki 96 ekor ikan lele yang akan dimasukkan ke dalam 8 ember dengan jumlah sama rata. Banyak ikan lele dalam setiap ember adalah … ekor.", img: null, answer: "12", bahas: "Ikan tiap ember = 96 ÷ 8 = (80 ÷ 8) + (16 ÷ 8) = 10 + 2 = 12 ekor ikan lele." },
+{ n: 20, type: "isian", text: "Sebanyak 63 siswa kelas 3 akan dibagi menjadi beberapa regu pramuka. Jika setiap regu beranggotakan 9 siswa, maka regu pramuka yang terbentuk berjumlah … regu.", img: null, answer: "7", bahas: "Banyak regu = 63 ÷ 9 = 7 regu, karena 7 × 9 = 63." }
+] },
+] };
+
+/* ================= state & util ================= */
+const SEC = SOAL.sections;
+const APP = { name:'', perQ:[], cur:null, data:[] };
+const $ = s => document.querySelector(s);
+const fmtT = s => {
+  s = Math.max(0, Math.round(s));
+  const j = Math.floor(s/3600), m = Math.floor((s%3600)/60), d = s%60;
+  return (j ? j + ':' + String(m).padStart(2,'0') : String(m)) + ':' + String(d).padStart(2,'0');
+};
+const norm = v => String(v).trim().toLowerCase().replace(/\s+/g,'').replace(/,/g,'.');
+let toastTimer = null;
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  $('#page-' + id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ================= cover ================= */
+(function initCover(){
+  document.title = SOAL.meta.title;
+  $('#cover-title').textContent = SOAL.meta.title;
+  $('#cover-sub').textContent = SOAL.meta.subtitle;
+  const tot = SEC.reduce((a,s)=>a+s.questions.length,0);
+  $('#cover-info').textContent = `📚 ${SEC.length} bagian • ${tot} soal • timer per soal diatur oleh tutor`;
+  $('#btn-mulai').addEventListener('click', () => {
+    const v = $('#nama').value.trim();
+    if(!v){ toast('Tulis dulu namamu ya 😊'); $('#nama').focus(); return; }
+    APP.name = v;
+    buildSettings();
+    showPage('settings');
+  });
+  $('#nama').addEventListener('keydown', e => { if(e.key==='Enter') $('#btn-mulai').click(); });
+})();
+
+/* ================= settings ================= */
+function buildSettings(){
+  const preset = $('#preset-row');
+  preset.innerHTML = '';
+  [30,60,120,180,300,600].forEach(sec => {
+    const b = document.createElement('button');
+    b.className = 'btn small';
+    b.textContent = fmtT(sec) + ' / soal';
+    b.addEventListener('click', () => {
+      SEC.forEach((s,i) => $('#perq-'+i).value = sec);
+      toast('Semua bagian diatur ' + fmtT(sec) + ' per soal');
+    });
+    preset.appendChild(b);
+  });
+
+  const wrap = $('#set-rows'); wrap.innerHTML = '';
+  SEC.forEach((s,i) => {
+    const row = document.createElement('div');
+    row.className = 'set-row';
+    const tot = s.questions.length;
+    row.innerHTML = `<div class="nm">${s.icon} ${s.name}<small>${tot} soal</small></div>`;
+    const inp = document.createElement('input');
+    inp.type = 'number'; inp.id = 'perq-'+i; inp.min = 10; inp.max = 3600; inp.step = 5;
+    inp.value = APP.perQ[i] || 120;
+    row.appendChild(inp);
+    wrap.appendChild(row);
+  });
+}
+$('#btn-set-kembali').addEventListener('click', () => showPage('cover'));
+$('#btn-simpan').addEventListener('click', () => {
+  const adaProgres = APP.data.some(d => d);
+  if(adaProgres && !confirm('Mengubah pengaturan waktu akan MENGHAPUS semua progres jawaban. Lanjutkan?')) return;
+  APP.perQ = SEC.map((s,i) => {
+    let v = parseInt($('#perq-'+i).value, 10);
+    if(isNaN(v) || v < 10) v = 10;
+    if(v > 3600) v = 3600;
+    return v;
+  });
+  APP.data = SEC.map(()=>null);
+  buildMenu();
+  showPage('menu');
+});
+
+/* ================= menu ================= */
+function statusOf(si){
+  const d = APP.data[si];
+  if(!d) return {cls:'blink', txt:'Belum dikerjakan'};
+  const t = SEC[si].questions.length;
+  const done = d.filter(a=>a.checked||a.timeout).length;
+  if(done === 0) return {cls:'blink', txt:'Belum dikerjakan'};
+  if(done >= t) return {cls:'selesai', txt:'Selesai ✓'};
+  return {cls:'progres', txt:`Progres ${done}/${t}`};
+}
+function buildMenu(){
+  $('#halo').textContent = `Halo, ${APP.name}! 👋`;
+  const grid = $('#menu-grid'); grid.innerHTML = '';
+  SEC.forEach((s,i) => {
+    const st = statusOf(i);
+    const card = document.createElement('button');
+    card.className = 'sec-card';
+    card.innerHTML = `
+      <div class="top"><span class="ico">${s.icon}</span><span class="nm">${s.name}</span></div>
+      <div class="meta"><span>📋 ${s.questions.length} soal</span><span>⏱ ${fmtT(APP.perQ[i]||120)}/soal</span></div>
+      <span class="chip ${st.cls}">${st.txt}</span>`;
+    card.addEventListener('click', () => startSection(i));
+    grid.appendChild(card);
+  });
+}
+$('#btn-ubah-waktu').addEventListener('click', () => { buildSettings(); showPage('settings'); });
+function keHasil(){
+  if(!APP.data.some(d=>d)){ toast('Belum ada soal yang dikerjakan'); return; }
+  buildResults(); showPage('results');
+}
+$('#btn-akhiri').addEventListener('click', keHasil);
+$('#btn-akhiri2').addEventListener('click', () => {
+  if(confirm('Akhiri latihan sekarang dan lihat hasil?')) keHasil();
+});
+$('#btn-menu').addEventListener('click', () => { buildMenu(); showPage('menu'); });
+
+/* ================= practice ================= */
+function startSection(si){
+  if(!APP.data[si]){
+    APP.data[si] = SEC[si].questions.map(() => ({
+      choice:null, val:'', checked:false, correct:null, spent:0, remaining:APP.perQ[si], timeout:false
+    }));
+  }
+  const d = APP.data[si];
+  let qi = d.findIndex(a => !a.checked && !a.timeout);
+  if(qi < 0) qi = 0;
+  APP.cur = {si, qi};
+  renderQ();
+  showPage('practice');
+}
+function curQ(){ return SEC[APP.cur.si].questions[APP.cur.qi]; }
+function curA(){ return APP.data[APP.cur.si][APP.cur.qi]; }
+
+function renderQ(){
+  const si = APP.cur.si, qi = APP.cur.qi;
+  const s = SEC[si], q = curQ(), a = curA();
+  $('#pr-title').textContent = s.icon + ' ' + s.name;
+  $('#pr-progress').textContent = `Soal ${qi+1} dari ${s.questions.length}`;
+  $('#q-no').textContent = 'Soal ' + q.n;
+  $('#q-type').textContent = q.type === 'mc' ? '📝 Pilihan Ganda' : '✏️ Isian Singkat';
+
+  const st = $('#q-status');
+  st.style.display = 'none';
+  if(a.checked){ st.style.display=''; st.className='badge-status '+(a.correct?'benar':'salah'); st.textContent = a.correct?'✔ Benar':'✘ Belum tepat'; }
+  else if(a.timeout){ st.style.display=''; st.className='badge-status timeout'; st.textContent='⏰ Waktu habis'; }
+
+  $('#q-text').textContent = q.text;
+  const imgBox = $('#q-img');
+  if(q.img){ imgBox.style.display=''; imgBox.innerHTML = q.img; } else { imgBox.style.display='none'; imgBox.innerHTML=''; }
+
+  const kunciTeks = q.type === 'mc'
+    ? q.options.find(o => o.trim().startsWith(q.answer + '.')).trim()
+    : String(q.answer);
+
+  // opsi / isian
+  const opts = $('#q-opts'); opts.innerHTML = '';
+  const iwrap = $('#isian-wrap');
+  if(q.type === 'mc'){
+    iwrap.style.display = 'none';
+    q.options.forEach(o => {
+      const huruf = o.trim().charAt(0);
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = o.trim();
+      if(a.checked || a.timeout){
+        b.disabled = true;
+        if(huruf === q.answer) b.classList.add('benar');
+        else if(huruf === a.choice) b.classList.add('salah');
+        else b.classList.add('dim');
+      } else {
+        if(a.choice === huruf) b.classList.add('selected');
+        b.addEventListener('click', () => {
+          a.choice = huruf;
+          opts.querySelectorAll('.opt').forEach(x => x.classList.remove('selected'));
+          b.classList.add('selected');
+        });
+      }
+      opts.appendChild(b);
+    });
+  } else {
+    iwrap.style.display = '';
+    const inp = $('#q-input');
+    inp.disabled = a.checked || a.timeout;
+    inp.value = a.val;
+    if(a.checked){
+      inp.style.borderColor = a.correct ? 'var(--hijau)' : 'var(--merah)';
+    } else { inp.style.borderColor = 'var(--biru)'; }
+    inp.oninput = () => { a.val = inp.value; };
+    inp.onkeydown = e => { if(e.key==='Enter') $('#btn-cek').click(); };
+  }
+
+  // feedback
+  const fb = $('#feedback');
+  if(a.checked || a.timeout){
+    fb.className = 'show ' + (a.timeout ? 'timeout' : (a.correct ? 'benar' : 'salah'));
+    $('#verdict').textContent = a.timeout
+      ? '⏰ Waktu habis!'
+      : (a.correct ? '🎉 Benar! Hebat!' : '😔 Belum tepat. Semangat!');
+    $('#kunci').innerHTML = '🔑 Jawaban benar: <b>' + kunciTeks + '</b>';
+    $('#bahas').innerHTML = '<b>💡 Pembahasan:</b>\n' + q.bahas;
+  } else {
+    fb.className = ''; 
+  }
+
+  // tombol
+  $('#btn-prev').disabled = qi === 0;
+  const cek = $('#btn-cek');
+  if(a.checked){ cek.disabled = true; cek.textContent = '✓ Sudah diperiksa'; }
+  else if(a.timeout){ cek.disabled = true; cek.textContent = '⏰ Waktu habis'; }
+  else { cek.disabled = false; cek.textContent = '✔ Cek Jawaban'; }
+  $('#btn-next').textContent = qi === s.questions.length - 1 ? 'Selesai ✓' : 'Berikutnya ▶';
+
+  updateTimer();
+}
+function updateTimer(){
+  const a = curA();
+  const t = $('#timer');
+  t.textContent = fmtT(a.checked || a.timeout ? a.spent : a.remaining);
+  const berjalan = !a.checked && !a.timeout;
+  t.classList.toggle('low', berjalan && a.remaining <= 10);
+}
+$('#btn-prev').addEventListener('click', () => {
+  if(APP.cur.qi > 0){ APP.cur.qi--; renderQ(); }
+});
+$('#btn-next').addEventListener('click', () => {
+  const si = APP.cur.si, n = SEC[si].questions.length;
+  if(APP.cur.qi < n - 1){ APP.cur.qi++; renderQ(); }
+  else {
+    const st = statusOf(si);
+    toast(`${st.txt === 'Selesai ✓' ? 'Bagian ' + SEC[si].name + ' selesai! 🎉' : 'Masih ada soal yang belum diperiksa'} `);
+    buildMenu(); showPage('menu');
+  }
+});
+$('#btn-cek').addEventListener('click', () => {
+  const a = curA(), q = curQ();
+  if(a.checked || a.timeout) return;
+  if(q.type === 'mc'){
+    if(!a.choice){ toast('Pilih salah satu jawaban dulu 😊'); return; }
+  } else {
+    if(!a.val.trim()){ toast('Tulis jawabanmu dulu 😊'); $('#q-input').focus(); return; }
+  }
+  const ok = q.type === 'mc'
+    ? a.choice === q.answer
+    : norm(a.val) === norm(q.answer);
+  a.checked = true; a.correct = ok;
+  a.spent = APP.perQ[APP.cur.si] - a.remaining;
+  renderQ();
+  if(ok) toast('🎉 Jawaban benar!');
+});
+
+/* timer per soal — hanya berjalan saat soal sedang ditampilkan & belum diperiksa */
+setInterval(() => {
+  if(APP.cur && $('#page-practice').classList.contains('active')){
+    const a = curA();
+    if(!a.checked && !a.timeout){
+      a.remaining--;
+      if(a.remaining <= 0){
+        a.remaining = 0; a.timeout = true; a.spent = APP.perQ[APP.cur.si];
+        renderQ();
+      } else updateTimer();
+    }
+  }
+}, 1000);
+
+/* ================= hasil ================= */
+function buildResults(){
+  $('#res-name').textContent = 'Siswa: ' + APP.name + ' • ' + SOAL.meta.title;
+  const body = $('#res-body'); body.innerHTML = '';
+  let gB=0, gS=0, gT=0, gTot=0, gSoal=0;
+  SEC.forEach((s,si) => {
+    const d = APP.data[si];
+    const n = s.questions.length;
+    let benar=0, salah=0, tidak=n, waktu=0, attempted=0;
+    if(d){
+      tidak = 0;
+      d.forEach(a => {
+        if(a.checked){ a.correct ? benar++ : salah++; attempted++; waktu += a.spent; }
+        else if(a.timeout){ attempted++; waktu += a.spent; }
+        else tidak++;
+      });
+    }
+    const avg = attempted ? waktu/attempted : 0;
+    const skor = d ? Math.round(benar/n*100) + '%' : '—';
+    const tr = document.createElement('tr');
+    if(!d){
+      tr.innerHTML = `<td>${s.icon} ${s.name}</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>`;
+    } else {
+      tr.innerHTML = `<td>${s.icon} ${s.name}</td>
+        <td><span class="pill-b">${benar}</span></td>
+        <td><span class="pill-s">${salah}</span></td>
+        <td><span class="pill-t">${tidak}</span></td>
+        <td>${fmtT(waktu)}</td>
+        <td>${attempted ? fmtT(avg) : '—'}</td>
+        <td><b>${skor}</b></td>`;
+      gB+=benar; gS+=salah; gT+=tidak; gTot+=waktu; gSoal+=n;
+    }
+    body.appendChild(tr);
+  });
+  const tr = document.createElement('tr');
+  tr.className = 'total';
+  const attemptedAll = gB + gS;
+  tr.innerHTML = `<td>TOTAL KESELURUHAN</td>
+    <td><span class="pill-b">${gB}</span></td>
+    <td><span class="pill-s">${gS}</span></td>
+    <td><span class="pill-t">${gT}</span></td>
+    <td>${fmtT(gTot)}</td>
+    <td>${attemptedAll ? fmtT(gTot/attemptedAll) : '—'}</td>
+    <td><b>${gSoal ? Math.round(gB/gSoal*100)+'%' : '—'}</b></td>`;
+  body.appendChild(tr);
+}
+$('#btn-home').addEventListener('click', () => { buildMenu(); showPage('menu'); });
+$('#btn-ulang').addEventListener('click', () => {
+  if(confirm('Hapus semua hasil dan mulai latihan baru dari awal?')){
+    APP.data = SEC.map(()=>null);
+    buildMenu(); showPage('menu');
+    toast('Latihan baru siap dimulai 💪');
+  }
+});
+</script>
+</body>
+</html>
