@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latihan Matematika</title>
+<style>
+:root{
+  --biru:#4f46e5; --biru2:#7c3aed; --cyan:#0ea5e9;
+  --bg:#eef2ff; --hijau:#16a34a; --hijau-bg:#dcfce7;
+  --merah:#dc2626; --merah-bg:#fee2e2; --kuning:#f59e0b;
+  --teks:#1e293b; --abu:#64748b; --garis:#e2e8f0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif;
+  background:linear-gradient(160deg,#eef2ff 0%,#e0f2fe 60%,#faf5ff 100%);
+  min-height:100vh;color:var(--teks);
+}
+.page{display:none;max-width:920px;margin:0 auto;padding:28px 16px 70px}
+.page.active{display:block}
+h1,h2,h3{line-height:1.3}
+
+/* ===== tombol ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;
+  font-weight:600;font-size:15px;border-radius:12px;padding:12px 22px;
+  background:#fff;color:var(--biru);box-shadow:0 2px 6px rgba(79,70,229,.15);
+  transition:transform .08s, box-shadow .15s;
+}
+.btn:hover{box-shadow:0 4px 14px rgba(79,70,229,.25)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(135deg,var(--biru),var(--biru2));color:#fff}
+.btn.danger{background:linear-gradient(135deg,#ef4444,#f97316);color:#fff}
+.btn.ghost{background:#f1f5f9;color:var(--abu);box-shadow:none}
+.btn.small{padding:8px 14px;font-size:13px;border-radius:10px}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+/* ===== cover ===== */
+#page-cover{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px 16px}
+#page-cover.active{display:flex}
+.cover-card{
+  background:#fff;border-radius:26px;box-shadow:0 20px 60px rgba(79,70,229,.22);
+  max-width:520px;width:100%;padding:42px 36px;text-align:center;
+  border-top:8px solid var(--biru);
+}
+.cover-emoji{font-size:56px}
+.cover-card h1{font-size:26px;margin:10px 0 6px;color:var(--biru)}
+.cover-card .sub{color:var(--abu);font-size:15px;margin-bottom:6px}
+.cover-card .info{font-size:13px;color:var(--abu);background:#f1f5f9;border-radius:10px;padding:8px;margin:14px 0 20px}
+.cover-card label{display:block;text-align:left;font-weight:600;font-size:14px;margin-bottom:6px}
+.cover-card input{
+  width:100%;padding:13px 16px;font-size:16px;border:2px solid var(--garis);
+  border-radius:12px;outline:none;transition:border .15s;
+}
+.cover-card input:focus{border-color:var(--biru)}
+.cover-card .btn{width:100%;justify-content:center;margin-top:18px;font-size:16px;padding:14px}
+
+/* ===== kartu umum ===== */
+.card{background:#fff;border-radius:18px;box-shadow:0 6px 24px rgba(30,41,59,.08);padding:24px}
+.head-title{color:var(--biru);margin-bottom:4px}
+.hint{color:var(--abu);font-size:14px;margin-bottom:18px}
+
+/* ===== settings ===== */
+.preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.preset-row .btn.small{background:#eef2ff;color:var(--biru);box-shadow:none}
+.set-row{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 14px;border:1.5px solid var(--garis);border-radius:12px;margin-bottom:10px;background:#f8fafc;
+}
+.set-row .nm{font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px}
+.set-row .nm small{display:block;font-weight:400;color:var(--abu);font-size:12px}
+.set-row input{
+  width:110px;padding:9px 10px;font-size:15px;text-align:center;
+  border:2px solid var(--garis);border-radius:10px;outline:none;
+}
+.set-row input:focus{border-color:var(--biru)}
+.settings-actions{display:flex;gap:10px;margin-top:18px}
+.settings-actions .btn{flex:1;justify-content:center}
+
+/* ===== menu ===== */
+#halo{color:var(--biru)}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:18px 0}
+.sec-card{
+  background:#fff;border-radius:16px;padding:16px;cursor:pointer;text-align:left;
+  border:2px solid transparent;box-shadow:0 4px 14px rgba(30,41,59,.07);
+  transition:border .12s, transform .12s;position:relative;
+}
+.sec-card:hover{border-color:var(--biru);transform:translateY(-2px)}
+.sec-card .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sec-card .ico{font-size:26px}
+.sec-card .nm{font-weight:700;font-size:15px;color:var(--teks)}
+.sec-card .meta{font-size:13px;color:var(--abu);display:flex;gap:12px;margin-bottom:10px}
+.chip{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px}
+.chip.blink{background:#f1f5f9;color:var(--abu)}
+.chip.progres{background:#fef9c3;color:#a16207}
+.chip.selesai{background:var(--hijau-bg);color:var(--hijau)}
+.menu-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.menu-actions .btn{flex:1;justify-content:center;min-width:220px}
+
+/* ===== practice ===== */
+.pr-topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.pr-topbar .title{font-weight:800;color:var(--biru);font-size:16px;flex:1;min-width:150px}
+.pr-topbar .prog{font-size:13px;color:var(--abu);font-weight:600}
+#timer{
+  font-variant-numeric:tabular-nums;font-weight:800;font-size:16px;color:var(--biru);
+  background:#fff;border:2px solid var(--biru);border-radius:999px;padding:7px 16px;min-width:92px;text-align:center;
+}
+#timer.low{color:var(--merah);border-color:var(--merah);background:var(--merah-bg);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.qcard{background:#fff;border-radius:18px;box-shadow:0 6px 24px rgba(30,41,59,.08);padding:24px;margin-bottom:14px}
+.qhead{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.badge-no{background:linear-gradient(135deg,var(--biru),var(--biru2));color:#fff;font-weight:800;border-radius:10px;padding:6px 12px;font-size:14px}
+.badge-type{background:#eef2ff;color:var(--biru);font-weight:700;font-size:12px;border-radius:999px;padding:5px 12px}
+.badge-status{margin-left:auto;font-weight:700;font-size:12px;border-radius:999px;padding:5px 12px}
+.badge-status.benar{background:var(--hijau-bg);color:var(--hijau)}
+.badge-status.salah{background:var(--merah-bg);color:var(--merah)}
+.badge-status.timeout{background:#fef9c3;color:#a16207}
+#q-text{white-space:pre-line;font-size:16px;line-height:1.65;margin-bottom:14px}
+.qimg{text-align:center;margin:6px 0 14px}
+.qimg svg{max-width:320px;width:100%;height:auto;background:#fff}
+.opt{
+  display:block;width:100%;text-align:left;background:#f8fafc;border:2px solid var(--garis);
+  border-radius:12px;padding:12px 16px;font-size:15px;margin-bottom:10px;cursor:pointer;
+  transition:border .12s, background .12s;color:var(--teks);
+}
+.opt:hover{border-color:var(--biru)}
+.opt.selected{border-color:var(--biru);background:#eef2ff;font-weight:600}
+.opt.benar{border-color:var(--hijau);background:var(--hijau-bg);font-weight:700}
+.opt.salah{border-color:var(--merah);background:var(--merah-bg)}
+.opt.dim{opacity:.55}
+.opt:disabled{cursor:default}
+#isian-wrap input{
+  width:100%;max-width:320px;padding:13px 16px;font-size:17px;font-weight:600;
+  border:2px solid var(--biru);border-radius:12px;outline:none;display:block;
+}
+#isian-wrap input:disabled{background:#f1f5f9;color:var(--abu)}
+#feedback{display:none;border-radius:14px;padding:16px 18px;margin-top:16px}
+#feedback.show{display:block}
+#feedback.benar{background:var(--hijau-bg);border:2px solid var(--hijau)}
+#feedback.salah{background:var(--merah-bg);border:2px solid var(--merah)}
+#feedback.timeout{background:#fef9c3;border:2px solid var(--kuning)}
+.verdict{font-weight:800;font-size:16px;margin-bottom:6px}
+#feedback.benar .verdict{color:var(--hijau)}
+#feedback.salah .verdict{color:var(--merah)}
+#feedback.timeout .verdict{color:#a16207}
+.kunci{font-size:14px;margin-bottom:10px}
+.bahas-box{background:#fff;border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.65;white-space:pre-line}
+.bahas-box b{color:var(--biru)}
+.pr-nav{display:flex;gap:10px;flex-wrap:wrap}
+.pr-nav .btn{flex:1;justify-content:center;min-width:140px}
+.pr-nav .btn.cek{min-width:200px}
+
+/* ===== results ===== */
+.res-wrap{overflow-x:auto}
+table.res{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+table.res th,table.res td{padding:10px 12px;border-bottom:1.5px solid var(--garis);text-align:center}
+table.res th{background:#eef2ff;color:var(--biru);font-size:13px}
+table.res td:first-child,table.res th:first-child{text-align:left}
+table.res tr.total td{font-weight:800;background:#f8fafc}
+.pill-b{background:var(--hijau-bg);color:var(--hijau);border-radius:999px;padding:3px 10px;font-weight:700}
+.pill-s{background:var(--merah-bg);color:var(--merah);border-radius:999px;padding:3px 10px;font-weight:700}
+.pill-t{background:#f1f5f9;color:var(--abu);border-radius:999px;padding:3px 10px;font-weight:700}
+.res-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.res-actions .btn{flex:1;justify-content:center;min-width:200px}
+.res-emoji{font-size:40px;text-align:center;margin-bottom:4px}
+
+/* ===== toast ===== */
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+  background:#1e293b;color:#fff;padding:11px 20px;border-radius:12px;font-size:14px;
+  opacity:0;pointer-events:none;transition:all .25s;z-index:99;max-width:90vw;text-align:center;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (max-width:560px){
+  .qcard{padding:18px 16px}
+  #q-text{font-size:15px}
+  .opt{padding:11px 13px;font-size:14px}
+  .cover-card{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div id="page-cover" class="page active">
+  <div class="cover-card">
+    <div class="cover-emoji">🏅</div>
+    <h1 id="cover-title">Latihan Matematika</h1>
+    <p class="sub" id="cover-sub">Media latihan interaktif</p>
+    <div class="info" id="cover-info"></div>
+    <label for="nama">👤 Nama Siswa</label>
+    <input id="nama" type="text" placeholder="Tulis namamu di sini..." autocomplete="off">
+    <button class="btn primary" id="btn-mulai">Mulai Latihan ➜</button>
+  </div>
+</div>
+
+<!-- ============ PENGATURAN TUTOR ============ -->
+<div id="page-settings" class="page">
+  <div class="card">
+    <h2 class="head-title">⚙️ Pengaturan Tutor</h2>
+    <p class="hint">Atur <b>waktu hitung mundur per soal</b> (detik) untuk setiap bagian. Waktu berhenti otomatis ketika siswa menekan tombol <b>Cek Jawaban</b>. Jika waktu habis, soal terkunci dan masuk hitungan "tidak dijawab".</p>
+    <div class="preset-row" id="preset-row"></div>
+    <div id="set-rows"></div>
+    <div class="settings-actions">
+      <button class="btn ghost" id="btn-set-kembali">◀ Kembali</button>
+      <button class="btn primary" id="btn-simpan">Simpan &amp; Lanjut ➜</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MENU BAGIAN ============ -->
+<div id="page-menu" class="page">
+  <div class="card">
+    <h2 id="halo">Halo! 👋</h2>
+    <p class="hint">Pilih bagian latihan di bawah. Kamu bisa berpindah bagian kapan saja — jawaban yang sudah diperiksa tersimpan.</p>
+    <div class="menu-grid" id="menu-grid"></div>
+    <div class="menu-actions">
+      <button class="btn ghost" id="btn-ubah-waktu">⚙️ Ubah Waktu per Soal</button>
+      <button class="btn danger" id="btn-akhiri">🏁 Akhiri Latihan &amp; Lihat Hasil</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ LATIHAN ============ -->
+<div id="page-practice" class="page">
+  <div class="pr-topbar">
+    <button class="btn small ghost" id="btn-menu">◀ Menu</button>
+    <span class="title" id="pr-title"></span>
+    <span class="prog" id="pr-progress"></span>
+    <span id="timer">--:--</span>
+    <button class="btn small danger" id="btn-akhiri2">🏁 Akhiri</button>
+  </div>
+  <div class="qcard">
+    <div class="qhead">
+      <span class="badge-no" id="q-no">Soal 1</span>
+      <span class="badge-type" id="q-type"></span>
+      <span class="badge-status" id="q-status" style="display:none"></span>
+    </div>
+    <div id="q-text"></div>
+    <div class="qimg" id="q-img" style="display:none"></div>
+    <div id="q-opts"></div>
+    <div id="isian-wrap" style="display:none">
+      <label style="font-size:13px;color:var(--abu);font-weight:600;display:block;margin-bottom:6px">✏️ Tulis jawabanmu:</label>
+      <input id="q-input" type="text" placeholder="contoh: 125" autocomplete="off">
+    </div>
+    <div id="feedback">
+      <div class="verdict" id="verdict"></div>
+      <div class="kunci" id="kunci"></div>
+      <div class="bahas-box" id="bahas"></div>
+    </div>
+  </div>
+  <div class="pr-nav">
+    <button class="btn ghost" id="btn-prev">◀ Sebelumnya</button>
+    <button class="btn primary cek" id="btn-cek">✔ Cek Jawaban</button>
+    <button class="btn" id="btn-next">Berikutnya ▶</button>
+  </div>
+</div>
+
+<!-- ============ HASIL ============ -->
+<div id="page-results" class="page">
+  <div class="card">
+    <div class="res-emoji">📊</div>
+    <h2 class="head-title" style="text-align:center">Hasil Latihan</h2>
+    <p class="hint" style="text-align:center" id="res-name"></p>
+    <div class="res-wrap">
+      <table class="res">
+        <thead>
+          <tr>
+            <th>Bagian</th><th>✔ Benar</th><th>✘ Salah</th><th>— Tidak Dijawab</th>
+            <th>Total Waktu</th><th>Rata-rata / Soal</th><th>Skor</th>
+          </tr>
+        </thead>
+        <tbody id="res-body"></tbody>
+      </table>
+    </div>
+    <div class="res-actions">
+      <button class="btn ghost" id="btn-home">🏠 Kembali ke Menu</button>
+      <button class="btn primary" id="btn-ulang">🔁 Ulangi Latihan</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SOAL = { meta: { title: "Latihan Matematika Kelas 3 SD — Paket 3", subtitle: "5 Materi: Perkalian & Pembagian (Perkalian 1–50, Pembagian sampai 100)" }, sections: [
+{ name: "Perkalian cacah 1-50", icon: "✖️", questions: [
+{n:1,type:"mc",text:"Hasil dari 7 × 6 adalah ….",img:null,options:["A. 36","B. 42","C. 48","D. 49"],answer:"B",bahas:"7 × 6 artinya menjumlahkan bilangan 6 sebanyak 7 kali: 6 + 6 + 6 + 6 + 6 + 6 + 6 = 42. Jadi, jawaban yang tepat adalah B."},
+{n:2,type:"mc",text:"Hasil dari 8 × 5 adalah ….",img:null,options:["A. 35","B. 40","C. 45","D. 50"],answer:"B",bahas:"8 × 5 artinya menjumlahkan bilangan 5 sebanyak 8 kali: 5 + 5 + 5 + 5 + 5 + 5 + 5 + 5 = 40. Jadi, jawaban yang tepat adalah B."},
+{n:3,type:"mc",text:"Hasil perkalian dari 9 × 4 adalah ….",img:null,options:["A. 32","B. 34","C. 36","D. 38"],answer:"C",bahas:"9 × 4 artinya menjumlahkan bilangan 4 sebanyak 9 kali, hasilnya 36. Jadi, jawaban yang tepat adalah C."},
+{n:4,type:"mc",text:"Bilangan yang tepat untuk melengkapi perkalian 12 × 4 = … adalah ….",img:null,options:["A. 44","B. 46","C. 48","D. 50"],answer:"C",bahas:"12 × 4 dijabarkan menjadi (10 × 4) + (2 × 4) = 40 + 8 = 48. Jadi, jawaban yang tepat adalah C."},
+{n:5,type:"mc",text:"Hasil dari 15 × 3 adalah ….",img:null,options:["A. 35","B. 40","C. 45","D. 50"],answer:"C",bahas:"15 × 3 = 15 + 15 + 15 = 45. Jadi, jawaban yang tepat adalah C."},
+{n:6,type:"mc",text:"Hasil perkalian 23 × 2 adalah ….",img:null,options:["A. 44","B. 46","C. 48","D. 50"],answer:"B",bahas:"23 × 2 dijabarkan menjadi (20 × 2) + (3 × 2) = 40 + 6 = 46. Jadi, jawaban yang tepat adalah B."},
+{n:7,type:"mc",text:"Hasil dari 16 × 3 adalah ….",img:null,options:["A. 42","B. 45","C. 48","D. 49"],answer:"C",bahas:"16 × 3 dijabarkan menjadi (10 × 3) + (6 × 3) = 30 + 18 = 48. Jadi, jawaban yang tepat adalah C."},
+{n:8,type:"mc",text:"Perkalian dua bilangan cacah berikut yang menghasilkan 50 adalah ….",img:null,options:["A. 12 × 4","B. 15 × 3","C. 25 × 2","D. 16 × 3"],answer:"C",bahas:"Hitung setiap pilihan: 12 × 4 = 48, 15 × 3 = 45, 25 × 2 = 50, dan 16 × 3 = 48. Hanya 25 × 2 yang hasilnya 50. Jadi, jawaban yang tepat adalah C."},
+{n:9,type:"mc",text:"Hasil dari 11 × 4 adalah ….",img:null,options:["A. 40","B. 42","C. 44","D. 48"],answer:"C",bahas:"11 × 4 = 11 + 11 + 11 + 11 = 44. Jadi, jawaban yang tepat adalah C."},
+{n:10,type:"mc",text:"Hasil dari 7 × 7 adalah ….",img:null,options:["A. 42","B. 47","C. 48","D. 49"],answer:"D",bahas:"7 × 7 = 49. Jadi, jawaban yang tepat adalah D."},
+{n:11,type:"mc",text:"Perkalian 14 × 3 menghasilkan bilangan ….",img:null,options:["A. 32","B. 42","C. 44","D. 46"],answer:"B",bahas:"14 × 3 dijabarkan menjadi (10 × 3) + (4 × 3) = 30 + 12 = 42. Jadi, jawaban yang tepat adalah B."},
+{n:12,type:"mc",text:"Hasil dari 24 × 2 adalah ….",img:null,options:["A. 42","B. 44","C. 46","D. 48"],answer:"D",bahas:"24 × 2 = 24 + 24 = 48. Jadi, jawaban yang tepat adalah D."},
+{n:13,type:"mc",text:"Hasil perkalian 9 × 5 adalah ….",img:null,options:["A. 40","B. 45","C. 48","D. 50"],answer:"B",bahas:"9 × 5 = 45. Jadi, jawaban yang tepat adalah B."},
+{n:14,type:"mc",text:"Nilai dari 13 × 3 adalah ….",img:null,options:["A. 36","B. 39","C. 42","D. 43"],answer:"B",bahas:"13 × 3 dijabarkan menjadi (10 × 3) + (3 × 3) = 30 + 9 = 39. Jadi, jawaban yang tepat adalah B."},
+{n:15,type:"mc",text:"Ibu membeli 4 kantong jeruk. Setiap kantong berisi 9 buah jeruk. Jumlah seluruh jeruk yang dibeli Ibu adalah … buah.",img:null,options:["A. 32","B. 36","C. 40","D. 45"],answer:"B",bahas:"Jumlah jeruk = 4 kantong × 9 buah = 36 buah. Jadi, jawaban yang tepat adalah B."},
+{n:16,type:"mc",text:"Di atas meja terdapat 6 piring. Setiap piring berisi 8 potong kue. Banyak kue seluruhnya adalah … potong.",img:null,options:["A. 42","B. 46","C. 48","D. 50"],answer:"C",bahas:"Banyak kue = 6 piring × 8 potong = 48 potong. Jadi, jawaban yang tepat adalah C."},
+{n:17,type:"mc",text:"Beni memiliki 5 kotak pensil. Jika setiap kotak berisi 10 batang pensil, jumlah seluruh pensil Beni adalah … batang.",img:null,options:["A. 40","B. 45","C. 50","D. 55"],answer:"C",bahas:"Jumlah pensil = 5 kotak × 10 batang = 50 batang. Jadi, jawaban yang tepat adalah C."},
+{n:18,type:"mc",text:"Sebuah rak buku memiliki 3 tingkat. Setiap tingkat berisi 16 buku cerita. Total buku cerita di rak tersebut adalah … buku.",img:null,options:["A. 38","B. 46","C. 48","D. 49"],answer:"C",bahas:"Total buku = 3 tingkat × 16 buku = (3 × 10) + (3 × 6) = 30 + 18 = 48 buku. Jadi, jawaban yang tepat adalah C."},
+{n:19,type:"mc",text:"Pak Budi menanam bibit cabai dalam 2 baris. Setiap baris terdiri atas 21 bibit cabai. Jumlah bibit cabai yang ditanam Pak Budi adalah … bibit.",img:null,options:["A. 23","B. 41","C. 42","D. 44"],answer:"C",bahas:"Jumlah bibit = 2 baris × 21 bibit = (2 × 20) + (2 × 1) = 40 + 2 = 42 bibit. Jadi, jawaban yang tepat adalah C."},
+{n:20,type:"mc",text:"Hasil dari 47 × 1 adalah ….",img:null,options:["A. 1","B. 46","C. 47","D. 48"],answer:"C",bahas:"Sifat identitas perkalian menyatakan bahwa setiap bilangan yang dikalikan 1 hasilnya bilangan itu sendiri, sehingga 47 × 1 = 47. Jadi, jawaban yang tepat adalah C."}
+]},
+{ name: "Sifat perkalian", icon: "🔁", questions: [
+{n:1,type:"mc",text:"Sifat operasi hitung perkalian yang menyatakan bahwa pertukaran posisi dua bilangan tidak mengubah hasil perkaliannya disebut sifat ….",img:null,options:["A. asosiatif","B. distributif","C. komutatif","D. identitas"],answer:"C",bahas:"Sifat yang menyatakan pertukaran posisi dua bilangan tidak mengubah hasil perkalian adalah sifat komutatif, dengan rumus a × b = b × a. Contohnya 2 × 3 = 3 × 2 = 6. Jadi, jawaban yang tepat adalah C."},
+{n:2,type:"mc",text:"Bentuk perkalian 14 × 8 memiliki hasil yang sama dengan ….",img:null,options:["A. 8 × 14","B. 14 + 8","C. 8 + 14","D. 14 − 8"],answer:"A",bahas:"Berdasarkan sifat komutatif a × b = b × a, maka 14 × 8 = 8 × 14. Keduanya menghasilkan 112. Jadi, jawaban yang tepat adalah A."},
+{n:3,type:"mc",text:"Bilangan yang tepat untuk mengisi titik-titik pada persamaan 23 × … = 15 × 23 adalah ….",img:null,options:["A. 8","B. 15","C. 23","D. 38"],answer:"B",bahas:"Sifat komutatif menyatakan 23 × 15 = 15 × 23, sehingga titik-titik diisi 15. Jadi, jawaban yang tepat adalah B."},
+{n:4,type:"mc",text:"Pernyataan berikut yang menunjukkan sifat asosiatif (pengelompokan) pada perkalian adalah ….",img:null,options:["A. 6 × 9 = 9 × 6","B. 6 × (9 + 2) = (6 × 9) + (6 × 2)","C. (6 × 9) × 2 = 6 × (9 × 2)","D. 6 × 1 = 6"],answer:"C",bahas:"Sifat asosiatif mengubah pengelompokan tanpa memindahkan urutan bilangan: (a × b) × c = a × (b × c). Bentuk yang sesuai adalah (6 × 9) × 2 = 6 × (9 × 2). Jadi, jawaban yang tepat adalah C."},
+{n:5,type:"mc",text:"Nilai n yang memenuhi persamaan (12 × 5) × 4 = 12 × (n × 4) adalah ….",img:null,options:["A. 4","B. 5","C. 12","D. 20"],answer:"B",bahas:"Menurut sifat asosiatif, (12 × 5) × 4 = 12 × (5 × 4). Dibandingkan dengan 12 × (n × 4), diperoleh n = 5. Jadi, jawaban yang tepat adalah B."},
+{n:6,type:"mc",text:"Untuk mempermudah perhitungan 17 × (25 × 4), pengelompokan yang paling tepat menggunakan sifat asosiatif adalah ….",img:null,options:["A. (17 × 25) × 4","B. (17 + 25) × 4","C. 17 × (25 + 4)","D. (17 × 4) × 25"],answer:"A",bahas:"Bentuk yang setara menurut sifat asosiatif adalah (17 × 25) × 4 karena hanya pengelompokannya yang berubah. Meskipun 25 × 4 = 100 lebih cepat dihitung langsung, bentuk ekuivalen asosiatifnya adalah pilihan A. Jadi, jawaban yang tepat adalah A."},
+{n:7,type:"mc",text:"Hasil dari 8 × (10 + 6) jika dijabarkan menggunakan sifat distributif perkalian terhadap penjumlahan menjadi ….",img:null,options:["A. (8 + 10) × (8 + 6)","B. (8 × 10) + 6","C. (8 × 10) + (8 × 6)","D. (8 × 10) × (8 × 6)"],answer:"C",bahas:"Sifat distributif perkalian terhadap penjumlahan menyatakan a × (b + c) = (a × b) + (a × c). Maka 8 × (10 + 6) = (8 × 10) + (8 × 6). Jadi, jawaban yang tepat adalah C."},
+{n:8,type:"mc",text:"Bilangan yang tepat untuk melengkapi persamaan (9 × 15) − (9 × 5) = 9 × (… − 5) adalah ….",img:null,options:["A. 5","B. 9","C. 10","D. 15"],answer:"D",bahas:"Sifat distributif perkalian terhadap pengurangan menyatakan (9 × 15) − (9 × 5) = 9 × (15 − 5). Persamaan menjadi 9 × (15 − 5), sehingga bilangan yang tepat adalah 15. Jadi, jawaban yang tepat adalah D."},
+{n:9,type:"mc",text:"Bentuk sederhana dari (16 × 7) + (16 × 3) berdasarkan sifat distributif adalah ….",img:null,options:["A. 16 × (7 + 3)","B. 16 × (7 × 3)","C. 32 × (7 + 3)","D. 16 + (7 × 3)"],answer:"A",bahas:"Faktor persekutuan 16 dikeluarkan menggunakan sifat distributif: (16 × 7) + (16 × 3) = 16 × (7 + 3). Jadi, jawaban yang tepat adalah A."},
+{n:10,type:"mc",text:"Hasil pengerjaan 6 × 28 dengan menggunakan sifat distributif 6 × (20 + 8) adalah ….",img:null,options:["A. 128","B. 148","C. 168","D. 188"],answer:"C",bahas:"6 × (20 + 8) = (6 × 20) + (6 × 8) = 120 + 48 = 168. Jadi, jawaban yang tepat adalah C."},
+{n:11,type:"mc",text:"Elemen identitas pada operasi hitung perkalian bilangan bulat adalah bilangan ….",img:null,options:["A. 0","B. 1","C. 10","D. −1"],answer:"B",bahas:"Elemen identitas perkalian adalah 1, karena setiap bilangan a yang dikalikan 1 menghasilkan bilangan a itu sendiri (a × 1 = a). Jadi, jawaban yang tepat adalah B."},
+{n:12,type:"mc",text:"Setiap bilangan cacah yang dikalikan dengan bilangan 1 akan menghasilkan ….",img:null,options:["A. bilangan 0","B. bilangan 1","C. bilangan itu sendiri","D. dua kali bilangan semula"],answer:"C",bahas:"Sifat identitas perkalian menyatakan a × 1 = 1 × a = a, sehingga hasilnya bilangan itu sendiri. Jadi, jawaban yang tepat adalah C."},
+{n:13,type:"mc",text:"Hasil dari 375 × 0 × 12 adalah ….",img:null,options:["A. 0","B. 12","C. 375","D. 4.500"],answer:"A",bahas:"Sifat perkalian dengan nol menyatakan a × 0 = 0, sehingga 375 × 0 × 12 = 0. Jadi, jawaban yang tepat adalah A."},
+{n:14,type:"mc",text:"Diketahui p × 1 = 49. Nilai p yang tepat sesuai sifat identitas perkalian adalah ….",img:null,options:["A. 0","B. 1","C. 48","D. 49"],answer:"D",bahas:"Sifat identitas menyatakan p × 1 = p. Karena p × 1 = 49, maka p = 49. Jadi, jawaban yang tepat adalah D."},
+{n:15,type:"mc",text:"Sifat operasi perkalian yang ditunjukkan oleh persamaan 7 × (12 − 4) = (7 × 12) − (7 × 4) adalah sifat ….",img:null,options:["A. komutatif perkalian","B. asosiatif perkalian","C. distributif perkalian terhadap pengurangan","D. identitas perkalian"],answer:"C",bahas:"Bentuk a × (b − c) = (a × b) − (a × c) adalah sifat distributif perkalian terhadap pengurangan. Persamaan 7 × (12 − 4) = (7 × 12) − (7 × 4) menunjukkan sifat tersebut. Jadi, jawaban yang tepat adalah C."},
+{n:16,type:"mc",text:"Perhatikan pernyataan berikut:\n(1) 5 × 8 = 8 × 5\n(2) (3 × 4) × 5 = 3 × (4 × 5)\n(3) 19 × 1 = 19\n(4) 4 × (6 + 2) = (4 × 6) + (4 × 2)\nPasangan pernyataan yang menunjukkan sifat komutatif dan distributif berturut-turut adalah ….",img:null,options:["A. (1) dan (2)","B. (1) dan (4)","C. (2) dan (3)","D. (3) dan (4)"],answer:"B",bahas:"Pernyataan (1) 5 × 8 = 8 × 5 menunjukkan sifat komutatif. Pernyataan (4) 4 × (6 + 2) = (4 × 6) + (4 × 2) menunjukkan sifat distributif. Pasangan komutatif dan distributif berturut-turut adalah (1) dan (4). Jadi, jawaban yang tepat adalah B."},
+{n:17,type:"mc",text:"Nilai dari (25 × 18) + (25 × 2) jika dihitung menggunakan sifat distributif adalah ….",img:null,options:["A. 450","B. 475","C. 500","D. 525"],answer:"C",bahas:"(25 × 18) + (25 × 2) = 25 × (18 + 2) = 25 × 20 = 500. Jadi, jawaban yang tepat adalah C."},
+{n:18,type:"mc",text:"Rani menyusun 4 kotak pensil, masing-masing berisi 6 pensil merah dan 3 pensil biru. Bentuk sifat distributif untuk menghitung jumlah seluruh pensil Rani adalah ….",img:null,options:["A. (4 × 6) + (4 × 3)","B. (4 + 6) × (4 + 3)","C. (4 × 6) × (4 × 3)","D. 4 + (6 × 3)"],answer:"A",bahas:"Jumlah seluruh pensil = 4 × (6 + 3). Dengan sifat distributif dijabarkan menjadi (4 × 6) + (4 × 3). Jadi, jawaban yang tepat adalah A."},
+{n:19,type:"mc",text:"Dalam sebuah gedung terdapat 2 rak buku besar. Setiap rak memiliki 5 tingkat, dan setiap tingkat berisi 18 buku. Cara menghitung total buku menggunakan sifat asosiatif yang paling mudah adalah ….",img:null,options:["A. (2 + 5) × 18","B. (2 × 5) × 18","C. (2 × 18) + (5 × 18)","D. 2 × (5 + 18)"],answer:"B",bahas:"Total buku = 2 × 5 × 18. Dengan sifat asosiatif dikelompokkan menjadi (2 × 5) × 18 = 10 × 18 = 180 buku, dan ini cara yang paling mudah. Jadi, jawaban yang tepat adalah B."},
+{n:20,type:"mc",text:"Diketahui 13 × 99 = 13 × (100 − 1). Hasil perkalian tersebut jika diselesaikan menggunakan sifat distributif adalah ….",img:null,options:["A. 1.287","B. 1.297","C. 1.299","D. 1.313"],answer:"A",bahas:"13 × (100 − 1) = (13 × 100) − (13 × 1) = 1.300 − 13 = 1.287. Jadi, jawaban yang tepat adalah A."}
+]},
+{ name: "Pembagian cacah sampai 100", icon: "➗", questions: [
+{n:1,type:"mc",text:"Hasil dari 36 ÷ 4 adalah ….",img:null,options:["A. 7","B. 8","C. 9","D. 10"],answer:"C",bahas:"36 ÷ 4 = 9 karena 9 × 4 = 36. Jadi, jawaban yang tepat adalah C."},
+{n:2,type:"mc",text:"Hasil dari 54 ÷ 6 adalah ….",img:null,options:["A. 7","B. 8","C. 9","D. 11"],answer:"C",bahas:"54 ÷ 6 = 9 karena 9 × 6 = 54. Jadi, jawaban yang tepat adalah C."},
+{n:3,type:"mc",text:"Hasil pembagian 63 ÷ 7 adalah ….",img:null,options:["A. 7","B. 8","C. 9","D. 10"],answer:"C",bahas:"63 ÷ 7 = 9 karena 9 × 7 = 63. Jadi, jawaban yang tepat adalah C."},
+{n:4,type:"mc",text:"Bilangan yang tepat untuk melengkapi pembagian 72 ÷ 8 = … adalah ….",img:null,options:["A. 7","B. 8","C. 9","D. 12"],answer:"C",bahas:"72 ÷ 8 = 9 karena 9 × 8 = 72. Jadi, jawaban yang tepat adalah C."},
+{n:5,type:"mc",text:"Hasil dari 48 ÷ 3 adalah ….",img:null,options:["A. 14","B. 16","C. 18","D. 24"],answer:"B",bahas:"48 ÷ 3 = (30 ÷ 3) + (18 ÷ 3) = 10 + 6 = 16. Jadi, jawaban yang tepat adalah B."},
+{n:6,type:"mc",text:"Hasil pembagian 65 ÷ 5 adalah ….",img:null,options:["A. 11","B. 12","C. 13","D. 15"],answer:"C",bahas:"65 ÷ 5 = (50 ÷ 5) + (15 ÷ 5) = 10 + 3 = 13. Jadi, jawaban yang tepat adalah C."},
+{n:7,type:"mc",text:"Nilai dari 84 ÷ 4 adalah ….",img:null,options:["A. 18","B. 21","C. 22","D. 24"],answer:"B",bahas:"84 ÷ 4 = (80 ÷ 4) + (4 ÷ 4) = 20 + 1 = 21. Jadi, jawaban yang tepat adalah B."},
+{n:8,type:"mc",text:"Hasil dari 90 ÷ 6 adalah ….",img:null,options:["A. 12","B. 14","C. 15","D. 16"],answer:"C",bahas:"90 ÷ 6 = (60 ÷ 6) + (30 ÷ 6) = 10 + 5 = 15. Jadi, jawaban yang tepat adalah C."},
+{n:9,type:"mc",text:"Hasil pembagian 96 ÷ 8 adalah ….",img:null,options:["A. 11","B. 12","C. 13","D. 14"],answer:"B",bahas:"96 ÷ 8 = (80 ÷ 8) + (16 ÷ 8) = 10 + 2 = 12. Jadi, jawaban yang tepat adalah B."},
+{n:10,type:"mc",text:"Hasil dari 100 ÷ 4 adalah ….",img:null,options:["A. 20","B. 22","C. 24","D. 25"],answer:"D",bahas:"100 ÷ 4 = 25 karena 25 × 4 = 100. Jadi, jawaban yang tepat adalah D."},
+{n:11,type:"mc",text:"Pembagian dua bilangan cacah berikut yang menghasilkan 14 adalah ….",img:null,options:["A. 52 ÷ 4","B. 70 ÷ 5","C. 72 ÷ 6","D. 84 ÷ 7"],answer:"B",bahas:"Hitung setiap pilihan: 52 ÷ 4 = 13, 70 ÷ 5 = 14, 72 ÷ 6 = 12, dan 84 ÷ 7 = 12. Yang menghasilkan 14 adalah 70 ÷ 5. Jadi, jawaban yang tepat adalah B."},
+{n:12,type:"mc",text:"Bilangan yang tepat untuk mengisi titik-titik pada 75 ÷ … = 15 adalah ….",img:null,options:["A. 3","B. 4","C. 5","D. 6"],answer:"C",bahas:"Cari pembagi yang tepat: 75 ÷ 15 = 5, sehingga 75 ÷ 5 = 15. Titik-titik diisi 5. Jadi, jawaban yang tepat adalah C."},
+{n:13,type:"mc",text:"Hasil dari 91 ÷ 7 adalah ….",img:null,options:["A. 12","B. 13","C. 14","D. 17"],answer:"B",bahas:"91 ÷ 7 = (70 ÷ 7) + (21 ÷ 7) = 10 + 3 = 13. Jadi, jawaban yang tepat adalah B."},
+{n:14,type:"mc",text:"Hasil dari 88 ÷ 1 adalah ….",img:null,options:["A. 0","B. 1","C. 87","D. 88"],answer:"D",bahas:"Setiap bilangan cacah yang dibagi 1 hasilnya adalah bilangan itu sendiri, sehingga 88 ÷ 1 = 88. Jadi, jawaban yang tepat adalah D."},
+{n:15,type:"mc",text:"Ibu memiliki 45 kue bolu yang akan dimasukkan ke dalam 5 kotak dengan isi sama banyak. Banyak kue bolu di setiap kotak adalah … buah.",img:null,options:["A. 7","B. 8","C. 9","D. 10"],answer:"C",bahas:"Banyak kue bolu tiap kotak = 45 ÷ 5 = 9 buah. Jadi, jawaban yang tepat adalah C."},
+{n:16,type:"mc",text:"Pak Deni memanen 64 buah mangga. Mangga tersebut dibagikan sama rata kepada 8 tetangganya. Setiap tetangga menerima … buah mangga.",img:null,options:["A. 6","B. 7","C. 8","D. 9"],answer:"C",bahas:"Banyak mangga tiap tetangga = 64 ÷ 8 = 8 buah. Jadi, jawaban yang tepat adalah C."},
+{n:17,type:"mc",text:"Sebanyak 78 buku tulis dibagikan kepada 6 kelompok belajar sama banyak. Jumlah buku tulis yang diterima setiap kelompok adalah … buku.",img:null,options:["A. 12","B. 13","C. 14","D. 16"],answer:"B",bahas:"Jumlah buku tulis tiap kelompok = 78 ÷ 6 = (60 ÷ 6) + (18 ÷ 6) = 10 + 3 = 13 buku. Jadi, jawaban yang tepat adalah B."},
+{n:18,type:"mc",text:"Rani merangkai 85 tangkai bunga mawar ke dalam 5 vas bunga sama banyak. Banyak bunga mawar pada setiap vas adalah … tangkai.",img:null,options:["A. 15","B. 16","C. 17","D. 19"],answer:"C",bahas:"Banyak bunga mawar tiap vas = 85 ÷ 5 = (50 ÷ 5) + (35 ÷ 5) = 10 + 7 = 17 tangkai. Jadi, jawaban yang tepat adalah C."},
+{n:19,type:"mc",text:"Di ruang aula terdapat 96 kursi yang disusun dalam 6 baris sama banyak. Jumlah kursi pada setiap baris adalah … kursi.",img:null,options:["A. 14","B. 15","C. 16","D. 18"],answer:"C",bahas:"Jumlah kursi tiap baris = 96 ÷ 6 = (60 ÷ 6) + (36 ÷ 6) = 10 + 6 = 16 kursi. Jadi, jawaban yang tepat adalah C."},
+{n:20,type:"mc",text:"Panitia lomba menyiapkan 100 botol air mineral dalam beberapa dus. Jika setiap dus berisi 20 botol air mineral, banyak dus yang disiapkan panitia adalah … dus.",img:null,options:["A. 4","B. 5","C. 6","D. 10"],answer:"B",bahas:"Banyak dus air mineral = 100 ÷ 20 = 5 dus. Jadi, jawaban yang tepat adalah B."}
+]},
+{ name: "Sifat pembagian", icon: "🔀", questions: [
+{n:1,type:"mc",text:"Operasi pembagian merupakan kebalikan (invers) dari operasi hitung ….",img:null,options:["A. penjumlahan","B. pengurangan","C. perkalian","D. perpangkatan"],answer:"C",bahas:"Pembagian merupakan kebalikan (invers) dari perkalian: jika a × b = c, maka c ÷ a = b dan c ÷ b = a. Jadi, jawaban yang tepat adalah C."},
+{n:2,type:"mc",text:"Diketahui bentuk perkalian 8 × 7 = 56. Bentuk pembagian yang sesuai dengan perkalian tersebut adalah ….",img:null,options:["A. 56 ÷ 8 = 7","B. 8 ÷ 56 = 7","C. 7 ÷ 56 = 8","D. 56 ÷ 56 = 8"],answer:"A",bahas:"Dari perkalian 8 × 7 = 56 diperoleh dua bentuk pembagian, yaitu 56 ÷ 8 = 7 dan 56 ÷ 7 = 8. Yang ada di pilihan adalah 56 ÷ 8 = 7. Jadi, jawaban yang tepat adalah A."},
+{n:3,type:"mc",text:"Bilangan yang tepat untuk melengkapi pasangan operasi 72 ÷ 9 = 8 dan 8 × … = 72 adalah ….",img:null,options:["A. 7","B. 8","C. 9","D. 64"],answer:"C",bahas:"Karena 72 ÷ 9 = 8, kebalikannya dalam perkalian adalah 8 × 9 = 72. Bilangan yang tepat adalah 9. Jadi, jawaban yang tepat adalah C."},
+{n:4,type:"mc",text:"Pernyataan berikut yang benar mengenai sifat komutatif (pertukaran) pada pembagian adalah ….",img:null,options:["A. Pembagian bersifat komutatif karena 12 ÷ 4 = 4 ÷ 12","B. Pembagian tidak bersifat komutatif karena 12 ÷ 4 ≠ 4 ÷ 12","C. Pembagian bersifat komutatif untuk semua bilangan genap","D. Pembagian selalu menghasilkan bilangan bulat saat ditukar"],answer:"B",bahas:"Pembagian tidak bersifat komutatif karena hasilnya berubah jika posisi bilangan ditukar: 12 ÷ 4 = 3, sedangkan 4 ÷ 12 = 1/3. Pernyataan yang benar adalah pilihan B. Jadi, jawaban yang tepat adalah B."},
+{n:5,type:"mc",text:"Perhatikan operasi hitung (36 ÷ 6) ÷ 2 dan 36 ÷ (6 ÷ 2). Hasil dari kedua operasi tersebut berturut-turut adalah ….",img:null,options:["A. 3 dan 3","B. 3 dan 12","C. 12 dan 3","D. 12 dan 12"],answer:"B",bahas:"(36 ÷ 6) ÷ 2 = 6 ÷ 2 = 3, sedangkan 36 ÷ (6 ÷ 2) = 36 ÷ 3 = 12. Hasil kedua operasi berturut-turut adalah 3 dan 12. Jadi, jawaban yang tepat adalah B."},
+{n:6,type:"mc",text:"Berdasarkan soal nomor 5, karena (36 ÷ 6) ÷ 2 ≠ 36 ÷ (6 ÷ 2), maka dapat disimpulkan bahwa operasi pembagian tidak memiliki sifat ….",img:null,options:["A. identitas","B. tertutup","C. asosiatif","D. invers"],answer:"C",bahas:"Mengubah tanda kurung (pengelompokan) pada pembagian mengubah hasil akhirnya, sehingga pembagian tidak memiliki sifat asosiatif. Jadi, jawaban yang tepat adalah C."},
+{n:7,type:"mc",text:"Setiap bilangan cacah yang dibagi dengan bilangan 1 akan menghasilkan ….",img:null,options:["A. bilangan 0","B. bilangan 1","C. bilangan itu sendiri","D. bilangan tak terdefinisi"],answer:"C",bahas:"Sifat pembagian dengan bilangan 1 menyatakan a ÷ 1 = a, sehingga hasilnya bilangan itu sendiri. Jadi, jawaban yang tepat adalah C."},
+{n:8,type:"mc",text:"Nilai m yang memenuhi persamaan m ÷ 1 = 85 adalah ….",img:null,options:["A. 0","B. 1","C. 84","D. 85"],answer:"D",bahas:"Berdasarkan sifat a ÷ 1 = a, persamaan m ÷ 1 = 85 memberikan nilai m = 85. Jadi, jawaban yang tepat adalah D."},
+{n:9,type:"mc",text:"Suatu bilangan cacah bukan nol jika dibagi dengan bilangan itu sendiri (a ÷ a) akan selalu menghasilkan ….",img:null,options:["A. 0","B. 1","C. a","D. 2a"],answer:"B",bahas:"Setiap bilangan bukan nol yang dibagi dengan dirinya sendiri selalu menghasilkan 1, karena a ÷ a = 1 untuk a ≠ 0. Jadi, jawaban yang tepat adalah B."},
+{n:10,type:"mc",text:"Hasil dari 67 ÷ 67 + 45 ÷ 1 adalah ….",img:null,options:["A. 1","B. 45","C. 46","D. 112"],answer:"C",bahas:"67 ÷ 67 = 1 dan 45 ÷ 1 = 45, sehingga 1 + 45 = 46. Jadi, jawaban yang tepat adalah C."},
+{n:11,type:"mc",text:"Hasil dari 0 ÷ 29 adalah ….",img:null,options:["A. 0","B. 1","C. 29","D. tidak terdefinisi"],answer:"A",bahas:"Bilangan nol yang dibagi dengan bilangan bukan nol mana pun hasilnya selalu 0, karena 0 × 29 = 0. Jadi, 0 ÷ 29 = 0 dan jawaban yang tepat adalah A."},
+{n:12,type:"mc",text:"Dalam operasi hitung bilangan, pembagian suatu bilangan dengan nol (contohnya 18 ÷ 0) memiliki hasil ….",img:null,options:["A. 0","B. 1","C. 18","D. tidak terdefinisi"],answer:"D",bahas:"Pembagian dengan bilangan nol tidak terdefinisi karena tidak ada satu pun bilangan yang jika dikalikan 0 menghasilkan 18. Jadi, jawaban yang tepat adalah D."},
+{n:13,type:"mc",text:"Operasi pembagian sebagai pengurangan berulang dari 24 ÷ 6 dapat dituliskan sebagai ….",img:null,options:["A. 24 − 6 − 6 − 6 − 6 = 0","B. 24 − 4 − 4 − 4 − 4 − 4 − 4 = 0","C. 24 − 6 − 6 − 6 = 6","D. 6 + 6 + 6 + 6 = 24"],answer:"A",bahas:"Pembagian sama dengan pengurangan berulang sampai habis: 24 − 6 − 6 − 6 − 6 = 0, artinya bilangan 6 dikurangkan 4 kali karena 24 ÷ 6 = 4. Bentuk yang tepat adalah pilihan A. Jadi, jawaban yang tepat adalah A."},
+{n:14,type:"mc",text:"Bentuk penjabaran yang tepat untuk (40 + 16) ÷ 4 menggunakan sifat distributif kanan pembagian terhadap penjumlahan adalah ….",img:null,options:["A. (40 + 4) ÷ (16 + 4)","B. (40 ÷ 4) + (16 ÷ 4)","C. (40 ÷ 4) × (16 ÷ 4)","D. 40 + (16 ÷ 4)"],answer:"B",bahas:"Sifat distributif kanan pembagian terhadap penjumlahan menyatakan (a + b) ÷ c = (a ÷ c) + (b ÷ c). Maka (40 + 16) ÷ 4 = (40 ÷ 4) + (16 ÷ 4). Jadi, jawaban yang tepat adalah B."},
+{n:15,type:"mc",text:"Nilai dari (60 − 15) ÷ 5 jika diselesaikan dengan sifat distributif pembagian terhadap pengurangan adalah ….",img:null,options:["A. 6","B. 9","C. 12","D. 15"],answer:"B",bahas:"(60 − 15) ÷ 5 = (60 ÷ 5) − (15 ÷ 5) = 12 − 3 = 9. Jadi, jawaban yang tepat adalah B."},
+{n:16,type:"mc",text:"Perhatikan persamaan berikut: 48 ÷ (4 + 2) dan (48 ÷ 4) + (48 ÷ 2). Pernyataan yang tepat mengenai kedua bentuk tersebut adalah ….",img:null,options:["A. Keduanya bernilai sama, yaitu 8","B. Keduanya bernilai sama, yaitu 36","C. Bernilai berbeda, yaitu 8 dan 36","D. Bernilai berbeda, yaitu 12 dan 24"],answer:"C",bahas:"48 ÷ (4 + 2) = 48 ÷ 6 = 8, sedangkan (48 ÷ 4) + (48 ÷ 2) = 12 + 24 = 36. Sifat distributif tidak berlaku di sebelah kiri pembagi, sehingga keduanya bernilai berbeda, yaitu 8 dan 36. Jadi, jawaban yang tepat adalah C."},
+{n:17,type:"mc",text:"Bentuk sederhana dari (45 ÷ 9) + (27 ÷ 9) berdasarkan sifat pembagian adalah ….",img:null,options:["A. (45 + 27) ÷ 9","B. (45 + 27) ÷ 18","C. (45 × 27) ÷ 9","D. 45 ÷ (27 + 9)"],answer:"A",bahas:"Karena pembaginya sama, yaitu 9, bentuk itu disederhanakan menjadi (45 + 27) ÷ 9 = 72 ÷ 9 = 8. Jadi, jawaban yang tepat adalah A."},
+{n:18,type:"mc",text:"Jika bilangan yang dibagi dan bilangan pembagi sama-sama dikalikan dengan bilangan 2, seperti pada 18 ÷ 6 menjadi 36 ÷ 12, maka hasil pembagiannya akan ….",img:null,options:["A. bertambah 2","B. menjadi dua kali lipat","C. tetap sama","D. berkurang setengahnya"],answer:"C",bahas:"Jika bilangan yang dibagi dan pembagi sama-sama dikalikan bilangan bukan nol yang sama, hasil baginya tetap sama: 18 ÷ 6 = 3 dan 36 ÷ 12 = 3. Jadi, jawaban yang tepat adalah C."},
+{n:19,type:"mc",text:"Perhatikan pernyataan-pernyataan berikut:\n(1) 15 ÷ 1 = 15\n(2) 0 ÷ 15 = 0\n(3) 15 ÷ 0 = 0\n(4) 15 ÷ 15 = 1\nPernyataan yang benar ditunjukkan oleh nomor ….",img:null,options:["A. (1), (2), dan (3)","B. (1), (2), dan (4)","C. (1), (3), dan (4)","D. (2), (3), dan (4)"],answer:"B",bahas:"Pernyataan (1) 15 ÷ 1 = 15 benar, (2) 0 ÷ 15 = 0 benar, (3) 15 ÷ 0 = 0 salah karena hasilnya tidak terdefinisi, dan (4) 15 ÷ 15 = 1 benar. Pernyataan yang benar adalah (1), (2), dan (4). Jadi, jawaban yang tepat adalah B."},
+{n:20,type:"mc",text:"Ibu memiliki 30 kue cokelat dan 18 kue keju yang akan dibagikan sama rata ke dalam 6 piring. Cara menghitung banyak kue tiap piring menggunakan sifat distributif pembagian adalah ….",img:null,options:["A. (30 ÷ 6) + (18 ÷ 6) = 8 kue","B. (30 + 6) ÷ (18 + 6) = 6 kue","C. (30 ÷ 6) × (18 ÷ 6) = 15 kue","D. 30 + (18 ÷ 6) = 33 kue"],answer:"A",bahas:"Banyak kue tiap piring = (30 + 18) ÷ 6, yang dengan sifat distributif kanan dijabarkan menjadi (30 ÷ 6) + (18 ÷ 6) = 5 + 3 = 8 kue. Bentuk yang tepat adalah pilihan A. Jadi, jawaban yang tepat adalah A."}
+]},
+{ name: "Soal cerita perkalian dan pembagian", icon: "🕌", questions: [
+{n:1,type:"mc",text:"Menjelang berbuka puasa, keluarga Ahmad menyiapkan 6 piring takjil untuk dibagikan kepada tetangga. Jika setiap piring berisi 7 butir kurma, jumlah seluruh kurma yang disiapkan adalah … butir.",img:null,options:["A. 36","B. 42","C. 48","D. 49"],answer:"B",bahas:"Jumlah seluruh kurma = 6 piring × 7 butir = 42 butir. Jadi, jawaban yang tepat adalah B."},
+{n:2,type:"mc",text:"Di perpustakaan masjid terdapat 4 rak khusus mushaf Al-Qur'an. Setiap rak tersusun rapi sebanyak 12 mushaf Al-Qur'an. Banyak mushaf Al-Qur'an seluruhnya di perpustakaan masjid tersebut adalah … mushaf.",img:null,options:["A. 36","B. 44","C. 48","D. 52"],answer:"C",bahas:"Banyak mushaf seluruhnya = 4 rak × 12 mushaf = 48 mushaf. Jadi, jawaban yang tepat adalah C."},
+{n:3,type:"mc",text:"Fatimah rutin menghafal Al-Qur'an setiap hari setelah salat Subuh. Dalam sehari, ia mampu menghafal 5 ayat. Jumlah ayat yang berhasil dihafal Fatimah selama 9 hari adalah … ayat.",img:null,options:["A. 35","B. 40","C. 45","D. 50"],answer:"C",bahas:"Jumlah ayat yang dihafal = 9 hari × 5 ayat = 45 ayat. Jadi, jawaban yang tepat adalah C."},
+{n:4,type:"mc",text:"Setiap hari Jumat, Yusuf menyisihkan uang sakunya sebesar Rp2.000,00 untuk dimasukkan ke dalam kotak infak masjid. Jika Yusuf berinfak selama 8 kali hari Jumat, total uang yang ia infakkan adalah ….",img:null,options:["A. Rp10.000,00","B. Rp14.000,00","C. Rp16.000,00","D. Rp18.000,00"],answer:"C",bahas:"Total uang infak = 8 × Rp2.000,00 = Rp16.000,00. Jadi, jawaban yang tepat adalah C."},
+{n:5,type:"mc",text:"Pengurus TPQ Al-Ikhlas membeli 3 pak buku Iqra' untuk santri baru. Setiap pak berisi 15 buah buku Iqra'. Jumlah seluruh buku Iqra' yang dibeli pengurus TPQ adalah … buah.",img:null,options:["A. 35","B. 40","C. 45","D. 50"],answer:"C",bahas:"Jumlah buku Iqra' = 3 pak × 15 buah = 45 buah. Jadi, jawaban yang tepat adalah C."},
+{n:6,type:"mc",text:"Dalam kegiatan pesantren kilat, panitia menyediakan 54 botol air mineral untuk dibagikan sama rata kepada 6 kelompok santri. Setiap kelompok memperoleh … botol air mineral.",img:null,options:["A. 7","B. 8","C. 9","D. 10"],answer:"C",bahas:"Banyak botol air mineral tiap kelompok = 54 ÷ 6 = 9 botol. Jadi, jawaban yang tepat adalah C."},
+{n:7,type:"mc",text:"Bu Aisyah membuat 72 potong kue kering untuk bingkisan Hari Raya Idulfitri. Kue tersebut akan dikemas ke dalam 8 toples sama banyak. Banyak kue kering pada setiap toples adalah … potong.",img:null,options:["A. 7","B. 8","C. 9","D. 12"],answer:"C",bahas:"Banyak kue kering tiap toples = 72 ÷ 8 = 9 potong. Jadi, jawaban yang tepat adalah C."},
+{n:8,type:"mc",text:"Panitia zakat fitrah mengumpulkan 96 kg beras dari para muzaki. Jika setiap paket zakat fitrah yang dibagikan kepada mustahik berisi 3 kg beras, banyak paket zakat yang terbentuk adalah … paket.",img:null,options:["A. 28","B. 30","C. 32","D. 36"],answer:"C",bahas:"Banyak paket zakat = 96 ÷ 3 = (90 ÷ 3) + (6 ÷ 3) = 30 + 2 = 32 paket. Jadi, jawaban yang tepat adalah C."},
+{n:9,type:"mc",text:"Sekolah mengadakan program santunan anak yatim dengan membagikan 85 buku tulis kepada 5 anak yatim sama banyak. Banyak buku tulis yang diterima setiap anak adalah … buku.",img:null,options:["A. 15","B. 16","C. 17","D. 19"],answer:"C",bahas:"Banyak buku tulis tiap anak yatim = 85 ÷ 5 = (50 ÷ 5) + (35 ÷ 5) = 10 + 7 = 17 buku. Jadi, jawaban yang tepat adalah C."},
+{n:10,type:"mc",text:"Seorang dermawan menyedekahkan 100 buah sarung kepada beberapa panti asuhan. Jika setiap panti asuhan menerima 25 buah sarung, banyak panti asuhan yang menerima sedekah tersebut adalah … panti asuhan.",img:null,options:["A. 3","B. 4","C. 5","D. 6"],answer:"B",bahas:"Banyak panti asuhan penerima = 100 ÷ 25 = 4 panti asuhan. Jadi, jawaban yang tepat adalah B."},
+{n:11,type:"mc",text:"Pada pelaksanaan salat berjamaah di musala sekolah, siswa laki-laki membentuk 4 saf yang lurus dan rapat. Jika setiap saf terdiri atas 11 siswa, jumlah seluruh siswa laki-laki yang mengikuti salat berjamaah adalah … siswa.",img:null,options:["A. 40","B. 44","C. 48","D. 55"],answer:"B",bahas:"Jumlah seluruh siswa laki-laki = 4 saf × 11 siswa = 44 siswa. Jadi, jawaban yang tepat adalah B."},
+{n:12,type:"mc",text:"Pak Hasan memiliki 63 butir tasbih kayu yang akan dibagikan sama rata kepada 7 kelompok pengajian ibu-ibu. Banyak tasbih yang diterima setiap kelompok pengajian adalah … butir.",img:null,options:["A. 7","B. 8","C. 9","D. 11"],answer:"C",bahas:"Banyak tasbih tiap kelompok = 63 ÷ 7 = 9 butir. Jadi, jawaban yang tepat adalah C."},
+{n:13,type:"mc",text:"Seorang muslim yang menjaga salat fardu lima waktu melaksanakan 17 rakaat salat wajib setiap harinya. Jumlah rakaat salat wajib yang dikerjakan selama 3 hari adalah … rakaat.",img:null,options:["A. 34","B. 41","C. 51","D. 54"],answer:"C",bahas:"Jumlah rakaat selama 3 hari = 3 × 17 = (3 × 10) + (3 × 7) = 30 + 21 = 51 rakaat. Jadi, jawaban yang tepat adalah C."},
+{n:14,type:"mc",text:"Panitia kurban Masjid At-Taqwa menerima 84 kantong daging kurban. Daging tersebut akan dibagikan kepada warga di 4 RT dengan jumlah yang sama banyak. Banyak kantong daging yang diterima setiap RT adalah … kantong.",img:null,options:["A. 18","B. 21","C. 22","D. 24"],answer:"B",bahas:"Banyak kantong daging tiap RT = 84 ÷ 4 = (80 ÷ 4) + (4 ÷ 4) = 20 + 1 = 21 kantong. Jadi, jawaban yang tepat adalah B."},
+{n:15,type:"mc",text:"Dalam kegiatan bakti sosial Ramadan, kelas IV mengumpulkan 6 dus mi instan. Setiap dus berisi 8 bungkus mi instan. Seluruh mi instan tersebut kemudian dibagikan sama rata kepada 4 keluarga duafa. Banyak mi instan yang diterima setiap keluarga adalah … bungkus.",img:null,options:["A. 8","B. 10","C. 12","D. 14"],answer:"C",bahas:"Total mi instan = 6 dus × 8 bungkus = 48 bungkus. Seluruhnya dibagikan ke 4 keluarga: 48 ÷ 4 = 12 bungkus per keluarga. Jadi, jawaban yang tepat adalah C."},
+{n:16,type:"mc",text:"Umi membeli 3 kotak kurma Ajwa untuk oleh-oleh umrah. Setiap kotak berisi 16 butir kurma. Jika kurma tersebut dibagikan sama banyak kepada 6 anggota keluarganya, setiap anggota keluarga mendapat … butir kurma.",img:null,options:["A. 6","B. 7","C. 8","D. 9"],answer:"C",bahas:"Total kurma Ajwa = 3 kotak × 16 butir = 48 butir. Kurma dibagikan kepada 6 anggota keluarga: 48 ÷ 6 = 8 butir per orang. Jadi, jawaban yang tepat adalah C."},
+{n:17,type:"mc",text:"Bilal menabung di celengan sedekah subuh sebesar Rp5.000,00 setiap hari selama 10 hari. Uang yang terkumpul kemudian dibelikan paket alat tulis seharga Rp10.000,00 per paket untuk disumbangkan ke panti asuhan. Banyak paket alat tulis yang dapat dibeli Bilal adalah … paket.",img:null,options:["A. 4","B. 5","C. 6","D. 10"],answer:"B",bahas:"Total tabungan = 10 × Rp5.000,00 = Rp50.000,00. Banyak paket alat tulis = Rp50.000,00 ÷ Rp10.000,00 = 5 paket. Jadi, jawaban yang tepat adalah B."},
+{n:18,type:"mc",text:"Pada acara manasik haji cilik, 90 peserta dibagi menjadi 6 regu sama banyak. Jika setiap regu didampingi oleh 1 orang pembimbing, jumlah peserta dalam setiap regu adalah … anak.",img:null,options:["A. 12","B. 14","C. 15","D. 18"],answer:"C",bahas:"Jumlah peserta tiap regu = 90 ÷ 6 = (60 ÷ 6) + (30 ÷ 6) = 10 + 5 = 15 anak. Jadi, jawaban yang tepat adalah C."},
+{n:19,type:"mc",text:"Untuk menyambut Tahun Baru Islam, siswa kelas IV membuat 4 keranjang parsel buah. Setiap keranjang berisi 12 buah apel. Jumlah seluruh buah apel yang dibutuhkan adalah … buah.",img:null,options:["A. 36","B. 44","C. 48","D. 52"],answer:"C",bahas:"Jumlah seluruh buah apel = 4 keranjang × 12 buah = 48 buah. Jadi, jawaban yang tepat adalah C."},
+{n:20,type:"mc",text:"Panitia peringatan Maulid Nabi menyiapkan 75 kotak nasi untuk para tamu. Kotak nasi tersebut disusun di atas 5 meja panjang sama banyak. Banyak kotak nasi di atas setiap meja adalah … kotak.",img:null,options:["A. 13","B. 15","C. 17","D. 25"],answer:"B",bahas:"Banyak kotak nasi tiap meja = 75 ÷ 5 = (50 ÷ 5) + (25 ÷ 5) = 10 + 5 = 15 kotak. Jadi, jawaban yang tepat adalah B."}
+]}
+] };
+
+/* ================= state & util ================= */
+const SEC = SOAL.sections;
+const APP = { name:'', perQ:[], cur:null, data:[] };
+const $ = s => document.querySelector(s);
+const fmtT = s => {
+  s = Math.max(0, Math.round(s));
+  const j = Math.floor(s/3600), m = Math.floor((s%3600)/60), d = s%60;
+  return (j ? j + ':' + String(m).padStart(2,'0') : String(m)) + ':' + String(d).padStart(2,'0');
+};
+const norm = v => String(v).trim().toLowerCase().replace(/\s+/g,'').replace(/,/g,'.');
+let toastTimer = null;
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  $('#page-' + id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ================= cover ================= */
+(function initCover(){
+  document.title = SOAL.meta.title;
+  $('#cover-title').textContent = SOAL.meta.title;
+  $('#cover-sub').textContent = SOAL.meta.subtitle;
+  const tot = SEC.reduce((a,s)=>a+s.questions.length,0);
+  $('#cover-info').textContent = `📚 ${SEC.length} bagian • ${tot} soal • timer per soal diatur oleh tutor`;
+  $('#btn-mulai').addEventListener('click', () => {
+    const v = $('#nama').value.trim();
+    if(!v){ toast('Tulis dulu namamu ya 😊'); $('#nama').focus(); return; }
+    APP.name = v;
+    buildSettings();
+    showPage('settings');
+  });
+  $('#nama').addEventListener('keydown', e => { if(e.key==='Enter') $('#btn-mulai').click(); });
+})();
+
+/* ================= settings ================= */
+function buildSettings(){
+  const preset = $('#preset-row');
+  preset.innerHTML = '';
+  [30,60,120,180,300,600].forEach(sec => {
+    const b = document.createElement('button');
+    b.className = 'btn small';
+    b.textContent = fmtT(sec) + ' / soal';
+    b.addEventListener('click', () => {
+      SEC.forEach((s,i) => $('#perq-'+i).value = sec);
+      toast('Semua bagian diatur ' + fmtT(sec) + ' per soal');
+    });
+    preset.appendChild(b);
+  });
+
+  const wrap = $('#set-rows'); wrap.innerHTML = '';
+  SEC.forEach((s,i) => {
+    const row = document.createElement('div');
+    row.className = 'set-row';
+    const tot = s.questions.length;
+    row.innerHTML = `<div class="nm">${s.icon} ${s.name}<small>${tot} soal</small></div>`;
+    const inp = document.createElement('input');
+    inp.type = 'number'; inp.id = 'perq-'+i; inp.min = 10; inp.max = 3600; inp.step = 5;
+    inp.value = APP.perQ[i] || 120;
+    row.appendChild(inp);
+    wrap.appendChild(row);
+  });
+}
+$('#btn-set-kembali').addEventListener('click', () => showPage('cover'));
+$('#btn-simpan').addEventListener('click', () => {
+  const adaProgres = APP.data.some(d => d);
+  if(adaProgres && !confirm('Mengubah pengaturan waktu akan MENGHAPUS semua progres jawaban. Lanjutkan?')) return;
+  APP.perQ = SEC.map((s,i) => {
+    let v = parseInt($('#perq-'+i).value, 10);
+    if(isNaN(v) || v < 10) v = 10;
+    if(v > 3600) v = 3600;
+    return v;
+  });
+  APP.data = SEC.map(()=>null);
+  buildMenu();
+  showPage('menu');
+});
+
+/* ================= menu ================= */
+function statusOf(si){
+  const d = APP.data[si];
+  if(!d) return {cls:'blink', txt:'Belum dikerjakan'};
+  const t = SEC[si].questions.length;
+  const done = d.filter(a=>a.checked||a.timeout).length;
+  if(done === 0) return {cls:'blink', txt:'Belum dikerjakan'};
+  if(done >= t) return {cls:'selesai', txt:'Selesai ✓'};
+  return {cls:'progres', txt:`Progres ${done}/${t}`};
+}
+function buildMenu(){
+  $('#halo').textContent = `Halo, ${APP.name}! 👋`;
+  const grid = $('#menu-grid'); grid.innerHTML = '';
+  SEC.forEach((s,i) => {
+    const st = statusOf(i);
+    const card = document.createElement('button');
+    card.className = 'sec-card';
+    card.innerHTML = `
+      <div class="top"><span class="ico">${s.icon}</span><span class="nm">${s.name}</span></div>
+      <div class="meta"><span>📋 ${s.questions.length} soal</span><span>⏱ ${fmtT(APP.perQ[i]||120)}/soal</span></div>
+      <span class="chip ${st.cls}">${st.txt}</span>`;
+    card.addEventListener('click', () => startSection(i));
+    grid.appendChild(card);
+  });
+}
+$('#btn-ubah-waktu').addEventListener('click', () => { buildSettings(); showPage('settings'); });
+function keHasil(){
+  if(!APP.data.some(d=>d)){ toast('Belum ada soal yang dikerjakan'); return; }
+  buildResults(); showPage('results');
+}
+$('#btn-akhiri').addEventListener('click', keHasil);
+$('#btn-akhiri2').addEventListener('click', () => {
+  if(confirm('Akhiri latihan sekarang dan lihat hasil?')) keHasil();
+});
+$('#btn-menu').addEventListener('click', () => { buildMenu(); showPage('menu'); });
+
+/* ================= practice ================= */
+function startSection(si){
+  if(!APP.data[si]){
+    APP.data[si] = SEC[si].questions.map(() => ({
+      choice:null, val:'', checked:false, correct:null, spent:0, remaining:APP.perQ[si], timeout:false
+    }));
+  }
+  const d = APP.data[si];
+  let qi = d.findIndex(a => !a.checked && !a.timeout);
+  if(qi < 0) qi = 0;
+  APP.cur = {si, qi};
+  renderQ();
+  showPage('practice');
+}
+function curQ(){ return SEC[APP.cur.si].questions[APP.cur.qi]; }
+function curA(){ return APP.data[APP.cur.si][APP.cur.qi]; }
+
+function renderQ(){
+  const si = APP.cur.si, qi = APP.cur.qi;
+  const s = SEC[si], q = curQ(), a = curA();
+  $('#pr-title').textContent = s.icon + ' ' + s.name;
+  $('#pr-progress').textContent = `Soal ${qi+1} dari ${s.questions.length}`;
+  $('#q-no').textContent = 'Soal ' + q.n;
+  $('#q-type').textContent = q.type === 'mc' ? '📝 Pilihan Ganda' : '✏️ Isian Singkat';
+
+  const st = $('#q-status');
+  st.style.display = 'none';
+  if(a.checked){ st.style.display=''; st.className='badge-status '+(a.correct?'benar':'salah'); st.textContent = a.correct?'✔ Benar':'✘ Belum tepat'; }
+  else if(a.timeout){ st.style.display=''; st.className='badge-status timeout'; st.textContent='⏰ Waktu habis'; }
+
+  $('#q-text').textContent = q.text;
+  const imgBox = $('#q-img');
+  if(q.img){ imgBox.style.display=''; imgBox.innerHTML = q.img; } else { imgBox.style.display='none'; imgBox.innerHTML=''; }
+
+  const kunciTeks = q.type === 'mc'
+    ? q.options.find(o => o.trim().startsWith(q.answer + '.')).trim()
+    : String(q.answer);
+
+  // opsi / isian
+  const opts = $('#q-opts'); opts.innerHTML = '';
+  const iwrap = $('#isian-wrap');
+  if(q.type === 'mc'){
+    iwrap.style.display = 'none';
+    q.options.forEach(o => {
+      const huruf = o.trim().charAt(0);
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = o.trim();
+      if(a.checked || a.timeout){
+        b.disabled = true;
+        if(huruf === q.answer) b.classList.add('benar');
+        else if(huruf === a.choice) b.classList.add('salah');
+        else b.classList.add('dim');
+      } else {
+        if(a.choice === huruf) b.classList.add('selected');
+        b.addEventListener('click', () => {
+          a.choice = huruf;
+          opts.querySelectorAll('.opt').forEach(x => x.classList.remove('selected'));
+          b.classList.add('selected');
+        });
+      }
+      opts.appendChild(b);
+    });
+  } else {
+    iwrap.style.display = '';
+    const inp = $('#q-input');
+    inp.disabled = a.checked || a.timeout;
+    inp.value = a.val;
+    if(a.checked){
+      inp.style.borderColor = a.correct ? 'var(--hijau)' : 'var(--merah)';
+    } else { inp.style.borderColor = 'var(--biru)'; }
+    inp.oninput = () => { a.val = inp.value; };
+    inp.onkeydown = e => { if(e.key==='Enter') $('#btn-cek').click(); };
+  }
+
+  // feedback
+  const fb = $('#feedback');
+  if(a.checked || a.timeout){
+    fb.className = 'show ' + (a.timeout ? 'timeout' : (a.correct ? 'benar' : 'salah'));
+    $('#verdict').textContent = a.timeout
+      ? '⏰ Waktu habis!'
+      : (a.correct ? '🎉 Benar! Hebat!' : '😔 Belum tepat. Semangat!');
+    $('#kunci').innerHTML = '🔑 Jawaban benar: <b>' + kunciTeks + '</b>';
+    $('#bahas').innerHTML = '<b>💡 Pembahasan:</b>\n' + q.bahas;
+  } else {
+    fb.className = ''; 
+  }
+
+  // tombol
+  $('#btn-prev').disabled = qi === 0;
+  const cek = $('#btn-cek');
+  if(a.checked){ cek.disabled = true; cek.textContent = '✓ Sudah diperiksa'; }
+  else if(a.timeout){ cek.disabled = true; cek.textContent = '⏰ Waktu habis'; }
+  else { cek.disabled = false; cek.textContent = '✔ Cek Jawaban'; }
+  $('#btn-next').textContent = qi === s.questions.length - 1 ? 'Selesai ✓' : 'Berikutnya ▶';
+
+  updateTimer();
+}
+function updateTimer(){
+  const a = curA();
+  const t = $('#timer');
+  t.textContent = fmtT(a.checked || a.timeout ? a.spent : a.remaining);
+  const berjalan = !a.checked && !a.timeout;
+  t.classList.toggle('low', berjalan && a.remaining <= 10);
+}
+$('#btn-prev').addEventListener('click', () => {
+  if(APP.cur.qi > 0){ APP.cur.qi--; renderQ(); }
+});
+$('#btn-next').addEventListener('click', () => {
+  const si = APP.cur.si, n = SEC[si].questions.length;
+  if(APP.cur.qi < n - 1){ APP.cur.qi++; renderQ(); }
+  else {
+    const st = statusOf(si);
+    toast(`${st.txt === 'Selesai ✓' ? 'Bagian ' + SEC[si].name + ' selesai! 🎉' : 'Masih ada soal yang belum diperiksa'} `);
+    buildMenu(); showPage('menu');
+  }
+});
+$('#btn-cek').addEventListener('click', () => {
+  const a = curA(), q = curQ();
+  if(a.checked || a.timeout) return;
+  if(q.type === 'mc'){
+    if(!a.choice){ toast('Pilih salah satu jawaban dulu 😊'); return; }
+  } else {
+    if(!a.val.trim()){ toast('Tulis jawabanmu dulu 😊'); $('#q-input').focus(); return; }
+  }
+  const ok = q.type === 'mc'
+    ? a.choice === q.answer
+    : norm(a.val) === norm(q.answer);
+  a.checked = true; a.correct = ok;
+  a.spent = APP.perQ[APP.cur.si] - a.remaining;
+  renderQ();
+  if(ok) toast('🎉 Jawaban benar!');
+});
+
+/* timer per soal — hanya berjalan saat soal sedang ditampilkan & belum diperiksa */
+setInterval(() => {
+  if(APP.cur && $('#page-practice').classList.contains('active')){
+    const a = curA();
+    if(!a.checked && !a.timeout){
+      a.remaining--;
+      if(a.remaining <= 0){
+        a.remaining = 0; a.timeout = true; a.spent = APP.perQ[APP.cur.si];
+        renderQ();
+      } else updateTimer();
+    }
+  }
+}, 1000);
+
+/* ================= hasil ================= */
+function buildResults(){
+  $('#res-name').textContent = 'Siswa: ' + APP.name + ' • ' + SOAL.meta.title;
+  const body = $('#res-body'); body.innerHTML = '';
+  let gB=0, gS=0, gT=0, gTot=0, gSoal=0;
+  SEC.forEach((s,si) => {
+    const d = APP.data[si];
+    const n = s.questions.length;
+    let benar=0, salah=0, tidak=n, waktu=0, attempted=0;
+    if(d){
+      tidak = 0;
+      d.forEach(a => {
+        if(a.checked){ a.correct ? benar++ : salah++; attempted++; waktu += a.spent; }
+        else if(a.timeout){ attempted++; waktu += a.spent; }
+        else tidak++;
+      });
+    }
+    const avg = attempted ? waktu/attempted : 0;
+    const skor = d ? Math.round(benar/n*100) + '%' : '—';
+    const tr = document.createElement('tr');
+    if(!d){
+      tr.innerHTML = `<td>${s.icon} ${s.name}</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>`;
+    } else {
+      tr.innerHTML = `<td>${s.icon} ${s.name}</td>
+        <td><span class="pill-b">${benar}</span></td>
+        <td><span class="pill-s">${salah}</span></td>
+        <td><span class="pill-t">${tidak}</span></td>
+        <td>${fmtT(waktu)}</td>
+        <td>${attempted ? fmtT(avg) : '—'}</td>
+        <td><b>${skor}</b></td>`;
+      gB+=benar; gS+=salah; gT+=tidak; gTot+=waktu; gSoal+=n;
+    }
+    body.appendChild(tr);
+  });
+  const tr = document.createElement('tr');
+  tr.className = 'total';
+  const attemptedAll = gB + gS;
+  tr.innerHTML = `<td>TOTAL KESELURUHAN</td>
+    <td><span class="pill-b">${gB}</span></td>
+    <td><span class="pill-s">${gS}</span></td>
+    <td><span class="pill-t">${gT}</span></td>
+    <td>${fmtT(gTot)}</td>
+    <td>${attemptedAll ? fmtT(gTot/attemptedAll) : '—'}</td>
+    <td><b>${gSoal ? Math.round(gB/gSoal*100)+'%' : '—'}</b></td>`;
+  body.appendChild(tr);
+}
+$('#btn-home').addEventListener('click', () => { buildMenu(); showPage('menu'); });
+$('#btn-ulang').addEventListener('click', () => {
+  if(confirm('Hapus semua hasil dan mulai latihan baru dari awal?')){
+    APP.data = SEC.map(()=>null);
+    buildMenu(); showPage('menu');
+    toast('Latihan baru siap dimulai 💪');
+  }
+});
+</script>
+</body>
+</html>
