@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latihan Matematika</title>
+<style>
+:root{
+  --biru:#4f46e5; --biru2:#7c3aed; --cyan:#0ea5e9;
+  --bg:#eef2ff; --hijau:#16a34a; --hijau-bg:#dcfce7;
+  --merah:#dc2626; --merah-bg:#fee2e2; --kuning:#f59e0b;
+  --teks:#1e293b; --abu:#64748b; --garis:#e2e8f0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif;
+  background:linear-gradient(160deg,#eef2ff 0%,#e0f2fe 60%,#faf5ff 100%);
+  min-height:100vh;color:var(--teks);
+}
+.page{display:none;max-width:920px;margin:0 auto;padding:28px 16px 70px}
+.page.active{display:block}
+h1,h2,h3{line-height:1.3}
+
+/* ===== tombol ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;
+  font-weight:600;font-size:15px;border-radius:12px;padding:12px 22px;
+  background:#fff;color:var(--biru);box-shadow:0 2px 6px rgba(79,70,229,.15);
+  transition:transform .08s, box-shadow .15s;
+}
+.btn:hover{box-shadow:0 4px 14px rgba(79,70,229,.25)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(135deg,var(--biru),var(--biru2));color:#fff}
+.btn.danger{background:linear-gradient(135deg,#ef4444,#f97316);color:#fff}
+.btn.ghost{background:#f1f5f9;color:var(--abu);box-shadow:none}
+.btn.small{padding:8px 14px;font-size:13px;border-radius:10px}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+/* ===== cover ===== */
+#page-cover{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px 16px}
+#page-cover.active{display:flex}
+.cover-card{
+  background:#fff;border-radius:26px;box-shadow:0 20px 60px rgba(79,70,229,.22);
+  max-width:520px;width:100%;padding:42px 36px;text-align:center;
+  border-top:8px solid var(--biru);
+}
+.cover-emoji{font-size:56px}
+.cover-card h1{font-size:26px;margin:10px 0 6px;color:var(--biru)}
+.cover-card .sub{color:var(--abu);font-size:15px;margin-bottom:6px}
+.cover-card .info{font-size:13px;color:var(--abu);background:#f1f5f9;border-radius:10px;padding:8px;margin:14px 0 20px}
+.cover-card label{display:block;text-align:left;font-weight:600;font-size:14px;margin-bottom:6px}
+.cover-card input{
+  width:100%;padding:13px 16px;font-size:16px;border:2px solid var(--garis);
+  border-radius:12px;outline:none;transition:border .15s;
+}
+.cover-card input:focus{border-color:var(--biru)}
+.cover-card .btn{width:100%;justify-content:center;margin-top:18px;font-size:16px;padding:14px}
+
+/* ===== kartu umum ===== */
+.card{background:#fff;border-radius:18px;box-shadow:0 6px 24px rgba(30,41,59,.08);padding:24px}
+.head-title{color:var(--biru);margin-bottom:4px}
+.hint{color:var(--abu);font-size:14px;margin-bottom:18px}
+
+/* ===== settings ===== */
+.preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.preset-row .btn.small{background:#eef2ff;color:var(--biru);box-shadow:none}
+.set-row{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:11px 14px;border:1.5px solid var(--garis);border-radius:12px;margin-bottom:10px;background:#f8fafc;
+}
+.set-row .nm{font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px}
+.set-row .nm small{display:block;font-weight:400;color:var(--abu);font-size:12px}
+.set-row input{
+  width:110px;padding:9px 10px;font-size:15px;text-align:center;
+  border:2px solid var(--garis);border-radius:10px;outline:none;
+}
+.set-row input:focus{border-color:var(--biru)}
+.settings-actions{display:flex;gap:10px;margin-top:18px}
+.settings-actions .btn{flex:1;justify-content:center}
+
+/* ===== menu ===== */
+#halo{color:var(--biru)}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:18px 0}
+.sec-card{
+  background:#fff;border-radius:16px;padding:16px;cursor:pointer;text-align:left;
+  border:2px solid transparent;box-shadow:0 4px 14px rgba(30,41,59,.07);
+  transition:border .12s, transform .12s;position:relative;
+}
+.sec-card:hover{border-color:var(--biru);transform:translateY(-2px)}
+.sec-card .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sec-card .ico{font-size:26px}
+.sec-card .nm{font-weight:700;font-size:15px;color:var(--teks)}
+.sec-card .meta{font-size:13px;color:var(--abu);display:flex;gap:12px;margin-bottom:10px}
+.chip{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px}
+.chip.blink{background:#f1f5f9;color:var(--abu)}
+.chip.progres{background:#fef9c3;color:#a16207}
+.chip.selesai{background:var(--hijau-bg);color:var(--hijau)}
+.menu-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.menu-actions .btn{flex:1;justify-content:center;min-width:220px}
+
+/* ===== practice ===== */
+.pr-topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.pr-topbar .title{font-weight:800;color:var(--biru);font-size:16px;flex:1;min-width:150px}
+.pr-topbar .prog{font-size:13px;color:var(--abu);font-weight:600}
+#timer{
+  font-variant-numeric:tabular-nums;font-weight:800;font-size:16px;color:var(--biru);
+  background:#fff;border:2px solid var(--biru);border-radius:999px;padding:7px 16px;min-width:92px;text-align:center;
+}
+#timer.low{color:var(--merah);border-color:var(--merah);background:var(--merah-bg);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.qcard{background:#fff;border-radius:18px;box-shadow:0 6px 24px rgba(30,41,59,.08);padding:24px;margin-bottom:14px}
+.qhead{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.badge-no{background:linear-gradient(135deg,var(--biru),var(--biru2));color:#fff;font-weight:800;border-radius:10px;padding:6px 12px;font-size:14px}
+.badge-type{background:#eef2ff;color:var(--biru);font-weight:700;font-size:12px;border-radius:999px;padding:5px 12px}
+.badge-status{margin-left:auto;font-weight:700;font-size:12px;border-radius:999px;padding:5px 12px}
+.badge-status.benar{background:var(--hijau-bg);color:var(--hijau)}
+.badge-status.salah{background:var(--merah-bg);color:var(--merah)}
+.badge-status.timeout{background:#fef9c3;color:#a16207}
+#q-text{white-space:pre-line;font-size:16px;line-height:1.65;margin-bottom:14px}
+.qimg{text-align:center;margin:6px 0 14px}
+.qimg svg{max-width:320px;width:100%;height:auto;background:#fff}
+.opt{
+  display:block;width:100%;text-align:left;background:#f8fafc;border:2px solid var(--garis);
+  border-radius:12px;padding:12px 16px;font-size:15px;margin-bottom:10px;cursor:pointer;
+  transition:border .12s, background .12s;color:var(--teks);
+}
+.opt:hover{border-color:var(--biru)}
+.opt.selected{border-color:var(--biru);background:#eef2ff;font-weight:600}
+.opt.benar{border-color:var(--hijau);background:var(--hijau-bg);font-weight:700}
+.opt.salah{border-color:var(--merah);background:var(--merah-bg)}
+.opt.dim{opacity:.55}
+.opt:disabled{cursor:default}
+#isian-wrap input{
+  width:100%;max-width:320px;padding:13px 16px;font-size:17px;font-weight:600;
+  border:2px solid var(--biru);border-radius:12px;outline:none;display:block;
+}
+#isian-wrap input:disabled{background:#f1f5f9;color:var(--abu)}
+#feedback{display:none;border-radius:14px;padding:16px 18px;margin-top:16px}
+#feedback.show{display:block}
+#feedback.benar{background:var(--hijau-bg);border:2px solid var(--hijau)}
+#feedback.salah{background:var(--merah-bg);border:2px solid var(--merah)}
+#feedback.timeout{background:#fef9c3;border:2px solid var(--kuning)}
+.verdict{font-weight:800;font-size:16px;margin-bottom:6px}
+#feedback.benar .verdict{color:var(--hijau)}
+#feedback.salah .verdict{color:var(--merah)}
+#feedback.timeout .verdict{color:#a16207}
+.kunci{font-size:14px;margin-bottom:10px}
+.bahas-box{background:#fff;border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.65;white-space:pre-line}
+.bahas-box b{color:var(--biru)}
+.pr-nav{display:flex;gap:10px;flex-wrap:wrap}
+.pr-nav .btn{flex:1;justify-content:center;min-width:140px}
+.pr-nav .btn.cek{min-width:200px}
+
+/* ===== results ===== */
+.res-wrap{overflow-x:auto}
+table.res{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+table.res th,table.res td{padding:10px 12px;border-bottom:1.5px solid var(--garis);text-align:center}
+table.res th{background:#eef2ff;color:var(--biru);font-size:13px}
+table.res td:first-child,table.res th:first-child{text-align:left}
+table.res tr.total td{font-weight:800;background:#f8fafc}
+.pill-b{background:var(--hijau-bg);color:var(--hijau);border-radius:999px;padding:3px 10px;font-weight:700}
+.pill-s{background:var(--merah-bg);color:var(--merah);border-radius:999px;padding:3px 10px;font-weight:700}
+.pill-t{background:#f1f5f9;color:var(--abu);border-radius:999px;padding:3px 10px;font-weight:700}
+.res-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.res-actions .btn{flex:1;justify-content:center;min-width:200px}
+.res-emoji{font-size:40px;text-align:center;margin-bottom:4px}
+
+/* ===== toast ===== */
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+  background:#1e293b;color:#fff;padding:11px 20px;border-radius:12px;font-size:14px;
+  opacity:0;pointer-events:none;transition:all .25s;z-index:99;max-width:90vw;text-align:center;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (max-width:560px){
+  .qcard{padding:18px 16px}
+  #q-text{font-size:15px}
+  .opt{padding:11px 13px;font-size:14px}
+  .cover-card{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div id="page-cover" class="page active">
+  <div class="cover-card">
+    <div class="cover-emoji">🏅</div>
+    <h1 id="cover-title">Latihan Matematika</h1>
+    <p class="sub" id="cover-sub">Media latihan interaktif</p>
+    <div class="info" id="cover-info"></div>
+    <label for="nama">👤 Nama Siswa</label>
+    <input id="nama" type="text" placeholder="Tulis namamu di sini..." autocomplete="off">
+    <button class="btn primary" id="btn-mulai">Mulai Latihan ➜</button>
+  </div>
+</div>
+
+<!-- ============ PENGATURAN TUTOR ============ -->
+<div id="page-settings" class="page">
+  <div class="card">
+    <h2 class="head-title">⚙️ Pengaturan Tutor</h2>
+    <p class="hint">Atur <b>waktu hitung mundur per soal</b> (detik) untuk setiap bagian. Waktu berhenti otomatis ketika siswa menekan tombol <b>Cek Jawaban</b>. Jika waktu habis, soal terkunci dan masuk hitungan "tidak dijawab".</p>
+    <div class="preset-row" id="preset-row"></div>
+    <div id="set-rows"></div>
+    <div class="settings-actions">
+      <button class="btn ghost" id="btn-set-kembali">◀ Kembali</button>
+      <button class="btn primary" id="btn-simpan">Simpan &amp; Lanjut ➜</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MENU BAGIAN ============ -->
+<div id="page-menu" class="page">
+  <div class="card">
+    <h2 id="halo">Halo! 👋</h2>
+    <p class="hint">Pilih bagian latihan di bawah. Kamu bisa berpindah bagian kapan saja — jawaban yang sudah diperiksa tersimpan.</p>
+    <div class="menu-grid" id="menu-grid"></div>
+    <div class="menu-actions">
+      <button class="btn ghost" id="btn-ubah-waktu">⚙️ Ubah Waktu per Soal</button>
+      <button class="btn danger" id="btn-akhiri">🏁 Akhiri Latihan &amp; Lihat Hasil</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ LATIHAN ============ -->
+<div id="page-practice" class="page">
+  <div class="pr-topbar">
+    <button class="btn small ghost" id="btn-menu">◀ Menu</button>
+    <span class="title" id="pr-title"></span>
+    <span class="prog" id="pr-progress"></span>
+    <span id="timer">--:--</span>
+    <button class="btn small danger" id="btn-akhiri2">🏁 Akhiri</button>
+  </div>
+  <div class="qcard">
+    <div class="qhead">
+      <span class="badge-no" id="q-no">Soal 1</span>
+      <span class="badge-type" id="q-type"></span>
+      <span class="badge-status" id="q-status" style="display:none"></span>
+    </div>
+    <div id="q-text"></div>
+    <div class="qimg" id="q-img" style="display:none"></div>
+    <div id="q-opts"></div>
+    <div id="isian-wrap" style="display:none">
+      <label style="font-size:13px;color:var(--abu);font-weight:600;display:block;margin-bottom:6px">✏️ Tulis jawabanmu:</label>
+      <input id="q-input" type="text" placeholder="contoh: 125" autocomplete="off">
+    </div>
+    <div id="feedback">
+      <div class="verdict" id="verdict"></div>
+      <div class="kunci" id="kunci"></div>
+      <div class="bahas-box" id="bahas"></div>
+    </div>
+  </div>
+  <div class="pr-nav">
+    <button class="btn ghost" id="btn-prev">◀ Sebelumnya</button>
+    <button class="btn primary cek" id="btn-cek">✔ Cek Jawaban</button>
+    <button class="btn" id="btn-next">Berikutnya ▶</button>
+  </div>
+</div>
+
+<!-- ============ HASIL ============ -->
+<div id="page-results" class="page">
+  <div class="card">
+    <div class="res-emoji">📊</div>
+    <h2 class="head-title" style="text-align:center">Hasil Latihan</h2>
+    <p class="hint" style="text-align:center" id="res-name"></p>
+    <div class="res-wrap">
+      <table class="res">
+        <thead>
+          <tr>
+            <th>Bagian</th><th>✔ Benar</th><th>✘ Salah</th><th>— Tidak Dijawab</th>
+            <th>Total Waktu</th><th>Rata-rata / Soal</th><th>Skor</th>
+          </tr>
+        </thead>
+        <tbody id="res-body"></tbody>
+      </table>
+    </div>
+    <div class="res-actions">
+      <button class="btn ghost" id="btn-home">🏠 Kembali ke Menu</button>
+      <button class="btn primary" id="btn-ulang">🔁 Ulangi Latihan</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SOAL = { meta: { title: "Latihan Matematika Kelas 1 SD", subtitle: "4 Materi: Bilangan sampai 10, Penjumlahan, Pengurangan, Bangun Datar" }, sections: [
+  { name: "Bilangan cacah sampai 10", icon: "🔢", questions: [
+    { n: 1, type: "mc", text: 'Lambang bilangan dari "tujuh" adalah ....', img: null, options: ['A. 6', 'B. 7', 'C. 8'], answer: "B", bahas: 'Nama bilangan "tujuh" ditulis dengan lambang 7. Jadi jawabannya B.' },
+    { n: 2, type: "mc", text: 'Ibu membeli buah apel sebanyak sembilan buah. Lambang bilangan sembilan adalah ....', img: null, options: ['A. 6', 'B. 8', 'C. 9'], answer: "C", bahas: 'Nama bilangan "sembilan" ditulis dengan lambang 9. Jadi jawabannya C.' },
+    { n: 3, type: "mc", text: 'Perhatikan gambar buah jeruk di bawah ini!\nBanyak buah jeruk pada gambar di atas adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 68"><rect x="5" y="4" width="310" height="60" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><circle cx="35" cy="36" r="20" fill="#fb923c" stroke="#ea580c" stroke-width="2"/><circle cx="35" cy="17" r="5" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/><circle cx="85" cy="36" r="20" fill="#fb923c" stroke="#ea580c" stroke-width="2"/><circle cx="85" cy="17" r="5" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/><circle cx="135" cy="36" r="20" fill="#fb923c" stroke="#ea580c" stroke-width="2"/><circle cx="135" cy="17" r="5" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/><circle cx="185" cy="36" r="20" fill="#fb923c" stroke="#ea580c" stroke-width="2"/><circle cx="185" cy="17" r="5" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/><circle cx="235" cy="36" r="20" fill="#fb923c" stroke="#ea580c" stroke-width="2"/><circle cx="235" cy="17" r="5" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/><circle cx="285" cy="36" r="20" fill="#fb923c" stroke="#ea580c" stroke-width="2"/><circle cx="285" cy="17" r="5" fill="#4ade80" stroke="#16a34a" stroke-width="1.5"/></svg>', options: ['A. 5', 'B. 6', 'C. 7'], answer: "B", bahas: 'Hitung jeruk satu per satu dari kiri ke kanan: 1, 2, 3, 4, 5, 6. Ada 6 jeruk. Jadi jawabannya B.' },
+    { n: 4, type: "mc", text: 'Hitunglah banyak gambar bintang berikut ini!\nJumlah bintang seluruhnya ada ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 104"><rect x="5" y="4" width="330" height="96" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(45,32)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(130,32)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(215,32)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(300,32)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(45,68)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(130,68)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(215,68)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(300,68)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/></svg>', options: ['A. 7', 'B. 8', 'C. 9'], answer: "B", bahas: 'Baris atas ada 4 bintang dan baris bawah ada 4 bintang. Hitung semuanya: 4 + 4 = 8. Jadi jawabannya B.' },
+    { n: 5, type: "mc", text: 'Perhatikan pasangan lambang bilangan dan nama bilangan berikut:\n(1) 4 dibaca empat\n(2) 6 dibaca tujuh\n(3) 10 dibaca sepuluh\nPasangan yang sesuai ditunjukkan oleh nomor ....', img: null, options: ['A. (1) dan (2)', 'B. (1) dan (3)', 'C. (2) dan (3)'], answer: "B", bahas: 'Angka 4 dibaca empat, itu benar. Angka 6 dibaca enam, bukan tujuh, jadi salah. Angka 10 dibaca sepuluh, itu benar. Pasangan yang sesuai adalah (1) dan (3), jawaban B.' },
+    { n: 6, type: "mc", text: 'Budi menulis lambang bilangan 8 di buku tulisnya. Nama bilangan yang tepat untuk lambang bilangan tersebut adalah ....', img: null, options: ['A. delapan', 'B. sembilan', 'C. tujuh'], answer: "A", bahas: 'Lambang bilangan 8 dibaca delapan. Jadi jawabannya A.' },
+    { n: 7, type: "mc", text: 'Perhatikan tabel pasangan gambar pensil dan lambang bilangan berikut!\nLambang bilangan yang tepat untuk dipasangkan dengan gambar pensil di atas adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 72"><rect x="5" y="4" width="410" height="64" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><line x1="270" y1="4" y2="68" x2="270" stroke="#cbd5e1" stroke-width="1.5"/><polygon points="34,30 46,30 40,12" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="33" y="30" width="14" height="34" fill="#60a5fa" stroke="#2563eb" stroke-width="2" rx="2"/><polygon points="84,30 96,30 90,12" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="83" y="30" width="14" height="34" fill="#60a5fa" stroke="#2563eb" stroke-width="2" rx="2"/><polygon points="134,30 146,30 140,12" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="133" y="30" width="14" height="34" fill="#60a5fa" stroke="#2563eb" stroke-width="2" rx="2"/><polygon points="184,30 196,30 190,12" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="183" y="30" width="14" height="34" fill="#60a5fa" stroke="#2563eb" stroke-width="2" rx="2"/><polygon points="234,30 246,30 240,12" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="233" y="30" width="14" height="34" fill="#60a5fa" stroke="#2563eb" stroke-width="2" rx="2"/><text x="340" y="44" font-size="16" fill="#334155" text-anchor="middle" font-weight="bold">...</text></svg>', options: ['A. 4', 'B. 5', 'C. 6'], answer: "B", bahas: 'Hitung pensil pada gambar: ada 5 batang. Lambang bilangan yang tepat adalah 5. Jadi jawabannya B.' },
+    { n: 8, type: "mc", text: 'Perhatikan kelompok gambar bola berikut untuk dipasangkan dengan lambang bilangan 4!', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 76"><text x="15" y="60" font-size="14" fill="#334155" text-anchor="start" font-weight="bold">a.</text><circle cx="40" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="70" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="100" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><text x="145" y="60" font-size="14" fill="#334155" text-anchor="start" font-weight="bold">b.</text><circle cx="172" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="202" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="232" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="262" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><text x="295" y="60" font-size="14" fill="#334155" text-anchor="start" font-weight="bold">c.</text><circle cx="320" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="350" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="380" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="410" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="440" cy="56" r="13" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/></svg>', options: ['A. kelompok a', 'B. kelompok b', 'C. kelompok c'], answer: "B", bahas: 'Lambang 4 berarti 4 bola. Kelompok a ada 3 bola, kelompok b ada 4 bola, kelompok c ada 5 bola. Yang tepat adalah kelompok b, jawaban B.' },
+    { n: 9, type: "mc", text: 'Perhatikan dua kelompok benda pada kotak A dan kotak B berikut!\nPernyataan perbandingan yang tepat berdasarkan gambar di atas adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 432 100"><rect x="5" y="6" width="205" height="88" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/><text x="107" y="26" font-size="12" fill="#1d4ed8" text-anchor="middle" font-weight="bold">Kotak A (Permen)</text><ellipse cx="42" cy="62" rx="13" ry="9" fill="#c084fc" stroke="#9333ea" stroke-width="2"/><ellipse cx="88" cy="62" rx="13" ry="9" fill="#c084fc" stroke="#9333ea" stroke-width="2"/><ellipse cx="134" cy="62" rx="13" ry="9" fill="#c084fc" stroke="#9333ea" stroke-width="2"/><ellipse cx="180" cy="62" rx="13" ry="9" fill="#c084fc" stroke="#9333ea" stroke-width="2"/><rect x="222" y="6" width="205" height="88" fill="#fdf2f8" stroke="#f9a8d4" stroke-width="2"/><text x="324" y="26" font-size="12" fill="#be185d" text-anchor="middle" font-weight="bold">Kotak B (Permen)</text><ellipse cx="246" cy="62" rx="13" ry="9" fill="#f472b6" stroke="#db2777" stroke-width="2"/><ellipse cx="279" cy="62" rx="13" ry="9" fill="#f472b6" stroke="#db2777" stroke-width="2"/><ellipse cx="312" cy="62" rx="13" ry="9" fill="#f472b6" stroke="#db2777" stroke-width="2"/><ellipse cx="345" cy="62" rx="13" ry="9" fill="#f472b6" stroke="#db2777" stroke-width="2"/><ellipse cx="378" cy="62" rx="13" ry="9" fill="#f472b6" stroke="#db2777" stroke-width="2"/><ellipse cx="411" cy="62" rx="13" ry="9" fill="#f472b6" stroke="#db2777" stroke-width="2"/></svg>', options: ['A. Permen di kotak A lebih banyak dari permen di kotak B', 'B. Permen di kotak A lebih sedikit dari permen di kotak B', 'C. Permen di kotak A sama banyak dengan permen di kotak B'], answer: "B", bahas: 'Kotak A berisi 4 permen, kotak B berisi 6 permen. Karena 4 kurang dari 6, permen di kotak A lebih sedikit. Jawaban B.' },
+    { n: 10, type: "mc", text: 'Perhatikan kelompok gambar buku dan penghapus berikut!\nJumlah buku .... daripada jumlah penghapus.', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458 100"><rect x="5" y="6" width="228" height="88" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/><text x="119" y="26" font-size="11" fill="#15803d" text-anchor="middle" font-weight="bold">Kelompok Buku (7 buah)</text><rect x="18" y="48" width="22" height="34" fill="#34d399" stroke="#059669" stroke-width="2"/><rect x="48" y="48" width="22" height="34" fill="#34d399" stroke="#059669" stroke-width="2"/><rect x="78" y="48" width="22" height="34" fill="#34d399" stroke="#059669" stroke-width="2"/><rect x="108" y="48" width="22" height="34" fill="#34d399" stroke="#059669" stroke-width="2"/><rect x="138" y="48" width="22" height="34" fill="#34d399" stroke="#059669" stroke-width="2"/><rect x="168" y="48" width="22" height="34" fill="#34d399" stroke="#059669" stroke-width="2"/><rect x="198" y="48" width="22" height="34" fill="#34d399" stroke="#059669" stroke-width="2"/><rect x="241" y="6" width="212" height="88" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><text x="347" y="26" font-size="11" fill="#475569" text-anchor="middle" font-weight="bold">Kelompok Penghapus (5 buah)</text><rect x="252" y="62" width="30" height="20" fill="#94a3b8" stroke="#64748b" stroke-width="2"/><rect x="290" y="62" width="30" height="20" fill="#94a3b8" stroke="#64748b" stroke-width="2"/><rect x="328" y="62" width="30" height="20" fill="#94a3b8" stroke="#64748b" stroke-width="2"/><rect x="366" y="62" width="30" height="20" fill="#94a3b8" stroke="#64748b" stroke-width="2"/><rect x="404" y="62" width="30" height="20" fill="#94a3b8" stroke="#64748b" stroke-width="2"/></svg>', options: ['A. lebih banyak', 'B. lebih sedikit', 'C. sama banyak'], answer: "A", bahas: 'Buku ada 7 buah dan penghapus ada 5 buah. Karena 7 lebih besar dari 5, jumlah buku lebih banyak. Jawaban A.' },
+    { n: 11, type: "mc", text: 'Perhatikan urutan bilangan maju berikut ini!\n3 , 4 , 5 , ... , 7 , 8\nBilangan yang tepat untuk mengisi titik-titik di atas adalah ....', img: null, options: ['A. 2', 'B. 6', 'C. 9'], answer: "B", bahas: 'Menghitung maju berarti bertambah 1 setiap langkah: 3, 4, 5, lalu 6, kemudian 7 dan 8. Bilangan yang hilang adalah 6. Jawaban B.' },
+    { n: 12, type: "mc", text: 'Urutan bilangan berikut yang disusun dengan cara menghitung maju dari yang terkecil adalah ....', img: null, options: ['A. 5, 4, 3, 2, 1', 'B. 2, 4, 3, 5, 6', 'C. 4, 5, 6, 7, 8'], answer: "C", bahas: 'Menghitung maju berarti mengurutkan dari kecil ke besar dengan bertambah 1. Hanya 4, 5, 6, 7, 8 yang naik terus. Jawaban C.' },
+    { n: 13, type: "mc", text: 'Perhatikan diagram pasangan bilangan berikut ini!\nBilangan yang tepat untuk menggantikan tanda tanya (?) agar membentuk jumlah 7 adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 105"><line x1="100" y1="32" y2="80" x2="58" stroke="#3b82f6" stroke-width="2"/><line x1="100" y1="32" y2="80" x2="142" stroke="#3b82f6" stroke-width="2"/><circle cx="100" cy="32" r="20" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/><text x="100" y="37" font-size="15" fill="#1e3a8a" text-anchor="middle" font-weight="bold">7</text><circle cx="58" cy="80" r="17" fill="#bfdbfe" stroke="#60a5fa" stroke-width="2"/><text x="58" y="85" font-size="14" fill="#1e3a8a" text-anchor="middle" font-weight="bold">4</text><circle cx="142" cy="80" r="17" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><text x="142" y="85" font-size="14" fill="#92400e" text-anchor="middle" font-weight="bold">?</text></svg>', options: ['A. 2', 'B. 3', 'C. 4'], answer: "B", bahas: 'Kedua bilangan di bawah harus berpasangan membentuk jumlah 7. Karena 4 + 3 = 7, tanda tanya diganti 3. Jawaban B.' },
+    { n: 14, type: "mc", text: 'Pasangan bilangan berikut yang jumlahnya membentuk bilangan 9 adalah ....', img: null, options: ['A. 5 dan 3', 'B. 5 dan 4', 'C. 6 dan 2'], answer: "B", bahas: 'Coba hitung: 5 + 3 = 8, 5 + 4 = 9, 6 + 2 = 8. Yang jumlahnya 9 adalah 5 dan 4. Jawaban B.' },
+    { n: 15, type: "mc", text: 'Siti memiliki 10 kelereng. Kelereng tersebut dimasukkan ke dalam dua kantong. Jika kantong pertama berisi 6 kelereng, maka isi kantong kedua adalah ....', img: null, options: ['A. 3 kelereng', 'B. 4 kelereng', 'C. 5 kelereng'], answer: "B", bahas: 'Kelereng seluruhnya 10 dan kantong pertama berisi 6. 10 - 6 = 4, jadi kantong kedua berisi 4 kelereng. Jawaban B.' },
+    { n: 16, type: "isian", text: 'Tulislah lambang bilangan dari nama bilangan "sepuluh"!', img: null, answer: "10", bahas: 'Nama bilangan "sepuluh" ditulis dengan lambang 10. Jadi jawabannya 10.' },
+    { n: 17, type: "isian", text: 'Hitunglah banyak gambar segitiga di bawah ini!\nBanyak segitiga ada .... buah.', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 72"><rect x="5" y="4" width="410" height="64" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><polygon points="10,56 54,56 32,14" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/><polygon points="53,56 97,56 75,14" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/><polygon points="96,56 140,56 118,14" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/><polygon points="139,56 183,56 161,14" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/><polygon points="182,56 226,56 204,14" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/><polygon points="225,56 269,56 247,14" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/><polygon points="268,56 312,56 290,14" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/><polygon points="311,56 355,56 333,14" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/><polygon points="354,56 398,56 376,14" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/></svg>', answer: "9", bahas: 'Hitung segitiga satu per satu dari kiri ke kanan. Seluruhnya ada 9 segitiga.' },
+    { n: 18, type: "isian", text: 'Perhatikan gambar bunga mawar dan bunga matahari di bawah ini!\nBunga yang jumlahnya lebih sedikit adalah bunga ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 452 100"><rect x="5" y="6" width="215" height="88" fill="#fdf2f8" stroke="#f9a8d4" stroke-width="2"/><text x="112" y="26" font-size="12" fill="#be185d" text-anchor="middle" font-weight="bold">Bunga Mawar</text><line x1="62" y1="88" y2="52" x2="62" stroke="#16a34a" stroke-width="2"/><circle cx="62" cy="44" r="12" fill="#ec4899" stroke="#be185d" stroke-width="2"/><line x1="112" y1="88" y2="52" x2="112" stroke="#16a34a" stroke-width="2"/><circle cx="112" cy="44" r="12" fill="#ec4899" stroke="#be185d" stroke-width="2"/><line x1="162" y1="88" y2="52" x2="162" stroke="#16a34a" stroke-width="2"/><circle cx="162" cy="44" r="12" fill="#ec4899" stroke="#be185d" stroke-width="2"/><rect x="232" y="6" width="215" height="88" fill="#fefce8" stroke="#fde047" stroke-width="2"/><text x="339" y="26" font-size="12" fill="#a16207" text-anchor="middle" font-weight="bold">Bunga Matahari</text><line x1="257" y1="88" y2="52" x2="257" stroke="#16a34a" stroke-width="2"/><circle cx="257" cy="44" r="12" fill="#fbbf24" stroke="#d97706" stroke-width="2"/><circle cx="257" cy="44" r="4.5" fill="#92400e" stroke="#92400e" stroke-width="1"/><line x1="291" y1="88" y2="52" x2="291" stroke="#16a34a" stroke-width="2"/><circle cx="291" cy="44" r="12" fill="#fbbf24" stroke="#d97706" stroke-width="2"/><circle cx="291" cy="44" r="4.5" fill="#92400e" stroke="#92400e" stroke-width="1"/><line x1="325" y1="88" y2="52" x2="325" stroke="#16a34a" stroke-width="2"/><circle cx="325" cy="44" r="12" fill="#fbbf24" stroke="#d97706" stroke-width="2"/><circle cx="325" cy="44" r="4.5" fill="#92400e" stroke="#92400e" stroke-width="1"/><line x1="359" y1="88" y2="52" x2="359" stroke="#16a34a" stroke-width="2"/><circle cx="359" cy="44" r="12" fill="#fbbf24" stroke="#d97706" stroke-width="2"/><circle cx="359" cy="44" r="4.5" fill="#92400e" stroke="#92400e" stroke-width="1"/><line x1="393" y1="88" y2="52" x2="393" stroke="#16a34a" stroke-width="2"/><circle cx="393" cy="44" r="12" fill="#fbbf24" stroke="#d97706" stroke-width="2"/><circle cx="393" cy="44" r="4.5" fill="#92400e" stroke="#92400e" stroke-width="1"/></svg>', answer: "mawar", bahas: 'Bunga mawar ada 3 tangkai dan bunga matahari ada 5 tangkai. Karena 3 kurang dari 5, bunga yang lebih sedikit adalah mawar.' },
+    { n: 19, type: "isian", text: 'Lengkapilah urutan bilangan maju berikut ini!\n6 , 7 , ... , ... , 10\nBilangan yang hilang adalah ... dan ....', img: null, answer: "8 dan 9", bahas: 'Menghitung maju setelah 7 adalah 8, lalu 9, kemudian 10. Bilangan yang hilang adalah 8 dan 9.' },
+    { n: 20, type: "isian", text: 'Perhatikan pasangan bilangan yang membentuk jumlah 8 berikut!\nPasangan dari bilangan 5 untuk membentuk jumlah 8 adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 105"><line x1="100" y1="32" y2="80" x2="58" stroke="#3b82f6" stroke-width="2"/><line x1="100" y1="32" y2="80" x2="142" stroke="#3b82f6" stroke-width="2"/><circle cx="100" cy="32" r="20" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/><text x="100" y="37" font-size="15" fill="#1e3a8a" text-anchor="middle" font-weight="bold">8</text><circle cx="58" cy="80" r="17" fill="#bfdbfe" stroke="#60a5fa" stroke-width="2"/><text x="58" y="85" font-size="14" fill="#1e3a8a" text-anchor="middle" font-weight="bold">5</text><circle cx="142" cy="80" r="17" fill="#fde68a" stroke="#f59e0b" stroke-width="2"/><text x="142" y="85" font-size="13" fill="#92400e" text-anchor="middle" font-weight="bold">...</text></svg>', answer: "3", bahas: 'Kedua bilangan harus berpasangan membentuk jumlah 8. Karena 5 + 3 = 8, pasangan bilangan 5 adalah 3.' }
+  ]},
+  { name: "Penjumlahan", icon: "➕", questions: [
+    { n: 1, type: "mc", text: 'Perhatikan gambar buah apel berikut ini!\nKalimat penjumlahan yang sesuai dengan gambar di atas adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 396 78"><rect x="5" y="8" width="168" height="64" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/><circle cx="45" cy="42" r="17" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="45" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/><circle cx="90" cy="42" r="17" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="90" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/><circle cx="135" cy="42" r="17" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="135" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/><text x="196" y="52" font-size="26" fill="#16a34a" text-anchor="middle" font-weight="bold">+</text><rect x="222" y="8" width="168" height="64" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/><circle cx="283" cy="42" r="17" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="283" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/><circle cx="329" cy="42" r="17" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="329" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/></svg>', options: ['A. 3 + 2 = 5', 'B. 3 + 3 = 6', 'C. 2 + 2 = 4'], answer: "A", bahas: 'Kotak kiri ada 3 apel dan kotak kanan ada 2 apel. Digabungkan menjadi 3 + 2 = 5. Jawaban A.' },
+    { n: 2, type: "mc", text: 'Perhatikan gambar kumpulan bintang berikut!\nKalimat penjumlahan yang tepat sesuai gambar adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 76"><rect x="5" y="12" width="180" height="56" fill="#fefce8" stroke="#fde047" stroke-width="2"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(40,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(79,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(118,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(157,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><text x="206" y="52" font-size="26" fill="#16a34a" text-anchor="middle" font-weight="bold">+</text><rect x="222" y="12" width="180" height="56" fill="#fefce8" stroke="#fde047" stroke-width="2"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(257,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(296,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(335,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(374,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/></svg>', options: ['A. 4 + 3 = 7', 'B. 4 + 4 = 8', 'C. 4 + 5 = 9'], answer: "B", bahas: 'Kelompok kiri ada 4 bintang dan kelompok kanan ada 4 bintang. Jumlah seluruhnya 4 + 4 = 8. Jawaban B.' },
+    { n: 3, type: "mc", text: 'Perhatikan lompatan katak pada garis bilangan di bawah ini!\nKatak berada di angka 4, lalu melompat maju 3 langkah. Katak sekarang berada di angka ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96"><line x1="25" y1="70" y2="70" x2="395" stroke="#334155" stroke-width="2"/><line x1="25" y1="64" y2="76" x2="25" stroke="#334155" stroke-width="1.5"/><text x="25" y="88" font-size="11" fill="#475569" text-anchor="middle">0</text><line x1="62" y1="64" y2="76" x2="62" stroke="#334155" stroke-width="1.5"/><text x="62" y="88" font-size="11" fill="#475569" text-anchor="middle">1</text><line x1="99" y1="64" y2="76" x2="99" stroke="#334155" stroke-width="1.5"/><text x="99" y="88" font-size="11" fill="#475569" text-anchor="middle">2</text><line x1="136" y1="64" y2="76" x2="136" stroke="#334155" stroke-width="1.5"/><text x="136" y="88" font-size="11" fill="#475569" text-anchor="middle">3</text><line x1="173" y1="64" y2="76" x2="173" stroke="#334155" stroke-width="1.5"/><text x="173" y="88" font-size="11" fill="#475569" text-anchor="middle">4</text><line x1="210" y1="64" y2="76" x2="210" stroke="#334155" stroke-width="1.5"/><text x="210" y="88" font-size="11" fill="#475569" text-anchor="middle">5</text><line x1="247" y1="64" y2="76" x2="247" stroke="#334155" stroke-width="1.5"/><text x="247" y="88" font-size="11" fill="#475569" text-anchor="middle">6</text><line x1="284" y1="64" y2="76" x2="284" stroke="#334155" stroke-width="1.5"/><text x="284" y="88" font-size="11" fill="#475569" text-anchor="middle">7</text><line x1="321" y1="64" y2="76" x2="321" stroke="#334155" stroke-width="1.5"/><text x="321" y="88" font-size="11" fill="#475569" text-anchor="middle">8</text><line x1="358" y1="64" y2="76" x2="358" stroke="#334155" stroke-width="1.5"/><text x="358" y="88" font-size="11" fill="#475569" text-anchor="middle">9</text><line x1="395" y1="64" y2="76" x2="395" stroke="#334155" stroke-width="1.5"/><text x="395" y="88" font-size="11" fill="#475569" text-anchor="middle">10</text><path d="M25,70 Q99.0,37.68 173,70" fill="none" stroke="#059669" stroke-width="2.5"/><path d="M173,70 Q228.5,31.76 284,70" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-dasharray="6,5"/><circle cx="25" cy="70" r="3.5" fill="#059669" stroke="#047857" stroke-width="2"/><circle cx="173" cy="70" r="4" fill="#ea580c" stroke="#c2410c" stroke-width="2"/><circle cx="284" cy="70" r="4" fill="#ea580c" stroke="#c2410c" stroke-width="2"/></svg>', options: ['A. 6', 'B. 7', 'C. 8'], answer: "B", bahas: 'Katak mulai dari angka 4, lalu melompat maju 3 langkah: 5, 6, 7. Katak berhenti di angka 7. Jawaban B.' },
+    { n: 4, type: "mc", text: 'Perhatikan garis bilangan berikut!\nHasil penjumlahan 5 + 4 berdasarkan garis bilangan di atas adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96"><line x1="25" y1="70" y2="70" x2="395" stroke="#334155" stroke-width="2"/><line x1="25" y1="64" y2="76" x2="25" stroke="#334155" stroke-width="1.5"/><text x="25" y="88" font-size="11" fill="#475569" text-anchor="middle">0</text><line x1="62" y1="64" y2="76" x2="62" stroke="#334155" stroke-width="1.5"/><text x="62" y="88" font-size="11" fill="#475569" text-anchor="middle">1</text><line x1="99" y1="64" y2="76" x2="99" stroke="#334155" stroke-width="1.5"/><text x="99" y="88" font-size="11" fill="#475569" text-anchor="middle">2</text><line x1="136" y1="64" y2="76" x2="136" stroke="#334155" stroke-width="1.5"/><text x="136" y="88" font-size="11" fill="#475569" text-anchor="middle">3</text><line x1="173" y1="64" y2="76" x2="173" stroke="#334155" stroke-width="1.5"/><text x="173" y="88" font-size="11" fill="#475569" text-anchor="middle">4</text><line x1="210" y1="64" y2="76" x2="210" stroke="#334155" stroke-width="1.5"/><text x="210" y="88" font-size="11" fill="#475569" text-anchor="middle">5</text><line x1="247" y1="64" y2="76" x2="247" stroke="#334155" stroke-width="1.5"/><text x="247" y="88" font-size="11" fill="#475569" text-anchor="middle">6</text><line x1="284" y1="64" y2="76" x2="284" stroke="#334155" stroke-width="1.5"/><text x="284" y="88" font-size="11" fill="#475569" text-anchor="middle">7</text><line x1="321" y1="64" y2="76" x2="321" stroke="#334155" stroke-width="1.5"/><text x="321" y="88" font-size="11" fill="#475569" text-anchor="middle">8</text><line x1="358" y1="64" y2="76" x2="358" stroke="#334155" stroke-width="1.5"/><text x="358" y="88" font-size="11" fill="#475569" text-anchor="middle">9</text><line x1="395" y1="64" y2="76" x2="395" stroke="#334155" stroke-width="1.5"/><text x="395" y="88" font-size="11" fill="#475569" text-anchor="middle">10</text><path d="M25,70 Q117.5,43.6 210,70" fill="none" stroke="#059669" stroke-width="2.5"/><path d="M210,70 Q284.0,37.68 358,70" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-dasharray="6,5"/><circle cx="210" cy="70" r="4" fill="#059669" stroke="#047857" stroke-width="2"/><circle cx="358" cy="70" r="4" fill="#2563eb" stroke="#1d4ed8" stroke-width="2"/></svg>', options: ['A. 8', 'B. 9', 'C. 10'], answer: "B", bahas: 'Dari angka 5 melompat maju 4 langkah: 6, 7, 8, 9. Berhenti di angka 9, jadi 5 + 4 = 9. Jawaban B.' },
+    { n: 5, type: "mc", text: 'Hasil dari penjumlahan 6 + 4 adalah ....', img: null, options: ['A. 8', 'B. 9', 'C. 10'], answer: "C", bahas: 'Hitung maju 4 langkah setelah 6: 7, 8, 9, 10. Jadi 6 + 4 = 10. Jawaban C.' },
+    { n: 6, type: "mc", text: 'Hasil dari penjumlahan 7 + 2 adalah ....', img: null, options: ['A. 8', 'B. 9', 'C. 10'], answer: "B", bahas: 'Hitung maju 2 langkah setelah 7: 8, 9. Jadi 7 + 2 = 9. Jawaban B.' },
+    { n: 7, type: "mc", text: 'Operasi penjumlahan di bawah ini yang memiliki hasil terbesar adalah ....', img: null, options: ['A. 4 + 3', 'B. 5 + 4', 'C. 6 + 2'], answer: "B", bahas: 'Hitung semuanya: 4 + 3 = 7, 5 + 4 = 9, 6 + 2 = 8. Hasil terbesar adalah 9, yaitu 5 + 4. Jawaban B.' },
+    { n: 8, type: "mc", text: 'Perhatikan tiga penjumlahan berikut:\n(1) 3 + 5\n(2) 7 + 3\n(3) 4 + 2\nPenjumlahan yang hasilnya paling besar ditunjukkan oleh nomor ....', img: null, options: ['A. (1)', 'B. (2)', 'C. (3)'], answer: "B", bahas: 'Hitung: 3 + 5 = 8, 7 + 3 = 10, 4 + 2 = 6. Hasil paling besar adalah 10 pada nomor (2). Jawaban B.' },
+    { n: 9, type: "mc", text: 'Bentuk penjumlahan yang memiliki hasil sama dengan 5 + 3 adalah ....', img: null, options: ['A. 4 + 4', 'B. 4 + 3', 'C. 6 + 3'], answer: "A", bahas: '5 + 3 = 8. Coba hitung pilihan jawaban: 4 + 4 = 8, 4 + 3 = 7, 6 + 3 = 9. Yang sama-sama 8 adalah 4 + 4. Jawaban A.' },
+    { n: 10, type: "mc", text: 'Penjumlahan 6 + 1 hasilnya sama dengan penjumlahan ....', img: null, options: ['A. 3 + 3', 'B. 4 + 2', 'C. 5 + 2'], answer: "C", bahas: '6 + 1 = 7. Penjumlahan yang hasilnya juga 7 adalah 5 + 2. Jawaban C.' },
+    { n: 11, type: "mc", text: 'Perhatikan gambar kelompok kelereng di bawah ini!\nBentuk penjumlahan yang tepat untuk gambar kelereng di atas adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 404 78"><rect x="5" y="10" width="205" height="60" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/><circle cx="35" cy="40" r="14" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><circle cx="72" cy="40" r="14" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><circle cx="109" cy="40" r="14" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><circle cx="146" cy="40" r="14" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><circle cx="183" cy="40" r="14" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><text x="216" y="50" font-size="22" fill="#16a34a" text-anchor="middle" font-weight="bold">+</text><rect x="236" y="10" width="160" height="60" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/><circle cx="271" cy="40" r="15" fill="#4ade80" stroke="#16a34a" stroke-width="2"/><circle cx="316" cy="40" r="15" fill="#4ade80" stroke="#16a34a" stroke-width="2"/><circle cx="361" cy="40" r="15" fill="#4ade80" stroke="#16a34a" stroke-width="2"/></svg>', options: ['A. 5 + 2', 'B. 5 + 3', 'C. 4 + 3'], answer: "B", bahas: 'Kelereng biru di kotak kiri ada 5 dan kelereng hijau di kotak kanan ada 3. Penjumlahannya 5 + 3. Jawaban B.' },
+    { n: 12, type: "mc", text: 'Perhatikan gambar pensil di kotak kiri dan kotak kanan berikut!\nBentuk penjumlahan berdasarkan gambar pensil tersebut adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458 80"><rect x="5" y="8" width="110" height="66" fill="#fff7ed" stroke="#fdba74" stroke-width="2"/><polygon points="36,32 48,32 42,14" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="35" y="32" width="14" height="32" fill="#fb923c" stroke="#ea580c" stroke-width="2" rx="2"/><polygon points="72,32 84,32 78,14" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="71" y="32" width="14" height="32" fill="#fb923c" stroke="#ea580c" stroke-width="2" rx="2"/><text x="133" y="50" font-size="22" fill="#16a34a" text-anchor="middle" font-weight="bold">+</text><rect x="152" y="8" width="296" height="66" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="2"/><polygon points="174,32 186,32 180,14" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="173" y="32" width="14" height="32" fill="#a78bfa" stroke="#7c3aed" stroke-width="2" rx="2"/><polygon points="214,32 226,32 220,14" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="213" y="32" width="14" height="32" fill="#a78bfa" stroke="#7c3aed" stroke-width="2" rx="2"/><polygon points="254,32 266,32 260,14" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="253" y="32" width="14" height="32" fill="#a78bfa" stroke="#7c3aed" stroke-width="2" rx="2"/><polygon points="294,32 306,32 300,14" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="293" y="32" width="14" height="32" fill="#a78bfa" stroke="#7c3aed" stroke-width="2" rx="2"/><polygon points="334,32 346,32 340,14" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="333" y="32" width="14" height="32" fill="#a78bfa" stroke="#7c3aed" stroke-width="2" rx="2"/><polygon points="374,32 386,32 380,14" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/><rect x="373" y="32" width="14" height="32" fill="#a78bfa" stroke="#7c3aed" stroke-width="2" rx="2"/></svg>', options: ['A. 2 + 5', 'B. 2 + 6', 'C. 3 + 6'], answer: "B", bahas: 'Kotak kiri ada 2 pensil dan kotak kanan ada 6 pensil. Penjumlahannya 2 + 6. Jawaban B.' },
+    { n: 13, type: "mc", text: 'Rani memiliki 4 pita rambut. Ibu membelikan lagi 3 pita rambut untuk Rani. Banyak pita rambut Rani sekarang adalah ....', img: null, options: ['A. 6 pita', 'B. 7 pita', 'C. 8 pita'], answer: "B", bahas: 'Pita awal 4 buah, ditambah 3 buah lagi: 4 + 3 = 7. Pita Rani sekarang ada 7. Jawaban B.' },
+    { n: 14, type: "mc", text: 'Di dalam keranjang ada 5 buah jeruk. Ayah memasukkan lagi 4 buah jeruk ke dalam keranjang itu. Jumlah buah jeruk di dalam keranjang sekarang adalah ....', img: null, options: ['A. 8 buah', 'B. 9 buah', 'C. 10 buah'], answer: "B", bahas: 'Jeruk mula-mula 5 buah, ditambah 4 buah lagi: 5 + 4 = 9. Jawaban B.' },
+    { n: 15, type: "mc", text: 'Edo memetik 6 buah mangga. Beni juga memetik 4 buah mangga. Jika digabungkan, banyak mangga mereka berdua adalah ....', img: null, options: ['A. 8 mangga', 'B. 9 mangga', 'C. 10 mangga'], answer: "C", bahas: 'Mangga Edo 6 buah digabung dengan mangga Beni 4 buah: 6 + 4 = 10. Jawaban C.' },
+    { n: 16, type: "isian", text: 'Perhatikan gambar kue donat berikut dan tulislah kalimat penjumlahannya!\nKalimat penjumlahannya adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 428 80"><rect x="5" y="10" width="150" height="64" fill="#fff7ed" stroke="#fdba74" stroke-width="2"/><circle cx="38" cy="42" r="15" fill="#f59e0b" stroke="#b45309" stroke-width="2"/><circle cx="38" cy="42" r="6" fill="#fff7ed" stroke="#fcd34d" stroke-width="1.5"/><circle cx="78" cy="42" r="15" fill="#f59e0b" stroke="#b45309" stroke-width="2"/><circle cx="78" cy="42" r="6" fill="#fff7ed" stroke="#fcd34d" stroke-width="1.5"/><circle cx="118" cy="42" r="15" fill="#f59e0b" stroke="#b45309" stroke-width="2"/><circle cx="118" cy="42" r="6" fill="#fff7ed" stroke="#fcd34d" stroke-width="1.5"/><text x="172" y="52" font-size="22" fill="#16a34a" text-anchor="middle" font-weight="bold">+</text><rect x="194" y="10" width="225" height="64" fill="#fff7ed" stroke="#fdba74" stroke-width="2"/><circle cx="232" cy="42" r="15" fill="#f59e0b" stroke="#b45309" stroke-width="2"/><circle cx="232" cy="42" r="6" fill="#fff7ed" stroke="#fcd34d" stroke-width="1.5"/><circle cx="272" cy="42" r="15" fill="#f59e0b" stroke="#b45309" stroke-width="2"/><circle cx="272" cy="42" r="6" fill="#fff7ed" stroke="#fcd34d" stroke-width="1.5"/><circle cx="312" cy="42" r="15" fill="#f59e0b" stroke="#b45309" stroke-width="2"/><circle cx="312" cy="42" r="6" fill="#fff7ed" stroke="#fcd34d" stroke-width="1.5"/><circle cx="352" cy="42" r="15" fill="#f59e0b" stroke="#b45309" stroke-width="2"/><circle cx="352" cy="42" r="6" fill="#fff7ed" stroke="#fcd34d" stroke-width="1.5"/></svg>', answer: "3 + 4 = 7", bahas: 'Kotak kiri ada 3 donat dan kotak kanan ada 4 donat. Digabung menjadi 3 + 4 = 7.' },
+    { n: 17, type: "isian", text: 'Perhatikan garis bilangan di bawah ini!\nDari angka 6 melompat maju 2 langkah, hasilnya adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96"><line x1="25" y1="70" y2="70" x2="395" stroke="#334155" stroke-width="2"/><line x1="25" y1="64" y2="76" x2="25" stroke="#334155" stroke-width="1.5"/><text x="25" y="88" font-size="11" fill="#475569" text-anchor="middle">0</text><line x1="62" y1="64" y2="76" x2="62" stroke="#334155" stroke-width="1.5"/><text x="62" y="88" font-size="11" fill="#475569" text-anchor="middle">1</text><line x1="99" y1="64" y2="76" x2="99" stroke="#334155" stroke-width="1.5"/><text x="99" y="88" font-size="11" fill="#475569" text-anchor="middle">2</text><line x1="136" y1="64" y2="76" x2="136" stroke="#334155" stroke-width="1.5"/><text x="136" y="88" font-size="11" fill="#475569" text-anchor="middle">3</text><line x1="173" y1="64" y2="76" x2="173" stroke="#334155" stroke-width="1.5"/><text x="173" y="88" font-size="11" fill="#475569" text-anchor="middle">4</text><line x1="210" y1="64" y2="76" x2="210" stroke="#334155" stroke-width="1.5"/><text x="210" y="88" font-size="11" fill="#475569" text-anchor="middle">5</text><line x1="247" y1="64" y2="76" x2="247" stroke="#334155" stroke-width="1.5"/><text x="247" y="88" font-size="11" fill="#475569" text-anchor="middle">6</text><line x1="284" y1="64" y2="76" x2="284" stroke="#334155" stroke-width="1.5"/><text x="284" y="88" font-size="11" fill="#475569" text-anchor="middle">7</text><line x1="321" y1="64" y2="76" x2="321" stroke="#334155" stroke-width="1.5"/><text x="321" y="88" font-size="11" fill="#475569" text-anchor="middle">8</text><line x1="358" y1="64" y2="76" x2="358" stroke="#334155" stroke-width="1.5"/><text x="358" y="88" font-size="11" fill="#475569" text-anchor="middle">9</text><line x1="395" y1="64" y2="76" x2="395" stroke="#334155" stroke-width="1.5"/><text x="395" y="88" font-size="11" fill="#475569" text-anchor="middle">10</text><path d="M25,70 Q136.0,49.52 247,70" fill="none" stroke="#059669" stroke-width="2.5"/><path d="M247,70 Q284.0,25.84 321,70" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6,5"/><circle cx="247" cy="70" r="4" fill="#059669" stroke="#047857" stroke-width="2"/><circle cx="321" cy="70" r="4" fill="#dc2626" stroke="#b91c1c" stroke-width="2"/></svg>', answer: "8", bahas: 'Dari angka 6 melompat maju 2 langkah: 7, 8. Berhenti di angka 8, jadi 6 + 2 = 8.' },
+    { n: 18, type: "isian", text: 'Hitunglah hasil penjumlahan berikut:\n4 + 5 = ...\nHasilnya adalah ....', img: null, answer: "9", bahas: 'Dari 4 hitung maju 5 langkah: 5, 6, 7, 8, 9. Jadi 4 + 5 = 9.' },
+    { n: 19, type: "isian", text: 'Lengkapilah bilangan yang kosong agar kedua penjumlahan memiliki hasil yang sama!\n3 + 6 = 5 + ...\nBilangan yang tepat adalah ....', img: null, answer: "4", bahas: '3 + 6 = 9. Agar 5 + ... juga sama dengan 9, bilangan yang tepat adalah 4, karena 5 + 4 = 9.' },
+    { n: 20, type: "isian", text: 'Di kolam ada 5 ekor ikan mas. Paman memasukkan lagi 3 ekor ikan mas ke dalam kolam. Berapa jumlah ikan mas di dalam kolam sekarang?\nJumlah ikan mas sekarang ada .... ekor.', img: null, answer: "8", bahas: 'Ikan mula-mula 5 ekor, ditambah 3 ekor lagi: 5 + 3 = 8. Jumlah ikan sekarang 8 ekor.' }
+  ]},
+  { name: "Pengurangan", icon: "➖", questions: [
+    { n: 1, type: "mc", text: 'Perhatikan gambar buah apel yang dicoret di bawah ini!\nKalimat pengurangan yang sesuai dengan gambar di atas adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 80"><rect x="5" y="8" width="400" height="66" fill="#fefce8" stroke="#fde047" stroke-width="2"/><circle cx="35" cy="42" r="17" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="35" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/><circle cx="90" cy="42" r="17" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="90" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/><circle cx="145" cy="42" r="17" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="145" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/><circle cx="200" cy="42" r="17" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="200" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/><circle cx="255" cy="42" r="17" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><circle cx="255" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/><circle cx="310" cy="42" r="17" fill="#fecaca" stroke="#f87171" stroke-width="2"/><circle cx="310" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/><line x1="297" y1="30" y2="54" x2="323" stroke="#1f2937" stroke-width="3"/><line x1="323" y1="30" y2="54" x2="297" stroke="#1f2937" stroke-width="3"/><circle cx="365" cy="42" r="17" fill="#fecaca" stroke="#f87171" stroke-width="2"/><circle cx="365" cy="26" r="4.5" fill="#22c55e" stroke="#16a34a" stroke-width="1"/><line x1="352" y1="30" y2="54" x2="378" stroke="#1f2937" stroke-width="3"/><line x1="378" y1="30" y2="54" x2="352" stroke="#1f2937" stroke-width="3"/></svg>', options: ['A. 7 − 2 = 5', 'B. 7 − 5 = 2', 'C. 5 − 2 = 3'], answer: "A", bahas: 'Mula-mula ada 7 apel, lalu 2 apel dicoret. 7 − 2 = 5, tersisa 5 apel. Jawaban A.' },
+    { n: 2, type: "mc", text: 'Perhatikan gambar balon di bawah ini! (Balon yang dicoret artinya meletus)\nKalimat pengurangan yang sesuai dengan gambar balon di atas adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 438 84"><rect x="5" y="6" width="428" height="72" fill="#fefce8" stroke="#fde047" stroke-width="2"/><ellipse cx="30" cy="32" rx="12" ry="15" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><line x1="30" y1="47" y2="64" x2="30" stroke="#94a3b8" stroke-width="1.5"/><ellipse cx="85" cy="32" rx="12" ry="15" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><line x1="85" y1="47" y2="64" x2="85" stroke="#94a3b8" stroke-width="1.5"/><ellipse cx="140" cy="32" rx="12" ry="15" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><line x1="140" y1="47" y2="64" x2="140" stroke="#94a3b8" stroke-width="1.5"/><ellipse cx="195" cy="32" rx="12" ry="15" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><line x1="195" y1="47" y2="64" x2="195" stroke="#94a3b8" stroke-width="1.5"/><ellipse cx="250" cy="32" rx="12" ry="15" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><line x1="250" y1="47" y2="64" x2="250" stroke="#94a3b8" stroke-width="1.5"/><ellipse cx="305" cy="32" rx="12" ry="15" fill="#bae6fd" stroke="#7dd3fc" stroke-width="2"/><line x1="305" y1="47" y2="64" x2="305" stroke="#94a3b8" stroke-width="1.5"/><line x1="294" y1="22" y2="44" x2="316" stroke="#1f2937" stroke-width="3"/><line x1="316" y1="22" y2="44" x2="294" stroke="#1f2937" stroke-width="3"/><ellipse cx="360" cy="32" rx="12" ry="15" fill="#bae6fd" stroke="#7dd3fc" stroke-width="2"/><line x1="360" y1="47" y2="64" x2="360" stroke="#94a3b8" stroke-width="1.5"/><line x1="349" y1="22" y2="44" x2="371" stroke="#1f2937" stroke-width="3"/><line x1="371" y1="22" y2="44" x2="349" stroke="#1f2937" stroke-width="3"/><ellipse cx="415" cy="32" rx="12" ry="15" fill="#bae6fd" stroke="#7dd3fc" stroke-width="2"/><line x1="415" y1="47" y2="64" x2="415" stroke="#94a3b8" stroke-width="1.5"/><line x1="404" y1="22" y2="44" x2="426" stroke="#1f2937" stroke-width="3"/><line x1="426" y1="22" y2="44" x2="404" stroke="#1f2937" stroke-width="3"/></svg>', options: ['A. 8 − 5 = 3', 'B. 8 − 3 = 5', 'C. 9 − 3 = 6'], answer: "B", bahas: 'Mula-mula ada 8 balon, lalu 3 balon meletus (dicoret). 8 − 3 = 5, tersisa 5 balon. Jawaban B.' },
+    { n: 3, type: "mc", text: 'Hasil dari pengurangan 9 − 4 adalah ....', img: null, options: ['A. 4', 'B. 5', 'C. 6'], answer: "B", bahas: 'Hitung mundur 4 langkah dari 9: 8, 7, 6, 5. Jadi 9 − 4 = 5. Jawaban B.' },
+    { n: 4, type: "mc", text: 'Hasil dari pengurangan 10 − 6 adalah ....', img: null, options: ['A. 3', 'B. 4', 'C. 5'], answer: "B", bahas: '10 dikurangi 6 sisanya 4, karena 6 + 4 = 10. Jawaban B.' },
+    { n: 5, type: "mc", text: 'Operasi pengurangan di bawah ini yang menghasilkan bilangan 4 adalah ....', img: null, options: ['A. 8 − 3', 'B. 7 − 3', 'C. 9 − 4'], answer: "B", bahas: 'Hitung semua pilihan: 8 − 3 = 5, 7 − 3 = 4, 9 − 4 = 5. Yang hasilnya 4 adalah 7 − 3. Jawaban B.' },
+    { n: 6, type: "mc", text: 'Pengurangan berikut ini yang hasilnya sama dengan 6 adalah ....', img: null, options: ['A. 10 − 4', 'B. 9 − 2', 'C. 8 − 3'], answer: "A", bahas: 'Hitung semua pilihan: 10 − 4 = 6, 9 − 2 = 7, 8 − 3 = 5. Yang hasilnya 6 adalah 10 − 4. Jawaban A.' },
+    { n: 7, type: "mc", text: 'Bentuk pengurangan yang memiliki hasil sama dengan 8 − 3 adalah ....', img: null, options: ['A. 7 − 3', 'B. 9 − 4', 'C. 10 − 4'], answer: "B", bahas: '8 − 3 = 5. Coba hitung pilihan: 7 − 3 = 4, 9 − 4 = 5, 10 − 4 = 6. Yang sama-sama 5 adalah 9 − 4. Jawaban B.' },
+    { n: 8, type: "mc", text: 'Perhatikan tiga bentuk pengurangan berikut:\n(1) 7 − 4\n(2) 9 − 5\n(3) 6 − 3\nBentuk pengurangan yang memiliki hasil sama ditunjukkan oleh nomor ....', img: null, options: ['A. (1) dan (2)', 'B. (1) dan (3)', 'C. (2) dan (3)'], answer: "B", bahas: 'Hitung: 7 − 4 = 3, 9 − 5 = 4, 6 − 3 = 3. Nomor (1) dan (3) sama-sama hasilnya 3. Jawaban B.' },
+    { n: 9, type: "mc", text: 'Diketahui kalimat penjumlahan:\n4 + 5 = 9\nKalimat pengurangan yang sesuai dengan penjumlahan di atas adalah ....', img: null, options: ['A. 9 − 5 = 4', 'B. 9 − 3 = 6', 'C. 5 − 4 = 1'], answer: "A", bahas: 'Dari 4 + 5 = 9, jika jumlahnya (9) dikurangi 5 hasilnya 4. Jadi 9 − 5 = 4. Jawaban A.' },
+    { n: 10, type: "mc", text: 'Diketahui 6 + 4 = 10. Bentuk pengurangan yang tepat berdasarkan penjumlahan tersebut adalah ....', img: null, options: ['A. 10 − 5 = 5', 'B. 10 − 6 = 4', 'C. 6 − 4 = 2'], answer: "B", bahas: 'Dari 6 + 4 = 10, pengurangan yang berpasangan adalah 10 − 6 = 4. Jawaban B.' },
+    { n: 11, type: "mc", text: 'Jika 3 + 5 = 8, maka hasil dari 8 − 3 adalah ....', img: null, options: ['A. 3', 'B. 5', 'C. 8'], answer: "B", bahas: 'Karena 3 + 5 = 8, maka 8 − 3 = 5. Jawaban B.' },
+    { n: 12, type: "mc", text: 'Perhatikan hubungan bilangan berikut:\n2 + 7 = 9\n9 − 7 = ...\nBilangan yang tepat untuk mengisi titik-titik di atas adalah ....', img: null, options: ['A. 2', 'B. 5', 'C. 7'], answer: "A", bahas: 'Dari 2 + 7 = 9, maka 9 − 7 = 2. Jawaban A.' },
+    { n: 13, type: "mc", text: 'Ibu membeli 8 potong kue donat. Sebanyak 3 potong kue dimakan oleh adik. Sisa kue donat Ibu sekarang adalah ....', img: null, options: ['A. 4 potong', 'B. 5 potong', 'C. 6 potong'], answer: "B", bahas: 'Kue mula-mula 8 potong, dimakan 3 potong: 8 − 3 = 5. Sisa kue 5 potong. Jawaban B.' },
+    { n: 14, type: "mc", text: 'Di atas pohon ada 9 ekor burung. Kemudian 4 ekor burung terbang menjauh. Banyak burung yang masih hinggap di pohon adalah ....', img: null, options: ['A. 4 ekor', 'B. 5 ekor', 'C. 6 ekor'], answer: "B", bahas: 'Burung mula-mula 9 ekor, terbang 4 ekor: 9 − 4 = 5. Jawaban B.' },
+    { n: 15, type: "mc", text: 'Dina memiliki 10 batang pensil warna. Ia meminjamkan 2 batang pensil warna kepada Lani. Sisa pensil warna milik Dina sekarang ada ....', img: null, options: ['A. 7 batang', 'B. 8 batang', 'C. 9 batang'], answer: "B", bahas: 'Pensil mula-mula 10 batang, dipinjamkan 2 batang: 10 − 2 = 8. Jawaban B.' },
+    { n: 16, type: "isian", text: 'Perhatikan gambar bintang berikut dan tulislah kalimat pengurangannya!\nKalimat pengurangannya adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 78"><rect x="5" y="6" width="380" height="66" fill="#fefce8" stroke="#fde047" stroke-width="2"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(42,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(100,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(158,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(216,40)" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(274,40)" fill="#fde68a" stroke="#f59e0b" stroke-width="1.5"/><line x1="260" y1="28" y2="52" x2="288" stroke="#dc2626" stroke-width="3"/><line x1="288" y1="28" y2="52" x2="260" stroke="#dc2626" stroke-width="3"/><polygon points="0,-18 4.4,-6.1 17.1,-5.6 7.1,2.3 10.6,14.6 0,7.5 -10.6,14.6 -7.1,2.3 -17.1,-5.6 -4.4,-6.1" transform="translate(332,40)" fill="#fde68a" stroke="#f59e0b" stroke-width="1.5"/><line x1="318" y1="28" y2="52" x2="346" stroke="#dc2626" stroke-width="3"/><line x1="346" y1="28" y2="52" x2="318" stroke="#dc2626" stroke-width="3"/></svg>', answer: "6 - 2 = 4", bahas: 'Mula-mula ada 6 bintang, lalu 2 bintang dicoret. 6 − 2 = 4, jadi kalimat pengurangannya 6 − 2 = 4.' },
+    { n: 17, type: "isian", text: 'Hitunglah hasil pengurangan di bawah ini:\n8 − 5 = ...\nHasilnya adalah ....', img: null, answer: "3", bahas: '8 dikurangi 5, hitung mundur dari 8: 7, 6, 5, 4, 3. Jadi 8 − 5 = 3.' },
+    { n: 18, type: "isian", text: 'Lengkapilah bilangan yang kosong agar kedua pengurangan memiliki hasil yang sama!\n9 − 5 = 7 − ...\nBilangan yang tepat adalah ....', img: null, answer: "3", bahas: '9 − 5 = 4. Agar 7 − ... juga hasilnya 4, bilangan yang tepat adalah 3, karena 7 − 3 = 4.' },
+    { n: 19, type: "isian", text: 'Diketahui kalimat penjumlahan 5 + 2 = 7. Lengkapilah kalimat pengurangan di bawah ini!\n7 − 2 = ...\nBilangan yang tepat adalah ....', img: null, answer: "5", bahas: 'Dari 5 + 2 = 7, maka 7 − 2 = 5. Jawabannya 5.' },
+    { n: 20, type: "isian", text: 'Beni mempunyai 10 butir kelereng. Saat bermain, 4 butir kelerengnya hilang. Berapa sisa kelereng Beni sekarang?\nSisa kelereng Beni sekarang ada .... butir.', img: null, answer: "6", bahas: 'Kelereng mula-mula 10 butir, hilang 4 butir: 10 − 4 = 6. Sisa kelereng Beni 6 butir.' }
+  ]},
+  { name: "Bangun datar", icon: "🔺", questions: [
+    { n: 1, type: "mc", text: 'Perhatikan gambar jam dinding di bawah ini!\nPermukaan jam dinding pada gambar di atas berbentuk ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><circle cx="60" cy="60" r="44" fill="#dbeafe" stroke="#2563eb" stroke-width="5"/><line x1="60.0" y1="25.0" y2="19.0" x2="60.0" stroke="#2563eb" stroke-width="2"/><line x1="77.5" y1="29.7" y2="24.5" x2="80.5" stroke="#2563eb" stroke-width="2"/><line x1="90.3" y1="42.5" y2="39.5" x2="95.5" stroke="#2563eb" stroke-width="2"/><line x1="95.0" y1="60.0" y2="60.0" x2="101.0" stroke="#2563eb" stroke-width="2"/><line x1="90.3" y1="77.5" y2="80.5" x2="95.5" stroke="#2563eb" stroke-width="2"/><line x1="77.5" y1="90.3" y2="95.5" x2="80.5" stroke="#2563eb" stroke-width="2"/><line x1="60.0" y1="95.0" y2="101.0" x2="60.0" stroke="#2563eb" stroke-width="2"/><line x1="42.5" y1="90.3" y2="95.5" x2="39.5" stroke="#2563eb" stroke-width="2"/><line x1="29.7" y1="77.5" y2="80.5" x2="24.5" stroke="#2563eb" stroke-width="2"/><line x1="25.0" y1="60.0" y2="60.0" x2="19.0" stroke="#2563eb" stroke-width="2"/><line x1="29.7" y1="42.5" y2="39.5" x2="24.5" stroke="#2563eb" stroke-width="2"/><line x1="42.5" y1="29.7" y2="24.5" x2="39.5" stroke="#2563eb" stroke-width="2"/><line x1="60" y1="60" y2="28" x2="60" stroke="#1e293b" stroke-width="3.5"/><line x1="60" y1="60" y2="60" x2="80" stroke="#dc2626" stroke-width="3.5"/><circle cx="60" cy="60" r="3.5" fill="#1e293b" stroke="#1e293b" stroke-width="1"/></svg>', options: ['A. segitiga', 'B. segiempat', 'C. lingkaran'], answer: "C", bahas: 'Permukaan jam dinding berbentuk bundar. Bangun datar yang bundar dengan satu sisi lengkung adalah lingkaran. Jawaban C.' },
+    { n: 2, type: "mc", text: 'Benda di ruang kelas berikut ini yang permukaannya berbentuk segiempat adalah ....', img: null, options: ['A. papan tulis', 'B. roda sepeda', 'C. uang koin'], answer: "A", bahas: 'Papan tulis memiliki 4 sisi lurus dan 4 sudut, jadi berbentuk segiempat. Roda sepeda dan uang koin berbentuk lingkaran. Jawaban A.' },
+    { n: 3, type: "mc", text: 'Perhatikan gambar potongan semangka berikut ini!\nBentuk potongan semangka pada gambar menyerupai bangun datar ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 100"><polygon points="12,88 128,88 70,14" fill="#22c55e" stroke="#15803d" stroke-width="2"/><polygon points="22,82 118,82 70,26" fill="#ef4444" stroke="#ef4444" stroke-width="1"/><circle cx="58" cy="66" r="2.5" fill="#1f2937" stroke="#1f2937" stroke-width="1"/><circle cx="82" cy="66" r="2.5" fill="#1f2937" stroke="#1f2937" stroke-width="1"/><circle cx="70" cy="50" r="2.5" fill="#1f2937" stroke="#1f2937" stroke-width="1"/><circle cx="62" cy="56" r="2.5" fill="#1f2937" stroke="#1f2937" stroke-width="1"/><circle cx="78" cy="56" r="2.5" fill="#1f2937" stroke="#1f2937" stroke-width="1"/></svg>', options: ['A. segitiga', 'B. lingkaran', 'C. segiempat'], answer: "A", bahas: 'Potongan semangka memiliki 3 sisi dan 3 titik sudut. Bentuk itu menyerupai segitiga. Jawaban A.' },
+    { n: 4, type: "mc", text: 'Bangun datar di bawah ini yang merupakan bangun segitiga adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 92"><text x="16" y="56" font-size="14" fill="#334155" text-anchor="start" font-weight="bold">a.</text><rect x="42" y="28" width="44" height="44" fill="#60a5fa" stroke="#2563eb" stroke-width="2" rx="3"/><text x="148" y="56" font-size="14" fill="#334155" text-anchor="start" font-weight="bold">b.</text><polygon points="192,72 232,72 212,30" fill="#fbbf24" stroke="#d97706" stroke-width="2"/><text x="278" y="56" font-size="14" fill="#334155" text-anchor="start" font-weight="bold">c.</text><circle cx="336" cy="50" r="24" fill="#4ade80" stroke="#16a34a" stroke-width="2"/></svg>', options: ['A. gambar a', 'B. gambar b', 'C. gambar c'], answer: "B", bahas: 'Gambar a adalah segiempat, gambar b adalah segitiga karena punya 3 sisi dan 3 sudut, gambar c adalah lingkaran. Jawaban B.' },
+    { n: 5, type: "mc", text: 'Perhatikan kumpulan bangun datar berikut ini!\nBangun datar yang berbentuk segitiga ditunjukkan oleh nomor ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 112"><rect x="5" y="4" width="410" height="102" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><circle cx="55" cy="46" r="22" fill="#f472b6" stroke="#db2777" stroke-width="2"/><text x="55" y="92" font-size="12" fill="#475569" text-anchor="middle">(1)</text><polygon points="115,68 155,68 135,26" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><text x="135" y="92" font-size="12" fill="#475569" text-anchor="middle">(2)</text><rect x="213" y="24" width="44" height="44" fill="#a78bfa" stroke="#7c3aed" stroke-width="2" rx="3"/><text x="235" y="92" font-size="12" fill="#475569" text-anchor="middle">(3)</text><polygon points="295,68 335,68 315,26" fill="#fb923c" stroke="#ea580c" stroke-width="2"/><text x="315" y="92" font-size="12" fill="#475569" text-anchor="middle">(4)</text></svg>', options: ['A. (1) dan (3)', 'B. (2) dan (3)', 'C. (2) dan (4)'], answer: "C", bahas: 'Bangun (1) lingkaran, (2) segitiga, (3) segiempat, dan (4) segitiga. Yang berbentuk segitiga adalah (2) dan (4). Jawaban C.' },
+    { n: 6, type: "mc", text: 'Perhatikan tabel pasangan benda dan bentuk bangun datarnya di bawah ini!\nBangun datar yang tepat untuk dipasangkan dengan gambar amplop surat di atas adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 92"><rect x="5" y="4" width="140" height="84" fill="#fffbeb" stroke="#fcd34d" stroke-width="2"/><rect x="30" y="26" width="90" height="44" fill="#fde68a" stroke="#ca8a04" stroke-width="2" rx="2"/><polygon points="30,26 75,54 120,26" fill="#fef3c7" stroke="#ca8a04" stroke-width="1.5"/><text x="75" y="80" font-size="10" fill="#92400e" text-anchor="middle">Amplop Surat</text><rect x="153" y="4" width="140" height="84" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><text x="223" y="52" font-size="18" fill="#334155" text-anchor="middle" font-weight="bold">...</text></svg>', options: ['A. lingkaran', 'B. segitiga', 'C. segiempat'], answer: "C", bahas: 'Amplop surat memiliki 4 sisi lurus dan 4 sudut. Jadi dipasangkan dengan bangun segiempat. Jawaban C.' },
+    { n: 7, type: "mc", text: 'Pasangan benda di bawah ini yang memiliki kesamaan bentuk adalah ....', img: null, options: ['A. piring makan dan uang koin', 'B. buku tulis dan bola sepak', 'C. penggaris segitiga dan pintu kelas'], answer: "A", bahas: 'Piring makan dan uang koin sama-sama berbentuk lingkaran. Jawaban A.' },
+    { n: 8, type: "mc", text: 'Perhatikan gambar bentuk benda di bawah ini!\nBanyak bangun datar yang berbentuk segitiga pada gambar di atas ada ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 80"><rect x="5" y="4" width="430" height="72" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><polygon points="50,62 90,62 70,18" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><rect x="107" y="18" width="42" height="42" fill="#a78bfa" stroke="#7c3aed" stroke-width="2" rx="3"/><polygon points="171,62 211,62 191,18" fill="#fbbf24" stroke="#d97706" stroke-width="2"/><circle cx="245" cy="40" r="21" fill="#f472b6" stroke="#db2777" stroke-width="2"/><polygon points="291,62 331,62 311,18" fill="#4ade80" stroke="#16a34a" stroke-width="2"/><rect x="355" y="18" width="42" height="42" fill="#fb923c" stroke="#ea580c" stroke-width="2" rx="3"/></svg>', options: ['A. 2 buah', 'B. 3 buah', 'C. 4 buah'], answer: "B", bahas: 'Pada gambar ada 3 segitiga (biru, kuning, hijau), 2 segiempat, dan 1 lingkaran. Banyak segitiga ada 3. Jawaban B.' },
+    { n: 9, type: "mc", text: 'Perhatikan susunan gambar pohon cemara berikut ini!\nBanyak bangun segitiga yang membentuk daun pohon cemara tersebut adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 130"><rect x="62" y="104" width="16" height="20" fill="#92400e" stroke="#78350f" stroke-width="2" rx="2"/><polygon points="25,104 115,104 70,58" fill="#22c55e" stroke="#15803d" stroke-width="2"/><polygon points="35,74 105,74 70,32" fill="#4ade80" stroke="#16a34a" stroke-width="2"/><polygon points="45,50 95,50 70,12" fill="#86efac" stroke="#22c55e" stroke-width="2"/></svg>', options: ['A. 2', 'B. 3', 'C. 4'], answer: "B", bahas: 'Daun pohon cemara tersusun bertingkat dari 3 bangun segitiga hijau. Batangnya berbentuk segiempat. Jawaban B.' },
+    { n: 10, type: "mc", text: 'Perhatikan kelompok bangun datar pada kotak di bawah ini!\nBangun-bangun datar di atas dikelompokkan berdasarkan kesamaan ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 80"><rect x="5" y="4" width="370" height="72" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><rect x="25" y="20" width="44" height="44" fill="#60a5fa" stroke="#2563eb" stroke-width="2" rx="3"/><rect x="100" y="30" width="62" height="26" fill="#fbbf24" stroke="#d97706" stroke-width="2" rx="3"/><rect x="190" y="36" width="26" height="26" fill="#4ade80" stroke="#16a34a" stroke-width="2" rx="3"/><rect x="280" y="18" width="30" height="48" fill="#f472b6" stroke="#db2777" stroke-width="2" rx="3"/></svg>', options: ['A. warna', 'B. ukuran', 'C. bentuk'], answer: "C", bahas: 'Keempat bangun berbeda warna dan ukuran, tetapi semuanya berbentuk segiempat. Jadi dikelompokkan berdasarkan kesamaan bentuk. Jawaban C.' },
+    { n: 11, type: "mc", text: 'Perhatikan pengelompokan benda berikut ini!\nCiri utama bangun datar pada Kelompok A adalah ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100"><rect x="5" y="4" width="430" height="92" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><line x1="220" y1="4" y2="96" x2="220" stroke="#cbd5e1" stroke-width="1.5"/><text x="112" y="24" font-size="12" fill="#4f46e5" text-anchor="middle" font-weight="bold">Kelompok A</text><text x="325" y="24" font-size="12" fill="#4f46e5" text-anchor="middle" font-weight="bold">Kelompok B</text><circle cx="85" cy="58" r="17" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><circle cx="140" cy="58" r="17" fill="#fbbf24" stroke="#d97706" stroke-width="2"/><polygon points="265,76 300,76 282,42" fill="#4ade80" stroke="#16a34a" stroke-width="2"/><polygon points="345,76 380,76 362,42" fill="#fb923c" stroke="#ea580c" stroke-width="2"/></svg>', options: ['A. memiliki 3 sisi lurus dan 3 sudut', 'B. memiliki 4 sisi lurus dan 4 sudut', 'C. memiliki 1 sisi lengkung dan tidak memiliki sudut'], answer: "C", bahas: 'Kelompok A berisi bangun lingkaran. Ciri lingkaran: memiliki 1 sisi lengkung dan tidak memiliki sudut. Jawaban C.' },
+    { n: 12, type: "mc", text: 'Siti mengelompokkan beberapa bangun datar menjadi satu kelompok karena semuanya memiliki 3 sisi dan 3 sudut. Bangun datar yang dimaksud Siti adalah ....', img: null, options: ['A. lingkaran', 'B. segitiga', 'C. segiempat'], answer: "B", bahas: 'Bangun datar yang memiliki 3 sisi dan 3 sudut disebut segitiga. Jawaban B.' },
+    { n: 13, type: "mc", text: 'Perhatikan gambar rumah mainan di bawah ini!\nBagian atap rumah pada gambar di atas disusun dari bangun datar berbentuk ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 124"><polygon points="80,12 138,64 22,64" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><rect x="38" y="64" width="84" height="52" fill="#fde047" stroke="#ca8a04" stroke-width="2" rx="2"/><rect x="68" y="86" width="24" height="30" fill="#92400e" stroke="#78350f" stroke-width="2" rx="2"/></svg>', options: ['A. lingkaran', 'B. segiempat', 'C. segitiga'], answer: "C", bahas: 'Atap rumah berwarna merah memiliki 3 sisi dan 3 sudut, jadi berbentuk segitiga. Jawaban C.' },
+    { n: 14, type: "mc", text: 'Perhatikan gambar mobil-mobilan di bawah ini!\nGambar mobil-mobilan di atas tersusun dari gabungan bangun datar ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 222 96"><rect x="58" y="16" width="72" height="32" fill="#60a5fa" stroke="#2563eb" stroke-width="2" rx="3"/><rect x="22" y="44" width="178" height="26" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2" rx="4"/><circle cx="64" cy="74" r="14" fill="#334155" stroke="#1e293b" stroke-width="2"/><circle cx="64" cy="74" r="6" fill="#94a3b8" stroke="#64748b" stroke-width="1.5"/><circle cx="158" cy="74" r="14" fill="#334155" stroke="#1e293b" stroke-width="2"/><circle cx="158" cy="74" r="6" fill="#94a3b8" stroke="#64748b" stroke-width="1.5"/></svg>', options: ['A. segitiga dan lingkaran', 'B. segiempat dan lingkaran', 'C. segiempat dan segitiga'], answer: "B", bahas: 'Badan mobil tersusun dari bangun segiempat berwarna biru dan 2 roda berbentuk lingkaran. Jawaban B.' },
+    { n: 15, type: "mc", text: 'Jika sebuah bangun segiempat dipotong lurus dari satu sudut ke sudut di seberangnya seperti gambar di bawah ini, akan terbentuk dua bangun ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 120"><rect x="30" y="20" width="80" height="80" fill="#ddd6fe" stroke="#7c3aed" stroke-width="2" rx="2"/><line x1="30" y1="20" y2="100" x2="110" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6,5"/></svg>', options: ['A. lingkaran', 'B. segitiga', 'C. segiempat'], answer: "B", bahas: 'Segiempat yang dipotong lurus dari sudut ke sudut di seberangnya terurai menjadi 2 bangun segitiga. Jawaban B.' },
+    { n: 16, type: "isian", text: 'Permukaan buku gambar dan meja belajar berbentuk bangun datar ....', img: null, answer: "segiempat", bahas: 'Buku gambar dan meja belajar memiliki 4 sisi lurus dan 4 sudut. Bentuknya segiempat.' },
+    { n: 17, type: "isian", text: 'Perhatikan gambar bendera hias di bawah ini!\nBanyak bendera berbentuk segitiga pada gambar di atas ada .... buah.', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 70"><line x1="15" y1="16" y2="16" x2="365" stroke="#334155" stroke-width="2"/><polygon points="40,16 80,16 60,60" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/><polygon points="120,16 160,16 140,60" fill="#fbbf24" stroke="#d97706" stroke-width="2"/><polygon points="200,16 240,16 220,60" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><polygon points="280,16 320,16 300,60" fill="#4ade80" stroke="#16a34a" stroke-width="2"/></svg>', answer: "4", bahas: 'Bendera digantung berjajar: merah, kuning, biru, hijau. Semuanya berbentuk segitiga, jadi ada 4 buah.' },
+    { n: 18, type: "isian", text: 'Roda sepeda dan piring memiliki kesamaan bentuk, yaitu berbentuk bangun datar ....', img: null, answer: "lingkaran", bahas: 'Roda sepeda dan piring sama-sama berbentuk bundar. Bentuk bangun datarnya lingkaran.' },
+    { n: 19, type: "isian", text: 'Perhatikan gambar berikut! Semua bangun datar pada kotak di bawah ini dikelompokkan berdasarkan kesamaan ....', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 90"><rect x="5" y="4" width="310" height="82" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><polygon points="40,70 86,70 63,26" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/><rect x="130" y="26" width="46" height="46" fill="#60a5fa" stroke="#2563eb" stroke-width="2" rx="3"/><circle cx="245" cy="48" r="23" fill="#60a5fa" stroke="#2563eb" stroke-width="2"/></svg>', answer: "warna", bahas: 'Ketiga bangun berbeda bentuk: segitiga, segiempat, lingkaran. Tetapi ketiganya sama-sama berwarna biru, jadi dikelompokkan berdasarkan warna.' },
+    { n: 20, type: "isian", text: 'Perhatikan gambar perahu layar di bawah ini!\nLayar perahu pada gambar di atas tersusun dari .... buah bangun segitiga.', img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120"><line x1="100" y1="12" y2="82" x2="100" stroke="#334155" stroke-width="2.5"/><polygon points="94,20 94,78 44,78" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/><polygon points="106,20 106,78 156,78" fill="#fbbf24" stroke="#d97706" stroke-width="2"/><polygon points="28,86 172,86 144,112 56,112" fill="#f97316" stroke="#c2410c" stroke-width="2"/></svg>', answer: "2", bahas: 'Layar perahu terdiri dari layar biru di kiri dan layar kuning di kanan. Dua-duanya berbentuk segitiga, jadi ada 2 buah.' }
+  ]}
+] };
+
+/* ================= state & util ================= */
+const SEC = SOAL.sections;
+const APP = { name:'', perQ:[], cur:null, data:[] };
+const $ = s => document.querySelector(s);
+const fmtT = s => {
+  s = Math.max(0, Math.round(s));
+  const j = Math.floor(s/3600), m = Math.floor((s%3600)/60), d = s%60;
+  return (j ? j + ':' + String(m).padStart(2,'0') : String(m)) + ':' + String(d).padStart(2,'0');
+};
+const norm = v => String(v).trim().toLowerCase().replace(/\s+/g,'').replace(/,/g,'.');
+let toastTimer = null;
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  $('#page-' + id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ================= cover ================= */
+(function initCover(){
+  document.title = SOAL.meta.title;
+  $('#cover-title').textContent = SOAL.meta.title;
+  $('#cover-sub').textContent = SOAL.meta.subtitle;
+  const tot = SEC.reduce((a,s)=>a+s.questions.length,0);
+  $('#cover-info').textContent = `📚 ${SEC.length} bagian • ${tot} soal • timer per soal diatur oleh tutor`;
+  $('#btn-mulai').addEventListener('click', () => {
+    const v = $('#nama').value.trim();
+    if(!v){ toast('Tulis dulu namamu ya 😊'); $('#nama').focus(); return; }
+    APP.name = v;
+    buildSettings();
+    showPage('settings');
+  });
+  $('#nama').addEventListener('keydown', e => { if(e.key==='Enter') $('#btn-mulai').click(); });
+})();
+
+/* ================= settings ================= */
+function buildSettings(){
+  const preset = $('#preset-row');
+  preset.innerHTML = '';
+  [30,60,120,180,300,600].forEach(sec => {
+    const b = document.createElement('button');
+    b.className = 'btn small';
+    b.textContent = fmtT(sec) + ' / soal';
+    b.addEventListener('click', () => {
+      SEC.forEach((s,i) => $('#perq-'+i).value = sec);
+      toast('Semua bagian diatur ' + fmtT(sec) + ' per soal');
+    });
+    preset.appendChild(b);
+  });
+
+  const wrap = $('#set-rows'); wrap.innerHTML = '';
+  SEC.forEach((s,i) => {
+    const row = document.createElement('div');
+    row.className = 'set-row';
+    const tot = s.questions.length;
+    row.innerHTML = `<div class="nm">${s.icon} ${s.name}<small>${tot} soal</small></div>`;
+    const inp = document.createElement('input');
+    inp.type = 'number'; inp.id = 'perq-'+i; inp.min = 10; inp.max = 3600; inp.step = 5;
+    inp.value = APP.perQ[i] || 120;
+    row.appendChild(inp);
+    wrap.appendChild(row);
+  });
+}
+$('#btn-set-kembali').addEventListener('click', () => showPage('cover'));
+$('#btn-simpan').addEventListener('click', () => {
+  const adaProgres = APP.data.some(d => d);
+  if(adaProgres && !confirm('Mengubah pengaturan waktu akan MENGHAPUS semua progres jawaban. Lanjutkan?')) return;
+  APP.perQ = SEC.map((s,i) => {
+    let v = parseInt($('#perq-'+i).value, 10);
+    if(isNaN(v) || v < 10) v = 10;
+    if(v > 3600) v = 3600;
+    return v;
+  });
+  APP.data = SEC.map(()=>null);
+  buildMenu();
+  showPage('menu');
+});
+
+/* ================= menu ================= */
+function statusOf(si){
+  const d = APP.data[si];
+  if(!d) return {cls:'blink', txt:'Belum dikerjakan'};
+  const t = SEC[si].questions.length;
+  const done = d.filter(a=>a.checked||a.timeout).length;
+  if(done === 0) return {cls:'blink', txt:'Belum dikerjakan'};
+  if(done >= t) return {cls:'selesai', txt:'Selesai ✓'};
+  return {cls:'progres', txt:`Progres ${done}/${t}`};
+}
+function buildMenu(){
+  $('#halo').textContent = `Halo, ${APP.name}! 👋`;
+  const grid = $('#menu-grid'); grid.innerHTML = '';
+  SEC.forEach((s,i) => {
+    const st = statusOf(i);
+    const card = document.createElement('button');
+    card.className = 'sec-card';
+    card.innerHTML = `
+      <div class="top"><span class="ico">${s.icon}</span><span class="nm">${s.name}</span></div>
+      <div class="meta"><span>📋 ${s.questions.length} soal</span><span>⏱ ${fmtT(APP.perQ[i]||120)}/soal</span></div>
+      <span class="chip ${st.cls}">${st.txt}</span>`;
+    card.addEventListener('click', () => startSection(i));
+    grid.appendChild(card);
+  });
+}
+$('#btn-ubah-waktu').addEventListener('click', () => { buildSettings(); showPage('settings'); });
+function keHasil(){
+  if(!APP.data.some(d=>d)){ toast('Belum ada soal yang dikerjakan'); return; }
+  buildResults(); showPage('results');
+}
+$('#btn-akhiri').addEventListener('click', keHasil);
+$('#btn-akhiri2').addEventListener('click', () => {
+  if(confirm('Akhiri latihan sekarang dan lihat hasil?')) keHasil();
+});
+$('#btn-menu').addEventListener('click', () => { buildMenu(); showPage('menu'); });
+
+/* ================= practice ================= */
+function startSection(si){
+  if(!APP.data[si]){
+    APP.data[si] = SEC[si].questions.map(() => ({
+      choice:null, val:'', checked:false, correct:null, spent:0, remaining:APP.perQ[si], timeout:false
+    }));
+  }
+  const d = APP.data[si];
+  let qi = d.findIndex(a => !a.checked && !a.timeout);
+  if(qi < 0) qi = 0;
+  APP.cur = {si, qi};
+  renderQ();
+  showPage('practice');
+}
+function curQ(){ return SEC[APP.cur.si].questions[APP.cur.qi]; }
+function curA(){ return APP.data[APP.cur.si][APP.cur.qi]; }
+
+function renderQ(){
+  const si = APP.cur.si, qi = APP.cur.qi;
+  const s = SEC[si], q = curQ(), a = curA();
+  $('#pr-title').textContent = s.icon + ' ' + s.name;
+  $('#pr-progress').textContent = `Soal ${qi+1} dari ${s.questions.length}`;
+  $('#q-no').textContent = 'Soal ' + q.n;
+  $('#q-type').textContent = q.type === 'mc' ? '📝 Pilihan Ganda' : '✏️ Isian Singkat';
+
+  const st = $('#q-status');
+  st.style.display = 'none';
+  if(a.checked){ st.style.display=''; st.className='badge-status '+(a.correct?'benar':'salah'); st.textContent = a.correct?'✔ Benar':'✘ Belum tepat'; }
+  else if(a.timeout){ st.style.display=''; st.className='badge-status timeout'; st.textContent='⏰ Waktu habis'; }
+
+  $('#q-text').textContent = q.text;
+  const imgBox = $('#q-img');
+  if(q.img){ imgBox.style.display=''; imgBox.innerHTML = q.img; } else { imgBox.style.display='none'; imgBox.innerHTML=''; }
+
+  const kunciTeks = q.type === 'mc'
+    ? q.options.find(o => o.trim().startsWith(q.answer + '.')).trim()
+    : String(q.answer);
+
+  // opsi / isian
+  const opts = $('#q-opts'); opts.innerHTML = '';
+  const iwrap = $('#isian-wrap');
+  if(q.type === 'mc'){
+    iwrap.style.display = 'none';
+    q.options.forEach(o => {
+      const huruf = o.trim().charAt(0);
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = o.trim();
+      if(a.checked || a.timeout){
+        b.disabled = true;
+        if(huruf === q.answer) b.classList.add('benar');
+        else if(huruf === a.choice) b.classList.add('salah');
+        else b.classList.add('dim');
+      } else {
+        if(a.choice === huruf) b.classList.add('selected');
+        b.addEventListener('click', () => {
+          a.choice = huruf;
+          opts.querySelectorAll('.opt').forEach(x => x.classList.remove('selected'));
+          b.classList.add('selected');
+        });
+      }
+      opts.appendChild(b);
+    });
+  } else {
+    iwrap.style.display = '';
+    const inp = $('#q-input');
+    inp.disabled = a.checked || a.timeout;
+    inp.value = a.val;
+    if(a.checked){
+      inp.style.borderColor = a.correct ? 'var(--hijau)' : 'var(--merah)';
+    } else { inp.style.borderColor = 'var(--biru)'; }
+    inp.oninput = () => { a.val = inp.value; };
+    inp.onkeydown = e => { if(e.key==='Enter') $('#btn-cek').click(); };
+  }
+
+  // feedback
+  const fb = $('#feedback');
+  if(a.checked || a.timeout){
+    fb.className = 'show ' + (a.timeout ? 'timeout' : (a.correct ? 'benar' : 'salah'));
+    $('#verdict').textContent = a.timeout
+      ? '⏰ Waktu habis!'
+      : (a.correct ? '🎉 Benar! Hebat!' : '😔 Belum tepat. Semangat!');
+    $('#kunci').innerHTML = '🔑 Jawaban benar: <b>' + kunciTeks + '</b>';
+    $('#bahas').innerHTML = '<b>💡 Pembahasan:</b>\n' + q.bahas;
+  } else {
+    fb.className = ''; 
+  }
+
+  // tombol
+  $('#btn-prev').disabled = qi === 0;
+  const cek = $('#btn-cek');
+  if(a.checked){ cek.disabled = true; cek.textContent = '✓ Sudah diperiksa'; }
+  else if(a.timeout){ cek.disabled = true; cek.textContent = '⏰ Waktu habis'; }
+  else { cek.disabled = false; cek.textContent = '✔ Cek Jawaban'; }
+  $('#btn-next').textContent = qi === s.questions.length - 1 ? 'Selesai ✓' : 'Berikutnya ▶';
+
+  updateTimer();
+}
+function updateTimer(){
+  const a = curA();
+  const t = $('#timer');
+  t.textContent = fmtT(a.checked || a.timeout ? a.spent : a.remaining);
+  const berjalan = !a.checked && !a.timeout;
+  t.classList.toggle('low', berjalan && a.remaining <= 10);
+}
+$('#btn-prev').addEventListener('click', () => {
+  if(APP.cur.qi > 0){ APP.cur.qi--; renderQ(); }
+});
+$('#btn-next').addEventListener('click', () => {
+  const si = APP.cur.si, n = SEC[si].questions.length;
+  if(APP.cur.qi < n - 1){ APP.cur.qi++; renderQ(); }
+  else {
+    const st = statusOf(si);
+    toast(`${st.txt === 'Selesai ✓' ? 'Bagian ' + SEC[si].name + ' selesai! 🎉' : 'Masih ada soal yang belum diperiksa'} `);
+    buildMenu(); showPage('menu');
+  }
+});
+$('#btn-cek').addEventListener('click', () => {
+  const a = curA(), q = curQ();
+  if(a.checked || a.timeout) return;
+  if(q.type === 'mc'){
+    if(!a.choice){ toast('Pilih salah satu jawaban dulu 😊'); return; }
+  } else {
+    if(!a.val.trim()){ toast('Tulis jawabanmu dulu 😊'); $('#q-input').focus(); return; }
+  }
+  const ok = q.type === 'mc'
+    ? a.choice === q.answer
+    : norm(a.val) === norm(q.answer);
+  a.checked = true; a.correct = ok;
+  a.spent = APP.perQ[APP.cur.si] - a.remaining;
+  renderQ();
+  if(ok) toast('🎉 Jawaban benar!');
+});
+
+/* timer per soal — hanya berjalan saat soal sedang ditampilkan & belum diperiksa */
+setInterval(() => {
+  if(APP.cur && $('#page-practice').classList.contains('active')){
+    const a = curA();
+    if(!a.checked && !a.timeout){
+      a.remaining--;
+      if(a.remaining <= 0){
+        a.remaining = 0; a.timeout = true; a.spent = APP.perQ[APP.cur.si];
+        renderQ();
+      } else updateTimer();
+    }
+  }
+}, 1000);
+
+/* ================= hasil ================= */
+function buildResults(){
+  $('#res-name').textContent = 'Siswa: ' + APP.name + ' • ' + SOAL.meta.title;
+  const body = $('#res-body'); body.innerHTML = '';
+  let gB=0, gS=0, gT=0, gTot=0, gSoal=0;
+  SEC.forEach((s,si) => {
+    const d = APP.data[si];
+    const n = s.questions.length;
+    let benar=0, salah=0, tidak=n, waktu=0, attempted=0;
+    if(d){
+      tidak = 0;
+      d.forEach(a => {
+        if(a.checked){ a.correct ? benar++ : salah++; attempted++; waktu += a.spent; }
+        else if(a.timeout){ attempted++; waktu += a.spent; }
+        else tidak++;
+      });
+    }
+    const avg = attempted ? waktu/attempted : 0;
+    const skor = d ? Math.round(benar/n*100) + '%' : '—';
+    const tr = document.createElement('tr');
+    if(!d){
+      tr.innerHTML = `<td>${s.icon} ${s.name}</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>`;
+    } else {
+      tr.innerHTML = `<td>${s.icon} ${s.name}</td>
+        <td><span class="pill-b">${benar}</span></td>
+        <td><span class="pill-s">${salah}</span></td>
+        <td><span class="pill-t">${tidak}</span></td>
+        <td>${fmtT(waktu)}</td>
+        <td>${attempted ? fmtT(avg) : '—'}</td>
+        <td><b>${skor}</b></td>`;
+      gB+=benar; gS+=salah; gT+=tidak; gTot+=waktu; gSoal+=n;
+    }
+    body.appendChild(tr);
+  });
+  const tr = document.createElement('tr');
+  tr.className = 'total';
+  const attemptedAll = gB + gS;
+  tr.innerHTML = `<td>TOTAL KESELURUHAN</td>
+    <td><span class="pill-b">${gB}</span></td>
+    <td><span class="pill-s">${gS}</span></td>
+    <td><span class="pill-t">${gT}</span></td>
+    <td>${fmtT(gTot)}</td>
+    <td>${attemptedAll ? fmtT(gTot/attemptedAll) : '—'}</td>
+    <td><b>${gSoal ? Math.round(gB/gSoal*100)+'%' : '—'}</b></td>`;
+  body.appendChild(tr);
+}
+$('#btn-home').addEventListener('click', () => { buildMenu(); showPage('menu'); });
+$('#btn-ulang').addEventListener('click', () => {
+  if(confirm('Hapus semua hasil dan mulai latihan baru dari awal?')){
+    APP.data = SEC.map(()=>null);
+    buildMenu(); showPage('menu');
+    toast('Latihan baru siap dimulai 💪');
+  }
+});
+</script>
+</body>
+</html>
